@@ -1,0 +1,36 @@
+{
+  "*": {
+    "type": "page"
+  },
+  "index": {
+    "title": "Tableau Embedding Playbook",
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
+    }
+  },
+  "architecture": {
+    "title": "Architecture",
+    "theme": {
+      "typesetting": "article"
+    }
+  },
+  "security": {
+    "title": "Security",
+    "theme": {
+      "typesetting": "article"
+    }
+  },
+  "frontend": {
+    "title": "Frontend",
+    "theme": {
+      "typesetting": "article"
+    }
+  },
+  "backend": {
+    "title": "Backend",
+    "theme": {
+      "typesetting": "article"
+    }
+  }
+}
