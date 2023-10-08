@@ -32,7 +32,7 @@ That's all there is to adding a new user, but you will likely want to make some 
 
 If your users have access to multiple workbooks and data sources, you will likely want to make a Table of Contents page similar to the below.
 
-![dynamic menu](./../../.github/img/viz_TOC.png)
+![dynamic menu](/viz_TOC.png)
 
 And if *different* users have access to *different* sets of content, it will not make sense for the list of available content to be hard-coded. Therefore, you need to use the REST API to query the workbooks available to the logged-in user. To achieve the above, you also need to grab the thumbnails.
 
