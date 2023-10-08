@@ -1,9 +1,33 @@
 {
+  "name": "tab_emd_pbk",
+  "version": "0.0.1",
+  "description": "Tableau Embedded Playbook",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next export",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tab-SE/embedding_playbook.git"
+    
+  },
+  "author": "Stephen Price <@stelloprint>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tab-SE/embedding_playbook/issues"
+  },
+  "homepage": "https://github.com/Tab-SE/embedding_playbook#readme",
   "dependencies": {
     "next": "^13.5.4",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.10",
+    "typescript": "^4.9.3"
   }
 }
