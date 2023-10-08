@@ -2,7 +2,7 @@
 import Image from 'next/image'
 
 function imageLoader({ src, width, quality }) {
-  const url = new URL(`https://embeddingplaybook.imgix.net/${src}`);
+  const url = new URL(`https://tableauembeddingplaybook.imgix.net/${src}`);
   const params = url.searchParams;
   params.set('auto', params.getAll('auto').join(',') || 'format');
   params.set('fit', params.get('fit') || 'max');
