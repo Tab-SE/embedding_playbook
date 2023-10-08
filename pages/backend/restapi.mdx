@@ -2,9 +2,11 @@
 title: User Management, Content Management, and Display with the REST API
 ---
 
+import Img from '../../components/img/img'
+
 # User Management, Content Management, and Display with the REST API
 
-Embedding a single visualization with the [Embedding API v3 or JavaScript API v2]({{ site.baseurl }}/pages/01_embedding_and_jsapi) and enabling [single sign-on]({{ site.baseurl }}/pages/02_auth_and_sso) is a crucial first step, but is only part of the story when building scaled solutions that use Tableau content as components. You often will have to use the REST API to integrate the users and content between your system and Tableau Server.
+Embedding a single visualization with the [Embedding API v3 or JavaScript API v2](/pages/01_embedding_and_jsapi) and enabling [single sign-on](/pages/02_auth_and_sso) is a crucial first step, but is only part of the story when building scaled solutions that use Tableau content as components. You often will have to use the REST API to integrate the users and content between your system and Tableau Server.
 
 The REST API allows you to query and manage sites, users, groups, workbooks, data sources, projects, and subscriptions/schedules. The automation and integration use cases are effectively infinite, but the most common workflows it is used for in embedded analytics are:
 
@@ -32,7 +34,13 @@ That's all there is to adding a new user, but you will likely want to make some 
 
 If your users have access to multiple workbooks and data sources, you will likely want to make a Table of Contents page similar to the below.
 
-![dynamic menu](/viz_TOC.png)
+<Img
+  alt='dynamic menu' 
+  src='/viz_TOC.png' 
+  width={700}
+  height={800}
+/>
+
 
 And if *different* users have access to *different* sets of content, it will not make sense for the list of available content to be hard-coded. Therefore, you need to use the REST API to query the workbooks available to the logged-in user. To achieve the above, you also need to grab the thumbnails.
 
@@ -46,11 +54,11 @@ And if *different* users have access to *different* sets of content, it will not
 
 The typical workflow for building and publishing content is to do it manually with Tableau Desktop. You might need to publish with the REST API for a variety of reasons. For example:
 
-* Using the [Document API]({{ site.baseurl }}/pages/04_multitenancy_and_rls) to generate workbooks from a template and then publishing each of those to Server
+* Using the [Document API](/pages/04_multitenancy_and_rls) to generate workbooks from a template and then publishing each of those to Server
 * Creating a script that runs on install of Server to publish a set of pre-built dashboards
 * Scripting migration from site to site or server to server
 
 Depending on the size of the workbook or data source, it may be possible to publish with a single call. If the file is large, you will need to send the file in pieces. For more details, see [the documentation on publishing with the REST API](https://onlinehelp.tableau.com/current/api/rest_api/en-us/help.htm#REST/rest_api_concepts_publish.htm%3FTocPath%3DConcepts%7C_____11)
 
 <br />
-*Next section: [Multi-Tenancy and Row-Level Security]({{ site.baseurl }}/pages/04_multitenancy_and_rls)*
+*Next section: [Multi-Tenancy and Row-Level Security](/pages/04_multitenancy_and_rls)*
