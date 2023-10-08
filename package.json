@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
+    "prod": "next export && touch ./out/.nojekyll",
     "start": "next start"
   },
   "repository": {
