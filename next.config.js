@@ -26,6 +26,7 @@ module.exports = withNextra({
   assetPrefix: assetPrefix,
   basePath: basePath,
   images: {
+    loader: 'imgix',
     domains: ['embeddingplaybook.imgix.net'],
     path: 'embeddingplaybook.imgix.net',
   },
