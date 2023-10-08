@@ -6,10 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
-    "prod": "npm run build && npm run export && touch ./out/.nojekyll",
-    "gh_pages": "git checkout gh_pages && git add out -f && git commit -m 'automated deployment' && git push",
-    "deploy": "npm run prod && cp -a /out/. . && npm run gh_pages",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "static": "next build && next export && touch ./out/.nojekyll",
+    "gh_pages": "git checkout gh_pages && git add out/. -f && git commit -m 'automated deployment' && git push",
+    "deploy": "npm run prod && cp -a /out/. . && npm run gh_pages"
   },
   "repository": {
     "type": "git",
