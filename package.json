@@ -6,9 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
-    "prod": "npm run export && touch ./out/.nojekyll",
+    "prod": "npm run build && npm run export && touch ./out/.nojekyll",
     "gh_pages": "git checkout gh_pages && git add out -f && git commit -m 'automated deployment' && git push",
-    "deploy": "npm run prod && npm run gh_pages",
+    "deploy": "npm run prod && cp -a /out/. . && npm run gh_pages",
     "start": "next start"
   },
   "repository": {
