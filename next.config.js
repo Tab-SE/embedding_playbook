@@ -1,13 +1,19 @@
-// this handles basePath for <Link/> and assetPrefix for <Image/> components exported statically to GH Pages: 
-// https://www.viget.com/articles/host-build-and-deploy-next-js-projects-on-github-pages/
-const isGithubActions = process.env.GITHUB_ACTIONS || false;
+// used by <Link/> component and static CSS
 let assetPrefix;
+// used by <Image/> component
 let basePath;
 
-
+// exports via GitHub Actions  
+// https://www.viget.com/articles/host-build-and-deploy-next-js-projects-on-github-pages/
+const isGithubActions = process.env.GITHUB_ACTIONS || false;
 if (isGithubActions) {
   // trim off `<owner>/`
   const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '');
+  assetPrefix = `/${repo}/`;
+  basePath = `/${repo}`;
+} else if (process.env.MANUAL_EXPORT === true) {
+  // exporting to GitHub Pages without using Actions via package.json scripts
+  const repo = process.env.PROJECT_NAME;
   assetPrefix = `/${repo}/`;
   basePath = `/${repo}`;
 }
@@ -22,6 +28,7 @@ const withNextra = require('nextra')({
 // exports the config with some additional nextjs settings
 // current config requires usage of <Img/> component for optimization
 // markdown syntax ![]() uses unoptimized images
+// if basePath must be defined add it here: basePath: basePath, excluded due to imgix hosting
 module.exports = withNextra({
   assetPrefix: assetPrefix,
   basePath: basePath,

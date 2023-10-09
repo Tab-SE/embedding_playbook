@@ -6,15 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
-    "prod": "npm run build && npm run export && touch ./out/.nojekyll",
-    "gh_pages": "git checkout gh_pages && git add out -f && git commit -m 'automated deployment' && git push",
-    "deploy": "npm run prod && cp -a /out/. . && npm run gh_pages",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "static": "next build && next export",
+    "serve": "npx serve out",
+    "push": "cp -r out/. docs/. && git add docs -f && git commit -m 'automated deployment' && git push",
+    "deploy": "npm run static && npm run push",
+    "save": "git add pages public && git commit -m 'saving content (/public & /pages)'",
+    "revert": "git reset HEAD -- .",
+    "upload": "npm run save && git push"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Tab-SE/embedding_playbook.git"
-    
   },
   "author": "Stephen Price <@stelloprint>",
   "license": "MIT",
@@ -31,6 +35,8 @@
   },
   "devDependencies": {
     "@types/node": "18.11.10",
+    "eslint": "8.51.0",
+    "eslint-config-next": "13.5.4",
     "typescript": "^4.9.3"
   }
 }
