@@ -8,9 +8,10 @@
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
-    "static": "next build && next export && touch ./out/.nojekyll",
-    "gh_pages": "git checkout gh_pages && git add out/. -f && git commit -m 'automated deployment' && git push",
-    "deploy": "npm run static && cp -a /out/. . && npm run gh_pages"
+    "static": "next build && next export",
+    "serve": "npx serve out",
+    "push": "cp -r out/. docs/. && git add docs -f && git commit -m 'automated deployment' && git push",
+    "review": "npm run static && npm run push"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,8 @@
   },
   "devDependencies": {
     "@types/node": "18.11.10",
+    "eslint": "8.51.0",
+    "eslint-config-next": "13.5.4",
     "typescript": "^4.9.3"
   }
 }
