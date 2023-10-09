@@ -11,9 +11,8 @@ if (isGithubActions) {
   const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '');
   assetPrefix = `/${repo}/`;
   basePath = `/${repo}`;
-} 
-// exporting to GitHub Pages without using Actions via package.json scripts
-else if (process.env.EXPORT_STRATEGY === 'manual') {
+} else if (process.env.EXPORT_STRATEGY === 'manual') {
+  // exporting to GitHub Pages without using Actions via package.json scripts
   const repo = process.env.GITHUB_REPOSITORY;
   assetPrefix = `/${repo}/`;
   basePath = `/${repo}`;
