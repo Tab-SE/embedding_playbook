@@ -10,7 +10,7 @@
     "lint": "next lint",
     "static": "next build && next export",
     "serve": "npx serve out",
-    "commit": "mkdir docs && cp -r out/. docs/. && git add docs -f",
+    "commit": "cp -r out/. docs/. && git add docs -f",
     "push": "git commit -m 'automated deployment' && git push",
     "deploy": "npm run static && npm run commit && npm run push",
     "save": "git add pages public && git commit -m 'saving content (/public & /pages)'",
