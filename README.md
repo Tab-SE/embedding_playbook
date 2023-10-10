@@ -52,7 +52,7 @@ This architecture was selected for the following reasons:
 
 The combination works great for this use case since it is built to facilitate contributions towards content that fulfill the purpose of this Playbook while still allowing developers to write a dynamic application with cutting-edge best practices for the web. 
 
-Most technical documentation required to configure, alter or enhance this codebase is updated and maintain by professional teams contained in the following list (in order of importance):
+Most technical documentation required to configure, alter or enhance this codebase is updated and maintained by professional teams listed here (in order of importance):
 
 1. [Nextra](https://nextra.site) (docs theme)
 2. [Nextjs](https://nextjs.org/) (framework)
