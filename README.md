@@ -13,6 +13,8 @@ them with unmatched speed and flexibility resulting in a springboarding of ideas
 
 To get started, go the [Tableau Embedded Analytics Playbook](https://tab-se.github.io/embedding_playbook).
 
+<br/>
+
 ## Local Development
 
 First, clone this GitHub repository using your [method of choice](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
@@ -35,7 +37,7 @@ npm dev
 
 Visit `localhost:3000` to see the app. Enjoy!
 
-###### NOTE: Development on GitHub codespaces may differ from this process. Please refer to their documentation for further guidance.
+>NOTE: Development on GitHub codespaces may differ from this process. Please refer to their documentation for further guidance.
 
 ![up and down area chart](public/img/stock/up_down_area.png)
 
@@ -55,7 +57,7 @@ The combination works great for this use case since it is built to facilitate co
 2. [Nextjs](https://nextjs.org/)
 3. [React](https://react.org/)
 
-![area chart](public/img/stock/area_chart.png)
+</br>
 
 ## Contributing
 
@@ -66,6 +68,6 @@ For more information please refer to the [Contribution Guide](./CONTRIBUTING.md)
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](LICENSE).
 
 ![narrow area chart](public/img/stock/area_chart_banner.png)
