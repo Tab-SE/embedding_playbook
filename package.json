@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "static": "next build && next export",
-    "serve": "npx serve out",
+    "serve": "npm run static && npx serve out",
     "commit": "cp -r out/. docs/. && git add docs -f",
     "push": "git commit -m 'automated deployment' && git push",
     "deploy": "npm run static && npm run commit && npm run push",
