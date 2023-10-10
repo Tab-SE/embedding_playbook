@@ -19,6 +19,7 @@ if (isGithubActions) {
 }
 
 // initializes the withNextra config object with theme settings
+// set staticImage: false to avoid usage of IMGIX at a loss of image optimization
 const withNextra = require('nextra')({
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.tsx',
