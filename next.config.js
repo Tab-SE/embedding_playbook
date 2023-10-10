@@ -1,21 +1,21 @@
+const path = process.env.PROJECT_NAME;
 // used by <Link/> component and static CSS
 let assetPrefix;
 // used by <Image/> component
 let basePath;
 
-// exports via GitHub Actions  
-// https://www.viget.com/articles/host-build-and-deploy-next-js-projects-on-github-pages/
 const isGithubActions = process.env.GITHUB_ACTIONS || false;
+// exports via GitHub Pages via automated Actions
+// https://www.viget.com/articles/host-build-and-deploy-next-js-projects-on-github-pages/
 if (isGithubActions) {
-  // trim off `<owner>/`
-  const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '');
-  assetPrefix = `/${repo}/`;
-  basePath = `/${repo}`;
-} else if (process.env.MANUAL_EXPORT === true) {
-  // exporting to GitHub Pages without using Actions via package.json scripts
-  const repo = process.env.PROJECT_NAME;
-  assetPrefix = `/${repo}/`;
-  basePath = `/${repo}`;
+  // trim off `<owner>/`, testing dynamically obtaining values from GitHub env
+  // const path = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '');
+  assetPrefix = `/${path}/`;
+  basePath = `/${path}`;
+} else if (process.env.HOSTING === 'gh_pages') {
+  // exporting to GitHub Pages via package.json scripts
+  assetPrefix = `/${path}/`;
+  basePath = `/${path}`;
 }
 
 // initializes the withNextra config object with theme settings
