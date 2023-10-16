@@ -5,7 +5,7 @@ const config: DocsThemeConfig = {
   project: {
     link: 'https://tab-se.github.io/embedding_playbook',
   },
-  docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook',
+  docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook/tree/main/',
   footer: {
     text: 'Tableau Embedding Playbook',
   },
