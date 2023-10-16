@@ -4,33 +4,18 @@
   },
   "index": {
     "title": "Tableau Embedding Playbook",
-    "display": "hidden",
-    "theme": {
-      "layout": "full"
-    }
+    "display": "hidden"
   },
   "architecture": {
-    "title": "Architecture",
-    "theme": {
-      "typesetting": "article"
-    }
+    "title": "Architecture"
   },
   "security": {
-    "title": "Security",
-    "theme": {
-      "typesetting": "article"
-    }
+    "title": "Security"
   },
   "frontend": {
-    "title": "Frontend",
-    "theme": {
-      "typesetting": "article"
-    }
+    "title": "Frontend"
   },
   "backend": {
-    "title": "Backend",
-    "theme": {
-      "typesetting": "article"
-    }
+    "title": "Backend"
   }
 }
