@@ -34,7 +34,7 @@ function Img(props) {
 
   return (
     <Image 
-      alt={props.alt} 
+      alt={props.alt ? props.alt : 'no description'} 
       src={props.src} 
       width={props.width}
       height={props.height}
