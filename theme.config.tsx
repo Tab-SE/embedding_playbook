@@ -16,6 +16,11 @@ const config: DocsThemeConfig = {
   toc: {
     backToTop: true
   },
+  useNextSeoProps() {
+    return {
+      titleTemplate: '%s'
+    }
+  },
   head: function useHead() {
     const { title } = useConfig();
     const { route } = useRouter();
