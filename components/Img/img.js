@@ -16,9 +16,8 @@ function imageLoader({ src, width, quality }) {
 function Img(props) {
   // default base64 placeholder image is transparent https://png-pixel.com/
   const [blurDataURL, setBlurDataURL] = useState('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
-
   const { darkMode } = useConfig();
-
+  
   useEffect(() => {
     handleBlurDataURL();
   });
@@ -32,6 +31,11 @@ function Img(props) {
     }
   }
 
+  let cN = "w-full h-auto";
+  if (props.full === false) {
+    cN = "";
+  }
+
   return (
     <Image 
       alt={props.alt ? props.alt : 'no description'} 
@@ -42,7 +46,7 @@ function Img(props) {
       sizes="(min-width: 320px) 25vw, 50vw, 75vw, 100vw"
       placeholder="blur"
       blurDataURL={`data:image/png;base64,${blurDataURL}`}
-      className="w-full h-auto"
+      className={cN}
     />
   )
 }

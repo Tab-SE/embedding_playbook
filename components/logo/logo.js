@@ -10,6 +10,7 @@ function Logo() {
       alt='Tableau Software (logo)'
       width={40}
       height={40}
+      full={false}
     />
   </span>
   <span>
