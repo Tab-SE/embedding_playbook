@@ -24,9 +24,10 @@ const config: DocsThemeConfig = {
   head: function useHead() {
     const { title } = useConfig();
     const { route } = useRouter();
+    const imgix = 'https://tableauembeddingplaybook.imgix.net/'
     const socialCard =
       route === '/' || !title
-        ? 'tableau/logo_text.png'
+        ? imgix + 'tableau/logo_text.png'
         : `https://tab-se.github.io/api/og?title=${title}`;
 
     return (
@@ -43,25 +44,25 @@ const config: DocsThemeConfig = {
           name="og:description"
           content={description}
         />
-        <meta name="twitter:card" content="tableau/logo_text.png" />
+        <meta name="twitter:card" content={imgix + "tableau/logo_text.png"} />
         <meta name="twitter:image" content={socialCard} />
         <meta name="twitter:site:domain" content="https://tab-se.github.io" />
         <meta name="twitter:url" content="https://tab-se.github.io/embedding_playbook" />
         <meta name="og:title" content={title}/>
         <meta name="og:image" content={socialCard} />
         <meta name="apple-mobile-web-app-title" content={title} />
-        <link rel="icon" href="svg/logo_color.svg" type="image/svg+xml" />
-        <link rel="icon" href="tableau/tableau.ico" type="image/ico" />
-        <link rel="icon" href="tableau/tableau_logo.png" type="image/png" />
+        <link rel="icon" href={imgix + "svg/logo_color.svg"} type="image/svg+xml" />
+        <link rel="icon" href={imgix + "tableau/tableau.ico"} type="image/ico" />
+        <link rel="icon" href={imgix + "tableau/tableau_logo.png"} type="image/png" />
         <link
           rel="icon"
-          href="svg/dark.svg"
+          href={imgix + "svg/dark.svg"}
           type="image/svg+xml"
           media="(prefers-color-scheme: dark)"
         />
         <link
           rel="icon"
-          href="tableau/tableau_logo_dark.png"
+          href={imgix + "tableau/tableau_logo_dark.png"}
           type="image/png"
           media="(prefers-color-scheme: dark)"
         />
