@@ -38,7 +38,7 @@ function MyButton() {
             <div className="avatar online">
               <div className="w-16 rounded-full">
                 <Img
-                  src="img/stock/mackenzie_day.png"
+                  src="stock/mackenzie_day.png"
                   alt="sample user"
                   height={64}
                   width={64}
