@@ -1,7 +1,8 @@
 import { DocsThemeConfig } from 'nextra-theme-docs'
+import Logo from './components/logo/logo'
 
 const config: DocsThemeConfig = {
-  logo: <span>Embedding Playbook</span>,
+  logo: Logo,
   project: {
     link: 'https://tab-se.github.io/embedding_playbook',
   },
