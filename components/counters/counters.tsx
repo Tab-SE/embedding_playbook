@@ -1,7 +1,7 @@
 // Example from https://beta.reactjs.org/learn
 
 import { useState } from 'react';
-import Img from '../Img/img';
+import Img from '../img/img';
 
 function MyButton() {
   const [count, setCount] = useState(9801);
