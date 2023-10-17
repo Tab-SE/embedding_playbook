@@ -42,6 +42,7 @@ function Img(props) {
       sizes="(min-width: 320px) 25vw, 50vw, 75vw, 100vw"
       placeholder="blur"
       blurDataURL={`data:image/png;base64,${blurDataURL}`}
+      className="w-full h-auto"
     />
   )
 }
