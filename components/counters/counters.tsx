@@ -1,12 +1,13 @@
 // Example from https://beta.reactjs.org/learn
 
-import { useState } from 'react'
+import { useState } from 'react';
+import Img from '../Img/img';
 
 function MyButton() {
-  const [count, setCount] = useState(9801)
+  const [count, setCount] = useState(9801);
 
   function handleClick() {
-    setCount(count + 1)
+    setCount(count + 1);
   }
 
   return (
@@ -36,7 +37,12 @@ function MyButton() {
           <div className="stat-figure text-secondary">
             <div className="avatar online">
               <div className="w-16 rounded-full">
-                <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                <Img
+                  src="img/stock/mackenzie_day.png"
+                  alt="sample user"
+                  height={64}
+                  width={64}
+                />
               </div>
             </div>
           </div>
