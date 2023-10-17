@@ -14,18 +14,18 @@ function imageLoader({ src, width, quality }) {
 }
  
 function Img(props) {
-  // default theme is light, default base64 placeholder image is transparent black https://png-pixel.com/
-  const [blurDataURL, setBlurDataURL] = useState('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkmAkAAJ8AmzsOXcYAAAAASUVORK5CYII=');
+  // default base64 placeholder image is transparent https://png-pixel.com/
+  const [blurDataURL, setBlurDataURL] = useState('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
 
   const { darkMode } = useConfig();
 
   useEffect(() => {
     handleBlurDataURL();
-  }, []);
+  });
   
   const handleBlurDataURL = () => {
     if (darkMode) {
-      // https://png-pixel.com/
+      // sets placeholder image according to theme https://png-pixel.com/
       setBlurDataURL('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8PxMAAp0BmiC7I60AAAAASUVORK5CYII=');
     } else {
       setBlurDataURL('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkmAkAAJ8AmzsOXcYAAAAASUVORK5CYII=');
