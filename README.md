@@ -11,7 +11,7 @@ them with unmatched speed and flexibility resulting in a springboarding of ideas
 
 ![tableau running on a laptop](public/img/stock/environmental3.png)
 
-To get started, go the [Tableau Embedded Analytics Playbook](https://tab-se.github.io/embedding_playbook).
+To get started, go to the [Tableau Embedded Analytics Playbook](https://tab-se.github.io/embedding_playbook).
 
 <br/>
 
@@ -32,7 +32,7 @@ npm i
 
 Finally, start the development server.
 ```sh
-npm dev
+npm run dev
 ```
 
 Visit `localhost:3000` to see the app. Enjoy!
