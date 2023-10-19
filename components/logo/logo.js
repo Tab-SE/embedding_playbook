@@ -6,11 +6,12 @@ function Logo() {
   <>
   <span className='mr-2'>
     <Img
-      src='svg/logo_color.svg'
+      src='svg/logo_color.svg?w=40&h=40'
       alt='Tableau Software (logo)'
       width={40}
       height={40}
       full={false}
+      sizes='(max-width: 32px)'
     />
   </span>
   <span>
