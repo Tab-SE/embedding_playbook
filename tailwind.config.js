@@ -7,6 +7,27 @@ module.exports = {
     './components/**/*.{js,jsx,ts,tsx,md,mdx}',
   ],
   darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        "sfneutral": "#444444",
+        "sfneutral95": "#f3f3f3",
+        "sfneutral80": "#c9c9c9",
+        "sfneutral10": "#181818",
+        "sfblue": "#085cab",
+        "sfblue50": "#0176d3",
+        "sfcloud": "#0d9dda",
+        "sfteal": "#04e1cb",
+        "sfgreen": "#41b658",
+        "sfyellow": "#fcc003",
+        "sforange": "#fe9339",
+        "sfindigo": "#5867e8",
+        "sfviolet": "#730394",
+        "sfpink": "#ff538a",
+        "sferror": "#fe5c4c",      
+      }
+    },
+  },
   daisyui: {
     themes: [
       {
