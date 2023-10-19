@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import { useConfig } from 'nextra-theme-docs';
 import Img from '../../img/img';
 import Logo from '../../logo/logo';
 
 function Toolbar(props) {
-
+  const { nextThemes } = useConfig();
+  console.log(nextThemes);
+  
 
   return (
     <>
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="btn btn-ghost normal-case text-xl outline-transparent">Superstore Analytics</a>
+          <a className="btn btn-ghost normal-case text-xl outline-transparent text-white">Superstore Analytics</a>
         </div>
         <div className="flex-none">
           <div className="dropdown dropdown-end">
