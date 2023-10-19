@@ -6,7 +6,7 @@ function Analytics(props) {
 
 
   return (
-    <>
+    <section className='bg-sfneutral80 dark:bg-sfneutral95 rounded'>
       <Toolbar/>
       <Tableau
         vizUrl={props.vizUrl}
@@ -15,7 +15,7 @@ function Analytics(props) {
         hideTabs={props.hideTabs}
         device={props.device}
       />
-    </>
+    </section>
   )
 }
 

@@ -10,7 +10,7 @@ function Toolbar(props) {
 
   return (
     <section>
-      <div className="navbar bg-neutral dark:bg-blue-600 my-8 rounded">
+      <div className="navbar bg-sfneutral mt-8 rounded">
         <div className="flex-1">
           <a className="btn btn-ghost normal-case text-xl outline-transparent text-white">Superstore Analytics</a>
         </div>
