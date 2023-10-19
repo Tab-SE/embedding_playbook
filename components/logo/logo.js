@@ -14,7 +14,7 @@ function Logo() {
       sizes='(max-width: 32px)'
     />
   </span>
-  <span>
+  <span className='invisible md:visible'>
     Embedding Playbook
   </span>
   </>
