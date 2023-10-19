@@ -1,5 +1,3 @@
-// Example from https://beta.reactjs.org/learn
-
 import { useState } from 'react';
 import Img from '../img/img';
 
