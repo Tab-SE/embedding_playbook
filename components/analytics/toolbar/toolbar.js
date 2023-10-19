@@ -12,7 +12,7 @@ function Toolbar(props) {
     <>
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="btn btn-ghost normal-case text-xl outline-transparent text-white">Superstore Analytics</a>
+          <a className="btn btn-ghost normal-case text-xl outline-transparent text-black dark:text-white">Superstore Analytics</a>
         </div>
         <div className="flex-none">
           <div className="dropdown dropdown-end">
