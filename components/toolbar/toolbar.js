@@ -5,6 +5,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import Logo from '../logo/logo'
 import Avatar from '../avatar/avatar'
 import Cart  from './components/cart'
+import Download from './components/download'
 
 function Toolbar(props) {
   const { nextThemes } = useConfig();
@@ -24,14 +25,17 @@ function Toolbar(props) {
           </a>
         </div>
         <div className="flex-auto justify-end">
+          <Download />
           <Cart />
-          <div className="dropdown dropdown-end">
-            <span tabIndex={0} className="btn btn-ghost">
+        </div>
+        <div className="dropdown dropdown-end">
+            <span tabIndex={0} >
               <Avatar
                 src="img/stock/mackenzie_day.png"
                 alt="sample user"
                 height={48}
                 width={48}
+                className="btn btn-ghost"
               />
             </span>
             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
@@ -45,7 +49,6 @@ function Toolbar(props) {
               <li><a>Logout</a></li>
             </ul>
           </div>
-        </div>
       </div>
     </section>
   )
