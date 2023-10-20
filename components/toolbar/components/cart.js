@@ -12,7 +12,7 @@ function Toggle() {
 function Menu() {
   return (
     <div className="card-body">
-      <span className="font-bold text-lg">6 Items</span>
+      <span className="font-bold text-lg dark:text-neutral">6 Items</span>
       <span className="text-info">Subtotal: $712.40</span>
       <div className="card-actions">
         <button className="btn btn-primary btn-block">View cart</button>
