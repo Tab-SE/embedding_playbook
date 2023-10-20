@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Viz from './viz/viz'
+import Toolbar from '../toolbar/toolbar'
 
 // higher-order component composing multiple components into a single <Tableau/> component
 function Tableau(props) {
@@ -9,7 +10,8 @@ function Tableau(props) {
   let hideTabs = props.hideTabs === 'true' ? true : false;
 
   return (
-    <> 
+    <section className='bg-sfneutral80 dark:bg-sfneutral95 rounded'> 
+      <Toolbar/>
       <Viz
         vizObj={vizObj}
         setVizObj={setVizObj}
@@ -22,7 +24,7 @@ function Tableau(props) {
         device={props.device}
         toolbar={props.toolbar}
       />
-    </>
+    </section>
   );
 }
 
