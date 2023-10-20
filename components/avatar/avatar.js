@@ -4,7 +4,7 @@ function Avatar(props) {
 
   return (
     <div className="avatar">
-      <div className="w-13 rounded-full">
+      <div className="w-14 rounded-full">
         <Img 
           src={props.src ? props.src : 'img/img/stock/mackenzie_day.png'}
           alt={props.alt ? props.alt : 'stock user photo'}
