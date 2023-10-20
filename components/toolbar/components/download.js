@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faFileArrowDown } from '@fortawesome/free-solid-svg-icons'
 
 function Menu(props) {
   return (
@@ -22,7 +22,7 @@ function Download(props) {
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className={`btn ${btnColor} ${btnStyle}`}>
         <div className="indicator">
-          <FontAwesomeIcon icon={faFilter} className='text-white'/>
+          <FontAwesomeIcon icon={faFileArrowDown} className='text-white' size='2xl' />
         </div>
       </label>
       <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
