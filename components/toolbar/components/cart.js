@@ -25,9 +25,9 @@ function Cart(props) {
 
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-primary btn-circle">
+      <label tabIndex={0} className="btn bg-primary btn-circle border-none text-white hover:text-primary">
         <div className="indicator">
-          <FontAwesomeIcon icon={faCartShopping} className='text-white' size='2xl' />
+          <FontAwesomeIcon icon={faCartShopping} size='2xl' />
           <span className="badge badge-secondary badge-sm indicator-item">6</span>
         </div>
       </label>
