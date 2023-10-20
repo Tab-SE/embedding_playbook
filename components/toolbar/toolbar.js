@@ -14,8 +14,8 @@ function Toolbar(props) {
 
   return (
     <section>
-      <div className="navbar bg-sfneutral mt-8 rounded">
-        <div className="flex-auto">
+      <div className="flex justify-between navbar bg-sfneutral mt-8 rounded">
+        <div className="flex-1">
           <a className="btn btn-ghost normal-case text-xl outline-transparent text-white">
           <Logo
             src='svg/logo_color.svg?w=40&h=40'
@@ -24,11 +24,12 @@ function Toolbar(props) {
           />
           </a>
         </div>
-        <div className="flex-auto justify-end">
+        <div className="flex-1 justify-center space-x-10">
           <Download />
           <Cart />
         </div>
-        <div className="dropdown dropdown-end">
+        <div className='flex justify-end'>
+          <div className="dropdown dropdown-end">
             <span tabIndex={0} >
               <Avatar
                 src="img/stock/mackenzie_day.png"
@@ -49,6 +50,7 @@ function Toolbar(props) {
               <li><a>Logout</a></li>
             </ul>
           </div>
+        </div>
       </div>
     </section>
   )
