@@ -1,21 +1,21 @@
 import Img from '../img/img'
 
-function Logo() {
+function Logo(props) {
 
   return (
   <>
   <span className='mr-2'>
     <Img
-      src='svg/logo_color.svg?w=40&h=40'
-      alt='Tableau Software (logo)'
-      width={40}
-      height={40}
-      full={false}
-      sizes='(max-width: 32px)'
+      src={props.src ? props.src : 'svg/logo_color.svg?w=40&h=40'}
+      alt={props.alt ? props.alt : 'Tableau Software (logo)'}
+      width={props.width ? props.width : 40}
+      height={props.width ? props.width : 40}
+      full={props.full ? props.full : false}
+      sizes={props.sizes ? props.sizes : '(max-width: 32px)'}
     />
   </span>
   <p className='invisible md:visible'>
-    Embedding Playbook
+    {props.name ? props.name : 'Embedding Playbook'}
   </p>
   </>
   );
