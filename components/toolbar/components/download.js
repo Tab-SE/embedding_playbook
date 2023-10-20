@@ -14,13 +14,9 @@ function Menu(props) {
 }
 
 function Download(props) {
-  // dynamic styles with reasonable defaults
-  const btnColor = 'btn-' + props.color ? props.color : 'primary';
-  const btnStyle = 'btn-' + props.style ? props.style : 'circle';
-
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className={`btn ${btnColor} ${btnStyle}`}>
+      <label tabIndex={0} className='btn bg-sfindigo btn-circle border-none'>
         <div className="indicator">
           <FontAwesomeIcon icon={faFileArrowDown} className='text-white' size='2xl' />
         </div>
