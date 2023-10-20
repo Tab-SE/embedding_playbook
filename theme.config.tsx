@@ -6,7 +6,7 @@ import Head from './components/head/head'
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
 
 const config: DocsThemeConfig = {
-  logo: Logo,
+  logo: <Logo/>,
   project: {
     link: 'https://github.com/Tab-SE/embedding_playbook',
   },
