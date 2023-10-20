@@ -6,6 +6,7 @@ import Logo from '../logo/logo'
 import Avatar from '../avatar/avatar'
 import Cart  from './components/cart'
 import Download from './components/download'
+import Filter from './components/filter'
 
 function Toolbar(props) {
   const { nextThemes } = useConfig();
@@ -25,6 +26,7 @@ function Toolbar(props) {
           </a>
         </div>
         <div className="flex-1 justify-center space-x-10">
+          <Filter />
           <Download />
           <Cart />
         </div>
