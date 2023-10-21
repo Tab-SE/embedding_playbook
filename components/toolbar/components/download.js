@@ -3,7 +3,7 @@ import { faFileArrowDown, faFileCsv, faFileExcel, faFileImage, faFilePdf, faFile
 
 function Menu(props) {
   return (
-    <ul className="menu bg-base-200 w-56 rounded-box">
+    <ul className="menu bg-base-200 rounded-box">
       <li><a><FontAwesomeIcon icon={faFileCsv} size='xl' />All Data</a></li>
       <li><a><FontAwesomeIcon icon={faFileExcel} size='xl' />Chart Data</a></li>
       <li><a><FontAwesomeIcon icon={faFileImage} size='xl' />Image</a></li>
@@ -22,7 +22,7 @@ function Download(props) {
           <FontAwesomeIcon icon={faFileArrowDown} size='2xl' />
         </div>
       </label>
-      <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
+      <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-40 bg-base-100 shadow">
         <Menu />
       </div>
     </div>
