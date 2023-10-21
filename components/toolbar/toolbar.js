@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useConfig } from 'nextra-theme-docs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
-import Logo from '../logo/logo'
+import { faCloud, faTruckFast } from '@fortawesome/free-solid-svg-icons'
 import Avatar from '../avatar/avatar'
+import Vertical from './components/verticals'
 import Cart  from './components/cart'
 import Download from './components/download'
 import Filter from './components/filter'
@@ -17,13 +17,7 @@ function Toolbar(props) {
     <section>
       <div className="flex justify-between navbar bg-sfneutral mt-8 rounded">
         <div className="flex-1">
-          <a className="btn btn-ghost normal-case text-xl outline-transparent text-white">
-          <Logo
-            src='svg/logo_color.svg?w=40&h=40'
-            alt='Superstore Analytics (logo)'
-            name='Superstore Analytics'
-          />
-          </a>
+          <Vertical />
         </div>
         <div className="flex-1 justify-center space-x-10">
           <Filter />
