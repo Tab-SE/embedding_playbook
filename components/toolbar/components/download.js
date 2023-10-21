@@ -1,15 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileArrowDown } from '@fortawesome/free-solid-svg-icons'
+import { faFileArrowDown, faFileCsv, faFileExcel, faFileImage, faFilePdf, faFilePowerpoint, faFilePen  } from '@fortawesome/free-solid-svg-icons'
 
 function Menu(props) {
   return (
-    <div className="card-body">
-      <span className="font-bold text-lg">6 Items</span>
-      <span className="text-info">Subtotal: $712</span>
-      <div className="card-actions">
-        <button className="btn btn-primary btn-block">View cart</button>
-      </div>
-    </div>
+    <ul className="menu bg-base-200 w-56 rounded-box">
+      <li><a><FontAwesomeIcon icon={faFileCsv} size='xl' />All Data</a></li>
+      <li><a><FontAwesomeIcon icon={faFileExcel} size='xl' />Chart Data</a></li>
+      <li><a><FontAwesomeIcon icon={faFileImage} size='xl' />Image</a></li>
+      <li><a><FontAwesomeIcon icon={faFilePdf} size='xl' />PDF</a></li>
+      <li><a><FontAwesomeIcon icon={faFilePowerpoint} size='xl' />Powerpoint</a></li>
+      <li><a><FontAwesomeIcon icon={faFilePen} size='xl' />Workbook</a></li>
+    </ul>
   )
 }
 
