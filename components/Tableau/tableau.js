@@ -10,21 +10,18 @@ function Tableau(props) {
   const hideTabs = props.hideTabs === 'true' ? true : false;
 
   return (
-    <section className='bg-sfneutral80 dark:bg-sfneutral95 rounded'> 
-      <Toolbar/>
-      <Viz
-        vizObj={vizObj}
-        setVizObj={setVizObj}
-        interactive={interactive}
-        setInteractive={setInteractive}
-        vizUrl={props.vizUrl}
-        height={props.height}
-        width={props.width}
-        hideTabs={hideTabs}
-        device={props.device}
-        toolbar={props.toolbar}
-      />
-    </section>
+    <Viz
+      vizObj={vizObj}
+      setVizObj={setVizObj}
+      interactive={interactive}
+      setInteractive={setInteractive}
+      vizUrl={props.vizUrl}
+      height={props.height}
+      width={props.width}
+      hideTabs={hideTabs}
+      device={props.device}
+      toolbar={props.toolbar}
+    />
   );
 }
 
