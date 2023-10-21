@@ -7,7 +7,7 @@ function Tableau(props) {
   // lifting state to share it with non <Viz/> components (e.g. custom toolbar)
   const [vizObj, setVizObj] = useState(undefined); // "viz object" providing access to Tableau API methods
   const [interactive, setInteractive] = useState(false); // viz interactivity state
-  let hideTabs = props.hideTabs === 'true' ? true : false;
+  const hideTabs = props.hideTabs === 'true' ? true : false;
 
   return (
     <section className='bg-sfneutral80 dark:bg-sfneutral95 rounded'> 
