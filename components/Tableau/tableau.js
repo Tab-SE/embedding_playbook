@@ -1,13 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Viz from './viz/viz'
-import Toolbar from '../toolbar/toolbar'
 
 // higher-order component composing multiple components into a single <Tableau/> component
 function Tableau(props) {
-  // lifting state to share it with non <Viz/> components (e.g. custom toolbar)
+  // viz object created here shared with child viz and parents via setVizLift()
   const [vizObj, setVizObj] = useState(undefined); // "viz object" providing access to Tableau API methods
   const [interactive, setInteractive] = useState(false); // viz interactivity state
-  const hideTabs = props.hideTabs === 'true' ? true : false;
+  const hideTabs = props.hideTabs === 'true' ? true : false; // converts to boolean saving default to false
+
+  // lifts state to parent components
+  useEffect(() => {
+    props.setVizLift(vizObj);
+  },[vizObj]);
 
   return (
     <Viz
