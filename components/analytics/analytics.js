@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Tableau from '../tableau/tableau'
 import Toolbar from '../toolbar/toolbar'
 
 function Analytics(props) {
-  // can lift the viz object and share it with other UI components
+  // lifts vizObj and shares it with other UI components
   const [viz, setViz] = useState(undefined);
 
   return (
