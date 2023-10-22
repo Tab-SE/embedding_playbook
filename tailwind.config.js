@@ -30,7 +30,12 @@ module.exports = {
         "lightning-yellow": "#ffb03b",
         "lightning-red": "#e16032",
         "lightning-cyan": "#4fd2d2",
-        "lightning-green": "#54a77b",        
+        "lightning-green": "#54a77b",
+        "colorblind-gray": "#57606c",
+        "colorblind-lgray": "#7b848f", 
+        "colorblind-tan": "#ffbc79",  
+        "colorblind-red": "#c85200",    
+        "colorblind-blue": "#1170aa",        
       }
     },
   },
