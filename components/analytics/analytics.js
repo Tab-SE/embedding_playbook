@@ -7,16 +7,18 @@ function Analytics(props) {
   const [viz, setViz] = useState(undefined);
 
   return (
-    <section className='bg-sf-neutral-80 dark:bg-sf-white rounded'> 
+    <section className='bg-colorblind-lgray dark:bg-sf-white rounded'> 
       <Toolbar viz={viz} />
-      <Tableau
-        setVizLift={setViz}
-        vizUrl={props.vizUrl}
-        height={props.height}
-        width={props.width}
-        hideTabs={props.hideTabs}
-        device={props.device}
-      />
+      <div className='grid place-items-center'>
+        <Tableau
+          setVizLift={setViz}
+          vizUrl={props.vizUrl}
+          height={props.height}
+          width={props.width}
+          hideTabs={props.hideTabs}
+          device={props.device}
+        />
+      </div>
     </section>
   )
 }
