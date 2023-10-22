@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 // eslint-disable-next-line no-unused-vars
-import tab_embed from '../api/embed_api'
+import tab_embed from '../../embed_api/embed_api'
 
 function Viz(props) {
   const vizRef = useRef(null); // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html

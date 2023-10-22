@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-unused-vars
+import tab_embed from '../../embed_api/embed_api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileArrowDown, faFileCsv, faFileExcel, 
   faFileImage, faFilePdf, faFilePowerpoint, faFilePen  
@@ -5,8 +7,35 @@ import { faFileArrowDown, faFileCsv, faFileExcel,
 
 function Option(props) {
 
-  function handleDownload(event) {
-    console.log('event', event.target.getAttribute('data-download') );
+  async function  handleDownload(event) {
+    const option = event.target.getAttribute('data-download');
+    try {
+      switch(option) {
+        case 'All Data':
+          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportData);
+          break;
+        case 'Chart Data':
+          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportCrossTab);
+          break;
+        case 'Image':
+          await tableauViz.exportImageAsync();
+          break;
+        case 'PDF':
+          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportPDF);
+          break;
+        case 'Powerpoint':
+          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportPowerPoint);
+          break;
+        case 'Workbook':
+          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportWorkbook);
+          break;
+        default:
+          throw new Error('Download Error: does not match TableauDialogType');
+      }
+    }
+    catch (e) {
+      console.error('Download Error: ', e.toString());
+    }
   }
 
   return (
@@ -26,7 +55,7 @@ function Option(props) {
 function Menu(props) {
   return (
     <ul className="menu bg-base-200 rounded-box">
-      <Option text='All Data' icon={faFileCsv} viz={props.viz} data-download={props.text} />
+      <Option text='All Data' icon={faFileCsv} viz={props.viz} />
       <Option text='Chart Data' icon={faFileExcel} viz={props.viz} />
       <Option text='Image' icon={faFileImage} viz={props.viz} />
       <Option text='PDF' icon={faFilePdf} viz={props.viz} />
