@@ -10,7 +10,9 @@ function Tableau(props) {
 
   // lifts state to parent components
   useEffect(() => {
-    props.setVizLift(vizObj);
+    if (props.setVizLift) {
+      props.setVizLift(vizObj);
+    }
   },[vizObj]);
 
   return (
