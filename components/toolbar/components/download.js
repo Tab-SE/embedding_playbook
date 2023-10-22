@@ -4,20 +4,34 @@ import { faFileArrowDown, faFileCsv, faFileExcel,
 } from '@fortawesome/free-solid-svg-icons'
 
 function Option(props) {
+
+  function handleDownload(event) {
+    console.log('event', event.target.getAttribute('data-download') );
+  }
+
   return (
-    <li><a><FontAwesomeIcon icon={props.icon} size='xl'/>{props.text} </a></li>
+    <li onClick={handleDownload} data-download={props.text}>
+      <a data-download={props.text}>
+        <FontAwesomeIcon 
+          icon={props.icon} 
+          size='xl' 
+          className='pointer-events-none'
+        />
+        {props.text}
+      </a>
+    </li>
   )
 }
 
 function Menu(props) {
   return (
     <ul className="menu bg-base-200 rounded-box">
-      <Option icon={faFileCsv} text='All Data' />
-      <Option icon={faFileExcel} text='Chart Data' />
-      <Option icon={faFileImage} text='Image' />
-      <Option icon={faFilePdf} text='PDF' />
-      <Option icon={faFilePowerpoint} text='Powerpoint' />
-      <Option icon={faFilePen} text='Workbook' />
+      <Option text='All Data' icon={faFileCsv} viz={props.viz} data-download={props.text} />
+      <Option text='Chart Data' icon={faFileExcel} viz={props.viz} />
+      <Option text='Image' icon={faFileImage} viz={props.viz} />
+      <Option text='PDF' icon={faFilePdf} viz={props.viz} />
+      <Option text='Powerpoint' icon={faFilePowerpoint} viz={props.viz} />
+      <Option text='Workbook' icon={faFilePen} viz={props.viz} />
     </ul>
   )
 }
@@ -31,7 +45,7 @@ function Download(props) {
         </div>
       </label>
       <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-40 bg-base-100 shadow">
-        <Menu />
+        <Menu viz={props.viz} />
       </div>
     </div>
   )
