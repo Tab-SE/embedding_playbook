@@ -1,15 +1,23 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileArrowDown, faFileCsv, faFileExcel, faFileImage, faFilePdf, faFilePowerpoint, faFilePen  } from '@fortawesome/free-solid-svg-icons'
+import { faFileArrowDown, faFileCsv, faFileExcel, 
+  faFileImage, faFilePdf, faFilePowerpoint, faFilePen  
+} from '@fortawesome/free-solid-svg-icons'
+
+function Option(props) {
+  return (
+    <li><a><FontAwesomeIcon icon={props.icon} size='xl'/>{props.text} </a></li>
+  )
+}
 
 function Menu(props) {
   return (
     <ul className="menu bg-base-200 rounded-box">
-      <li><a><FontAwesomeIcon icon={faFileCsv} size='xl' />All Data</a></li>
-      <li><a><FontAwesomeIcon icon={faFileExcel} size='xl' />Chart Data</a></li>
-      <li><a><FontAwesomeIcon icon={faFileImage} size='xl' />Image</a></li>
-      <li><a><FontAwesomeIcon icon={faFilePdf} size='xl' />PDF</a></li>
-      <li><a><FontAwesomeIcon icon={faFilePowerpoint} size='xl' />Powerpoint</a></li>
-      <li><a><FontAwesomeIcon icon={faFilePen} size='xl' />Workbook</a></li>
+      <Option icon={faFileCsv} text='All Data' />
+      <Option icon={faFileExcel} text='Chart Data' />
+      <Option icon={faFileImage} text='Image' />
+      <Option icon={faFilePdf} text='PDF' />
+      <Option icon={faFilePowerpoint} text='Powerpoint' />
+      <Option icon={faFilePen} text='Workbook' />
     </ul>
   )
 }
