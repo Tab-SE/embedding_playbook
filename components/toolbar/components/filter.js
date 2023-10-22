@@ -22,11 +22,14 @@ function Download(props) {
       <FiltersBtn modal={modal} />
       <dialog id="my_modal_2" className="modal" ref={ref}>
         <div className="modal-box">
+          <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 outline-none">✕</button>
+          </form>
           <h3 className="font-bold text-2xl">
             <FontAwesomeIcon icon={faFilter} size='lg' />
             <span className='m-4'>Filters</span>
           </h3>
-          <p className="py-4">Press ESC key or click outside to close</p>
+          <p className="py-4 text-xs">(Press <kbd className="kbd">ESC</kbd> key or click outside to close)</p>
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
