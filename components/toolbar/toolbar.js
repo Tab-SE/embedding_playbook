@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { useConfig } from 'nextra-theme-docs'
 import Avatar from './components/avatar'
 import Vertical from './components/verticals'
 import Cart  from './components/cart'
@@ -7,7 +5,6 @@ import Download from './components/download'
 import Filter from './components/filter'
 
 function Toolbar(props) {
-  const { nextThemes } = useConfig();  
 
   return (
     <section>
@@ -16,8 +13,8 @@ function Toolbar(props) {
           <Vertical />
         </div>
         <div className="flex-1 justify-center space-x-10">
-          <Filter />
-          <Download />
+          <Filter viz={props.viz} />
+          <Download viz={props.viz} />
           <Cart />
         </div>
         <div className='flex justify-end'>
