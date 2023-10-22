@@ -16,7 +16,7 @@ function Menu(props) {
 function Download(props) {
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className='btn bg-sfindigo btn-circle border-none text-white hover:text-sfindigo'>
+      <label tabIndex={0} className='btn bg-sf-indigo btn-circle border-none text-white hover:text-sf-indigo'>
         <div className="indicator">
           <FontAwesomeIcon icon={faFilter} size='2xl' />
         </div>

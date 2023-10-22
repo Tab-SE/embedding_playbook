@@ -7,7 +7,7 @@ function Analytics(props) {
   const [viz, setViz] = useState(undefined);
 
   return (
-    <section className='bg-sfneutral80 dark:bg-sfneutral95 rounded'> 
+    <section className='bg-sf-neutral-80 dark:bg-sf-white rounded'> 
       <Toolbar viz={viz} />
       <Tableau
         setVizLift={setViz}

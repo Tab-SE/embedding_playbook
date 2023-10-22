@@ -16,10 +16,10 @@ function Menu() {
 function Cart() {
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn bg-sfblue btn-circle border-none text-white hover:text-sfblue">
+      <label tabIndex={0} className="btn bg-sf-blue btn-circle border-none text-white hover:text-sf-blue">
         <div className="indicator">
           <FontAwesomeIcon icon={faCartShopping} size='2xl' />
-          <span className="badge badge-secondary badge-sm indicator-item">6</span>
+          <span className="badge badge-secondary badge-sm indicator-item text-sf-white">6</span>
         </div>
       </label>
       <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">

@@ -40,7 +40,7 @@ function Option(props) {
 
   return (
     <li onClick={handleDownload} data-download={props.text}>
-      <a data-download={props.text}>
+      <a data-download={props.text} className='text-neutral'>
         <FontAwesomeIcon 
           icon={props.icon} 
           size='xl' 
