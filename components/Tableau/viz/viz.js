@@ -69,6 +69,7 @@ function Viz(props) {
           device={props.device}
           hide-tabs={props.hideTabs ? true : false}
           token={jwt}
+          class='my-3'
         />  : <></>
       }
     </>
