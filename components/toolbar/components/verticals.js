@@ -26,7 +26,6 @@ function Vertical(props) {
         </a>
       </label>
       <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
-        <VerticalsMenu />
       </div>
     </div>
   )
