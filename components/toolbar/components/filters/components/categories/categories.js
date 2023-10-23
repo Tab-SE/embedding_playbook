@@ -72,10 +72,10 @@ function Value(props) {
 function Segment(props) {
   return (
     <div>
-      <ul className="menu m-4 bg-base-200 w-56 rounded-box">
+      <ul className={`menu m-4 bg-base-200 w-56 rounded-box outline text-${props.color}`}>
         <li>
           <details>
-            <summary className={`text-lg font-semibold text-${props.color}`} >
+            <summary className="text-xl font-semibold" >
               {props.categoryName}
             </summary>
             <ul>
@@ -93,10 +93,10 @@ function Segment(props) {
 function Category(props) {
   return (
     <div>
-      <ul className="menu m-4 bg-base-200 w-56 rounded-box">
+      <ul className={`menu m-4 bg-base-200 w-56 rounded-box outline text-${props.color}`}>
         <li>
           <details>
-            <summary className={`text-lg font-semibold text-${props.color}`} >
+            <summary className="text-xl font-semibold" >
               {props.categoryName}
             </summary>
             <ul>
