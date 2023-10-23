@@ -2,7 +2,7 @@ import Avatar from './components/avatar'
 import Vertical from './components/verticals'
 import Cart  from './components/cart'
 import Download from './components/download'
-import Filter from './components/filter/filter'
+import Filters from './components/filters/filters'
 
 function Toolbar(props) {
 
@@ -13,7 +13,7 @@ function Toolbar(props) {
           <Vertical />
         </div>
         <div className="flex-1 justify-center space-x-10">
-          <Filter viz={props.viz} />
+          <Filters viz={props.viz} />
           <Download viz={props.viz} />
           <Cart />
         </div>
