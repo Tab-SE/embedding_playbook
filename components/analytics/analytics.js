@@ -5,13 +5,15 @@ import Toolbar from '../toolbar/toolbar'
 function Analytics(props) {
   // lifts vizObj and shares it with other UI components
   const [viz, setViz] = useState(undefined);
+  const [interactive, setInteractive] = useState(false);
 
   return (
     <section className='bg-colorblind-lgray dark:bg-sf-white rounded'> 
-      <Toolbar viz={viz} />
+      <Toolbar viz={viz} interactive={interactive} />
       <div className='grid place-items-center'>
         <Tableau
           setVizLift={setViz}
+          setInteractiveLift={setInteractive}
           vizUrl={props.vizUrl}
           height={props.height}
           width={props.width}

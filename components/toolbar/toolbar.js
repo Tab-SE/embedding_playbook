@@ -13,8 +13,8 @@ function Toolbar(props) {
           <Vertical />
         </div>
         <div className="flex-1 justify-center space-x-10">
-          <Filters viz={props.viz} />
-          <Download viz={props.viz} />
+          <Filters viz={props.viz} interactive={props.interactive} />
+          <Download viz={props.viz} interactive={props.interactive} />
           <Cart />
         </div>
         <div className='flex justify-end'>

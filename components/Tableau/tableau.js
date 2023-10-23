@@ -8,12 +8,13 @@ function Tableau(props) {
   const [interactive, setInteractive] = useState(false); // viz interactivity state
   const hideTabs = props.hideTabs === 'true' ? true : false; // converts to boolean saving default to false
 
-  // lifts state to parent components
+  // parent component must provide function handlers for props in this hook:
   useEffect(() => {
     if (props.setVizLift) {
-      props.setVizLift(vizObj);
+      props.setVizLift(vizObj); // lifts the viz object to parent nodes
+      props.setInteractiveLift(interactive); // lifts interactive state to parent nodes
     }
-  },[vizObj]);
+  },[vizObj, interactive]);
 
   return (
     <Viz

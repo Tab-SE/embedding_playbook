@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
-import Categories from './components/categories'
+import Categories from './components/categories/categories'
 
 function FiltersBtn(props) {
   return (
@@ -34,7 +34,7 @@ function Filters(props) {
             <button className="btn btn-outline btn-secondary w-32 justify-self-end">Reset</button>
             <button className="btn btn-outline btn-primary w-32 justify-self-end">Apply All</button>
           </div>
-          <Categories viz={props.viz} />
+          <Categories viz={props.viz} interactive={props.interactive} />
           <p className="pt-6 text-xs">(Press <kbd className="kbd">ESC</kbd> key or click outside to close)</p>
         </div>
         <form method="dialog" className="modal-backdrop">
