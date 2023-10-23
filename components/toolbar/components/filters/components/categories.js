@@ -74,11 +74,13 @@ function Categories(props) {
         categoryName='Segment' 
         type='categorical' 
         color='error' 
+        viz={props.viz}
       />
       <ProductCategory 
         categoryName='Product Category' 
         type='categorical' 
-        color='info' 
+        color='info'
+        viz={props.viz} 
       />
   </div>
   )
