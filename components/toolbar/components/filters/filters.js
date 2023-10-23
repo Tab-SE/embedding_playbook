@@ -18,6 +18,13 @@ function Filters(props) {
   const ref = useRef(null); 
   const modal = ref.current;
 
+// <button className="btn btn-outline btn-secondary w-32 justify-self-end">Reset</button>
+// <button 
+//   className="btn btn-outline btn-primary w-32 justify-self-end"
+// >
+//   Apply All
+// </button>
+
   return (
     <>
       <FiltersBtn modal={modal} />
@@ -31,12 +38,6 @@ function Filters(props) {
               <FontAwesomeIcon icon={faFilter} size='lg' />
               <span className='p-4'>Filters</span>
             </h3>
-            <button className="btn btn-outline btn-secondary w-32 justify-self-end">Reset</button>
-            <button 
-              className="btn btn-outline btn-primary w-32 justify-self-end"
-            >
-              Apply All
-            </button>
           </div>
           <Categories viz={props.viz} interactive={props.interactive} />
           <p className="pt-6 text-xs">(Press <kbd className="kbd">ESC</kbd> key or click outside to close)</p>
