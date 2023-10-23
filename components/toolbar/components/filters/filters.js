@@ -34,7 +34,6 @@ function Filters(props) {
             <button className="btn btn-outline btn-secondary w-32 justify-self-end">Reset</button>
             <button 
               className="btn btn-outline btn-primary w-32 justify-self-end"
-              onClick={}
             >
               Apply All
             </button>
