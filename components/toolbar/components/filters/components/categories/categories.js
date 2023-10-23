@@ -17,7 +17,7 @@ function Value(props) {
       console.log('interactive', props.interactive);
       async function handleFilters() {
         // Make the Overview dashboard the active sheet
-        const dashboard = await props.viz.workbook.activateSheetAsync('Profitability');
+        const dashboard = await props.viz.workbook.activateSheetAsync('Profitability (E)');
         let updateType = 'replace';
 
         try {
