@@ -35,7 +35,6 @@ function Segment(props) {
               {props.categoryName}
             </summary>
             <ul>
-              <Value text='All' color={props.color} />
               <Value text='Consumer' color={props.color} />
               <Value text='Corporate' color={props.color} />
               <Value text='Home Office' color={props.color} />
@@ -57,7 +56,6 @@ function ProductCategory(props) {
               {props.categoryName}
             </summary>
             <ul>
-              <Value text='All' color={props.color} />
               <Value text='Technology' color={props.color} />
               <Value text='Office Supplies' color={props.color} />
               <Value text='Furniture' color={props.color} />
