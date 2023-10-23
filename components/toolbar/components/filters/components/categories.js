@@ -27,47 +27,51 @@ function Value(props) {
 
 function Segment(props) {
   return (
-    <ul className="menu m-4 bg-base-200 w-56 rounded-box">
-      <li>
-        <details>
-          <summary className={`text-lg font-semibold text-${props.color}`} >
-            {props.categoryName}
-          </summary>
-          <ul>
-            <Value text='All' color={props.color} />
-            <Value text='Consumer' color={props.color} />
-            <Value text='Corporate' color={props.color} />
-            <Value text='Home Office' color={props.color} />
-          </ul>
-        </details>
-      </li>
-    </ul>
+    <div>
+      <ul className="menu m-4 bg-base-200 w-56 rounded-box">
+        <li>
+          <details>
+            <summary className={`text-lg font-semibold text-${props.color}`} >
+              {props.categoryName}
+            </summary>
+            <ul>
+              <Value text='All' color={props.color} />
+              <Value text='Consumer' color={props.color} />
+              <Value text='Corporate' color={props.color} />
+              <Value text='Home Office' color={props.color} />
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </div>
   )
 }
 
 function ProductCategory(props) {
   return (
-    <ul className="menu m-4 bg-base-200 w-56 rounded-box">
-      <li>
-        <details>
-          <summary className={`text-lg font-semibold text-${props.color}`} >
-            {props.categoryName}
-          </summary>
-          <ul>
-            <Value text='All' color={props.color} />
-            <Value text='Technology' color={props.color} />
-            <Value text='Office Supplies' color={props.color} />
-            <Value text='Furniture' color={props.color} />
-          </ul>
-        </details>
-      </li>
-    </ul>
+    <div>
+      <ul className="menu m-4 bg-base-200 w-56 rounded-box">
+        <li>
+          <details>
+            <summary className={`text-lg font-semibold text-${props.color}`} >
+              {props.categoryName}
+            </summary>
+            <ul>
+              <Value text='All' color={props.color} />
+              <Value text='Technology' color={props.color} />
+              <Value text='Office Supplies' color={props.color} />
+              <Value text='Furniture' color={props.color} />
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </div>
   )
 }
 
 function Categories(props) {
   return (
-  <div>
+  <div className='grid grid-flow-col auto-cols-max auto-rows-max'>
       <Segment 
         categoryName='Segment' 
         type='categorical' 
