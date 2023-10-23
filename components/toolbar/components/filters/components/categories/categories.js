@@ -59,7 +59,7 @@ function Value(props) {
         <span className="label-text">{props.text}</span> 
         <input 
           type="checkbox"  
-          className={`checkbox checkbox-${props.color}`} 
+          className={`checkbox checkbox-error`} 
           onChange={e => handleChecked(e)}
           checked={checked}
         />
@@ -75,13 +75,13 @@ function Segment(props) {
       <ul className="menu m-4 bg-base-200 w-56 rounded-box">
         <li>
           <details>
-            <summary className={`text-lg font-semibold text-${props.color}`} >
+            <summary className={`text-lg font-semibold text-error`} >
               {props.categoryName}
             </summary>
             <ul>
-              <Value text='Consumer' categoryName={props.categoryName} color={props.color} viz={props.viz} interactive={props.interactive} />
-              <Value text='Corporate' categoryName={props.categoryName} color={props.color} viz={props.viz} interactive={props.interactive} />
-              <Value text='Home Office' categoryName={props.categoryName} color={props.color} viz={props.viz} interactive={props.interactive} />
+              <Value text='Consumer' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Corporate' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Home Office' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
             </ul>
           </details>
         </li>
@@ -96,13 +96,13 @@ function ProductCategory(props) {
       <ul className="menu m-4 bg-base-200 w-56 rounded-box">
         <li>
           <details>
-            <summary className={`text-lg font-semibold text-${props.color}`} >
+            <summary className={`text-lg font-semibold text-error`} >
               {props.categoryName}
             </summary>
             <ul>
-              <Value text='Technology' categoryName={props.categoryName} color={props.color} viz={props.viz} interactive={props.interactive} />
-              <Value text='Office Supplies' categoryName={props.categoryName} color={props.color} viz={props.viz} interactive={props.interactive} />
-              <Value text='Furniture' categoryName={props.categoryName} color={props.color} viz={props.viz} interactive={props.interactive} />
+              <Value text='Technology' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Office Supplies' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Furniture' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
             </ul>
           </details>
         </li>
@@ -117,12 +117,12 @@ function Categories(props) {
       <Segment 
         categoryName='Segment' 
         type='categorical' 
-        color='error' 
+        color='info' 
         viz={props.viz}
         interactive={props.interactive}
       />
       <ProductCategory 
-        categoryName='Product Category' 
+        categoryName='Category' 
         type='categorical' 
         color='info'
         viz={props.viz} 
