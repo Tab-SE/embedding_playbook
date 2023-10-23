@@ -72,16 +72,16 @@ function Value(props) {
 function Segment(props) {
   return (
     <div>
-      <ul className={`menu m-4 bg-base-200 w-56 rounded-box outline text-${props.color}`}>
+      <ul className="menu m-4 bg-base-200 w-56 p-0 rounded">
         <li>
           <details>
-            <summary className="text-xl font-semibold" >
+            <summary className="text-xl text-sf-white font-semibold rounded bg-primary" >
               {props.categoryName}
             </summary>
             <ul>
-              <Value text='Consumer' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
-              <Value text='Corporate' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
-              <Value text='Home Office' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Technology' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Office Supplies' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Furniture' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
             </ul>
           </details>
         </li>
@@ -93,10 +93,10 @@ function Segment(props) {
 function Category(props) {
   return (
     <div>
-      <ul className={`menu m-4 bg-base-200 w-56 rounded-box outline text-${props.color}`}>
+      <ul className="menu m-4 bg-base-200 w-56 p-0 rounded">
         <li>
           <details>
-            <summary className="text-xl font-semibold" >
+            <summary className="text-xl text-sf-white font-semibold rounded bg-error" >
               {props.categoryName}
             </summary>
             <ul>
