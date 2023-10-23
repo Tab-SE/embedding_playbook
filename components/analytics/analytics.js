@@ -8,7 +8,7 @@ function Analytics(props) {
   const [interactive, setInteractive] = useState(false);
 
   return (
-    <section className='bg-colorblind-lgray dark:bg-sf-white rounded'> 
+    <section className='bg-colorblind-lgray rounded'> 
       <Toolbar viz={viz} interactive={interactive} />
       <div className='grid place-items-center'>
         <Tableau
