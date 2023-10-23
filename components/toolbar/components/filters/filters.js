@@ -26,11 +26,12 @@ function Filters(props) {
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 outline-none">✕</button>
           </form>
-          <div className='grid grid-flow-col grid-cols-2 auto-rows-max mr-8'>
+          <div className='grid grid-flow-col grid-cols-3 auto-rows-max mr-10'>
             <h3 className="font-bold text-3xl mb-9">
               <FontAwesomeIcon icon={faFilter} size='lg' />
               <span className='p-4'>Filters</span>
             </h3>
+            <button className="btn btn-outline btn-secondary w-32 justify-self-end">Reset</button>
             <button className="btn btn-outline btn-primary w-32 justify-self-end">Apply All</button>
           </div>
           <Categories viz={props.viz} />
