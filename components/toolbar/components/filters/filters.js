@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import Categories from './components/categories/categories'
 
 function FiltersBtn(props) {
@@ -29,9 +29,11 @@ function Filters(props) {
     <>
       <FiltersBtn modal={modal} />
       <dialog id="my_modal_2" className="modal" ref={ref}>
-        <div className="modal-box md:max-w-xl lg:max-w-3xl xl:max-w-5xl">
+        <div className="modal-box md:max-w-xl lg:max-w-3xl xl:max-w-5xl bg-sf-neutral-80">
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 outline-none">✕</button>
+            <button className="btn btn-circle btn-ghost absolute right-2 top-2 outline-none">
+              <FontAwesomeIcon icon={faCircleXmark} size='2xl' />
+            </button>
           </form>
           <div className='grid grid-flow-col grid-cols-3 auto-rows-max mr-10'>
             <h3 className="font-bold text-3xl mb-9">
@@ -40,7 +42,7 @@ function Filters(props) {
             </h3>
           </div>
           <Categories viz={props.viz} interactive={props.interactive} />
-          <p className="pt-6 text-xs">(Press <kbd className="kbd">ESC</kbd> key or click outside to close)</p>
+          <p className="pt-6 text-sm">(Press <kbd className="kbd">ESC</kbd> key or click outside to close)</p>
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>

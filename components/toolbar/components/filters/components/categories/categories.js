@@ -75,7 +75,7 @@ function Segment(props) {
       <ul className="menu m-4 bg-base-200 w-56 rounded-box">
         <li>
           <details>
-            <summary className={`text-lg font-semibold text-error`} >
+            <summary className={`text-lg font-semibold text-${props.color}`} >
               {props.categoryName}
             </summary>
             <ul>
@@ -90,13 +90,13 @@ function Segment(props) {
   )
 }
 
-function ProductCategory(props) {
+function Category(props) {
   return (
     <div>
       <ul className="menu m-4 bg-base-200 w-56 rounded-box">
         <li>
           <details>
-            <summary className={`text-lg font-semibold text-error`} >
+            <summary className={`text-lg font-semibold text-${props.color}`} >
               {props.categoryName}
             </summary>
             <ul>
@@ -121,10 +121,10 @@ function Categories(props) {
         viz={props.viz}
         interactive={props.interactive}
       />
-      <ProductCategory 
+      <Category 
         categoryName='Category' 
         type='categorical' 
-        color='info'
+        color='error'
         viz={props.viz} 
         interactive={props.interactive}
       />
