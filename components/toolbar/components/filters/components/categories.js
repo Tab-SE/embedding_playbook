@@ -1,65 +1,24 @@
-const filters = [
-  {
-    "_worksheetName": "Profit Ratio Map",
-    "_fieldName": "Segment",
-    "_filterType": "categorical",
-    "_fieldId": "[federated.1d5vk860twkhqd1bvit1i02ev3x0].[none:Country:nk]",
-    "_registryId": 0,
-    "_appliedValues": [
-      {
-        "_value": "Consumer",
-        "_nativeValue": "Consumer",
-        "_formattedValue": "Consumer"
-      },
-      {
-        "_value": "Corporate",
-        "_nativeValue": "Corporate",
-        "_formattedValue": "Corporate"
-      },
-      {
-        "_value": "Home Office",
-        "_nativeValue": "Home Office",
-        "_formattedValue": "Home Office"
-      },
-    ],
-    "_isExcludeMode": false,
-    "_isAllSelected": true
-  },
-  {
-    "_worksheetName": "Profit Ratio Map",
-    "_fieldName": "Product Category",
-    "_filterType": "categorical",
-    "_fieldId": "[federated.1d5vk860twkhqd1bvit1i02ev3x0].[none:Country:nk]",
-    "_registryId": 0,
-    "_appliedValues": [
-      {
-        "_value": "Technology",
-        "_nativeValue": "Technology",
-        "_formattedValue": "Technology"
-      },
-      {
-        "_value": "Office Supplies",
-        "_nativeValue": "Office Supplies",
-        "_formattedValue": "Office Supplies"
-      },
-      {
-        "_value": "Furniture",
-        "_nativeValue": "Furniture",
-        "_formattedValue": "Furniture"
-      },
-    ],
-    "_isExcludeMode": false,
-    "_isAllSelected": true
-  }
-]
+import { useRef, useState, useEffect } from 'react'
+import FilterList from './filterList'
 
 function Value(props) {
+  const [checked, setChecked] = useState(true);
+
+  const handleChecked = (e) => {
+    setChecked(e.target.checked);
+  }
+
   return (
   <>
     <div className="form-control">
       <label className="label cursor-pointer">
         <span className="label-text">{props.text}</span> 
-        <input type="checkbox" className={`checkbox checkbox-${props.color}`} />
+        <input 
+          type="checkbox"  
+          className={`checkbox checkbox-${props.color}`} 
+          onChange={e => handleChecked(e)}
+          checked={checked}
+        />
       </label>
     </div>
   </>
@@ -70,7 +29,7 @@ function Segment(props) {
   return (
     <ul className="menu m-4 bg-base-200 w-56 rounded-box">
       <li>
-        <details open>
+        <details>
           <summary className={`text-lg font-semibold text-${props.color}`} >
             {props.categoryName}
           </summary>
@@ -90,7 +49,7 @@ function ProductCategory(props) {
   return (
     <ul className="menu m-4 bg-base-200 w-56 rounded-box">
       <li>
-        <details open>
+        <details>
           <summary className={`text-lg font-semibold text-${props.color}`} >
             {props.categoryName}
           </summary>
