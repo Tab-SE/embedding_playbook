@@ -7,10 +7,6 @@ function Analytics(props) {
   const [vizObj, setVizObj] = useState(null);
   const [interactive, setInteractive] = useState(false);
 
-  useEffect(() => {
-    // console.log('analytics', vizObj);
-  }, [vizObj])
-
   return (
     <section className='bg-colorblind-lgray rounded'> 
       <Toolbar viz={vizObj} interactive={interactive} />
