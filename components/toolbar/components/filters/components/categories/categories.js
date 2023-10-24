@@ -6,8 +6,6 @@ import FilterList from '../filterList'
 function Value(props) {
   const [checked, setChecked] = useState(true);
 
-  const checkClr = `checkbox checkbox-${props.color}`;
-
   useEffect(() => {
     if (props.viz && props.interactive) {
       console.log('interactive', props.interactive);
@@ -53,12 +51,22 @@ function Value(props) {
     <div className="form-control">
       <label className="label cursor-pointer">
         <span className="label-text">{props.text}</span> 
-        <input 
-          type="checkbox"  
-          className={checkClr} 
-          onChange={e => handleChecked(e)}
-          checked={checked}
-        />
+        {props.color === 'primary' ? (
+          <input 
+            type="checkbox"  
+            className="checkbox checkbox-primary" 
+            onChange={e => handleChecked(e)}
+            checked={checked}
+          />
+        ) : (
+          <input 
+            type="checkbox"  
+            className="checkbox checkbox-secondary" 
+            onChange={e => handleChecked(e)}
+            checked={checked}
+          />
+        )}
+        
       </label>
     </div>
   </>
@@ -120,7 +128,7 @@ function Categories(props) {
       <Category 
         categoryName='Category' 
         type='categorical' 
-        color='error'
+        color='secondary'
         viz={props.viz} 
         interactive={props.interactive}
       />
