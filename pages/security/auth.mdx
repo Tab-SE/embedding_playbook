@@ -2,11 +2,16 @@
 title: Authentication and Single Sign-On (SSO)
 ---
 
+import { Callout } from 'nextra/components'
+
 # Authentication and Single Sign-On (SSO)
+
+<Callout type="warning" emoji="⚠️">
+  This website is under construction. Content on this page is a placeholder.
+</Callout>
 
 In most embedding scenarios, you will want to enable single sign-on so that the users that are signed in to your application do not have to also sign into Tableau Server or Tableau Online. There are various options to enable single sign-on (SSO) to Tableau.
 
-**Note:** This page discusses users logging into Tableau Server and  Tableau Online. Related, but separate, is the issue of [user management]({{ site.baseurl }}/pages/03_server_management_and_restapi) in which you ensure all relevant users are registered and provisioned with Tableau.
 
 The guidance for which single sign-on option to use is:
 
@@ -70,9 +75,7 @@ Trusted authentication is a piece of functionality specific to Tableau Server. I
 
 Additional considerations:
 
-* A common desire is to use a single 'service' account to authenticate the users. This is not a recommended approach, because it does not allow you to apply [data security]({{ site.baseurl }}/pages/04_multitenancy_and_rls) or to track usage on a per-user basis.
 * The trusted ticket is redeemable only once within three minutes of being issued and establishes a Tableau Server session for the user. The session allows the user to access any of the views that they have access to, as determined by the user and content permissions on the server. For more information, see [Trusted Authentication](https://help.tableau.com/current/server/en-us/trusted_auth.htm).
-* By default, tickets can be redeemed only for embedded visualizations, and not for other content pages in Tableau Server. To enable the user to see those, you must configure [unrestricted tickets](https://kb.tableau.com/articles/issue/login-prompt-when-embedding-server). See also: the [embedding non-view content]({{ site.baseurl }}/pages/06_embedding_non_view_content) page in this playbook.
 * If your web application has dynamic IP addresses, such that it is not feasible to trust a specific set of static IP addresses, you have a couple of options. You could create a small 'ticket requester' application that only allows requests from your web application. The 'ticket requester' requests tickets from the server, and then returns them to your web application. You can then deploy this 'ticket requester' application to a static IP address. Or you could consider leveraging one of the other authentication mechanisms listed above that do not depend on an IP allowlist.
 
 ## Kerberos, Active Directory, SAML, and OpenID
@@ -87,4 +90,3 @@ Alternatively, if each of your clients will have their own SAML iDP, you will ne
 * [Configure Tableau Server for OpenID](https://onlinehelp.tableau.com/current/server/en-us/openid_auth_server_config.htm)
 
 <br />
-*Next section: [User Management, Content Management & Display with the REST API]({{ site.baseurl }}/pages/03_server_management_and_restapi)*

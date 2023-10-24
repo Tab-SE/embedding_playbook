@@ -2,7 +2,13 @@
 title: Embedding Analytics Experiences
 ---
 
+import { Callout } from 'nextra/components'
+
 # Non-View Embeds
+
+<Callout type="warning" emoji="⚠️">
+  This website is under construction. Content on this page is a placeholder.
+</Callout>
 
 Almost all embedded deployments of Tableau embed pre-built dashboards. But some embed other components of Tableau such as:
 
@@ -63,15 +69,10 @@ Additional Considerations:
 
 * You will likely want to allow your users to save their edits, but not have their personalized versions affect other users. In that case, you should turn off save permissions, but allow save-as permissions. It also makes sense to give each of the users a 'sandbox' project that only they can save to.
 
-* To give your user access to personalized content that they create, your application will have to be dynamic to show users all content they have access to, not just those you create. See the page on [Using the REST API to display dynamic content]({{ site.baseurl }}/pages/03_server_management_and_restapi).
-
-* If you are using Connected Apps for embedding views, be sure to set the scope (`scp`) claim in the JSON Web Token (JWT) to include both web authoring (`tableau:views:embed_authoring`) and embedded viewing (`tableau:views:embed`). For information about Connected Apps, see [Authentication and Single Sign-On (SSO)]({{site.baseurl}}/pages/02_auth_and_sso) and [Configure Tableau Connected Apps to Enable SSO for Embedded Content](https://help.tableau.com/current/online/en-us/connected_apps.htm).
-
 ## Embedding other Tableau Server pages
 
 You can also use the iframe approach to embed the Tableau Server UI. This is a rarer technique, but is useful if you want to use the out-of-the-box UI, but want to achieve single sign-on from your application.
 
-To do so, simply embed http://{server}/trusted/{ticket}/t/{site}/ into an iframe. Be sure to enable [unrestricted tickets](http://kb.tableau.com/articles/issue/login-prompt-when-embedding-server).
+To do so, simply embed into an iframe. Be sure to enable [unrestricted tickets](http://kb.tableau.com/articles/issue/login-prompt-when-embedding-server).
 
 <br />
-*Next section: [Development and Deployment]({{ site.baseurl }}/pages/07_development_and_deployment)*
