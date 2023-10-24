@@ -1,16 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import tab_embed from '../../../../../embed_api/embed_api'
-import { useRef, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import FilterList from '../filterList'
 
 function Value(props) {
   const [checked, setChecked] = useState(true);
 
-  // useEffect(() => {
-  //   if (props.interactive) {
-  //     console.log('interactive', props.interactive);
-  //   }
-  // }, [props.interactive]);
+  const checkClr = `checkbox checkbox-${props.color}`;
 
   useEffect(() => {
     if (props.viz && props.interactive) {
@@ -59,7 +55,7 @@ function Value(props) {
         <span className="label-text">{props.text}</span> 
         <input 
           type="checkbox"  
-          className={`checkbox checkbox-error`} 
+          className={checkClr} 
           onChange={e => handleChecked(e)}
           checked={checked}
         />
@@ -79,9 +75,9 @@ function Segment(props) {
               {props.categoryName}
             </summary>
             <ul>
-              <Value text='Technology' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
-              <Value text='Office Supplies' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
-              <Value text='Furniture' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Consumer' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} color={props.color} />
+              <Value text='Corporate' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} color={props.color} />
+              <Value text='Home Office' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} color={props.color} />
             </ul>
           </details>
         </li>
@@ -96,13 +92,13 @@ function Category(props) {
       <ul className="menu m-4 bg-base-200 w-56 p-0 rounded">
         <li>
           <details>
-            <summary className="text-xl text-sf-white font-semibold rounded bg-error" >
+            <summary className="text-xl text-sf-neutral-10 font-semibold rounded bg-secondary" >
               {props.categoryName}
             </summary>
             <ul>
-              <Value text='Technology' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
-              <Value text='Office Supplies' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
-              <Value text='Furniture' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} />
+              <Value text='Technology' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} color={props.color} />
+              <Value text='Office Supplies' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} color={props.color} />
+              <Value text='Furniture' categoryName={props.categoryName} viz={props.viz} interactive={props.interactive} color={props.color} />
             </ul>
           </details>
         </li>
@@ -117,7 +113,7 @@ function Categories(props) {
       <Segment 
         categoryName='Segment' 
         type='categorical' 
-        color='info' 
+        color='primary' 
         viz={props.viz}
         interactive={props.interactive}
       />

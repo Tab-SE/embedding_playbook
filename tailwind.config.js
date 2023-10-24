@@ -24,6 +24,8 @@ module.exports = {
         "sf-indigo": "#5867e8",
         "sf-violet": "#730394",
         "sf-pink": "#ff538a",
+        "sf-red": "#d83a00",
+        "sf-red-60": "#ff5d2d",
         "sf-error": "#fe5c4c",
         "lightning-blue": "#52b7d8",
         "lightning-pink": "#e287b2",
@@ -44,7 +46,7 @@ module.exports = {
       {
         light: {
           "primary": "#0d9dda",       
-          "secondary": "#e16032",     
+          "secondary": "#ff5d2d",     
           "accent": "#04e1cb",  
           "neutral": "#444444",    
           "base-100": "#ffffff",    
@@ -55,7 +57,7 @@ module.exports = {
         },
         dark: {
           "primary": "#0d9dda",       
-          "secondary": "#e16032",     
+          "secondary": "#ff5d2d",     
           "accent": "#04e1cb",  
           "neutral": "#444444",    
           "base-100": "#ffffff",    
