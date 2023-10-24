@@ -8,6 +8,7 @@
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
+    "info": "next info",
     "static": "next build && next export",
     "serve": "HOSTING=local npm run static && npx serve out",
     "commit": "git checkout prod && cp -r out/. docs/. && git add docs -f",
@@ -30,11 +31,17 @@
   },
   "homepage": "https://github.com/Tab-SE/embedding_playbook#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "next": "^13.5.4",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tabscale": "gitlab:jhegele/tabscale"
   },
   "devDependencies": {
     "@types/node": "18.11.10",

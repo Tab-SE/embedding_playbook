@@ -31,9 +31,11 @@ function Img(props) {
     }
   }
 
+  const baseSizes = "(min-width: 320px) 25vw, 50vw, 75vw, 100vw";
+
   let cN = "w-full h-auto";
   if (props.full === false) {
-    cN = "";
+    cN = "h-auto";
   }
 
   return (
@@ -43,7 +45,7 @@ function Img(props) {
       width={props.width}
       height={props.height}
       loader={imageLoader}
-      sizes="(min-width: 320px) 25vw, 50vw, 75vw, 100vw"
+      sizes={props.sizes ? props.sizes : baseSizes}
       placeholder="blur"
       blurDataURL={`data:image/png;base64,${blurDataURL}`}
       className={cN}

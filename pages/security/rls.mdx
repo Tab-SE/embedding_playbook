@@ -2,7 +2,13 @@
 title: Row-level Security
 ---
 
+import { Callout } from 'nextra/components'
+
 # Row-level Security
+
+<Callout type="warning" emoji="⚠️">
+  This website is under construction. Content on this page is a placeholder.
+</Callout>
 
 Scaling an embedded analytics deployment of Tableau often means providing content to different groups of users. There is a security implication of making sure the different groups do not see each others' data (and metadata). There is also a deployment and maintenance consideration: Common dashboards should have to be built only once, even if the different groups of users access different data with those common dashboards.
 
@@ -34,7 +40,6 @@ First, build a 'template' workbook that points at a single database. Build the n
 Then, create a script that:
 
 1. For each tenant, uses the Document API to change the database connection information, and save a copy. [Sample Script](https://github.com/tableau/document-api-python/blob/master/samples/replicate-workbook/replicate_workbook.py)
-1. Uses the [REST API (or Server Client Library)]({{ site.baseurl }}/pages/03_server_management_and_restapi)  to publish each tenant's workbook to Server.
 
 The above is all that is necessary if your workbooks have 'embedded datasources' (the datasources haven't been published separately). If you do choose to [publish the datasources to take advantage of Tableau Server's Data Server](https://onlinehelp.tableau.com/current/pro/desktop/en-us/publish_datasources.html), the Document API will still work. You will just have to apply the above workflow first to the datasource(s) and then to the workbooks:
 
@@ -42,9 +47,8 @@ First, build a 'template' datasource, publish it, and build a 'template' workboo
 Then, create a script that:
 
 1. For each tenant, uses the Document API to change the database connection information in the TDS (datasource file), and save a copy.
-1. Uses the [REST API (or Server Client Library)]({{ site.baseurl }}/pages/03_server_management_and_restapi) to publish each tenant's datasource to Server. The datasource will now have a connection string that you can use in the workbooks...
 1. For each tenant, for each workbook, uses the Document API to change the published datasource connection information, and save a copy.
-1. Uses the [REST API (or Server Client Library)]({{ site.baseurl }}/pages/03_server_management_and_restapi) to publish each all of the workbooks to Server.
+
 
 ### User Filters
 
@@ -82,4 +86,3 @@ Link | Description
 
 
 <br />
-*Next section: [Embedding in Sharepoint, Salesforce, and Mobile Apps]({{ site.baseurl }}/pages/05_embedding_in_other_apps)*

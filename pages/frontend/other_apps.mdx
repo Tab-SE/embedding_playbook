@@ -2,7 +2,13 @@
 title: Embedding in SharePoint, Salesforce, and Mobile Apps
 ---
 
+import { Callout } from 'nextra/components'
+
 # Embedding into other apps
+
+<Callout type="warning" emoji="⚠️">
+  This website is under construction. Content on this page is a placeholder.
+</Callout>
 
 Much of this playbook focuses on embedding Tableau content in custom-developed web applications, but there are three common embedding scenarios that have specific requirements: SharePoint, Salesforce, and Mobile Apps.
 
@@ -11,8 +17,6 @@ Much of this playbook focuses on embedding Tableau content in custom-developed w
 Tableau provides a SharePoint Web Part to facilitate SharePoint embedding scenarios.
 
 The Web Part, as well as the instructions for installing it are located under `C:\Program Files\Tableau\Tableau Server\<version>\extras\embedding\sharepoint` within your Tableau Server install directory.
-Using the Web Part is optional if Enable Automatic Logon option (e.g. Microsoft SSPI) is enabled for Active Directory during the Tableau Server install and configuration. In this case, simply using the built-in SharePoint Page Viewer will suffice. All you need to do is [paste the Embed Code]({{ site.baseurl }}/pages/01_embedding_and_jsapi) into the Content Editor.
-The Tableau-supplied Web Part becomes necessary when using [Trusted Ticket authentication]({{ site.baseurl }}/pages/02_auth_and_sso) to achieve Single Sign-On.
 
 You can embed Tableau Online views into SharePoint as well, but neither Active Directory nor Trusted Tickets are supported for Online.
 
@@ -55,4 +59,3 @@ The Mobile App Bootstrap comes in two flavors:
 In addition, Tableau has released the [Mobile Connected Client Plugin](https://github.com/tableau/mobile-connected-client) which can accompany the Mobile App Bootstrap, or any app that embeds Tableau content, to handle authentication so that your users do not have to continually sign in to Tableau Server.
 
 <br />
-*Next section: [Embedding Analytics Experiences]({{ site.baseurl }}/pages/06_embedding_non_view_content)*
