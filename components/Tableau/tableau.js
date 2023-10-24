@@ -14,7 +14,7 @@ function Tableau(props) {
       props.setVizLift(vizObj); // lifts the viz object to parent nodes
       props.setInteractiveLift(interactive); // lifts interactive state to parent nodes
     }
-  },[vizObj, interactive]);
+  },[vizObj, interactive, props]);
 
   return (
     <Viz

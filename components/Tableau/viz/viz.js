@@ -14,6 +14,11 @@ function Viz(props) {
     handleIsClient();
     handleVizObj();
     handleFirstInteractive();
+    
+    return () => {
+      handleVizObj();
+      handleFirstInteractive();
+    }
   }, [props.vizObj, isClient]);
 
   useEffect(() => {

@@ -6,9 +6,11 @@ import FilterList from '../filterList'
 function Value(props) {
   const [checked, setChecked] = useState(true);
 
+  const categoryName = props.categoryName;
+  const text = props.text;
+
   useEffect(() => {
     if (props.viz && props.interactive) {
-      console.log('interactive', props.interactive);
       async function handleFilters() {
         // Make the Overview dashboard the active sheet
         const dashboard = await props.viz.workbook.activateSheetAsync('Profitability (E)');
@@ -28,8 +30,8 @@ function Value(props) {
 
           // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
           await dashboard.applyFilterAsync(
-            props.categoryName, // the name of the filter
-            [props.text], // array of values
+            categoryName, // the name of the filter
+            [text], // array of values
             updateType // default is FilterUpdateType.Replace other options Add, Remove or All
           );
         } catch (e) {
@@ -39,7 +41,7 @@ function Value(props) {
       handleFilters();
     }
 
-  }, [props.interactive, props.viz, checked]);
+  }, [props.interactive, props.viz, checked, categoryName, text]);
 
 
   const handleChecked = (e) => {

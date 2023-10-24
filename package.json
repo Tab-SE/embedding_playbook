@@ -8,6 +8,7 @@
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
+    "info": "next info",
     "static": "next build && next export",
     "serve": "HOSTING=local npm run static && npx serve out",
     "commit": "git checkout prod && cp -r out/. docs/. && git add docs -f",
