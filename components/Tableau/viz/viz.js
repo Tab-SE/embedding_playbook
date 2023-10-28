@@ -84,8 +84,7 @@ function Viz(props) {
           hide-tabs={props.hideTabs ? true : false}
           token={jwt}
           class='my-3'
-        />  : <></>
-      }
+        />  : <></>}
     </>
   );
 };
