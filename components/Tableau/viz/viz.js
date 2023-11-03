@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import tab_embed from '../../embed_api/embed_api'
 import { useEffect, useState, useRef } from 'react'
-import TabScale from 'tabscale';
+import TabScale from 'tabscale'
 
 
 function Viz(props) {
