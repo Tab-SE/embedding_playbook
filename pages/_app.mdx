@@ -1,12 +1,20 @@
 import { ThemeProvider } from 'next-themes'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import '../global.css'
  
-This file imports global CSS and defines the App component
+This file imports global CSS and defines providers wrapping the App component
 
 export default function App({ Component, pageProps }) {
+  // Create the tanstack client
+  const queryClient = new QueryClient();
+
   return (
-    <ThemeProvider attribute="class">
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} /> 
+      <ThemeProvider attribute="class">
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
