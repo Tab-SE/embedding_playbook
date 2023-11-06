@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import tab_embed from '../../embed_api/embed_api'
 import { useEffect, useState, useRef } from 'react'
+import { useQuery } from "@tanstack/react-query"
 import TabScale from 'tabscale'
 
 

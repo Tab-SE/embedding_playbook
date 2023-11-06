@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Viz from './viz/viz'
+import Viz from './components/viz'
 
 // higher-order component composing multiple components into a single <Tableau/> component
 function Tableau(props) {
