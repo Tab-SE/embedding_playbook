@@ -1,6 +1,6 @@
 export default class VizObj {
-  constructor(viz, dashboard) {
-    this.viz = viz;
-    this.dashboard = dashboard;
+  constructor(name, height, width) {
+    this.viz;
+    this.dashboard;
   }
 }

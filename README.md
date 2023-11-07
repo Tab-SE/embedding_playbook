@@ -75,7 +75,7 @@ import Tableau from './../../components/tableau/tableau'
 This is generic markdown content preceding the Tableau component of interest
 
 <Tableau
-  vizUrl='https://public.tableau.com/views/{viz}'
+  src='https://public.tableau.com/views/{viz}'
   height='900'
   width='700'
   hideTabs='true'

@@ -16,7 +16,7 @@ function Analytics(props) {
           setVizObj={setVizObj}
           interactive={interactive}
           setInteractive={setInteractive}
-          vizUrl={props.vizUrl}
+          src={props.src}
           height={props.height}
           width={props.width}
           hideTabs={props.hideTabs}

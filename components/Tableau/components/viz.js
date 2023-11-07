@@ -78,7 +78,7 @@ function Viz(props) {
         <tableau-viz 
           ref={vizRef}
           id="tableauViz"       
-          src={props.vizUrl}
+          src={props.src}
           height={props.height}
           width={props.width}
           device={props.device}

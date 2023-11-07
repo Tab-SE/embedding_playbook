@@ -4,24 +4,26 @@ import Obj from './components/obj'
 
 // higher-order component composing multiple components into a single <Tableau/> component
 function Tableau(props) {
-  // const [localVizObj, setLocalVizObj] = useState(null);
+  const [vizObj, setVizObj] = useState(null);
   const [localInteractive, setLocalInteractive] = useState(false);
-  const vizObj = new Obj();
+  // const vizObj = new Obj();
 
-  const setVizObj = (viz) => {
-    vizObj = useMemo(() => {
+  // const setVizObj = (viz) => {
+  //   vizObj = useMemo(() => {
 
-    },[viz]);
-  };
+  //   },[viz]);
+  // };
 
   const hideTabs = props.hideTabs === 'true' ? true : false; // converts to boolean saving default to false
 
   return (
     <Viz
       vizObj={props.vizObj ? props.vizObj : vizObj}
+      setVizObj={props.setVizObj ? props.setVizObj : setVizObj}
       interactive={props.interactive ? props.interactive : localInteractive}
       setInteractive={props.setInteractive ? props.setInteractive : setLocalInteractive}
-      vizUrl={props.vizUrl}
+      src={props.src}
+      name={props.name}
       height={props.height}
       width={props.width}
       hideTabs={hideTabs}
