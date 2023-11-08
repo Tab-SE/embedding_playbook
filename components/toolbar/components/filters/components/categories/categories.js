@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import tab_embed from '../../../../../embed_api/embed_api'
 import { useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import FilterList from '../filterList'
 
 function Value(props) {
@@ -10,25 +11,25 @@ function Value(props) {
   const text = props.text;
 
   useEffect(() => {
-    if (props.viz && props.interactive) {
-      async function handleFilters() {
+    async function handleFilters() {
+      if (props.viz && props.interactive) {
         // Make the Overview dashboard the active sheet
         const dashboard = await props.viz.workbook.activateSheetAsync('Profitability (E)');
         let updateType = 'replace';
-
+        switch(checked) {
+          case true:
+            updateType = 'add'; // if checked by user, add to filters
+            break;
+          case false:
+            updateType = 'remove'; // if unchecked by user, remove from filters
+            break;
+          default:
+            throw new Error('Filter Error: input state deteriorated!');
+        }
+        
         try {
-          switch(checked) {
-            case true:
-              updateType = 'add'; // if checked by user, add to filters
-              break;
-            case false:
-              updateType = 'remove'; // if unchecked by user, remove from filters
-              break;
-            default:
-              throw new Error('Filter Error: input state deteriorated!');
-          }
-
           // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
+          console.log(categoryName, [text], updateType);
           await dashboard.applyFilterAsync(
             categoryName, // the name of the filter
             [text], // array of values
@@ -38,10 +39,9 @@ function Value(props) {
           console.error(e.toString());
         }
       }
-      handleFilters();
     }
-
-  }, [props.interactive, props.viz, checked, categoryName, text]);
+    handleFilters();
+  }, [checked, categoryName, text, props.viz, props.interactive]);
 
 
   const handleChecked = (e) => {

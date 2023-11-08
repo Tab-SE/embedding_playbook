@@ -5,70 +5,39 @@ import TabScale from 'tabscale'
 
 // forwardRef HOC receives ref from parent
 const Viz = forwardRef(function Viz(props, ref) {
-  const [isMounted, setisMounted] = useState(false); // prevents viz from initializing on node backends rather than clients
+  const [isMounted, setisMounted] = useState(false); // prevents viz from initializing on node backends, only clients are supported
   let tabScale;
 
   useEffect(() => {
-    handleisMounted();
-    handleVizObj();
-    handleFirstInteractive();
-    
-    return () => {
-      handleisMounted();
-      handleVizObj();
-      handleFirstInteractive();
-    }
-  }, [props.vizObj, isMounted]);
-
-  useEffect(() => {
-    if (props.interactive) {
-      console.log('interactive', props.interactive);
-    }
-  }, [props.interactive]);
-
-
-  const handleisMounted = () => {
-    // sets isMounted to true once per component mount
     setisMounted(true);
-    // sets it to isMounted upon unmount with return statement
+    handleVizObj();
+    const viz = ref.current;
+    if (viz) {
+      tabScale = new TabScale.Scale(viz); // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
+      // tabScale.initialize(); // initializing tabScale
+      viz.addEventListener('firstinteractive', async (event) => { // add the custom event listener to <tableau-viz>
+        props.setInteractive(true); // update state to indicate that the Tableau viz is interactive
+      });
+    }
+
+    // cleanup after effects
     return () => {
+      if (viz) {
+        viz.removeEventListener('firstinteractive', async (event) => {
+          tabScale = undefined;
+          props.setInteractive(false);
+        });
+      }
       setisMounted(false);
-    };
-  };
+    }
+  }, [ref, isMounted]);
 
   const handleVizObj = () => {
     // if the component has mounted and there is a valid viz object
     // then set vizRef to the viz object. State is  nullified on unmount
-    if (isMounted && !props.vizObj) {
-      console.log('ref', ref);
+    if (ref) {
       props.setVizObj(ref.current);
     }
-    return () => {
-      if (props.vizObj) {
-        // when component unmounts reset viz objectss
-        props.setVizObj(null);
-        tabScale = undefined;
-      }
-    };
-  };
-
-  const handleFirstInteractive = () => {
-    // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
-    if (!tabScale && isMounted && props.vizObj) {
-      tabScale = new TabScale.Scale(ref.current);
-    }
-    if (props.vizObj && isMounted) { // if state has an initialized Tableau viz
-      console.log('props.vizObj', props.vizObj.data);
-      props.vizObj.addEventListener('firstinteractive', async (event) => { // add the custom event listener to <tableau-viz>
-        // tabScale.initialize(); // initializing tabScale
-        props.setInteractive(true); // update state to indicate that the Tableau viz is interactive
-      });
-
-      // return function removes listener on unmount to avoid memory leaks
-      return () => props.vizObj.removeEventListener('firstinteractive', async (event) => {
-        props.setInteractive(false);
-      });
-    };
   };
 
   return (
