@@ -9,48 +9,56 @@ function Value(props) {
 
   const categoryName = props.categoryName;
   const text = props.text;
+  let dashboard;
+  let updateType = 'replace';
 
   useEffect(() => {
     async function handleFilters() {
       if (props.viz && props.interactive) {
         // Make the Overview dashboard the active sheet
-        const dashboard = await props.viz.workbook.activateSheetAsync('Profitability (E)');
-        let updateType = 'replace';
-        switch(checked) {
-          case true:
-            updateType = 'add'; // if checked by user, add to filters
-            break;
-          case false:
-            updateType = 'remove'; // if unchecked by user, remove from filters
-            break;
-          default:
-            throw new Error('Filter Error: input state deteriorated!');
-        }
-        
-        try {
-          // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
-          console.log(categoryName, [text], updateType);
-          await dashboard.applyFilterAsync(
-            categoryName, // the name of the filter
-            [text], // array of values
-            updateType // default is FilterUpdateType.Replace other options Add, Remove or All
-          );
-        } catch (e) {
-          console.error(e.toString());
-        }
+        dashboard = await props.viz.workbook.activateSheetAsync('Profitability (E)');
       }
     }
     handleFilters();
-  }, [checked, categoryName, text, props.viz, props.interactive]);
+  }, [checked, props.viz, props.interactive]);
+
+  useEffect(() => {
+    switch(checked) {
+      case true:
+        updateType = 'add'; // if checked by user, add to filters
+        break;
+      case false:
+        updateType = 'remove'; // if unchecked by user, remove from filters
+        break;
+      default:
+        throw new Error('Filter Error: input state deteriorated!');
+    }
+
+    const applyFilter = async () => {
+      try {
+        // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
+        console.log(categoryName, [text], updateType);
+        await dashboard.applyFilterAsync(
+          categoryName, // the name of the filter
+          [text], // array of values
+          updateType // default is FilterUpdateType.Replace other options Add, Remove or All
+        );
+      } catch (e) {
+        console.error(e.toString());
+      }
+    }
+
+    applyFilter();
+  }, [checked]);
 
 
-  const handleChecked = (e) => {
+  const handleChecked = async (e) => {
     setChecked(e.target.checked);
   }
 
   return (
   <>
-    <div className="form-control">
+    <div key={`${props.categoryName}-${props.text}`} className="form-control">
       <label className="label cursor-pointer">
         <span className="label-text">{props.text}</span> 
         {props.color === 'primary' ? (
