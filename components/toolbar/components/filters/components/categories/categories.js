@@ -6,53 +6,56 @@ import FilterList from '../filterList'
 
 function Value(props) {
   const [checked, setChecked] = useState(true);
-
-  const categoryName = props.categoryName;
-  const text = props.text;
-  let dashboard;
-  let updateType = 'replace';
+  const [dashboard, setDashboard] = useState(null);
 
   useEffect(() => {
-    async function handleFilters() {
-      if (props.viz && props.interactive) {
+    async function getDashboard() {
+      if (props.viz) {
         // Make the Overview dashboard the active sheet
-        dashboard = await props.viz.workbook.activateSheetAsync('Profitability (E)');
+        setDashboard(await props.viz.workbook.activateSheetAsync('Profitability (E)'));
       }
     }
-    handleFilters();
-  }, [checked, props.viz, props.interactive]);
+
+    if (!dashboard && props.interactive) {
+      getDashboard();
+    }
+  }, [props.viz, props.interactive, dashboard]);
 
   useEffect(() => {
+    const applyFilter = async (updateType) => {
+      if (dashboard) {
+        try {
+          // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
+          console.log('dashboard:', dashboard);
+          console.log(props.categoryName, [props.text], updateType);
+          await dashboard.applyFilterAsync(
+            props.categoryName, // the name of the filter
+            [props.text], // array of values
+            updateType // default is FilterUpdateType.Replace other options Add, Remove or All
+          )} catch (e) {
+          console.error(e.toString());
+        }
+      }
+    }
+
+    let updateType = undefined;
     switch(checked) {
       case true:
-        updateType = 'add'; // if checked by user, add to filters
+        // setUpdateType('add'); // if checked by user, add to filters
+        updateType = 'add';
         break;
       case false:
-        updateType = 'remove'; // if unchecked by user, remove from filters
+        // setUpdateType('remove'); // if unchecked by user, remove from filters
+        updateType = 'remove';
         break;
       default:
-        throw new Error('Filter Error: input state deteriorated!');
+        throw new Error('Filter Error: unrecognized updateType!');
     }
 
-    const applyFilter = async () => {
-      try {
-        // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
-        console.log(categoryName, [text], updateType);
-        await dashboard.applyFilterAsync(
-          categoryName, // the name of the filter
-          [text], // array of values
-          updateType // default is FilterUpdateType.Replace other options Add, Remove or All
-        );
-      } catch (e) {
-        console.error(e.toString());
-      }
-    }
+    applyFilter(updateType);
+  }, [checked, dashboard, props.categoryName, props.text])
 
-    applyFilter();
-  }, [checked]);
-
-
-  const handleChecked = async (e) => {
+  const handleChecked = (e) => {
     setChecked(e.target.checked);
   }
 
