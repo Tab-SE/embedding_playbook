@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import tab_embed from '../../../../../embed_api/embed_api'
 import { useState, useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useCategoricalFilter } from '../../../../../tableau/tableau'
 import FilterList from '../filterList'
 
 function Value(props) {
@@ -9,10 +9,10 @@ function Value(props) {
   const [dashboard, setDashboard] = useState(null);
 
   useEffect(() => {
-    async function getDashboard() {
+    function getDashboard() {
       if (props.viz) {
         // Make the Overview dashboard the active sheet
-        setDashboard(await props.viz.workbook.activateSheetAsync('Profitability (E)'));
+        setDashboard(props.viz.workbook.activeSheet);
       }
     }
 
@@ -26,8 +26,6 @@ function Value(props) {
       if (dashboard) {
         try {
           // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
-          console.log('dashboard:', dashboard);
-          console.log(props.categoryName, [props.text], updateType);
           await dashboard.applyFilterAsync(
             props.categoryName, // the name of the filter
             [props.text], // array of values
@@ -61,7 +59,7 @@ function Value(props) {
 
   return (
   <>
-    <div key={`${props.categoryName}-${props.text}`} className="form-control">
+    <div key={`${props.categoryName}-${props.text}-${props.color}`} className="form-control">
       <label className="label cursor-pointer">
         <span className="label-text">{props.text}</span> 
         {props.color === 'primary' ? (

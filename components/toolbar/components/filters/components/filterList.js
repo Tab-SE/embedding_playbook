@@ -1,6 +1,6 @@
 const filters = [
   {
-    "_worksheetName": "Profit Ratio Map",
+    "_worksheetName": "Profitability (E)",
     "_fieldName": "Segment",
     "_filterType": "categorical",
     "_fieldId": "[federated.1d5vk860twkhqd1bvit1i02ev3x0].[none:Country:nk]",
@@ -26,7 +26,7 @@ const filters = [
     "_isAllSelected": true
   },
   {
-    "_worksheetName": "Profit Ratio Map",
+    "_worksheetName": "Profitability (E)",
     "_fieldName": "Product Category",
     "_filterType": "categorical",
     "_fieldId": "[federated.1d5vk860twkhqd1bvit1i02ev3x0].[none:Country:nk]",

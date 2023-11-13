@@ -1,4 +1,5 @@
 import { useState, useId, useRef, forwardRef } from 'react'
+import { useCategoricalFilter } from './components/controller'
 import View from './components/view'
 import Model from './components/model'
 
@@ -37,4 +38,5 @@ const Tableau = forwardRef(function Tableau(props, ref) {
   );
 });
 
+export { useCategoricalFilter } ;
 export default Tableau;

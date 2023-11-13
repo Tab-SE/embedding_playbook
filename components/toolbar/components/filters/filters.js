@@ -1,7 +1,8 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import Categories from './components/categories/categories'
+import { useCategoricalFilter } from '../../../tableau/tableau'
 
 function FiltersBtn(props) {
   return (
@@ -17,6 +18,21 @@ function Filters(props) {
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
   const modal = ref.current;
+  const [dashboard, setDashboard] = useState(null);
+  // const { data } = useCategoricalFilter(dashboard);
+
+  useEffect(() => {
+    function getDashboard() {
+      if (props.viz) {
+        // Make the Overview dashboard the active sheet
+        setDashboard(props.viz.workbook.activeSheet);
+      }
+    }
+
+    if (!dashboard && props.interactive) {
+      getDashboard();
+    }
+  }, [props.viz, props.interactive, dashboard]);
 
 // <button className="btn btn-outline btn-secondary w-32 justify-self-end">Reset</button>
 // <button 
