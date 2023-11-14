@@ -1,38 +1,38 @@
-// eslint-disable-next-line no-unused-vars
-import tab_embed from '../../embed_api/embed_api'
 import { useQuery, } from "@tanstack/react-query"
+import filterList from '../../toolbar/components/filters/components/filterList'
 // tanstack query keys structured as recommended by tkdodo: https://tkdodo.eu/blog/effective-react-query-keys#structure
 
 // manages filter state
 export const useCategoricalFilter = async (active) => {
   let categoricalFilters;
 
-  const syncFilters = async () => {
+  async function syncFilters(sheet) {
+    console.log('sheet', sheet);
     // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
-    if (active) {
+    if (sheet) {
       try {
-        console.log('active', active);
-        // const dashFilters = await active.getFiltersAsync();
-        // // show # and names of categorical filters in the Console
+        // const dashFilters = await sheet.getFiltersAsync();
+        // console.log(dashFilters);
+        // show # and names of categorical filters in the Console
         // categoricalFilters = dashFilters.filter((df) => df.filterType === FilterType.Categorical);
 
         // console.log(`The number of categorical filters: ${categoricalFilters.length}
         // Filters: ${categoricalFilters.map((s) => s.fieldName)}`);
         // console.log('Available categorical dashboard filters:', categoricalFilters);
         
-        // return categoricalFilters;
+        categoricalFilters = filterList;
 
-        return [];
+        return categoricalFilters;
       } catch (e) {
         console.error(e.toString());
       };
     } else {
-      return [];
+      return filterList;
     }
   };
 
-  useQuery({
+  return useQuery({
     queryKey: ['viz', 'filters', active],
-    queryFn: syncFilters(),
+    queryFn: () => syncFilters(active),
   });
 }

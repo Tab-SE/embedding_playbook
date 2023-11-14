@@ -11,10 +11,10 @@ export default function App({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} /> 
       <ThemeProvider attribute="class">
         <Component {...pageProps} />
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} /> 
     </QueryClientProvider>
   )
 }

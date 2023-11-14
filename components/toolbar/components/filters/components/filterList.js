@@ -1,4 +1,4 @@
-const filters = [
+const filtersList = [
   {
     "_worksheetName": "Profitability (E)",
     "_fieldName": "Segment",
@@ -53,4 +53,4 @@ const filters = [
   }
 ]
 
-export default filters;
+export default filtersList;
