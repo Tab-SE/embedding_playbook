@@ -41,15 +41,15 @@ const Tableau = forwardRef(function Tableau(props, ref) {
     }
   };
 
-  // const result = useFilters(dashboard, id);
+  const result = useFilters(dashboard, id);
 
-  const result = useQuery({
-    queryKey: ['tableau', 'viz', 'filters', id],
-    queryFn: () => syncFilters(),
-    enabled: active,
-    placeholderData: [],
-    initialData: []
-  });
+  // const result = useQuery({
+  //   queryKey: ['tableau', 'viz', 'filters', id],
+  //   queryFn: () => syncFilters(),
+  //   enabled: active,
+  //   placeholderData: [],
+  //   initialData: []
+  // });
 
   if (result.isLoading) {
     console.log('loading data:', result.data);
