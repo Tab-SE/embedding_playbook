@@ -1,4 +1,5 @@
 import { useQuery, } from "@tanstack/react-query"
+import { useState, useEffect } from "react";
 // tanstack query keys structured as recommended by tkdodo: https://tkdodo.eu/blog/effective-react-query-keys#structure
 
 // manages filter state
@@ -9,9 +10,8 @@ export const useFilters = async (activeSheet, id) => {
   let filters = [];
 
   async function syncFilters() {
-    console.log('sheet', activeSheet);
     // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
-    if (sheet) {
+    if (activeSheet) {
       try {
         return filters = await activeSheet.getFiltersAsync();
 
@@ -30,12 +30,11 @@ export const useFilters = async (activeSheet, id) => {
   };
 
   const result = useQuery({
-    queryKey: ['tableau', 'viz', 'filters', id],
+    queryKey: ['hook','tableau', 'viz', 'filters', id],
     queryFn: () => syncFilters(),
     enabled: active,
-    placeholderData: [],
     initialData: []
   });
 
-  return !active ? null : result;
+  return result;
 }

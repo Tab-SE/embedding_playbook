@@ -43,23 +43,22 @@ const Tableau = forwardRef(function Tableau(props, ref) {
 
   const result = useFilters(dashboard, id);
 
-  // const result = useQuery({
-  //   queryKey: ['tableau', 'viz', 'filters', id],
-  //   queryFn: () => syncFilters(),
-  //   enabled: active,
-  //   placeholderData: [],
-  //   initialData: []
-  // });
+  const result2 = useQuery({
+    queryKey: ['tableau', 'viz', 'filters', id],
+    queryFn: () => syncFilters(),
+    enabled: active,
+    initialData: []
+  });
 
-  if (result.isLoading) {
-    console.log('loading data:', result.data);
-  }
-  if (result.isError) {
-    console.error('data error:', result.error);
-  }
-  if (result.isSuccess) {
-    console.log('success data:', result.data);
-  }
+  // if (result.isLoading) {
+  //   console.log('loading data:', result.data);
+  // }
+  // if (result.isError) {
+  //   console.error('data error:', result.error);
+  // }
+  // if (result.isSuccess) {
+  //   console.log('success data:', result.data);
+  // }
 
   // console.log('result:', result);
 
