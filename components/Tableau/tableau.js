@@ -9,7 +9,7 @@ const Tableau = forwardRef(function Tableau(props, ref) {
   const vizLocal = useRef(null); // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const [vizObj, setVizObj] = useState(null);
   const [localInteractive, setLocalInteractive] = useState(false);
-  const id = `tableau-viz-${useId()}`; // creates a unique identifier for the embed
+  const id = `id-${useId()}`; // creates a unique identifier for the embed
   const viz = props.viz ? props.viz.current : vizLocal.current;
   const interactive = props.interactive ? props.interactive : localInteractive;
 
@@ -39,14 +39,12 @@ const Tableau = forwardRef(function Tableau(props, ref) {
         console.error(e.toString());
       };
     }
-    // return filters
   };
 
-
-  // const result = useFilters(dashboard);
+  // const result = useFilters(dashboard, id);
 
   const result = useQuery({
-    queryKey: ['viz', 'filters'],
+    queryKey: ['tableau', 'viz', 'filters', id],
     queryFn: () => syncFilters(),
     enabled: active,
     placeholderData: [],

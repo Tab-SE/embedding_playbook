@@ -2,7 +2,7 @@ import { useQuery, } from "@tanstack/react-query"
 // tanstack query keys structured as recommended by tkdodo: https://tkdodo.eu/blog/effective-react-query-keys#structure
 
 // manages filter state
-export const useFilters = async (activeSheet) => {
+export const useFilters = async (activeSheet, id) => {
   // enables dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
   const active = !activeSheet ? false : true;
 
@@ -30,7 +30,7 @@ export const useFilters = async (activeSheet) => {
   };
 
   const result = useQuery({
-    queryKey: ['viz', 'filters'],
+    queryKey: ['tableau', 'viz', 'filters', id],
     queryFn: () => syncFilters(),
     enabled: active,
     placeholderData: [],
