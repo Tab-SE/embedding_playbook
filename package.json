@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Tableau Embedded Playbook",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next lint && next dev",
     "build": "next build",
     "export": "next export",
     "start": "next start",
