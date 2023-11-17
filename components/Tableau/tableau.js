@@ -14,14 +14,21 @@ const Tableau = forwardRef(function Tableau(props, ref) {
   const interactive = props.interactive ? props.interactive : localInteractive;
 
   useEffect(() => {
+    const getDashboard = () => {
+      if (viz) {
+        // get the active sheet which may be a dashboard, sheet or story
+        setDashboard(viz.workbook.activeSheet);
+      }
+    }
+
     if (!dashboard && interactive) {
       getDashboard();
     }
-  }, [dashboard, interactive]);
+  }, [viz, dashboard, interactive]);
+  
+  // const { status, isFetched, isLoading, isSuccess, data, isError, error } = useFilters(dashboard, id);
 
-  const syncTab = async () => {
-    const { status, isFetched, isLoading, isSuccess, data, isError, error } =  await useFilters(dashboard, id);
-
+  useFilters(dashboard, id).then(({ status, isFetched, isLoading, isSuccess, data, isError, error }) => {
     if (status === 'pending') {
       console.log('requesting data...');
       if (isLoading) {
@@ -35,18 +42,9 @@ const Tableau = forwardRef(function Tableau(props, ref) {
       // console.log(`Filters: ${filter.map((s) => s.fieldName)}`);
       // console.log('Available categorical dashboard filters:', filter);
     }
+  }, (e) => {
 
-    
-  }
-
-  syncTab();
-
-  const getDashboard = () => {
-    if (viz) {
-      // get the active sheet which may be a dashboard, sheet or story
-      setDashboard(viz.workbook.activeSheet);
-    }
-  }
+  });
 
   
   return (
