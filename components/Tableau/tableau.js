@@ -25,8 +25,6 @@ const Tableau = forwardRef(function Tableau(props, ref) {
       getDashboard();
     }
   }, [viz, dashboard, interactive]);
-  
-  // const { status, isFetched, isLoading, isSuccess, data, isError, error } = useFilters(dashboard, id);
 
   useFilters(dashboard, id).then(({ status, isFetched, isLoading, isSuccess, data, isError, error }) => {
     if (status === 'pending') {
@@ -36,14 +34,9 @@ const Tableau = forwardRef(function Tableau(props, ref) {
       }
     } else if (status === 'success') {
       console.log(status, `The number of filters is: ${data.length}`, data);
-      // show # and names of categorical filters in the Console
-      // categoricalFilters = dashFilters.filter((df) => df.filterType === FilterType.Categorical);
-      // nonCategoricalFilters = dashFilters.filter((df) => df.filterType !== FilterType.Categorical);
-      // console.log(`Filters: ${filter.map((s) => s.fieldName)}`);
-      // console.log('Available categorical dashboard filters:', filter);
     }
   }, (e) => {
-
+    console.error(e);
   });
 
   
