@@ -1,22 +1,35 @@
 // eslint-disable-next-line no-unused-vars
 import tab_embed from '../../embed_api/embed_api'
 import { useEffect, useState, forwardRef } from 'react'
-import TabScale from 'tabscale'
+import TabScale from '../utils/tabscale'
 
 // forwardRef HOC receives ref from parent
 const Viz = forwardRef(function Viz(props, ref) {
+
+  const { setInteractive, setVizObj } = props;
+
   const [isMounted, setisMounted] = useState(false); // prevents viz from initializing on node backends, only clients are supported
-  let tabScale;
 
   useEffect(() => {
+    const handleVizObj = () => {
+      // if the component has mounted and there is a valid viz object
+      // then set vizRef to the viz object. State is  nullified on unmount
+      if (ref) {
+        setVizObj(ref.current);
+      }
+    };
+
     setisMounted(true);
     handleVizObj();
     const viz = ref.current;
     if (viz) {
-      tabScale = new TabScale.Scale(viz); // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
-      // tabScale.initialize(); // initializing tabScale
+      const tabScale = new TabScale.Scale(viz); // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
+      
       viz.addEventListener('firstinteractive', async (event) => { // add the custom event listener to <tableau-viz>
-        props.setInteractive(true); // update state to indicate that the Tableau viz is interactive
+        // setting the position to static so that scaling follows the layout for the rest of the page
+        viz.shadowRoot.position = 'static';
+        tabScale.initialize(); // initializing tabScale
+        setInteractive(true); // update state to indicate that the Tableau viz is interactive
       });
     }
 
@@ -25,20 +38,13 @@ const Viz = forwardRef(function Viz(props, ref) {
       if (viz) {
         viz.removeEventListener('firstinteractive', async (event) => {
           tabScale = undefined;
-          props.setInteractive(false);
+          setInteractive(false);
         });
       }
       setisMounted(false);
     }
-  }, [ref, isMounted]);
+  }, [ref, setInteractive, setVizObj]);
 
-  const handleVizObj = () => {
-    // if the component has mounted and there is a valid viz object
-    // then set vizRef to the viz object. State is  nullified on unmount
-    if (ref) {
-      props.setVizObj(ref.current);
-    }
-  };
 
   return (
     <>
@@ -51,7 +57,7 @@ const Viz = forwardRef(function Viz(props, ref) {
           width={props.width}
           device={props.device}
           hide-tabs={props.hideTabs ? true : false}
-          class='my-3'
+          class='my-3 mx-6'
           data-viz={props.id}
         />  : <></>}
     </>
