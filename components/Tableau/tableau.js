@@ -10,14 +10,14 @@ const Tableau = forwardRef(function Tableau(props, ref) {
   const [vizObj, setVizObj] = useState(null);
   const [localInteractive, setLocalInteractive] = useState(false);
   const [dashboard, setDashboard] = useState(null);
-  const viz = props.viz ? props.viz.current : vizLocal.current;
+  const viz = props.viz ? props.viz : vizLocal;
   const interactive = props.interactive ? props.interactive : localInteractive;
 
   useEffect(() => {
     const getDashboard = () => {
-      if (viz) {
+      if (viz.current) {
         // get the active sheet which may be a dashboard, sheet or story
-        setDashboard(viz.workbook.activeSheet);
+        setDashboard(viz.current.workbook.activeSheet);
       }
     }
 
@@ -28,12 +28,12 @@ const Tableau = forwardRef(function Tableau(props, ref) {
 
   useFilters(dashboard, id).then(({ status, isFetched, isLoading, isSuccess, data, isError, error }) => {
     if (status === 'pending') {
-      console.log('requesting data...');
+      // console.log('requesting data...');
       if (isLoading) {
-        console.log('loading data...');
+        // console.log('loading data...');
       }
     } else if (status === 'success') {
-      console.log(status, `The number of filters is: ${data.length}`, data);
+      // console.log(status, `The number of filters is: ${data.length}`, data);
     }
   }, (e) => {
     console.error(e);
