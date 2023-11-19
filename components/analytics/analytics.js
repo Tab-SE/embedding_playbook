@@ -11,7 +11,7 @@ function Analytics(props) {
   return (
     <section className='bg-colorblind-lgray rounded'> 
       <Toolbar viz={viz.current} interactive={interactive} />
-      <div className='grid place-items-center'>
+      <div className='py-2'>
         <Tableau
           vizObj={vizObj}
           setVizObj={setVizObj}
