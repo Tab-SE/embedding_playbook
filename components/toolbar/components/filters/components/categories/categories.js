@@ -1,11 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import tab_embed from '../../../../../embed_api/embed_api'
 import { useState, useEffect } from 'react'
-import { useCategoricalFilter } from '../../../../../tableau/tableau'
-import FilterList from '../filterList'
 
 function Value(props) {
   const [checked, setChecked] = useState(true);
+  const [count, setCount] = useState(0);
   const [dashboard, setDashboard] = useState(null);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ function Value(props) {
 
   useEffect(() => {
     const applyFilter = async (updateType) => {
-      if (dashboard) {
+      if (dashboard && count > 0) {
         try {
           // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
           await dashboard.applyFilterAsync(
@@ -51,10 +50,11 @@ function Value(props) {
     }
 
     applyFilter(updateType);
-  }, [checked, dashboard, props.categoryName, props.text])
+  }, [checked, count, dashboard, props.categoryName, props.text])
 
   const handleChecked = (e) => {
     setChecked(e.target.checked);
+    setCount(count + 1);
   }
 
   return (
