@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import Avatar from './components/avatar'
 import Vertical from './components/verticals'
 import Cart  from './components/cart'

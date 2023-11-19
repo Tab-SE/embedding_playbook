@@ -1,7 +1,9 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import Categories from './components/categories/categories'
+
+
 
 function FiltersBtn(props) {
   return (
@@ -17,6 +19,8 @@ function Filters(props) {
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
   const modal = ref.current;
+  
+
 
 // <button className="btn btn-outline btn-secondary w-32 justify-self-end">Reset</button>
 // <button 

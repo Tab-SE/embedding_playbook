@@ -12,22 +12,22 @@ function Option(props) {
     try {
       switch(option) {
         case 'All Data':
-          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportData);
+          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportData);
           break;
         case 'Chart Data':
-          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportCrossTab);
+          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportCrossTab);
           break;
         case 'Image':
-          await tableauViz.exportImageAsync();
+          await props.viz.exportImageAsync();
           break;
         case 'PDF':
-          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportPDF);
+          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportPDF);
           break;
         case 'Powerpoint':
-          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportPowerPoint);
+          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportPowerPoint);
           break;
         case 'Workbook':
-          await tableauViz.displayDialogAsync(tab_embed.TableauDialogType.ExportWorkbook);
+          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportWorkbook);
           break;
         default:
           throw new Error('Download Error: does not match TableauDialogType');

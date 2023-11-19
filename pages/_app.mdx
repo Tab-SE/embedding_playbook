@@ -1,12 +1,25 @@
+import { useState } from 'react'
+import { QueryClient, QueryClientProvider, Hydrate } from "@tanstack/react-query"
 import { ThemeProvider } from 'next-themes'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import '../global.css'
  
-This file imports global CSS and defines the App component
 
 export default function App({ Component, pageProps }) {
+  // This file imports global CSS and defines providers wrapping the App component
+  const [queryClient] = useState(new QueryClient());
+
+  // Create the tanstack client
+  // const queryClient = new QueryClient();
+
+  // console.log(pageProps)
+
   return (
-    <ThemeProvider attribute="class">
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+        <ThemeProvider attribute="class">
+          <Component {...pageProps} />
+        </ThemeProvider>
+    </QueryClientProvider>
   )
 }

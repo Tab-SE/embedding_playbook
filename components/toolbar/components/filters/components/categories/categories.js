@@ -1,56 +1,65 @@
 // eslint-disable-next-line no-unused-vars
 import tab_embed from '../../../../../embed_api/embed_api'
 import { useState, useEffect } from 'react'
-import FilterList from '../filterList'
 
 function Value(props) {
   const [checked, setChecked] = useState(true);
-
-  const categoryName = props.categoryName;
-  const text = props.text;
+  const [count, setCount] = useState(0);
+  const [dashboard, setDashboard] = useState(null);
 
   useEffect(() => {
-    if (props.viz && props.interactive) {
-      async function handleFilters() {
+    function getDashboard() {
+      if (props.viz) {
         // Make the Overview dashboard the active sheet
-        const dashboard = await props.viz.workbook.activateSheetAsync('Profitability (E)');
-        let updateType = 'replace';
+        setDashboard(props.viz.workbook.activeSheet);
+      }
+    }
 
+    if (!dashboard && props.interactive) {
+      getDashboard();
+    }
+  }, [props.viz, props.interactive, dashboard]);
+
+  useEffect(() => {
+    const applyFilter = async (updateType) => {
+      if (dashboard && count > 0) {
         try {
-          switch(checked) {
-            case true:
-              updateType = 'add'; // if checked by user, add to filters
-              break;
-            case false:
-              updateType = 'remove'; // if unchecked by user, remove from filters
-              break;
-            default:
-              throw new Error('Filter Error: input state deteriorated!');
-          }
-
           // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
           await dashboard.applyFilterAsync(
-            categoryName, // the name of the filter
-            [text], // array of values
+            props.categoryName, // the name of the filter
+            [props.text], // array of values
             updateType // default is FilterUpdateType.Replace other options Add, Remove or All
-          );
-        } catch (e) {
+          )} catch (e) {
           console.error(e.toString());
         }
       }
-      handleFilters();
     }
 
-  }, [props.interactive, props.viz, checked, categoryName, text]);
+    let updateType = undefined;
+    switch(checked) {
+      case true:
+        // setUpdateType('add'); // if checked by user, add to filters
+        updateType = 'add';
+        break;
+      case false:
+        // setUpdateType('remove'); // if unchecked by user, remove from filters
+        updateType = 'remove';
+        break;
+      default:
+        throw new Error('Filter Error: unrecognized updateType!');
+    }
 
+    applyFilter(updateType);
+  }, [checked, count, dashboard, props.categoryName, props.text])
 
   const handleChecked = (e) => {
     setChecked(e.target.checked);
+    setCount(count + 1);
   }
 
   return (
   <>
-    <div className="form-control">
+    <div key={`${props.categoryName}-${props.text}-${props.color}`} className="form-control">
       <label className="label cursor-pointer">
         <span className="label-text">{props.text}</span> 
         {props.color === 'primary' ? (
