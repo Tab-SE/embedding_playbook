@@ -11,7 +11,7 @@
     "info": "next info",
     "static": "next build && next export",
     "serve": "HOSTING=local npm run static && npx serve out",
-    "checkout": "git checkout prod && ls docs | grep -vE '.gitignore|.nojekyll' | xargs rm -r",
+    "checkout": "git checkout prod && ls docs | grep -vE '.gitignore|.nojekyll' | 'docs/' + xargs rm -r",
     "copy": "cp -r out/. docs/. && git add docs -f",
     "push": "git commit -m 'automated deployment' && git push",
     "deploy": "npm run static && npm run copy && npm run push",
