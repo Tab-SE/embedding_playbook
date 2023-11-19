@@ -12,7 +12,7 @@
     "static": "next build && next export",
     "serve": "HOSTING=local npm run static && npx serve out",
     "checkout": "git checkout prod",
-    "rm": "ls docs | grep -vE '.gitignore|.nojekyll' | 'docs/' + xargs -I {} rm -r docs/{}",
+    "rm": "ls docs | grep -vE '.gitignore|.nojekyll' | xargs -I {} rm -r docs/{}",
     "test": "npm run checkout && npm run rm",
     "cp": "cp -r out/. docs/. && git add docs -f",
     "push": "git commit -m 'automated deployment' && git push",
