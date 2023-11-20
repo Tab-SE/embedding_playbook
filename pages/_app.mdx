@@ -1,25 +1,30 @@
 import { useState } from 'react'
+import { SessionProvider } from "next-auth/react"
 import { QueryClient, QueryClientProvider, Hydrate } from "@tanstack/react-query"
 import { ThemeProvider } from 'next-themes'
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import '../global.css'
  
 
-export default function App({ Component, pageProps }) {
+export default function App({ 
+  Component, 
+  pageProps: { session, ...pageProps }, 
+}) {
   // This file imports global CSS and defines providers wrapping the App component
+  
+  // initializes Tanstack Query's client: https://tanstack.com/query/v4/docs/react/reference/QueryClient
   const [queryClient] = useState(new QueryClient());
 
-  // Create the tanstack client
-  // const queryClient = new QueryClient();
-
-  // console.log(pageProps)
-
+  // Session Provider: https://next-auth.js.org/getting-started/client#sessionprovider
+  // Query Client Provider: https://tanstack.com/query/v4/docs/react/reference/QueryClientProvider
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-        <ThemeProvider attribute="class">
-          <Component {...pageProps} />
-        </ThemeProvider>
-    </QueryClientProvider>
+    <SessionProvider session={session}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+          <ThemeProvider attribute="class">
+            <Component {...pageProps} />
+          </ThemeProvider>
+      </QueryClientProvider>
+    </SessionProvider>
   )
 }
