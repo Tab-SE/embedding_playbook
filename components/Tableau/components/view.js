@@ -6,28 +6,22 @@ import TabScale from '../utils/tabscale'
 // forwardRef HOC receives ref from parent
 const Viz = forwardRef(function Viz(props, ref) {
 
-  const { setInteractive, setVizObj } = props;
+  const { interactive, setInteractive } = props;
 
   const [isMounted, setisMounted] = useState(false); // prevents viz from initializing on node backends, only clients are supported
 
   useEffect(() => {
-    const handleVizObj = () => {
-      // if the component has mounted and there is a valid viz object
-      // then set vizRef to the viz object. State is  nullified on unmount
-      if (ref) {
-        setVizObj(ref.current);
-      }
-    };
-
     setisMounted(true);
-    handleVizObj();
+
     const viz = ref.current;
-    if (viz) {
+    // only runs if there is a mounted viz with interactive state at initial value of false
+    if (viz && isMounted) {
+      // apply a few inline styles to new iframe
+      const iframe = viz.shadowRoot.querySelector('iframe');
+      iframe.style.margin = "auto";
       const tabScale = new TabScale.Scale(viz); // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
       
       viz.addEventListener('firstinteractive', async (event) => { // add the custom event listener to <tableau-viz>
-        // setting the position to static so that scaling follows the layout for the rest of the page
-        viz.shadowRoot.position = 'static';
         tabScale.initialize(); // initializing tabScale
         setInteractive(true); // update state to indicate that the Tableau viz is interactive
       });
@@ -37,13 +31,12 @@ const Viz = forwardRef(function Viz(props, ref) {
     return () => {
       if (viz) {
         viz.removeEventListener('firstinteractive', async (event) => {
-          tabScale = undefined;
           setInteractive(false);
         });
       }
       setisMounted(false);
     }
-  }, [ref, setInteractive, setVizObj]);
+  }, [ref, isMounted, interactive, setInteractive]);
 
 
   return (
