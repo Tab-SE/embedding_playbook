@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useConfig, DocsThemeConfig } from 'nextra-theme-docs';
 import Logo from './components/logo/logo';
-import Head from './components/head/head'
+import Head from './components/head/Head'
 
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
 
