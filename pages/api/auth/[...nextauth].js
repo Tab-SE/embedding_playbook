@@ -1,5 +1,7 @@
 import NextAuth from "next-auth"
-import { CredentialsProvider, GithubProvider } from "next-auth/providers/github"
+import GithubProvider from "next-auth/providers/github"
+import CredentialsProvider from "next-auth/providers/credentials"
+import axios from 'axios'
 
 const { 
   TABLEAU_DOMAIN,
@@ -34,13 +36,22 @@ export const authOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
+        try {
+          const { data } = await axios.post(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
+            data: 'test',
+          });
+          return data;
+        } catch (err) {
+          return null
+        }
+
         const res = await fetch(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
           method: 'POST',
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" }
         })
+
         const user = await res.json();
-  
         // If no error and we have user data, return it
         if (res.ok && user) {
           return user
