@@ -15,8 +15,6 @@ export default function App({
   // initializes Tanstack Query's client: https://tanstack.com/query/v4/docs/react/reference/QueryClient
   const [queryClient] = useState(new QueryClient());
 
-  console.log('session:', session);
-
   // Session Provider: https://next-auth.js.org/getting-started/client#sessionprovider
   // Query Client Provider: https://tanstack.com/query/v4/docs/react/reference/QueryClientProvider
   return (
