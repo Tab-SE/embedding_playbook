@@ -98,8 +98,17 @@ export const authOptions = {
     // ...add more providers here
   ],
   session: {
+    strategy: "jwt",
     // Seconds - How long until an idle session expires and is no longer valid
     maxAge: 2 * 60 * 60, // 2 hrs to match Tableau https://help.tableau.com/current/online/en-us/to_security.htm#user-security
+  },
+  jwt: {
+    // The maximum age of the NextAuth.js issued JWT in seconds.
+    // Defaults to `session.maxAge`.
+    // maxAge: 60 * 60 * 24 * 30,
+    // You can define your own encode/decode functions for signing and encryption
+    async encode() {},
+    async decode() {},
   },
   callbacks: {
     // documented here: https://next-auth.js.org/configuration/callbacks
@@ -134,7 +143,7 @@ export const authOptions = {
       return session
     }
   },
-  
+  debug: process.env.NODE_ENV = 'development' ? true : false,
 }
 
 export default NextAuth(authOptions)
