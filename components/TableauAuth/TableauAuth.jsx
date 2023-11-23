@@ -5,19 +5,21 @@ export default function TableauAuth() {
   const { data: session } = useSession();
   const res = useSession();
 
+  console.log('res', res);
+
   if (session) {
     console.log('res', res);
     console.log('session', session);
     return (
       <>
-        Signed in as {'test'} <br />
+        Status is {res.status} <br />
         <button onClick={() => signOut()}>Sign out</button>
       </>
     )
   }
   return (
     <>
-      Not signed in <br />
+      Status is {res.status} <br />
       <button onClick={() => signIn()}>Sign in</button>
     </>
   )
