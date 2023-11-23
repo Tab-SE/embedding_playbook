@@ -19,7 +19,7 @@ export const authOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: 'User',
+      name: 'Demo User',
       // The credentials is used to generate a suitable form on the sign in page.
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
@@ -27,7 +27,8 @@ export const authOptions = {
       credentials: {
         username: { label: "Username", type: "text", placeholder: "Mackenzie Day" },
         email: { label: "Username", type: "text", placeholder: "mackenzie.day@superstore.com" },
-        password: { label: "Password", type: "password", placeholder: "p@ssword" }
+        password: { label: "Password", type: "password", placeholder: "p@ssword" },
+        id: { label: "ID", type: "text", placeholder: "A" }
       },
       async authorize(credentials, req) {
         // You need to provide your own logic here that takes the credentials
@@ -36,28 +37,54 @@ export const authOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        try {
-          const { data } = await axios.post(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
-            data: 'test',
-          });
-          return data;
-        } catch (err) {
-          return null
+        console.log('credentials', credentials, 'req', req);
+
+        
+
+        const getAPIKey = async () => {
+          try {
+            const apiKey = await axios.post(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
+              personalAccessTokenName: TABLEAU_PAT_NAME,
+              personalAccessTokenSecret: TABLEAU_PAT_SECRET,
+              site: {
+                contentUrl: TABLEAU_SITE,
+              },
+              user: {
+                id: "9f9e9d9c8-b8a8-f8e7-d7c7-b7a6f6d6e6d"
+              }
+            });
+            return apiKey;
+          } catch (err) {
+            return null
+          }
         }
 
-        const res = await fetch(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" }
-        })
-
-        const user = await res.json();
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user
+        const signJWT = async () => {
+          return true;
         }
-        // Return null if user data could not be retrieved
-        return null
+
+        const apiKey = await getAPIKey();
+        const JWT = await signJWT();
+
+        return (!apiKey || !JWT) ? null : {
+          apiKey: apiKey,
+          JWT: apiKey
+        };
+        
+
+        // const res = await fetch(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
+        //   method: 'POST',
+        //   body: JSON.stringify(credentials),
+        //   headers: { "Content-Type": "application/json" }
+        // })
+
+        // const user = await res.json();
+        // // If no error and we have user data, return it
+        // if (res.ok && user) {
+        //   return user
+        // }
+        // // Return null if user data could not be retrieved
+        // return null
       }
     }),
     GithubProvider({
