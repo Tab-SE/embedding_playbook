@@ -4,12 +4,17 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import axios from 'axios'
 
 const { 
+  NEXTAUTH_SECRET,
   TABLEAU_DOMAIN,
   TABLEAU_API, 
   TABLEAU_SITE, 
   TABLEAU_PAT_NAME, 
   TABLEAU_PAT_SECRET,
-  NEXTAUTH_SECRET, 
+  PULSE_DOMAIN,
+  PULSE_API,
+  PULSE_SITE,
+  PULSE_PAT_NAME,
+  PULSE_PAT_SECRET,
   GITHUB_ID, 
   GITHUB_SECRET 
 } = process.env;
@@ -41,16 +46,28 @@ export const authOptions = {
 
         
 
-        const getAPIKey = async () => {
+        const getTableauAPIKey = async () => {
           try {
             const apiKey = await axios.post(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
               personalAccessTokenName: TABLEAU_PAT_NAME,
               personalAccessTokenSecret: TABLEAU_PAT_SECRET,
               site: {
                 contentUrl: TABLEAU_SITE,
-              },
-              user: {
-                id: "9f9e9d9c8-b8a8-f8e7-d7c7-b7a6f6d6e6d"
+              }
+            });
+            return apiKey;
+          } catch (err) {
+            return null
+          }
+        }
+
+        const getPulseAPIKey = async () => {
+          try {
+            const apiKey = await axios.post(`${PULSE_DOMAIN}/api/${PULSE_API}/auth/signin`, {
+              personalAccessTokenName: PULSE_PAT_NAME,
+              personalAccessTokenSecret: PULSE_PAT_SECRET,
+              site: {
+                contentUrl: PULSE_SITE,
               }
             });
             return apiKey;
@@ -63,12 +80,14 @@ export const authOptions = {
           return true;
         }
 
-        const apiKey = await getAPIKey();
+        const tableauAPIKey = await getTableauAPIKey();
+        const pulseAPIKey = await getPulseAPIKey();
         const JWT = await signJWT();
 
-        return (!apiKey || !JWT) ? null : {
-          apiKey: apiKey,
-          JWT: apiKey
+        return {
+          tableauAPIKey: tableauAPIKey,
+          pulseAPIKey: pulseAPIKey,
+          JWT: JWT
         };
         
 
