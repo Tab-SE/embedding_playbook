@@ -89,21 +89,6 @@ export const authOptions = {
           pulseAPIKey: pulseAPIKey,
           JWT: JWT
         };
-        
-
-        // const res = await fetch(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
-        //   method: 'POST',
-        //   body: JSON.stringify(credentials),
-        //   headers: { "Content-Type": "application/json" }
-        // })
-
-        // const user = await res.json();
-        // // If no error and we have user data, return it
-        // if (res.ok && user) {
-        //   return user
-        // }
-        // // Return null if user data could not be retrieved
-        // return null
       }
     }),
     GithubProvider({
@@ -112,6 +97,10 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
+  session: {
+    // Seconds - How long until an idle session expires and is no longer valid
+    maxAge: 2 * 60 * 60, // 2 hrs to match Tableau https://help.tableau.com/current/online/en-us/to_security.htm#user-security
+  },
   callbacks: {
     // documented here: https://next-auth.js.org/configuration/callbacks
     async signIn({ user, account, profile, email, credentials }) {
