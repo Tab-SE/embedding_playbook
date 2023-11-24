@@ -13,9 +13,9 @@
     "serve": "HOSTING=local npm run static && npx serve out",
     "checkout": "git checkout prod",
     "rm": "ls docs | grep -vE '.gitignore|.nojekyll' | xargs -I {} rm -r docs/{}",
-    "cp": "cp -r out/. docs/. && git add docs -f",
-    "push": "git commit -m 'automated deployment' && git push",
-    "deploy": "npm run static && npm run checkout && npm run rm && npm run cp && npm run push",
+    "rsync": "rsync -r out/* docs/ && rsync -r --ignore-existing public/* docs/",
+    "push": "git add docs -f && git commit -m 'automated deployment' && git push",
+    "deploy": "npm run static && npm run checkout && npm run rm && npm run rsync && npm run push",
     "save": "git add pages public && git commit -m 'saving content (/public & /pages)'",
     "revert": "git reset HEAD -- .",
     "upload": "npm run save && git push"
