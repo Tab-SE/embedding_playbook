@@ -5,10 +5,7 @@ export default function TableauAuth() {
   const { data: session } = useSession();
   const res = useSession();
 
-  console.log('res', res);
-
   if (session) {
-    console.log('res', res);
     console.log('session', session);
     return (
       <>
