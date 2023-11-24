@@ -1,28 +1,38 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
-import axios from 'axios'
+import axios from "axios"
 
-const { 
+const {
+  NODE_ENV, 
   NEXTAUTH_SECRET,
-  TABLEAU_DOMAIN,
-  TABLEAU_API, 
-  TABLEAU_SITE, 
-  TABLEAU_PAT_NAME, 
-  TABLEAU_PAT_SECRET,
-  PULSE_DOMAIN,
-  PULSE_API,
-  PULSE_SITE,
-  PULSE_PAT_NAME,
-  PULSE_PAT_SECRET,
-  GITHUB_ID, 
-  GITHUB_SECRET 
+  TABLEAU_DOMAIN, TABLEAU_API, TABLEAU_SITE, TABLEAU_PAT_NAME, TABLEAU_PAT_SECRET,
+  PULSE_DOMAIN, PULSE_API, PULSE_SITE, PULSE_PAT_NAME, PULSE_PAT_SECRET,
+  GITHUB_ID, GITHUB_SECRET 
 } = process.env;
+
+const REST = {
+  tableau: {
+    domain: TABLEAU_DOMAIN,
+    api: TABLEAU_API, 
+    site: TABLEAU_SITE, 
+    pat_name: TABLEAU_PAT_NAME, 
+    pat_secret: TABLEAU_PAT_SECRET,
+  },
+  pulse: {
+    domain: PULSE_DOMAIN,
+    api: PULSE_API, 
+    site: PULSE_SITE, 
+    pat_name: PULSE_PAT_NAME, 
+    pat_secret: PULSE_PAT_SECRET,
+  }
+}
 
 export const authOptions = {
   // Configure one or more authentication providers https://next-auth.js.org/configuration/initialization#api-routes-pages
   providers: [
     CredentialsProvider({
+      id: 'demo-user',
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'Demo User',
       // The credentials is used to generate a suitable form on the sign in page.
@@ -31,7 +41,7 @@ export const authOptions = {
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         username: { label: "Username", type: "text", placeholder: "Mackenzie Day" },
-        email: { label: "Username", type: "text", placeholder: "mackenzie.day@superstore.com" },
+        email: { label: "Email", type: "text", placeholder: "mday@superstore.com" },
         password: { label: "Password", type: "password", placeholder: "p@ssword" },
         id: { label: "ID", type: "text", placeholder: "A" }
       },
@@ -42,53 +52,70 @@ export const authOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        console.log('credentials', credentials, 'req', req);
 
-        
+        // console.log('credentials', credentials, 'req', req);
 
-        const getTableauAPIKey = async () => {
-          try {
-            const apiKey = await axios.post(`${TABLEAU_DOMAIN}/api/${TABLEAU_API}/auth/signin`, {
-              personalAccessTokenName: TABLEAU_PAT_NAME,
-              personalAccessTokenSecret: TABLEAU_PAT_SECRET,
-              site: {
-                contentUrl: TABLEAU_SITE,
+        class Session {
+          constructor(username) {
+            this.authorized = false;
+            this.username = username;
+            this.embed = false;
+            this.rest = {};
+          }
+
+          getRest = async (rest) => {
+            for (const [key, value] of Object.entries(rest)) {
+              try {
+                // console.log(`AUTH ATTEMPT: ${key}`, value);
+                const res = await axios.post(`${value.domain}/api/${value.api}/auth/signin`, {
+                  credentials: {
+                    personalAccessTokenName: value.pat_name,
+                    personalAccessTokenSecret: value.pat_secret,
+                    site: {
+                      contentUrl: value.site,
+                    }
+                  }
+                });
+                const { site, user, token, estimatedTimeToExpiration } = res.data.credentials;
+                const config = { key: token, site: site.id, user: user.id, expires: estimatedTimeToExpiration };
+                console.log(`AUTH SUCCESS! ${key}`, config);
+                this.rest[key] = config;
+              } catch (err) {
+                console.error(`AUTH ERROR! ${key}`, err.response.data);
+                this.rest[key] = { error: err.response.data };
               }
-            });
-            return apiKey;
-          } catch (err) {
-            return null
+            }
+          }
+
+          getEmbed = async (rest) => {
+            this.embed = true;
+          }
+
+          authorize = async (rest) => {
+            const errors = new Array;
+            await this.getRest(rest);
+            await this.getEmbed(rest);
+            // loops through rest objects to find error entries
+            for (const [auth, result] of Object.entries(this.rest)) {
+              for (const [key, value] of Object.entries(result)) {
+                if (key === 'error') {
+                  value.method = auth;
+                  errors.push(value); // adds error to array indicating method
+                }
+              }
+            }
+            if (errors.length === 0) { // if no errors are found then authorize the user
+              this.authorized = true;
+            }
           }
         }
 
-        const getPulseAPIKey = async () => {
-          try {
-            const apiKey = await axios.post(`${PULSE_DOMAIN}/api/${PULSE_API}/auth/signin`, {
-              personalAccessTokenName: PULSE_PAT_NAME,
-              personalAccessTokenSecret: PULSE_PAT_SECRET,
-              site: {
-                contentUrl: PULSE_SITE,
-              }
-            });
-            return apiKey;
-          } catch (err) {
-            return null
-          }
-        }
+        const sesh = new Session(credentials.username);
+        await sesh.authorize(REST);
 
-        const signJWT = async () => {
-          return true;
-        }
+        console.log('sesh', sesh);
 
-        const tableauAPIKey = await getTableauAPIKey();
-        const pulseAPIKey = await getPulseAPIKey();
-        const JWT = await signJWT();
-
-        return {
-          tableauAPIKey: tableauAPIKey,
-          pulseAPIKey: pulseAPIKey,
-          JWT: JWT
-        };
+        return sesh.authorized ? sesh : null;
       }
     }),
     GithubProvider({
@@ -101,14 +128,6 @@ export const authOptions = {
     strategy: "jwt",
     // Seconds - How long until an idle session expires and is no longer valid
     maxAge: 2 * 60 * 60, // 2 hrs to match Tableau https://help.tableau.com/current/online/en-us/to_security.htm#user-security
-  },
-  jwt: {
-    // The maximum age of the NextAuth.js issued JWT in seconds.
-    // Defaults to `session.maxAge`.
-    // maxAge: 60 * 60 * 24 * 30,
-    // You can define your own encode/decode functions for signing and encryption
-    async encode() {},
-    async decode() {},
   },
   callbacks: {
     // documented here: https://next-auth.js.org/configuration/callbacks
@@ -143,7 +162,7 @@ export const authOptions = {
       return session
     }
   },
-  debug: process.env.NODE_ENV = 'development' ? true : false,
+  debug: NODE_ENV === 'development' ? true : false,
 }
 
 export default NextAuth(authOptions)
