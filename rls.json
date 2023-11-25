@@ -1,0 +1,39 @@
+{
+  "users": {
+    "A": {
+      "name": "Mackenzie Day",
+      "username": "mday@mail.com",
+      "claims": {
+        "Superstore": []
+      }
+    },
+    "B": {
+      "name": "User B",
+      "username": "b@mail.com",
+      "claims": {
+        "Superstore": []
+      }
+    },
+    "C": {
+      "name": "User C",
+      "username": "c@mail.com",
+      "claims": {
+        "Superstore": []
+      }
+    },
+    "D": {
+      "name": "User D",
+      "username": "d@mail.com",
+      "claims": {
+        "Superstore": []
+      }
+    },
+    "E": {
+      "name": "User E",
+      "username": "e@mail.com",
+      "claims": {
+        "Superstore": []
+      }
+    } 
+  }
+}
