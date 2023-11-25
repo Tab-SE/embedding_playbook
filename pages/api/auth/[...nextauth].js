@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 import axios from "axios"
+import rls from "../../../rls.json"
 
 const {
   NODE_ENV, 
@@ -40,10 +41,7 @@ export const authOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "Mackenzie Day" },
-        email: { label: "Email", type: "text", placeholder: "mday@superstore.com" },
-        password: { label: "Password", type: "password", placeholder: "p@ssword" },
-        id: { label: "ID", type: "text", placeholder: "A" }
+        ID: { label: "ID", type: "text", placeholder: "a, b, c, d or e" },
       },
       async authorize(credentials, req) {
         // You need to provide your own logic here that takes the credentials
@@ -52,70 +50,20 @@ export const authOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
+        let user = null;
+        console.log('credentials', credentials);
 
-        // console.log('credentials', credentials, 'req', req);
-
-        class Session {
-          constructor(username) {
-            this.authorized = false;
-            this.username = username;
-            this.embed = false;
-            this.rest = {};
-          }
-
-          getRest = async (rest) => {
-            for (const [key, value] of Object.entries(rest)) {
-              try {
-                // console.log(`AUTH ATTEMPT: ${key}`, value);
-                const res = await axios.post(`${value.domain}/api/${value.api}/auth/signin`, {
-                  credentials: {
-                    personalAccessTokenName: value.pat_name,
-                    personalAccessTokenSecret: value.pat_secret,
-                    site: {
-                      contentUrl: value.site,
-                    }
-                  }
-                });
-                const { site, user, token, estimatedTimeToExpiration } = res.data.credentials;
-                const config = { key: token, site: site.id, user: user.id, expires: estimatedTimeToExpiration };
-                console.log(`AUTH SUCCESS! ${key}`, config);
-                this.rest[key] = config;
-              } catch (err) {
-                console.error(`AUTH ERROR! ${key}`, err.response.data);
-                this.rest[key] = { error: err.response.data };
-              }
-            }
-          }
-
-          getEmbed = async (rest) => {
-            this.embed = true;
-          }
-
-          authorize = async (rest) => {
-            const errors = new Array;
-            await this.getRest(rest);
-            await this.getEmbed(rest);
-            // loops through rest objects to find error entries
-            for (const [auth, result] of Object.entries(this.rest)) {
-              for (const [key, value] of Object.entries(result)) {
-                if (key === 'error') {
-                  value.method = auth;
-                  errors.push(value); // adds error to array indicating method
-                }
-              }
-            }
-            if (errors.length === 0) { // if no errors are found then authorize the user
-              this.authorized = true;
-            }
+        for (const [key, value] of Object.entries(rls.users)) {
+          if (key.toUpperCase() === credentials.ID.toUpperCase()) {
+            user = value;
           }
         }
 
-        const sesh = new Session(credentials.username);
-        await sesh.authorize(REST);
-
-        console.log('sesh', sesh);
-
-        return sesh.authorized ? sesh : null;
+        if (user) {
+          return user;
+        } else {
+          return false;
+        }
       }
     }),
     GithubProvider({
@@ -134,6 +82,67 @@ export const authOptions = {
     async signIn({ user, account, profile, email, credentials }) {
       const isAllowedToSignIn = true
       if (isAllowedToSignIn) {
+        // class Session {
+        //   constructor(username) {
+        //     this.authorized = false;
+        //     this.username = username;
+        //     this.embed = false;
+        //     this.rest = {};
+        //   }
+
+        //   getRest = async (rest) => {
+        //     for (const [key, value] of Object.entries(rest)) {
+        //       try {
+        //         // console.log(`AUTH ATTEMPT: ${key}`, value);
+        //         const res = await axios.post(`${value.domain}/api/${value.api}/auth/signin`, {
+        //           credentials: {
+        //             personalAccessTokenName: value.pat_name,
+        //             personalAccessTokenSecret: value.pat_secret,
+        //             site: {
+        //               contentUrl: value.site,
+        //             }
+        //           }
+        //         });
+        //         const { site, user, token, estimatedTimeToExpiration } = res.data.credentials;
+        //         const config = { key: token, site: site.id, user: user.id, expires: estimatedTimeToExpiration };
+        //         this.rest[key] = config;
+        //       } catch (err) {
+        //         this.rest[key] = { error: err.response.data };
+        //       }
+        //     }
+        //   }
+
+        //   getEmbed = async (rest) => {
+        //     this.embed = true;
+        //   }
+
+        //   authorize = async (rest) => {
+        //     const errors = new Array;
+        //     await this.getRest(rest);
+        //     await this.getEmbed(rest);
+        //     // loops through rest objects to find error entries
+        //     for (const [auth, result] of Object.entries(this.rest)) {
+        //       for (const [key, value] of Object.entries(result)) {
+        //         if (key === 'error') {
+        //           value.method = auth;
+        //           errors.push(value); // adds error to array indicating method
+        //         }
+        //       }
+        //     }
+        //     if (errors.length === 0) { // if no errors are found then authorize the user
+        //       this.authorized = true;
+              
+        //     }
+        //   }
+        // }
+
+        // const sesh = new Session(credentials.username);
+        // await sesh.authorize(REST);
+
+        // console.log('sesh', sesh);
+        // console.log('sesh.authorized', sesh.authorized);
+
+        // return sesh.authorized ? user : null;
         return true
       } else {
         // Return false to display a default error message
