@@ -1,37 +1,47 @@
 {
   "users": {
     "A": {
+      "id": "mday@mail.com",
       "name": "Mackenzie Day",
-      "username": "mday@mail.com",
-      "claims": {
+      "email": "mday@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
         "Superstore": []
       }
     },
     "B": {
+      "id": "b@mail.com",
       "name": "User B",
-      "username": "b@mail.com",
-      "claims": {
+      "email": "b@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
         "Superstore": []
       }
     },
     "C": {
+      "id": "c@mail.com",
       "name": "User C",
-      "username": "c@mail.com",
-      "claims": {
+      "email": "c@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
         "Superstore": []
       }
     },
     "D": {
+      "id": "d@mail.com",
       "name": "User D",
-      "username": "d@mail.com",
-      "claims": {
+      "email": "d@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
         "Superstore": []
       }
     },
     "E": {
+      "id": "e@mail.com",
       "name": "User E",
-      "username": "e@mail.com",
-      "claims": {
+      "email": "e@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
         "Superstore": []
       }
     } 
