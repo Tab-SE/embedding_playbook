@@ -13,6 +13,7 @@ const Tableau = forwardRef(function Tableau(props, ref) {
   const viz = props.viz ? props.viz : vizLocal;
   const interactive = props.interactive ? props.interactive : localInteractive;
 
+
   useEffect(() => {
     const getDashboard = () => {
       if (viz.current) {
