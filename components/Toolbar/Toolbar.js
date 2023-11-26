@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import Avatar from './components/avatar'
-import Vertical from './components/verticals'
-import Cart  from './components/cart'
-import Download from './components/download'
-import Filters from './components/filters/filters'
+import Avatar from './components/Avatar'
+import Vertical from './components/Verticals'
+import Cart  from './components/Cart'
+import Download from './components/Download'
+import Filters from './components/Filters/Filters'
 
 function Toolbar(props) {
   
