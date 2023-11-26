@@ -7,6 +7,8 @@ import Filters from './components/filters/filters'
 
 function Toolbar(props) {
 
+  let s;
+
   return (
     <section className='dark:text-neutral'>
       <div className="flex justify-between navbar bg-sf-neutral mt-8 pr-6 rounded">
