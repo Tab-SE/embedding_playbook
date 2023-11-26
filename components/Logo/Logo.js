@@ -1,4 +1,4 @@
-import Img from '../img/img'
+import Img from '../Img/Img'
 
 function Logo(props) {
 

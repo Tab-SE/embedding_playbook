@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import tab_embed from '../../../../../embed_api/embed_api'
+import tab_embed from '../../../../../Tableau/embed_api/embed_api';
 import { useState, useEffect } from 'react'
 
 function Value(props) {
