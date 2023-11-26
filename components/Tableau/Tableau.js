@@ -1,7 +1,7 @@
 import { useState, useId, useRef, forwardRef, useEffect } from 'react'
-import { useFilters } from './components/controller'
-import View from './components/view'
-import Model from './components/model'
+import { useFilters } from './libs/controller'
+import View from './libs/view'
+import Model from './libs/model'
 
 // HOC following MVC pattern: https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09, forwardRef HOC receives ref from parent
 const Tableau = forwardRef(function Tableau(props, ref) {
