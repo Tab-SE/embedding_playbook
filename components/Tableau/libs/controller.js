@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 export const useFilters = async (activeSheet, id) => {
   const active = !activeSheet ? false : true;
 
+  let s;
+
   async function syncFilters() {
     // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
     if (activeSheet) {
