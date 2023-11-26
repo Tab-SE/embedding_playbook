@@ -7,7 +7,6 @@ import Model from './libs/model'
 const Tableau = forwardRef(function Tableau(props, ref) {
   const vizLocal = useRef(null); // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const id = `id-${useId()}`; // creates a unique identifier for the embed
-  const [vizObj, setVizObj] = useState(null);
   const [localInteractive, setLocalInteractive] = useState(false);
   const [dashboard, setDashboard] = useState(null);
   const viz = props.viz ? props.viz : vizLocal;
@@ -43,8 +42,6 @@ const Tableau = forwardRef(function Tableau(props, ref) {
   
   return (
     <View
-      vizObj={props.vizObj ? props.vizObj : vizObj}
-      setVizObj={props.setVizObj ? props.setVizObj : setVizObj}
       interactive={props.interactive ? props.interactive : localInteractive}
       setInteractive={props.setInteractive ? props.setInteractive : setLocalInteractive}
       ref={props.viz ? props.viz : viz}

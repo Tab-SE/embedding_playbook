@@ -1,9 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
-import Categories from './components/categories/categories'
-
-
+import Categories from './components/Categories'
 
 function FiltersBtn(props) {
   return (

@@ -1,0 +1,49 @@
+{
+  "users": {
+    "A": {
+      "id": "mday@mail.com",
+      "name": "Mackenzie Day",
+      "email": "mday@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
+        "Superstore": []
+      }
+    },
+    "B": {
+      "id": "b@mail.com",
+      "name": "User B",
+      "email": "b@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
+        "Superstore": []
+      }
+    },
+    "C": {
+      "id": "c@mail.com",
+      "name": "User C",
+      "email": "c@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
+        "Superstore": []
+      }
+    },
+    "D": {
+      "id": "d@mail.com",
+      "name": "User D",
+      "email": "d@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
+        "Superstore": []
+      }
+    },
+    "E": {
+      "id": "e@mail.com",
+      "name": "User E",
+      "email": "e@mail.com",
+      "picture": "img/stock/mackenzie_day.png",
+      "UAF": {
+        "Superstore": []
+      }
+    } 
+  }
+}
