@@ -20,7 +20,7 @@ function Toolbar(props) {
         </div>
         <div className='flex justify-end'>
           <Avatar
-            src="img/stock/mackenzie_day.png"
+            src="img/users/mackenzie_day.png"
             alt="sample user"
             height={48}
             width={48}

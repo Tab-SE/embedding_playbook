@@ -23,7 +23,7 @@ function Avatar(props) {
         <div className="avatar btn btn-circle border-none">
           <div className="w-14 rounded-full">
             <Img 
-              src={props.src ? props.src : 'img/img/stock/mackenzie_day.png'}
+              src={props.src ? props.src : 'img/users/mackenzie_day.png'}
               alt={props.alt ? props.alt : 'stock user photo'}
               height={props.height ? props.height : 48}
               width={props.width ? props.width : 48}
