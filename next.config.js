@@ -26,16 +26,32 @@ const withNextra = require('nextra')({
   staticImage: true,
 });
 
-// exports the config with some additional nextjs settings
-// current config requires usage of <Img/> component for optimization
-// markdown syntax ![]() uses unoptimized images
-// if basePath must be defined add it here: basePath: basePath, excluded due to imgix hosting
-module.exports = withNextra({
-  assetPrefix: assetPrefix,
-  basePath: basePath,
-  images: {
-    loader: 'imgix',
-    domains: ['tableauembeddingplaybook.imgix.net'],
-    path: 'tableauembeddingplaybook.imgix.net',
-  },
-});
+let options;
+
+if (process.env.HOSTING === 'vercel') {
+  options = {
+    assetPrefix: assetPrefix,
+    images: {
+      loader: 'imgix',
+      domains: ['tableauembeddingplaybook.imgix.net'],
+      path: 'tableauembeddingplaybook.imgix.net',
+    },
+  };
+} else {
+  // exports the config with some additional nextjs settings
+  // current config requires usage of <Img/> component for optimization
+  // markdown syntax ![]() uses unoptimized images
+  // if basePath must be defined add it here: basePath: basePath, excluded due to imgix hosting
+  options = {
+    assetPrefix: assetPrefix,
+    basePath: basePath,
+    images: {
+      loader: 'imgix',
+      domains: ['tableauembeddingplaybook.imgix.net'],
+      path: 'tableauembeddingplaybook.imgix.net',
+    },
+  }
+}
+
+
+module.exports = withNextra(options);
