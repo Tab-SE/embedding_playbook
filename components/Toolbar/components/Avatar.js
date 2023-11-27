@@ -1,4 +1,4 @@
-import Img from '../../Img/Img';
+import Image from 'next/image'
 
 
 function Menu(props) {
@@ -22,8 +22,8 @@ function Avatar(props) {
       <span tabIndex={0} >
         <div className="avatar btn btn-circle border-none">
           <div className="w-14 rounded-full">
-            <Img 
-              src={props.src ? props.src : 'img/users/mackenzie_day.png'}
+            <Image 
+              src={props.src ? props.src : '/img/users/mackenzie_day.png'}
               alt={props.alt ? props.alt : 'stock user photo'}
               height={props.height ? props.height : 48}
               width={props.width ? props.width : 48}
