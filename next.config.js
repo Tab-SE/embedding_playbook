@@ -28,6 +28,15 @@ const withNextra = require('nextra')({
 
 module.exports = withNextra({
   assetPrefix: assetPrefix,
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    })
+    // uses svgr for safe usage of SVGs in React
+    return config
+  },
 });
 
 // exports the config with some additional nextjs settings
