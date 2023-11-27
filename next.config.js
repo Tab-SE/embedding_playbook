@@ -1,8 +1,8 @@
 const path = process.env.PROJECT_NAME;
 // used by <Link/> component and static CSS
-let assetPrefix;
+let assetPrefix = '';
 // used by <Image/> component
-let basePath;
+let basePath = '';
 
 const isGithubActions = process.env.GITHUB_ACTIONS || false;
 // exports via GitHub Pages via automated Actions
@@ -26,16 +26,29 @@ const withNextra = require('nextra')({
   staticImage: true,
 });
 
+module.exports = withNextra({
+  assetPrefix: assetPrefix,
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    })
+    // uses svgr for safe usage of SVGs in React
+    return config
+  },
+});
+
 // exports the config with some additional nextjs settings
 // current config requires usage of <Img/> component for optimization
 // markdown syntax ![]() uses unoptimized images
 // if basePath must be defined add it here: basePath: basePath, excluded due to imgix hosting
-module.exports = withNextra({
-  assetPrefix: assetPrefix,
-  basePath: basePath,
-  images: {
-    loader: 'imgix',
-    domains: ['tableauembeddingplaybook.imgix.net'],
-    path: 'tableauembeddingplaybook.imgix.net',
-  },
-});
+// module.exports = withNextra({
+//   assetPrefix: assetPrefix,
+//   basePath: basePath,
+//   images: {
+//     loader: 'imgix',
+//     domains: ['tableauembeddingplaybook.imgix.net'],
+//     path: 'tableauembeddingplaybook.imgix.net',
+//   },
+// });

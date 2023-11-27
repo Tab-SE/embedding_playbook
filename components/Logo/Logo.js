@@ -1,17 +1,16 @@
-import Img from '../Img/Img'
+import LogoColor from '../../public/svg/logo_color.svg'
 
 function Logo(props) {
 
   return (
   <>
   <span className='mr-2'>
-    <Img
-      src={props.src ? props.src : 'svg/logo_color.svg?w=40&h=40'}
+    <LogoColor 
+      src={props.src ? props.src : '/svg/logo_color.svg?w=40&h=40'}
       alt={props.alt ? props.alt : 'Tableau Software (logo)'}
       width={props.width ? props.width : 40}
       height={props.width ? props.width : 40}
-      full={props.full ? props.full : false}
-      sizes={props.sizes ? props.sizes : '(max-width: 32px)'}
+      full={props.full ? props.full : 'false'} 
     />
   </span>
   <p className='invisible md:visible'>

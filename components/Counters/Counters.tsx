@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Img from '../Img/Img';
+import Image from 'next/image'
 
 function MyButton() {
   const [count, setCount] = useState(9801);
@@ -35,7 +35,7 @@ function MyButton() {
           <div className="stat-figure text-secondary">
             <div className="avatar online">
               <div className="w-16 rounded-full">
-                <Img
+                <Image
                   src="img/stock/mackenzie_day.png"
                   alt="sample user"
                   height={64}

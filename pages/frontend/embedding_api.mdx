@@ -5,7 +5,7 @@ title: Embedding Tableau Views
 import { Bleed } from 'nextra-theme-docs'
 import { Callout } from 'nextra/components'
 import Tableau from './../../components/Tableau/Tableau'
-import Img from '../../components/Img/Img'
+import Image from 'next/image'
 
 # Embedding Tableau Views
 
@@ -29,13 +29,12 @@ The easiest method for embedding a Tableau view (dashboard or visualization) is 
 
 -------------------
 
-<Img
+<Image
   alt='sample embed' 
-  src='img/embed_code.png' 
+  src='/img/embed_code.png' 
   width={700}
   height={800}
 />
-
 
 Once acquired, this code can be pasted into HTML.
 This method is useful for simple embedding, such as embedding into blogs or internal knowledge bases, but **only very simple embedding scenarios should use the embed code. Most deployments should instead use the JavaScript API v2 or the Embedding API v3.** It is not significantly more work to embed with the JavaScript API v2 or the Embedding API v3, and doing so will gain you flexibility and power in your embedded deployment.
@@ -108,12 +107,13 @@ Note: Filtering with the JavaScript API v2 or Embedding API v3 is **not** a secu
 
 In the image below, an HR-focused dashboard allows the user to select employees for an audit. When the user is ready, he or she can click "Run Audit" to generate a non-Tableau audit based on the selections made inside the Tableau viz.
 
-<Img
+<Image
   alt='HR dashboard' 
-  src='run_audit.png' 
+  src='/img/run_audit.png' 
   width={700}
   height={800}
 />
+
 
 
 ## Embedding API and JavaScript API Resources
