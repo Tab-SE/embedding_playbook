@@ -5,7 +5,7 @@
       "name": "Mackenzie Day",
       "email": "mday@mail.com",
       "picture": "img/stock/mackenzie_day.png",
-      "UAF": {
+      "uaf": {
         "Superstore": []
       }
     },
@@ -14,7 +14,7 @@
       "name": "User B",
       "email": "b@mail.com",
       "picture": "img/stock/mackenzie_day.png",
-      "UAF": {
+      "uaf": {
         "Superstore": []
       }
     },
@@ -23,7 +23,7 @@
       "name": "User C",
       "email": "c@mail.com",
       "picture": "img/stock/mackenzie_day.png",
-      "UAF": {
+      "uaf": {
         "Superstore": []
       }
     },
@@ -32,7 +32,7 @@
       "name": "User D",
       "email": "d@mail.com",
       "picture": "img/stock/mackenzie_day.png",
-      "UAF": {
+      "uaf": {
         "Superstore": []
       }
     },
@@ -41,7 +41,7 @@
       "name": "User E",
       "email": "e@mail.com",
       "picture": "img/stock/mackenzie_day.png",
-      "UAF": {
+      "uaf": {
         "Superstore": []
       }
     } 
