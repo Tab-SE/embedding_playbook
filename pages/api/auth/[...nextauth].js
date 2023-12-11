@@ -1,34 +1,9 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
+import config from "../../../utils/config"
 import Session from "../../../utils/Session"
 import rls from "../../../rls.json"
-
-// environment variables
-const {
-  NODE_ENV, 
-  NEXTAUTH_SECRET,
-  TABLEAU_DOMAIN, TABLEAU_API, TABLEAU_SITE, TABLEAU_PAT_NAME, TABLEAU_PAT_SECRET,
-  PULSE_DOMAIN, PULSE_API, PULSE_SITE, PULSE_PAT_NAME, PULSE_PAT_SECRET,
-  GITHUB_ID, GITHUB_SECRET 
-} = process.env;
-
-const REST = {
-  tableau: {
-    domain: TABLEAU_DOMAIN,
-    api: TABLEAU_API, 
-    site: TABLEAU_SITE, 
-    pat_name: TABLEAU_PAT_NAME, 
-    pat_secret: TABLEAU_PAT_SECRET,
-  },
-  pulse: {
-    domain: PULSE_DOMAIN,
-    api: PULSE_API, 
-    site: PULSE_SITE, 
-    pat_name: PULSE_PAT_NAME, 
-    pat_secret: PULSE_PAT_SECRET,
-  }
-}
 
 export const authOptions = {
   session: {
@@ -65,7 +40,7 @@ export const authOptions = {
         }
         if (user) {
           sesh = new Session(credentials.username);
-          await sesh.authorize(REST);
+          await sesh.authorize(config.tableau);
           if (sesh.authorized) {
             user.rest = sesh.rest;
           }
@@ -76,8 +51,8 @@ export const authOptions = {
       }
     }),
     GithubProvider({
-      clientId: GITHUB_ID,
-      clientSecret: GITHUB_SECRET,
+      clientId: config.github_id,
+      clientSecret: config.github_secret,
     }),
     // ...add more providers here
   ],
@@ -123,7 +98,7 @@ export const authOptions = {
       return session
     }
   },
-  debug: NODE_ENV === 'development' ? true : false,
+  debug: config.node_env === 'development' ? true : false,
 }
 
 export default NextAuth(authOptions)
