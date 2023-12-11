@@ -19,8 +19,8 @@ export default async (req, res) => {
     if (req.method === 'GET') {
       try {
         const subscriptions = await pulse.getSubscriptions(key, user);
-        if (insights) {
-          res.status(200).json({ insights });
+        if (subscriptions) {
+          res.status(200).json({ subscriptions });
         } else {
           throw new Error('500 Failed to obtain Tableau Pulse subscriptions');
         }
