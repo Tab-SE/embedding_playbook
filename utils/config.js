@@ -2,8 +2,13 @@
 // avoids running process.env function calls on server functions due to minor performance impact
 const config = {
   node_env: process.env.NODE_ENV,
-  github_id: process.env.GITHUB_ID, 
-  github_secret: process.env.GITHUB_SECRET, 
+  public_api: NEXT_PUBLIC_API_BASE_URL,
+  auth: {
+    auth_url: NEXTAUTH_URL,
+    auth_secret: NEXTAUTH_SECRET,
+    github_id: process.env.GITHUB_ID, 
+    github_secret: process.env.GITHUB_SECRET,
+  }, 
   tableau : {
     viz: {
       domain: process.env.TABLEAU_DOMAIN,
