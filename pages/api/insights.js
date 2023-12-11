@@ -1,41 +1,38 @@
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
 import { getToken } from "next-auth/jwt"
-import axios from "axios"
+import pulse from "../../utils/pulse"
 
 export default async (req, res) => {
   const token = await getToken({ req });
   const session = await getServerSession(req, res, authOptions);
 
   if (token && session) {
-    // Signed in 
-    console.log("JSON Web Token", JSON.stringify(token, null, 2));
-    console.log("Session", JSON.stringify(session, null, 2));
-    // request method handling
-    if (req.method === 'POST') {
-      try {
-        // get pulse insights from Tableau
-        // const result = await axios.request(config)
-        // .then((response) => {
-        //   console.log(JSON.stringify(response.data));
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        // });
+    // get user attributes for temporary authorized sessions
+    const { key, user } = token.rest.pulse;
+    const insights = new Array();
 
-        res.status(200).json({ 
-          "JWT": token,
-          "session": session 
-        });
+    // Signed in 
+    console.debug("JSON Web Token", JSON.stringify(token, null, 2));
+    console.debug("Session", JSON.stringify(session, null, 2));
+
+    if (req.method === 'GET') {
+      try {
+        const subscriptions = await pulse.getSubscriptions(key, user);
+        if (insights) {
+          res.status(200).json({ insights });
+        } else {
+          throw new Error('500 Failed to obtain Tableau Pulse subscriptions');
+        }
       } catch (err) {
-        res.status(500).json({ error: '500 Failed to Insights' });
+        res.status(500).json({ error: err });
       }
     }
   } else {
     // Not Signed in
-    console.log('unauthorized');
+    console.debug('unauthorized');
     res.status(401).json({ error: '401 Unauthorized' });
   }
-  res.end()
+  res.end();
 }
 
