@@ -1,4 +1,5 @@
 import { useSession, signIn, signOut } from "next-auth/react"
+import axios from "axios";
 
 export default function TableauAuth() {
   // documented here: https://next-auth.js.org/getting-started/client#usesession
@@ -7,6 +8,7 @@ export default function TableauAuth() {
 
   if (res.status === 'authenticated') {
     console.log('res', res);
+
     return (
       <>
         {res.data.user.name} is {res.status} <br />
