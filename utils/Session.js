@@ -1,5 +1,7 @@
 import axios from "axios"
+import config from "./config";
 
+// factory designed to return a sessions object
 class Session {
   constructor(username) {
     this.authorized = false;
@@ -8,8 +10,8 @@ class Session {
     this.rest = {};
   }
 
-  getRest = async (rest) => {
-    for (const [key, value] of Object.entries(rest)) {
+  getRest = async (config) => {
+    for (const [key, value] of Object.entries(config)) {
       try {
         // console.log(`AUTH ATTEMPT: ${key}`, value);
         const res = await axios.post(`${value.domain}/api/${value.api}/auth/signin`, {
@@ -31,14 +33,14 @@ class Session {
     }
   }
 
-  getEmbed = async (rest) => {
+  getEmbed = async (config) => {
     this.embed = true;
   }
 
-  authorize = async (rest) => {
+  authorize = async () => {
     const errors = new Array;
-    await this.getRest(rest);
-    await this.getEmbed(rest);
+    await this.getRest(config);
+    await this.getEmbed(config);
     // loops through rest objects to find error entries
     for (const [auth, result] of Object.entries(this.rest)) {
       for (const [key, value] of Object.entries(result)) {
