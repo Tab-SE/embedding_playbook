@@ -45,7 +45,8 @@
     "nextra-theme-docs": "^2.13.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tabscale": "gitlab:jhegele/tabscale"
+    "tabscale": "gitlab:jhegele/tabscale",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
