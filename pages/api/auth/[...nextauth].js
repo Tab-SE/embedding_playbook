@@ -1,7 +1,6 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
-import config from "../../../utils/config"
 import Session from "../../../utils/Session"
 import rls from "../../../rls.json"
 
@@ -40,7 +39,7 @@ export const authOptions = {
         }
         if (user) {
           sesh = new Session(credentials.username);
-          await sesh.authorize(config.tableau);
+          await sesh.authorize();
           if (sesh.authorized) {
             user.rest = sesh.rest;
           }
@@ -51,8 +50,8 @@ export const authOptions = {
       }
     }),
     GithubProvider({
-      clientId: config.github_id,
-      clientSecret: config.github_secret,
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     }),
     // ...add more providers here
   ],
@@ -98,7 +97,7 @@ export const authOptions = {
       return session
     }
   },
-  debug: config.node_env === 'development' ? true : false,
+  debug: process.env.NODE_ENV === 'development' ? true : false,
 }
 
 export default NextAuth(authOptions)
