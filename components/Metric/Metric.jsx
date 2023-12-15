@@ -1,9 +1,21 @@
 import VegaLiteViz from '../VegaLiteViz/VegaLiteViz'
-import CoreMetric from './PowerLevel/CoreMetric.json'
+import { JSONPath } from 'jsonpath-plus';
+import PowerLevelCoreMetric from './PowerLevel/CoreMetric.json'
 import PowerLevel from './PowerLevel/PowerLevel.json'
 
-const ParseMetric = () => {
-  const title = CoreMetric.input.metric.metadata.name;
+
+const ParseMetric = (coreMetric, insights) => {
+  const result = JSONPath({path: '...', json});
+
+  const metrics = JSONPath({path: '$.core_metrics[*].metadata.name', json});
+  
+  
+
+  // const title = PowerLevelCoreMetric.input.metric.metadata.name;
+
+  // insights.result.map((key, value) => {
+  //   console.log(key, value)
+  // })
 }
 
 

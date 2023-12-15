@@ -1,0 +1,413 @@
+{
+  "core_metrics": [
+      {
+          "metadata": {
+              "name": "Net New Customers",
+              "description": "Tracking customers' first purchase dates to record when each became a customer.",
+              "id": "9000f8d2-436a-449d-ada5-172303058683",
+              "user_link": "",
+              "user_link_name": "",
+              "schema_version": "1.0.0",
+              "metric_version": "1"
+          },
+          "definition": {
+              "datasource": {
+                  "id": "4b8c60ab-7422-429c-b320-d980d1025a68"
+              },
+              "measure": {
+                  "field": "Calculation_5075908626694082561",
+                  "aggregation": "AGGREGATION_SUM"
+              },
+              "time_dimension": {
+                  "field": "Order Date"
+              },
+              "filters": [],
+              "basic_definition": {
+                  "measure": {
+                      "field": "Calculation_5075908626694082561",
+                      "aggregation": "AGGREGATION_SUM"
+                  },
+                  "time_dimension": {
+                      "field": "Order Date"
+                  },
+                  "filters": []
+              },
+              "is_running_total": true
+          },
+          "scoping_parameters": {
+              "allowed_dimensions": [
+                  "Segment",
+                  "Region",
+                  "Category"
+              ],
+              "allowed_granularities": []
+          },
+          "scopes": [],
+          "total_scopes": "9",
+          "representation_options": {
+              "type": "NUMBER_FORMAT_TYPE_NUMBER",
+              "number_units": {
+                  "singular_noun": "",
+                  "plural_noun": ""
+              },
+              "sentiment_type": "SENTIMENT_TYPE_NONE",
+              "row_level_id_field": {
+                  "identifier_col": "",
+                  "identifier_label": ""
+              },
+              "row_level_entity_names": {
+                  "entity_name_singular": "",
+                  "entity_name_plural": ""
+              }
+          },
+          "insights_options": {
+              "show_insights": false,
+              "disabled_insight_types": [],
+              "settings": []
+          }
+      },
+      {
+          "metadata": {
+              "name": "Power Level",
+              "description": "Just make sure it remains in check...",
+              "id": "bbb7b833-e7f8-4234-8e91-8f6e8fac79ad",
+              "user_link": "",
+              "user_link_name": "",
+              "schema_version": "1.0.0",
+              "metric_version": "3"
+          },
+          "definition": {
+              "datasource": {
+                  "id": "934e8ec8-3648-47f8-930b-a5852fb6271e"
+              },
+              "measure": {
+                  "field": "Power Level",
+                  "aggregation": "AGGREGATION_MEDIAN"
+              },
+              "time_dimension": {
+                  "field": "Date"
+              },
+              "filters": [],
+              "basic_definition": {
+                  "measure": {
+                      "field": "Power Level",
+                      "aggregation": "AGGREGATION_MEDIAN"
+                  },
+                  "time_dimension": {
+                      "field": "Date"
+                  },
+                  "filters": []
+              },
+              "is_running_total": false
+          },
+          "scoping_parameters": {
+              "allowed_dimensions": [
+                  "Dimension"
+              ],
+              "allowed_granularities": []
+          },
+          "scopes": [],
+          "total_scopes": "6",
+          "representation_options": {
+              "type": "NUMBER_FORMAT_TYPE_NUMBER",
+              "number_units": {
+                  "singular_noun": "",
+                  "plural_noun": ""
+              },
+              "sentiment_type": "SENTIMENT_TYPE_DOWN_IS_GOOD",
+              "row_level_id_field": {
+                  "identifier_col": "",
+                  "identifier_label": ""
+              },
+              "row_level_entity_names": {
+                  "entity_name_singular": "",
+                  "entity_name_plural": ""
+              }
+          },
+          "insights_options": {
+              "show_insights": true,
+              "disabled_insight_types": [],
+              "settings": [
+                  {
+                      "type": "INSIGHT_TYPE_TOP_DRIVERS",
+                      "disabled": true
+                  },
+                  {
+                      "type": "INSIGHT_TYPE_CURRENT_TREND",
+                      "disabled": false
+                  },
+                  {
+                      "type": "INSIGHT_TYPE_BOTTOM_CONTRIBUTORS",
+                      "disabled": true
+                  },
+                  {
+                      "type": "INSIGHT_TYPE_TOP_DETRACTORS",
+                      "disabled": true
+                  },
+                  {
+                      "type": "INSIGHT_TYPE_RISKY_MONOPOLY",
+                      "disabled": true
+                  }
+              ]
+          }
+      },
+      {
+          "metadata": {
+              "name": "Maintenance Hours",
+              "description": "",
+              "id": "61d7a21e-dae1-45d8-8dde-fbfd5ed86f95",
+              "user_link": "",
+              "user_link_name": "",
+              "schema_version": "1.0.0",
+              "metric_version": "1"
+          },
+          "definition": {
+              "datasource": {
+                  "id": "f5a43c8b-5468-495b-b591-18ac2a690042"
+              },
+              "measure": {
+                  "field": "Maintenance Hours",
+                  "aggregation": "AGGREGATION_SUM"
+              },
+              "time_dimension": {
+                  "field": "Date"
+              },
+              "filters": [],
+              "basic_definition": {
+                  "measure": {
+                      "field": "Maintenance Hours",
+                      "aggregation": "AGGREGATION_SUM"
+                  },
+                  "time_dimension": {
+                      "field": "Date"
+                  },
+                  "filters": []
+              },
+              "is_running_total": false
+          },
+          "scoping_parameters": {
+              "allowed_dimensions": [
+                  "Site"
+              ],
+              "allowed_granularities": []
+          },
+          "scopes": [],
+          "total_scopes": "2",
+          "representation_options": {
+              "type": "NUMBER_FORMAT_TYPE_NUMBER",
+              "number_units": {
+                  "singular_noun": "",
+                  "plural_noun": ""
+              },
+              "sentiment_type": "SENTIMENT_TYPE_NONE",
+              "row_level_id_field": {
+                  "identifier_col": "",
+                  "identifier_label": ""
+              },
+              "row_level_entity_names": {
+                  "entity_name_singular": "",
+                  "entity_name_plural": ""
+              }
+          },
+          "insights_options": {
+              "show_insights": true,
+              "disabled_insight_types": [],
+              "settings": []
+          }
+      },
+      {
+          "metadata": {
+              "name": "Device Utilization",
+              "description": "",
+              "id": "2a9c8d79-10bc-4019-a45f-4ea851b056c4",
+              "user_link": "",
+              "user_link_name": "",
+              "schema_version": "1.0.0",
+              "metric_version": "1"
+          },
+          "definition": {
+              "datasource": {
+                  "id": "f5a43c8b-5468-495b-b591-18ac2a690042"
+              },
+              "measure": {
+                  "field": "Device Utilization",
+                  "aggregation": "AGGREGATION_AVERAGE"
+              },
+              "time_dimension": {
+                  "field": "Date"
+              },
+              "filters": [],
+              "basic_definition": {
+                  "measure": {
+                      "field": "Device Utilization",
+                      "aggregation": "AGGREGATION_AVERAGE"
+                  },
+                  "time_dimension": {
+                      "field": "Date"
+                  },
+                  "filters": []
+              },
+              "is_running_total": false
+          },
+          "scoping_parameters": {
+              "allowed_dimensions": [
+                  "Site"
+              ],
+              "allowed_granularities": []
+          },
+          "scopes": [],
+          "total_scopes": "2",
+          "representation_options": {
+              "type": "NUMBER_FORMAT_TYPE_PERCENT",
+              "number_units": {
+                  "singular_noun": "",
+                  "plural_noun": ""
+              },
+              "sentiment_type": "SENTIMENT_TYPE_UP_IS_GOOD",
+              "row_level_id_field": {
+                  "identifier_col": "",
+                  "identifier_label": ""
+              },
+              "row_level_entity_names": {
+                  "entity_name_singular": "",
+                  "entity_name_plural": ""
+              }
+          },
+          "insights_options": {
+              "show_insights": true,
+              "disabled_insight_types": [],
+              "settings": []
+          }
+      },
+      {
+          "metadata": {
+              "name": "Not Scheduled Exams",
+              "description": "test with reporting dataset",
+              "id": "3f03b620-9234-4f70-9a4c-6e8a39dacf0f",
+              "user_link": "",
+              "user_link_name": "",
+              "schema_version": "1.0.0",
+              "metric_version": "1"
+          },
+          "definition": {
+              "datasource": {
+                  "id": "34efbdfa-00d1-4188-a54f-b5799a9f51e2"
+              },
+              "measure": {
+                  "field": "Exam Agg",
+                  "aggregation": "AGGREGATION_SUM"
+              },
+              "time_dimension": {
+                  "field": "Report Date"
+              },
+              "filters": [],
+              "basic_definition": {
+                  "measure": {
+                      "field": "Exam Agg",
+                      "aggregation": "AGGREGATION_SUM"
+                  },
+                  "time_dimension": {
+                      "field": "Report Date"
+                  },
+                  "filters": []
+              },
+              "is_running_total": false
+          },
+          "scoping_parameters": {
+              "allowed_dimensions": [
+                  "Site",
+                  "Modality"
+              ],
+              "allowed_granularities": []
+          },
+          "scopes": [],
+          "total_scopes": "6",
+          "representation_options": {
+              "type": "NUMBER_FORMAT_TYPE_NUMBER",
+              "number_units": {
+                  "singular_noun": "",
+                  "plural_noun": ""
+              },
+              "sentiment_type": "SENTIMENT_TYPE_NONE",
+              "row_level_id_field": {
+                  "identifier_col": "",
+                  "identifier_label": ""
+              },
+              "row_level_entity_names": {
+                  "entity_name_singular": "",
+                  "entity_name_plural": ""
+              }
+          },
+          "insights_options": {
+              "show_insights": true,
+              "disabled_insight_types": [],
+              "settings": []
+          }
+      },
+      {
+          "metadata": {
+              "name": "Technologist Utilization",
+              "description": "",
+              "id": "295513e9-d5c7-4242-93f1-2723a8edb410",
+              "user_link": "",
+              "user_link_name": "",
+              "schema_version": "1.0.0",
+              "metric_version": "1"
+          },
+          "definition": {
+              "datasource": {
+                  "id": "f5a43c8b-5468-495b-b591-18ac2a690042"
+              },
+              "measure": {
+                  "field": "Technologist Utilization",
+                  "aggregation": "AGGREGATION_AVERAGE"
+              },
+              "time_dimension": {
+                  "field": "Date"
+              },
+              "filters": [],
+              "basic_definition": {
+                  "measure": {
+                      "field": "Technologist Utilization",
+                      "aggregation": "AGGREGATION_AVERAGE"
+                  },
+                  "time_dimension": {
+                      "field": "Date"
+                  },
+                  "filters": []
+              },
+              "is_running_total": false
+          },
+          "scoping_parameters": {
+              "allowed_dimensions": [
+                  "Site"
+              ],
+              "allowed_granularities": []
+          },
+          "scopes": [],
+          "total_scopes": "2",
+          "representation_options": {
+              "type": "NUMBER_FORMAT_TYPE_PERCENT",
+              "number_units": {
+                  "singular_noun": "",
+                  "plural_noun": ""
+              },
+              "sentiment_type": "SENTIMENT_TYPE_UP_IS_GOOD",
+              "row_level_id_field": {
+                  "identifier_col": "",
+                  "identifier_label": ""
+              },
+              "row_level_entity_names": {
+                  "entity_name_singular": "",
+                  "entity_name_plural": ""
+              }
+          },
+          "insights_options": {
+              "show_insights": true,
+              "disabled_insight_types": [],
+              "settings": []
+          }
+      }
+  ],
+  "errors": []
+}

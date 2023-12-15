@@ -1,0 +1,113 @@
+{
+  "scoped_metrics": [
+      {
+          "id": "9582a350-feb9-4835-99ef-2150e8eeb4b7",
+          "name": "",
+          "definition": {
+              "filters": [],
+              "measurement_period": {
+                  "granularity": "GRANULARITY_BY_YEAR",
+                  "range": "RANGE_CURRENT_PARTIAL"
+              },
+              "comparison": {
+                  "comparison": "TIME_COMPARISON_PREVIOUS_PERIOD"
+              }
+          },
+          "core_metric_id": "9000f8d2-436a-449d-ada5-172303058683",
+          "is_default": false,
+          "schema_version": "1.0.0",
+          "metric_version": "1"
+      },
+      {
+          "id": "751a0700-50d0-49d0-b7c5-1ece7527a91c",
+          "name": "",
+          "definition": {
+              "filters": [],
+              "measurement_period": {
+                  "granularity": "GRANULARITY_BY_DAY",
+                  "range": "RANGE_CURRENT_PARTIAL"
+              },
+              "comparison": {
+                  "comparison": "TIME_COMPARISON_PREVIOUS_PERIOD"
+              }
+          },
+          "core_metric_id": "bbb7b833-e7f8-4234-8e91-8f6e8fac79ad",
+          "is_default": false,
+          "schema_version": "1.0.0",
+          "metric_version": "1"
+      },
+      {
+          "id": "d83882d5-82d6-4373-8b15-097be38e6364",
+          "name": "",
+          "definition": {
+              "filters": [],
+              "measurement_period": {
+                  "granularity": "GRANULARITY_BY_DAY",
+                  "range": "RANGE_CURRENT_PARTIAL"
+              },
+              "comparison": {
+                  "comparison": "TIME_COMPARISON_PREVIOUS_PERIOD"
+              }
+          },
+          "core_metric_id": "3f03b620-9234-4f70-9a4c-6e8a39dacf0f",
+          "is_default": false,
+          "schema_version": "1.0.0",
+          "metric_version": "1"
+      },
+      {
+          "id": "3a3306ef-e885-4ffd-a41c-a4a578f0b818",
+          "name": "",
+          "definition": {
+              "filters": [],
+              "measurement_period": {
+                  "granularity": "GRANULARITY_BY_DAY",
+                  "range": "RANGE_CURRENT_PARTIAL"
+              },
+              "comparison": {
+                  "comparison": "TIME_COMPARISON_PREVIOUS_PERIOD"
+              }
+          },
+          "core_metric_id": "2a9c8d79-10bc-4019-a45f-4ea851b056c4",
+          "is_default": false,
+          "schema_version": "1.0.0",
+          "metric_version": "1"
+      },
+      {
+          "id": "b0d468fa-3cc8-4f7e-9447-21542bbb8244",
+          "name": "",
+          "definition": {
+              "filters": [],
+              "measurement_period": {
+                  "granularity": "GRANULARITY_BY_DAY",
+                  "range": "RANGE_CURRENT_PARTIAL"
+              },
+              "comparison": {
+                  "comparison": "TIME_COMPARISON_PREVIOUS_PERIOD"
+              }
+          },
+          "core_metric_id": "61d7a21e-dae1-45d8-8dde-fbfd5ed86f95",
+          "is_default": false,
+          "schema_version": "1.0.0",
+          "metric_version": "1"
+      },
+      {
+          "id": "6ccfd714-e506-4684-af42-54e2e9c9cd14",
+          "name": "",
+          "definition": {
+              "filters": [],
+              "measurement_period": {
+                  "granularity": "GRANULARITY_BY_MONTH",
+                  "range": "RANGE_CURRENT_PARTIAL"
+              },
+              "comparison": {
+                  "comparison": "TIME_COMPARISON_PREVIOUS_PERIOD"
+              }
+          },
+          "core_metric_id": "295513e9-d5c7-4242-93f1-2723a8edb410",
+          "is_default": true,
+          "schema_version": "1.0.0",
+          "metric_version": "1"
+      }
+  ],
+  "errors": []
+}
