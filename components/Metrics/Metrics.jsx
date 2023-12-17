@@ -63,7 +63,7 @@ function Top(props) {
 function Metrics(props) {
   const insights = parseInsights(PowerLevel);
 
-  const metrics = new Model('session', Subscriptions, CoreMetrics);
+  const metrics = new Model('session', Subscriptions, ScopedMetrics, CoreMetrics);
 
   return (
     <>
