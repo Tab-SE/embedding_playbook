@@ -1,7 +1,7 @@
 import VegaLiteViz from '../VegaLiteViz/VegaLiteViz'
 import Model from './libs/model'
 import PowerLevel from './mocks/PowerLevel/PowerLevel.json'
-import SubscribedMetrics from './mocks/All/SubscribedMetrics.json'
+import Subscriptions from './mocks/All/Subscriptions.json'
 import ScopedMetrics from './mocks/All/ScopedMetrics.json'
 import CoreMetrics from './mocks/All/CoreMetrics.json'
 
@@ -63,7 +63,7 @@ function Top(props) {
 function Metrics(props) {
   const insights = parseInsights(PowerLevel);
 
-  const metrics = new Model('session', CoreMetrics);
+  const metrics = new Model('session', Subscriptions, CoreMetrics);
 
   return (
     <>
