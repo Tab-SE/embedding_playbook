@@ -1,4 +1,4 @@
-import { parseSubscriptions, parseScopedMetrics, parseCoreMetrics } from './controller';
+import { parseSubscriptions, parseScopedMetrics, parseCoreMetrics } from './controller/utils';
 
 // Class containing Tableau Pulse core metrics with minimal data for the frontend
 class Metrics {
