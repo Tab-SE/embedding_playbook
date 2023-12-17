@@ -2,14 +2,15 @@ import { parseSubscriptions, parseScopedMetrics, parseCoreMetrics } from './cont
 
 // Class containing Tableau Pulse core metrics with minimal data for the frontend
 class Metrics {
-  constructor(session, subscriptions, coreMetrics) {
+  constructor(session, subscriptions, scopedMetrics, coreMetrics) {
     this.session = session;
     this.subscriptions = this.parseSubscriptions(subscriptions);
-    // this.scoped_metrics = this.parseScopedMetrics(scopedMetrics);
+    this.scoped_metrics = this.parseScopedMetrics(scopedMetrics);
     this.core_metrics = this.parseCoreMetrics(coreMetrics);
+    this.metrics = [];
   }
 
-  // data utilities defined in controller.js
+  // parsing utilities defined in controller.js
   parseSubscriptions = parseSubscriptions;
   parseScopedMetrics = parseScopedMetrics;
   parseCoreMetrics = parseCoreMetrics;
