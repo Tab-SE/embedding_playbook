@@ -1,9 +1,17 @@
 import VegaLiteViz from '../VegaLiteViz/VegaLiteViz'
-import Model from './libs/model'
 import PowerLevel from './mocks/PowerLevel/PowerLevel.json'
-import Subscriptions from './mocks/All/Subscriptions.json'
-import ScopedMetrics from './mocks/All/ScopedMetrics.json'
-import CoreMetrics from './mocks/All/CoreMetrics.json'
+
+
+function Metrics(props) {
+  const insights = parseInsights(PowerLevel);
+
+  return (
+    <>
+    <BAN insights={insights} />
+    <Top insights={insights} />
+    </>
+  )
+}
 
 
 const parseInsights = (metric) => {
@@ -13,8 +21,6 @@ const parseInsights = (metric) => {
   });
   return insights;
 }
-
-
 
 function BAN(props) {
   const summaries = props.insights.ban.summaries[0].result;
@@ -60,18 +66,4 @@ function Top(props) {
   )
 }
 
-function Metrics(props) {
-  const insights = parseInsights(PowerLevel);
-
-  const metrics = new Model('session', Subscriptions, ScopedMetrics, CoreMetrics);
-
-  return (
-    <>
-    <BAN insights={insights} />
-    <Top insights={insights} />
-    </>
-  )
-}
-
 export default Metrics;
-
