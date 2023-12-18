@@ -4,7 +4,7 @@ import { getToken } from "next-auth/jwt"
 import Metrics from '../../models/Metrics'
 
 
-export default handler = async (req, res) => {
+const handler = async (req, res) => {
   const token = await getToken({ req });
   const session = await getServerSession(req, res, authOptions);
 
@@ -44,4 +44,6 @@ export default handler = async (req, res) => {
   }
   res.end();
 }
+
+export default handler;
 
