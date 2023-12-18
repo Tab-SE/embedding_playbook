@@ -16,8 +16,6 @@ export const parseSubscriptions = (subscriptionsResponse) => {
       scope_id: scope_ids[index], // Add the corresponding properties by index
     };
   });
-
-  console.log('subscriptions', subscriptions);
   return subscriptions;
 }
 

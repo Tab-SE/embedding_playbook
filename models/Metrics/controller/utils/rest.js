@@ -18,7 +18,6 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
     });
 
     if (res.status === 200){
-      console.log('getSubscriptions:', res);
       const data = res.data;
       return data.subscriptions;
     } else {
@@ -44,7 +43,6 @@ export const getMetrics = async () => {
     });
 
     if (res.status === 200){
-      console.log('syncMetrics:', res);
       const data = res.data;
       return data;
     } else {
