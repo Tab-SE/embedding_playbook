@@ -11,8 +11,9 @@ export const syncSubscriptions = async (apiKey, userId) => {
   return subscriptions;
 }
 
-export const syncScopedMetrics = async (apiKey, userId, pageSize) => {
-  const scoped_metrics = '';
+export const syncScopedMetrics = async (apiKey, userId, subscriptions) => {
+  const scoped_metrics = await getScopedMetrics(apiKey, subscriptions);
+  parseScopedMetrics(scoped_metrics);
   return scoped_metrics;
 }
 
