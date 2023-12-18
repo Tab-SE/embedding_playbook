@@ -5,20 +5,20 @@ import { useMetrics } from '../../models/Metrics';
 
 export default function TableauAuth() {
   const [userID, setUserID] = useState(undefined);
-  const res = useSession();
+  const sesh = useSession();
   const metrics = useMetrics(userID);
 
   useEffect(() => {
-    if (res.status === 'authenticated') {
-      console.log('res', res);
+    if (sesh.status === 'authenticated') {
+      console.log('client session', sesh);
       setUserID('a3302788-5406-4ab7-bbe3-e2dd39b9eb6f');
     }
-  }, [res.status]);
+  }, [sesh]);
 
-  if (res.status === 'authenticated') {
+  if (sesh.status === 'authenticated') {
     return (
       <>
-        {res.data.user.name} is {res.status} <br />
+        {sesh.data.user.name} is {sesh.status} <br />
         <button onClick={() => signOut()}>Sign out</button>
       </>
     );
@@ -26,7 +26,7 @@ export default function TableauAuth() {
 
   return (
     <>
-      User is {res.status} <br />
+      User is {sesh.status} <br />
       <button onClick={() => signIn()}>Sign in</button>
     </>
   );
