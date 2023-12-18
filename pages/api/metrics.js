@@ -10,27 +10,24 @@ const handler = async (req, res) => {
 
   if (token && session) {
     // Signed in 
-    // console.log("JSON Web Token", JSON.stringify(token, null, 2));
-    // console.log("Session", JSON.stringify(session, null, 2));
-
-    console.log('token', token);
-    console.log('session', session);
+    // console.log("Server Token", JSON.stringify(token, null, 2));
+    // console.log("Server Session", JSON.stringify(session, null, 2));
 
     // get user attributes for temporary authorized sessions
     const { key, user } = token.rest.pulse;
 
     if (req.method === 'GET') {
       try {
-        const metrics = new Metrics('a3302788-5406-4ab7-bbe3-e2dd39b9eb6f');
-        metrics.getSubscriptions(key);
-
-        if (metrics.subscriptions) {
-          const subscriptions = metrics.subscriptions;
-          console.log('subscriptions', subscriptions);
-          res.status(200).json({ subscriptions });
-        } else {
-          throw new Error('Failed to obtain Tableau Pulse Metrics');
-        }
+        const metrics = new Metrics(user); // instantiate a new Metrics object for the logged in user
+        const subscriptions = await metrics.getSubscriptions(key);
+        res.status(200).json({ subscriptions });
+        // if (Object.keys(metrics.subscriptions).length > 0) { // validate that the subscriptions node is not empty
+        //   console.log('metrics.subscriptions', metrics.subscriptions);
+        //   const subscriptions = metrics.subscriptions;
+        //   res.status(200).json({ subscriptions });
+        // } else {
+        //   throw new Error('Failed to obtain Tableau Pulse Metrics');
+        // }
       } catch (err) {
         res.status(500).json({ error: err });
       }
