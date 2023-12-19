@@ -11,7 +11,7 @@ export const parseSubscriptions = (subscriptionsResponse) => {
 
   // Iterate through indexing array and create leaves in the return object
   subscription_ids.forEach((subscription, index) => {
-    subscriptions[subscription] = {
+    subscriptions[index] = {
       subscription_id: subscription, 
       scope_id: scope_ids[index], // Add the corresponding properties by index
     };

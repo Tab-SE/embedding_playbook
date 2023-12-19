@@ -18,7 +18,7 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
     });
 
     if (res.status === 200){
-      return res.data.subscriptions;
+      return res.data;
     } else {
       throw new Error('ERROR: Cannot obtain subscriptions!');
     }
@@ -28,11 +28,11 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
   }
 }
 
-export const getScopedMetrics = async (apiKey, subscriptions) => {
+export const getScopedMetrics = async (apiKey, scoped_metric_ids) => {
   try {
     const res = await axios.get(`${domain}/api/-/metricservice/scopedMetrics:batchGet`, {
       params: {
-        scoped_metric_ids: subscriptions.join(','), // error here
+        scoped_metric_ids: scoped_metric_ids,
       },
       headers: {
         "X-Tableau-Auth": apiKey,
