@@ -15,25 +15,30 @@ class Metrics {
     this.metrics = [];
   }
 
-  // sync methods defined in controller/
-  getSubscriptions(apiKey) {
-    this.subscriptions = syncSubscriptions(apiKey, this.user_id);
+  // async methods defined in controller/
+  async getSubscriptions(apiKey) {
+    this.subscriptions = await syncSubscriptions(apiKey, this.user_id);
     return this.subscriptions;
   }
 
-  getScopedMetrics(apiKey) {
-    this.scoped_metrics = syncScopedMetrics(apiKey, this.user_id, this.subscriptions);
+  async getScopedMetrics(apiKey) {
+    this.scoped_metrics = await syncScopedMetrics(apiKey, this.user_id, this.subscriptions);
     return this.scoped_metrics;
   } 
 
-  getCoreMetrics(apiKey) {
-    this.core_metrics = syncCoredMetrics(apiKey, this.user_id, this.scoped_metrics);
+  async getCoreMetrics(apiKey) {
+    this.core_metrics = await syncCoredMetrics(apiKey, this.user_id, this.scoped_metrics);
     return this.core_metrics;
   } 
 
-  getMetrics(apiKey) {
-    const synced_metrics = syncMetrics(apiKey, this.user_id, this.core_metrics);
-    this.metrics.push(synced_metrics);
+  async getMetrics(apiKey) {
+    this.subscriptions = await syncSubscriptions(apiKey, this.user_id);
+    this.scoped_metrics = await syncScopedMetrics(apiKey, this.user_id, this.subscriptions);
+
+    this.metrics.push({
+      subscriptions: this.subscriptions,
+      scoped_metrics: this.scoped_metrics,
+    });
     return this.metrics;
   }
 
