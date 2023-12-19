@@ -39,8 +39,6 @@ export const parseScopedMetrics = (scopedMetrics) => {
       is_default: is_default[index],
     }
   });
-
-  console.log('scoped_metrics', scoped_metrics);
   return scoped_metrics;
 }
 
@@ -68,8 +66,6 @@ export const parseScopedMetrics = (scopedMetrics) => {
       representation_options: representation_options[index],
     };
   });
-
-  console.log('core metrics', core_metrics);
   return core_metrics;
 }
 

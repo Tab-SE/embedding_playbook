@@ -3,6 +3,7 @@ import axios from "axios"
 const public_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 const domain = process.env.PULSE_DOMAIN;
 
+// get subscription IDs for the provided user
 export const getSubscriptions = async (apiKey, userId, pageSize) => {
   try {
     const res = await axios.get(`${domain}/api/-/subscriptionservice/subscriptions`, {
@@ -28,6 +29,7 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
   }
 }
 
+// get scoped metrics for the provided metric IDs
 export const getScopedMetrics = async (apiKey, scoped_metric_ids) => {
   try {
     const res = await axios.get(`${domain}/api/-/metricservice/scopedMetrics:batchGet`, {
@@ -45,6 +47,31 @@ export const getScopedMetrics = async (apiKey, scoped_metric_ids) => {
       return res.data;
     } else {
       throw new Error('ERROR: Cannot obtain scoped metrics!');
+    }
+  } catch (err) {
+    console.debug(err);
+    return null;
+  }
+}
+
+// get core for the provided metric IDs
+export const getCoreMetrics = async (apiKey, core_metric_ids) => {
+  try {
+    const res = await axios.get(`${domain}/api/-/metricservice/coreMetrics:batchGet`, {
+      params: {
+        core_metric_ids: core_metric_ids,
+      },
+      headers: {
+        "X-Tableau-Auth": apiKey,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    });
+
+    if (res.status === 200){
+      return res.data;
+    } else {
+      throw new Error('ERROR: Cannot obtain core metrics!');
     }
   } catch (err) {
     console.debug(err);
