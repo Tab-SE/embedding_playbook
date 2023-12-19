@@ -1,5 +1,5 @@
 import VegaLiteViz from '../VegaLiteViz/VegaLiteViz'
-import PowerLevel from './mocks/PowerLevel/PowerLevel.json'
+import PowerLevel from '../../models/Metrics/mocks/PowerLevel/PowerLevel.json'
 
 
 function Metrics(props) {
