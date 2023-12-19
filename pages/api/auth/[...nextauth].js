@@ -76,9 +76,9 @@ export const authOptions = {
       return baseUrl
     },
     async jwt({ token, account, profile, user }) {
-      console.count('jwt runs');
-      console.log('user', user);
-      console.log('token', token);
+      // console.count('jwt runs');
+      // console.log('user', user);
+      // console.log('token', token);
       // persist metadata added to user object in authorize() callback to the JWT as claims
       if (user) {
         token.picture = user.picture;
@@ -89,9 +89,9 @@ export const authOptions = {
     },
     async session({ session, token, user }) {
       // database sessions pass user, JWT sessions pass token
-      console.count('session runs');
-      console.log('session', session);
-      console.log('token', token);
+      // console.count('session runs');
+      // console.log('session', session);
+      // console.log('token', token);
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken
       return session
