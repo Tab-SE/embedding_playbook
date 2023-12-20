@@ -21,25 +21,25 @@ export const parseSubscriptions = (subscriptionsResponse) => {
 
 
  // return an minimal representation of specifications
-export const parseSpecifications = (scopedMetrics) => {
-  const scoped_metrics = {};
+export const parseSpecifications = (specificationsResponse) => {
+  const specifications = {};
 
   // Retrieve properties using JSONPath
-  const ids = JSONPath({ path: '$.scoped_metrics[*].id', json: scopedMetrics }); // indexing array
-  const definition = JSONPath({ path: '$.scoped_metrics[*].definition', json: scopedMetrics });
-  const core_metric_id = JSONPath({ path: '$.scoped_metrics[*].core_metric_id', json: scopedMetrics });
-  const is_default = JSONPath({ path: '$.scoped_metrics[*].is_default', json: scopedMetrics });
+  const ids = JSONPath({ path: '$.[*].id', json: specificationsResponse }); // indexing array
+  const specification = JSONPath({ path: '$.[*].specification', json: specificationsResponse });
+  const definition_id = JSONPath({ path: '$.[*].definition_id', json: specificationsResponse });
+  const is_default = JSONPath({ path: '$.[*].is_default', json: specificationsResponse });
 
   // Iterate through indexing array and create leaves in the return object
   ids.forEach((id, index) => {
-    scoped_metrics[id] = {
-      scoped_id: id,
-      scoped_definition: definition[index], // Add the corresponding properties by index
-      core_metric_id: core_metric_id[index],
+    specifications[index] = {
+      specification_id: id,
+      specification: specification[index], // Add the corresponding properties by index
+      definition_id: definition_id[index],
       is_default: is_default[index],
     }
   });
-  return scoped_metrics;
+  return specifications;
 }
 
 
@@ -57,7 +57,7 @@ export const parseSpecifications = (scopedMetrics) => {
 
   // Iterate through indexing array and create leaves in the return object
   names.forEach((name, index) => {
-    core_metrics[name] = {
+    core_metrics[index] = {
       name: name,
       description: descriptions[index], // Add the corresponding properties by index
       core_id: id[index],
@@ -80,7 +80,7 @@ export const parseMetrics = (subscriptions, scoped_metrics, core_metrics) => {
 
   // Iterate through indexing array and create leaves in the return object
   names.forEach((name, index) => {
-    metrics[name] = {
+    metrics[index] = {
       name: name, 
       id: id[index], // Add the corresponding properties by index
     };
