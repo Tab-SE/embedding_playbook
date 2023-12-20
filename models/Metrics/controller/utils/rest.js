@@ -40,31 +40,39 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
 
 // get specifications for the provided metric IDs
 export const getSpecifications = async (apiKey, metric_ids) => {
-  try {
-    const res = await axios.get(`${tableau_domain}/api/-/metricservice/scopedMetrics:batchGet`, {
-      params: {
-        scoped_metric_ids: metric_ids,
-      },
-      headers: {
-        "X-Tableau-Auth": apiKey,
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      }
-    });
+  const endpoint = tableau_domain + path + '/metrics:batchGet';
 
-    if (res.status === 200){
-      return res.data;
-    } else {
-      throw new Error('ERROR: Cannot obtain scoped metrics!');
+  const config = {
+    tableau_domain,
+    headers: {
+      'X-Tableau-Auth': apiKey,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    params: {
+      metric_ids: metric_ids,
+    },
+  };
+
+  const makeRequest = async () => {
+    try {
+      const response = await axios.get(endpoint, config);
+      if (response.status === 200){
+        return response.data;
+      } else {
+        throw new Error('ERROR: Cannot obtain subscriptions!');
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
     }
-  } catch (err) {
-    console.debug(err);
-    return null;
-  }
+  };
+
+  return makeRequest();
 }
 
-// get core for the provided metric IDs
-export const getCoreMetrics = async (apiKey, core_metric_ids) => {
+// get definitions for the provided metric IDs
+export const getDefinitions = async (apiKey, metric_ids) => {
   try {
     const res = await axios.get(`${tableau_domain}/api/-/metricservice/coreMetrics:batchGet`, {
       params: {
