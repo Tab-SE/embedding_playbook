@@ -7,21 +7,21 @@ export const parseSubscriptions = (subscriptionsResponse) => {
 
   // Retrieve properties using JSONPath
   const subscription_ids = JSONPath({ path: '$.subscriptions[*].id', json: subscriptionsResponse }); // indexing array
-  const scope_ids = JSONPath({ path: '$.subscriptions[*].scope_id', json: subscriptionsResponse });
+  const metric_ids = JSONPath({ path: '$.subscriptions[*].metric_id', json: subscriptionsResponse });
 
   // Iterate through indexing array and create leaves in the return object
   subscription_ids.forEach((subscription, index) => {
     subscriptions[index] = {
       subscription_id: subscription, 
-      scope_id: scope_ids[index], // Add the corresponding properties by index
+      metric_id: metric_ids[index], // Add the corresponding properties by index
     };
   });
   return subscriptions;
 }
 
 
- // return an minimal representation of scoped metrics
-export const parseScopedMetrics = (scopedMetrics) => {
+ // return an minimal representation of specifications
+export const parseSpecifications = (scopedMetrics) => {
   const scoped_metrics = {};
 
   // Retrieve properties using JSONPath

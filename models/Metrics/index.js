@@ -1,4 +1,4 @@
-import { syncSubscriptions, syncScopedMetrics, syncCoredMetrics, syncMetrics } from './controller/methods'
+import { syncSubscriptions, syncSpecifications, syncDefinitions, syncMetrics } from './controller/methods'
 
 /* 
 Stores user subscriptions from Tableau Pulse in a metrics model
@@ -11,21 +11,27 @@ class Metrics {
     this.user_id = userId;
     this.metrics = [];
     this.subscriptions = undefined;
-    this.scoped_metrics = undefined;
-    this.core_metrics = undefined;
+    this.specifications = undefined;
+    this.definitions = undefined;
   }
 
   // async methods defined in controller/
   async getMetrics(apiKey) {
     this.subscriptions = await syncSubscriptions(apiKey, this.user_id);
-    this.scoped_metrics = await syncScopedMetrics(apiKey, this.subscriptions);
-    this.core_metrics = await syncCoredMetrics(apiKey, this.scoped_metrics);
+    console.log('this.subscriptions', this.subscriptions);
+    this.specifications = await syncSpecifications(apiKey, this.subscriptions);
+    console.log('this.specifications', this.specifications);
+    this.definitions = await syncDefinitions(apiKey, this.specifications);
+    console.log('this.definitions', this.definitions);
+
 
     this.metrics.push({
       subscriptions: this.subscriptions,
-      scoped_metrics: this.scoped_metrics,
-      core_metrics: this.core_metrics,
+      specifications: this.specifications,
+      definitions: this.definitions,
     });
+
+    console.log('this.metrics', this.metrics);
     return this.metrics;
   }
 
