@@ -44,29 +44,32 @@ export const parseSpecifications = (specificationsResponse) => {
 
 
  // return an minimal representation of core metrics
- export const parseCoreMetrics = (coreMetrics) => {
-  const core_metrics = {};
+ export const parseDefinitions = (definitionsResponse) => {
+  const definitions = {};
 
   // Retrieve properties using JSONPath
-  const names = JSONPath({ path: '$.core_metrics[*].metadata.name', json: coreMetrics }); // indexing array
-  const descriptions = JSONPath({ path: '$.core_metrics[*].metadata.description', json: coreMetrics });
-  const id = JSONPath({ path: '$.core_metrics[*].metadata.id', json: coreMetrics });
-  const definition = JSONPath({ path: '$.core_metrics[*].definition', json: coreMetrics });
-  const scoping_parameters = JSONPath({ path: '$.core_metrics[*].scoping_parameters', json: coreMetrics });
-  const representation_options = JSONPath({ path: '$.core_metrics[*].representation_options', json: coreMetrics });
+  const names = JSONPath({ path: '$.[*].metadata.name', json: definitionsResponse }); // indexing array
+  const descriptions = JSONPath({ path: '$.[*].metadata.description', json: definitionsResponse });
+  const id = JSONPath({ path: '$.[*].metadata.id', json: definitionsResponse });
+  const definition = JSONPath({ path: '$.[*].specification', json: definitionsResponse });
+  const extension_options = JSONPath({ path: '$.[*].extension_options', json: definitionsResponse });
+  const representation_options = JSONPath({ path: '$.[*].representation_options', json: definitionsResponse });
+  const insights_options = JSONPath({ path: '$.[*].insights_options', json: definitionsResponse });
+
 
   // Iterate through indexing array and create leaves in the return object
   names.forEach((name, index) => {
-    core_metrics[index] = {
+    definitions[index] = {
       name: name,
       description: descriptions[index], // Add the corresponding properties by index
-      core_id: id[index],
-      core_definition: definition[index], 
-      scoping_parameters: scoping_parameters[index],
+      id: id[index],
+      definition: definition[index], 
+      extension_options: extension_options[index],
       representation_options: representation_options[index],
+      insights_options: insights_options[index],
     };
   });
-  return core_metrics;
+  return definitions;
 }
 
 

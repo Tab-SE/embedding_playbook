@@ -24,7 +24,7 @@ class Metrics {
     this.definitions = await syncDefinitions(apiKey, this.specifications);
     console.log('this.definitions', this.definitions);
 
-
+    // insert individual Metric objects into a return array
     this.metrics.push({
       subscriptions: this.subscriptions,
       specifications: this.specifications,

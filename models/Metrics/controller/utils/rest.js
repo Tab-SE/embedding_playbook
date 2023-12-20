@@ -60,7 +60,7 @@ export const getSpecifications = async (apiKey, metric_ids) => {
       if (response.status === 200){
         return response.data;
       } else {
-        throw new Error('ERROR: Cannot obtain subscriptions!');
+        throw new Error('ERROR: Cannot obtain specifications!');
       }
     } catch (error) {
       console.error(error);
@@ -72,28 +72,36 @@ export const getSpecifications = async (apiKey, metric_ids) => {
 }
 
 // get definitions for the provided metric IDs
-export const getDefinitions = async (apiKey, metric_ids) => {
-  try {
-    const res = await axios.get(`${tableau_domain}/api/-/metricservice/coreMetrics:batchGet`, {
-      params: {
-        core_metric_ids: core_metric_ids,
-      },
-      headers: {
-        "X-Tableau-Auth": apiKey,
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      }
-    });
+export const getDefinitions = async (apiKey, definition_ids) => {
+  const endpoint = tableau_domain + path + '/definitions:batchGet';
 
-    if (res.status === 200){
-      return res.data;
-    } else {
-      throw new Error('ERROR: Cannot obtain core metrics!');
+  const config = {
+    tableau_domain,
+    headers: {
+      'X-Tableau-Auth': apiKey,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    params: {
+      definition_ids: definition_ids,
+    },
+  };
+
+  const makeRequest = async () => {
+    try {
+      const response = await axios.get(endpoint, config);
+      if (response.status === 200){
+        return response.data;
+      } else {
+        throw new Error('ERROR: Cannot obtain definitions!');
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
     }
-  } catch (err) {
-    console.debug(err);
-    return null;
-  }
+  };
+
+  return makeRequest();
 }
 
 export const getMetrics = async () => {
