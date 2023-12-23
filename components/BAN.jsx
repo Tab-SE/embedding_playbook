@@ -1,4 +1,4 @@
-import VegaLiteViz from "./VegaLiteViz/VegaLiteViz";
+import VegaLiteViz from "./VegaLiteViz";
 
 function BAN(props) {
   const summaries = props.insights.ban.summaries[0].result;
