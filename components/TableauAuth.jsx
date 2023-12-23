@@ -1,6 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { useMetrics } from '../../models/Metrics';
+import { useMetrics } from '../models/Metrics';
 
 export default function TableauAuth() {
   const [userID, setUserID] = useState(undefined);
