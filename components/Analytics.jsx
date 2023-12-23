@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
-import Tableau from '../Tableau/Tableau'
-import Toolbar from '../Toolbar/Toolbar'
+import Tableau from './Tableau/Tableau'
+import Toolbar from './Toolbar/Toolbar'
 
 function Analytics(props) {
   const viz = useRef(null); // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
