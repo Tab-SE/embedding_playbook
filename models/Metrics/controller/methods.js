@@ -46,9 +46,6 @@ export const syncDefinitions = async (apiKey, specifications) => {
   }
 }
 
-export const syncMetrics = async (apiKey, core_metrics) => {
-}
-
 // logs errors returned from Tableau Pulse
 const responseHandler = (response) => {
   if (!response) {

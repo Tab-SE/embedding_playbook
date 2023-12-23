@@ -74,7 +74,13 @@ export const parseSpecifications = (specificationsResponse) => {
 
 
  // return a minimal representation of metrics
-export const parseMetrics = (subscriptions, scoped_metrics, core_metrics) => {
+export const parseMetrics = (metricsObj) => {
+  // console.log('parse metricsObj', metricsObj);
+  // const subscriptions = JSON.stringify(subscriptions);
+  // const specifications = JSON.stringify(specifications);
+  // const definitions = JSON.stringify(definitions);
+
+
   const metrics = {};
 
   // Retrieve properties using JSONPath
