@@ -1,6 +1,7 @@
 import { syncSubscriptions, syncSpecifications, syncDefinitions, syncMetrics } from './controller/methods'
 import { parseMetrics } from './controller/utils/parse';
 
+
 /* 
 Metrics Factory
 Stores user subscriptions from Tableau Pulse in a metrics model
@@ -20,20 +21,15 @@ class Metrics {
   // async methods defined in controller/
   async getMetrics(apiKey) {
     this.subscriptions = await syncSubscriptions(apiKey, this.user_id);
-    console.log('this.subscriptions', this.subscriptions);
-    this.specifications = await syncSpecifications(apiKey, this.subscriptions);
-    console.log('this.specifications', this.specifications);
-    this.definitions = await syncDefinitions(apiKey, this.specifications);
-    console.log('this.definitions', this.definitions);
+    // console.log('this.subscriptions', this.subscriptions);
 
-    const metricsObj = {
-      subscriptions: this.subscriptions,
-      specifications: this.specifications,
-      definitions: this.definitions,
-    };
+    this.specifications = await syncSpecifications(apiKey, this.subscriptions);
+    // console.log('this.specifications', this.specifications);
+
+    this.definitions = await syncDefinitions(apiKey, this.specifications);
+    // console.log('this.definitions', this.definitions);
     
-    // const parsedMetrics = parseMetrics(JSON.stringify(metricsObj));
-    // console.log('parsedMetrics', parsedMetrics);
+    const parsedMetrics = parseMetrics(this.subscriptions, this.specifications, this.definitions);
 
     // insert individual Metric objects into a return array
     this.metrics.push({
@@ -42,7 +38,7 @@ class Metrics {
       definitions: this.definitions,
     });
 
-    console.log('this.metrics', this.metrics);
+    // console.log('this.metrics', this.metrics);
     return this.metrics;
   }
 
