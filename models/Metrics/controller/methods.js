@@ -5,6 +5,9 @@ should eventually support Tanstack client-side or SWR server-side for state mana
 
 import { getSubscriptions, getSpecifications, getDefinitions } from "./utils/rest"
 import { parseSubscriptions, parseSpecifications, parseDefinitions, parseMetrics } from "./utils/parse"
+import Subscriptions from '../../../models/Metrics/mocks/All/Subscriptions.json'
+import Specifications from '../../../models/Metrics/mocks/All/Specifications.json'
+import Definitions from '../../../models/Metrics/mocks/All/Definitions.json'
 
 export const syncSubscriptions = async (apiKey, userId) => {
   try {
@@ -14,11 +17,13 @@ export const syncSubscriptions = async (apiKey, userId) => {
     return parsedData;
   } catch(err) {
     console.error(err);
-    return undefined;
+    const parsedData = parseSubscriptions(Subscriptions);
+    return parsedData;
   }
 }
 
 export const syncSpecifications = async (apiKey, subscriptions) => {
+  // console.log('syncSpecifications', subscriptions);
   try {
     // create a comma separated string for URL parameters the next request
     const metric_ids = Object.values(subscriptions).map(obj => obj.metric_id).join(',');
@@ -28,6 +33,7 @@ export const syncSpecifications = async (apiKey, subscriptions) => {
     return parsedData;
   } catch(err) {
     console.debug(err);
+    const parsedData = parseSpecifications(Specifications);
     return parsedData;
   }
 }
@@ -42,6 +48,7 @@ export const syncDefinitions = async (apiKey, specifications) => {
     return parsedData;
   } catch(err) {
     console.debug(err);
+    const parsedData = parseDefinitions(Definitions);
     return parsedData;
   }
 }
@@ -52,7 +59,7 @@ const responseHandler = (response) => {
     throw new Error('REQUEST ERROR: cannot request subscriptions');
   } else if (response?.errors) { // Pulse response includes an errors object with detailed errors per response
     if (response.errors.length > 0) {
-      console.debug(`Errors found while servicing request: ${JSON.stringify(response.errors, null, 2)}`);
+      // console.debug(`Errors found while servicing request: ${JSON.stringify(response.errors, null, 2)}`);
     }
   }
 }
