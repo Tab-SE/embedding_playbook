@@ -16,16 +16,16 @@ export default function TableauAuth() {
   if (sesh.status === 'authenticated') {
     return (
       <>
-        {sesh.data.user.name} is {sesh.status} <br />
-        <button onClick={() => signOut()}>Sign out</button>
+        <p className="nx-font-bold mt-4">{sesh.data.user.name} is {sesh.status}</p> 
+        <button className="nx-text-xl nx-font-bold" onClick={() => signOut()}>Sign out</button>
       </>
     );
   }
 
   return (
     <>
-      User is {sesh.status} <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <p className="nx-font-bold mt-4">User is {sesh.status}</p> 
+      <button className="nx-text-xl nx-font-bold" onClick={() => signIn()}>Sign in</button>
     </>
   );
 }
