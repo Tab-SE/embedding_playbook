@@ -56,5 +56,5 @@ const Tableau = forwardRef(function Tableau(props, ref) {
   );
 });
 
-export { useFilters } ;
+export { useFilters };
 export default Tableau;
