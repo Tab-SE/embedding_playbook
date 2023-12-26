@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import Tableau from './Tableau/Tableau'
+import Tableau from './Tableau'
 import Toolbar from './Toolbar/Toolbar'
 
 function Analytics(props) {
