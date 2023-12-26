@@ -2,7 +2,7 @@ import Avatar from './components/Avatar'
 import Vertical from './components/Verticals'
 import Cart  from './components/Cart'
 import Download from './components/Download'
-import Filters from './components/Filters/Filters'
+import Filters from '../Filters'
 
 function Toolbar(props) {
   

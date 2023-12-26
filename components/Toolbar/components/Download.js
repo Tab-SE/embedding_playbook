@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import tab_embed from '../../Tableau/embed_api/embed_api'
+import tab_embed from '../../../utils/embed_api/embed_api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileArrowDown, faFileCsv, faFileExcel, 
   faFileImage, faFilePdf, faFilePowerpoint, faFilePen  
