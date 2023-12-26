@@ -1,7 +1,5 @@
 import PowerLevel from '../models/Metrics/mocks/PowerLevel/PowerLevel.json'
-import Detail from './Detail';
-import BAN from './BAN'
-
+import { BAN, Detail } from './Insights'
 
 function Metrics(props) {
   const insights = parseInsights(PowerLevel);
