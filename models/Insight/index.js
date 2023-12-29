@@ -1,10 +1,12 @@
 import { matchSpecification, matchSubscription } from './controller/utils/parse'
+import { syncInsights } from './controller/methods';
 /* 
 Metric
 Stores and generates Insights from Tableau Pulse generated from user specific metrics
 */
 
-export default class MetricModel {
+export default class InsightModel {
+  // stores user, definition, specification and subscription data for generating insights
   constructor(userId, definitionObj, specificationsObj, subscriptionsObj) {
     this.name = definitionObj.name;
     this.description = definitionObj.description;
@@ -23,6 +25,7 @@ export default class MetricModel {
     this.init(subscriptionsObj, specificationsObj, definitionObj);
   }
 
+  // starting with a single definition, the model finds matching subscriptions and specifications from batched results
   init = (subscriptionsObj, specificationsObj, definitionObj) => {
     const spec = matchSpecification(specificationsObj, definitionObj);
     this.specification_id = spec.specification_id;
@@ -33,6 +36,7 @@ export default class MetricModel {
     this.updated = sub.updated;
   }
 
+  // requests insights from Tableau Pulse
   syncInsights = async (apiKey) => {
     return this.insights;
   }

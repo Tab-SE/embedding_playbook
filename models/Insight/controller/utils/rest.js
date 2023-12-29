@@ -5,9 +5,9 @@ const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const path = '/api/-/pulse'; // path to resource
 
 // runs the axios HTTP request
-const makeRequest = async (endpoint, config) => {
+const postRequest = async (endpoint, config) => {
   try {
-    const response = await axios.get(endpoint, config);
+    const response = await axios.post(endpoint, config);
     if (response.status === 200){
       return response.data;
     } else {
@@ -19,15 +19,27 @@ const makeRequest = async (endpoint, config) => {
   }
 };
 
-export const getInsights = () => {
+export const getInsights = (metrics) => {
   const endpoint = public_url + '/insights';
+  const body = {};
+
+  if (Array.isArray(metrics)) {
+    if (metrics.length === 0) {
+      throw new Error('metrics must have at least one element');
+    }
+    body.metrics = metrics;
+  } else {
+    throw new Error('metrics must be an array!');
+  }
+  
   const config = {
     public_url,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-    }
-  }
+    },
+    body,
+  };
 
-  return makeRequest(endpoint, config);
+  return postRequest(endpoint, config);
 }
