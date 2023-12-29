@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
 import { getToken } from "next-auth/jwt"
-import Metrics from '../../models/Metrics'
+import MetricsModel from '../../models/Metrics'
 
 
 const handler = async (req, res) => {
@@ -18,9 +18,9 @@ const handler = async (req, res) => {
 
     if (req.method === 'GET') {
       try {
-        const metrics = new Metrics(user); // instantiate a new Metrics object for the logged in user
-        const payload = await metrics.getMetrics(key); // request metrics for the user
-        // console.log('P A Y L O A D ! :', JSON.stringify(payload, null, 2));
+        const metrics = new MetricsModel(user); // instantiate a new Metrics object for the logged in user
+        const payload = await metrics.syncMetrics(key); // request metrics for the user
+        // console.log('P A Y L O A D ! :', payload);
         res.status(200).json(payload);
       } catch (err) {
         res.status(500).json({ error: err });
