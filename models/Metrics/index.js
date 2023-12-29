@@ -1,5 +1,6 @@
 import { syncSubscriptions, syncSpecifications, syncDefinitions, syncMetrics } from './controller/methods'
 import { parseMetrics } from './controller/utils/parse';
+import MetricModel from '../Metric'
 
 
 /* 
@@ -9,7 +10,7 @@ used to generate individual metric objects for storing data insights
 designed to run isomorphically server-side and client-side (once Custom Domains is supported)
 */
 
-class Metrics {
+export default class MetricsModel {
   constructor(userId) {
     this.user_id = userId;
     this.metrics = [];
@@ -19,31 +20,28 @@ class Metrics {
   }
 
   // async methods defined in controller/
-  async getMetrics(apiKey) {
+  async syncMetrics(apiKey) {
+    // HTTP requests
     this.subscriptions = await syncSubscriptions(apiKey, this.user_id);
-    // console.log('this.subscriptions', this.subscriptions);
-
     this.specifications = await syncSpecifications(apiKey, this.subscriptions);
-    // console.log('this.specifications', this.specifications);
-
     this.definitions = await syncDefinitions(apiKey, this.specifications);
-    // console.log('this.definitions', this.definitions);
+
+    // make a metrics object
+    this.makeMetrics();    
     
-    const parsedMetrics = parseMetrics(this.subscriptions, this.specifications, this.definitions);
-
-    // insert individual Metric objects into a return array
-    this.metrics.push({
-      subscriptions: this.subscriptions,
-      specifications: this.specifications,
-      definitions: this.definitions,
-    });
-
     // console.log('this.metrics', this.metrics);
+
     return this.metrics;
+  }
+
+  makeMetrics = () => {
+    for (const [key, definition] of Object.entries(this.definitions)) {
+      const Metric = new MetricModel(this.user_id, definition, this.specifications, this.subscriptions);
+      this.metrics.push(Metric);
+    }
   }
 
 }
 
-export default Metrics;
 export { syncSubscriptions, syncScopedMetrics, syncCoredMetrics, syncMetrics } from './controller/methods';
 export { useMetrics } from './controller/hooks';
