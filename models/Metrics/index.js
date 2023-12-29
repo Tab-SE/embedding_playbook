@@ -1,5 +1,4 @@
 import { syncSubscriptions, syncSpecifications, syncDefinitions, syncMetrics } from './controller/methods'
-import { parseMetrics } from './controller/utils/parse';
 import MetricModel from '../Metric'
 
 
@@ -28,8 +27,6 @@ export default class MetricsModel {
 
     // make a metrics object
     this.makeMetrics();    
-    
-    // console.log('this.metrics', this.metrics);
 
     return this.metrics;
   }
