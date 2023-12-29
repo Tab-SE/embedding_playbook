@@ -1,4 +1,4 @@
-import { syncSubscriptions, syncSpecifications, syncDefinitions } from './controller/methods'
+import { handleSubscriptions, handleSpecifications, handleDefinitions } from './controller/methods'
 import InsightModel from '../Insight'
 
 /* 
@@ -20,9 +20,9 @@ export default class MetricsModel {
   // async methods defined in controller/
   async syncMetrics(apiKey) {
     // HTTP requests
-    this.subscriptions = await syncSubscriptions(apiKey, this.user_id);
-    this.specifications = await syncSpecifications(apiKey, this.subscriptions);
-    this.definitions = await syncDefinitions(apiKey, this.specifications);
+    this.subscriptions = await handleSubscriptions(apiKey, this.user_id);
+    this.specifications = await handleSpecifications(apiKey, this.subscriptions);
+    this.definitions = await handleDefinitions(apiKey, this.specifications);
 
     // make a metrics object
     this.makeMetrics();    
@@ -39,5 +39,4 @@ export default class MetricsModel {
 
 }
 
-export { syncSubscriptions, syncScopedMetrics, syncCoredMetrics, syncMetrics } from './controller/methods';
 export { useMetrics } from './controller/hooks';
