@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useMetrics } from '../models/Metrics';
 
 export default function TableauAuth() {
-  const [userID, setUserID] = useState(undefined);
+  const [user, setUser] = useState(undefined);
   const { status, data } = useSession({
     required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
     onUnauthenticated() {
@@ -12,11 +12,11 @@ export default function TableauAuth() {
     },
   })
   // const sesh = useSession();
-  const metrics = useMetrics(userID);
+  const metrics = useMetrics(user);
 
   useEffect(() => {
     if (status === 'authenticated') {
-      setUserID(data.user.name);
+      setUser(data.user.name);
     }
   }, [status, data]);
 
@@ -32,7 +32,7 @@ export default function TableauAuth() {
   // 'loading' state is the default because session.required === true: https://next-auth.js.org/getting-started/client#require-session
   return (
     <>
-      <p className="nx-font-bold m-4">User is unauthenticated</p> 
+      <p className="nx-font-bold m-4">automatic authentication: (disabled)</p> 
       <button className="btn glass" onClick={() => signIn()}>Sign in</button>
     </>
   );
