@@ -93,7 +93,7 @@ export const authOptions = {
       // console.log('session', session);
       // console.log('token', token);
       // Send properties to the client, like an access_token from a provider.
-      session.accessToken = token.accessToken
+      session.accessToken = token.accessToken;
       return session
     }
   },
