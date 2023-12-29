@@ -1,6 +1,5 @@
 import { syncSubscriptions, syncSpecifications, syncDefinitions } from './controller/methods'
-import MetricModel from '../Metric'
-
+import InsightModel from '../Insight'
 
 /* 
 Metrics Factory
@@ -33,8 +32,8 @@ export default class MetricsModel {
 
   makeMetrics = () => {
     for (const [key, definition] of Object.entries(this.definitions)) {
-      const Metric = new MetricModel(this.user_id, definition, this.specifications, this.subscriptions);
-      this.metrics.push(Metric);
+      const Insight = new InsightModel(this.user_id, definition, this.specifications, this.subscriptions);
+      this.metrics.push(Insight);
     }
   }
 
