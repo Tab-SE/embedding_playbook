@@ -1,23 +1,9 @@
-import axios from "axios";
+import { post } from "http"
 
 const public_url = process.env.NEXT_PUBLIC_API_BASE_URL; // URL for Serverless functions
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const path = '/api/-/pulse'; // path to resource
 
-// runs the axios HTTP request
-const postRequest = async (endpoint, config) => {
-  try {
-    const response = await axios.post(endpoint, config);
-    if (response.status === 200){
-      return response.data;
-    } else {
-      throw new Error(`ERROR: Cannot obtain data for endpoint: ${endpoint}`);
-    }
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
 
 export const getInsights = (metrics) => {
   const endpoint = public_url + '/insights';
@@ -41,5 +27,5 @@ export const getInsights = (metrics) => {
     body,
   };
 
-  return postRequest(endpoint, config);
+  return post(endpoint, config);
 }
