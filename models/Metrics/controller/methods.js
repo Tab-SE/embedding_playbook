@@ -4,7 +4,7 @@ should eventually support Tanstack client-side or SWR server-side for state mana
 */
 
 import { getSubscriptions, getSpecifications, getDefinitions } from "./utils/rest"
-import { parseSubscriptions, parseSpecifications, parseDefinitions, parseMetrics } from "./utils/parse"
+import { parseSubscriptions, parseSpecifications, parseDefinitions } from "./utils/parse"
 import Subscriptions from '../../../models/Metrics/mocks/All/Subscriptions.json'
 import Specifications from '../../../models/Metrics/mocks/All/Specifications.json'
 import Definitions from '../../../models/Metrics/mocks/All/Definitions.json'

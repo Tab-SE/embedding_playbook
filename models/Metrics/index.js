@@ -1,4 +1,4 @@
-import { syncSubscriptions, syncSpecifications, syncDefinitions, syncMetrics } from './controller/methods'
+import { syncSubscriptions, syncSpecifications, syncDefinitions } from './controller/methods'
 import MetricModel from '../Metric'
 
 

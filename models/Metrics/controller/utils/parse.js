@@ -1,5 +1,4 @@
 import { JSONPath } from 'jsonpath-plus';
-import Metric from '../../../Metric'
 
 
  // return an minimal representation of subscriptions
