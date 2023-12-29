@@ -1,23 +1,8 @@
-import axios from "axios"
+import { get } from "../../../../utils/http"
 
 const public_url = process.env.NEXT_PUBLIC_API_BASE_URL; // URL for Serverless functions
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const path = '/api/-/pulse'; // path to resource
-
-// runs the axios HTTP request
-const getRequest = async (endpoint, config) => {
-  try {
-    const response = await axios.get(endpoint, config);
-    if (response.status === 200){
-      return response.data;
-    } else {
-      throw new Error(`ERROR: Cannot obtain data for endpoint: ${endpoint}`);
-    }
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
 
 // get subscription IDs for the provided user
 export const getSubscriptions = async (apiKey, userId, pageSize) => {
@@ -36,7 +21,7 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
     },
   };
 
-  return getRequest(endpoint, config);
+  return get(endpoint, config);
 }
 
 // get specifications for the provided metric IDs
@@ -55,7 +40,7 @@ export const getSpecifications = async (apiKey, metric_ids) => {
     },
   };
 
-  return getRequest(endpoint, config);
+  return get(endpoint, config);
 }
 
 // get definitions for the provided metric IDs
@@ -74,7 +59,7 @@ export const getDefinitions = async (apiKey, definition_ids) => {
     },
   };
 
-  return getRequest(endpoint, config);
+  return get(endpoint, config);
 }
 
 // private serverless function for this project, requests and parses metric data from Tableau
@@ -88,5 +73,5 @@ export const getMetrics = async () => {
     }
   }
 
-  return getRequest(endpoint, config);
+  return get(endpoint, config);
 }
