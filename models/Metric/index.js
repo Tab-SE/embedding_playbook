@@ -1,4 +1,4 @@
-import { matchSpecification, matchSubscription } from './controller/parse'
+import { matchSpecification, matchSubscription } from './controller/utils/parse'
 /* 
 Metric
 Stores and generates Insights from Tableau Pulse generated from user specific metrics
