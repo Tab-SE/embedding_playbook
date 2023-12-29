@@ -1,4 +1,5 @@
 import { JSONPath } from 'jsonpath-plus';
+import Metric from '../../../Metric'
 
 
  // return an minimal representation of subscriptions
@@ -77,36 +78,6 @@ export const parseSpecifications = (specificationsResponse) => {
   return definitions;
 }
 
-
- // return a minimal representation of metrics
-export const parseMetrics = (subscriptionsObj, specificationsObj, definitionsObj) => {
-  // console.log('subscriptionsObj', JSON.stringify(subscriptionsObj, null, 2));
-  // console.log('specificationsObj', JSON.stringify(specificationsObj, null, 2));
-  // console.log('definitionsObj', JSON.stringify(definitionsObj, null, 2));
-  const metrics = [];
-
-  for (const [key, definitionObj] of Object.entries(definitionsObj)) {
-    let metric = {
-      name: definitionObj.name,
-      description: definitionObj.description,
-      id: definitionObj.id,
-      definition: definitionObj.definition,
-      extension_options: definitionObj.extension_options,
-      representation_options: definitionObj.representation_options,
-      insights_options: definitionObj.insights_options,
-      specification_id: undefined,
-      specification: undefined,
-      subscription_id: undefined,
-      created: undefined,
-      updated: undefined,
-    };
-    
-    metric = matchSpecification(specificationsObj, metric);
-    metric = matchSubscription(subscriptionsObj, metric);
-  }
-
-  return metrics;
-}
 
 const matchSpecification = (specificationsObj, metric) => {
   for (const [key, specificationObj] of Object.entries(specificationsObj)) {
