@@ -8,12 +8,17 @@ export const parseSubscriptions = (subscriptionsResponse) => {
   // Retrieve properties using JSONPath
   const subscription_ids = JSONPath({ path: '$.subscriptions[*].id', json: subscriptionsResponse }); // indexing array
   const metric_ids = JSONPath({ path: '$.subscriptions[*].metric_id', json: subscriptionsResponse });
+  const create_times = JSONPath({ path: '$.subscriptions[*].create_time', json: subscriptionsResponse });
+  const update_times = JSONPath({ path: '$.subscriptions[*].update_time', json: subscriptionsResponse });
+
 
   // Iterate through indexing array and create leaves in the return object
   subscription_ids.forEach((subscription, index) => {
     subscriptions[index] = {
       subscription_id: subscription, 
       metric_id: metric_ids[index], // Add the corresponding properties by index
+      create_time: create_times[index],
+      update_time: update_times[index], 
     };
   });
   return subscriptions;
@@ -78,55 +83,48 @@ export const parseMetrics = (subscriptionsObj, specificationsObj, definitionsObj
   // console.log('subscriptionsObj', JSON.stringify(subscriptionsObj, null, 2));
   // console.log('specificationsObj', JSON.stringify(specificationsObj, null, 2));
   // console.log('definitionsObj', JSON.stringify(definitionsObj, null, 2));
-  
-  const metrics2 = {};
   const metrics = [];
 
-  // Retrieve properties using JSONPath
-
-  // definitions
-  const names = JSONPath({ path: '$.*.name', json: definitionsObj }); // indexing array
-  const description = JSONPath({ path: '$.*.description', json: definitionsObj });
-  const definition_id = JSONPath({ path: '$.*.id', json: definitionsObj });
-  const definition = JSONPath({ path: '$.*.definition', json: definitionsObj });
-  const extension_options = JSONPath({ path: '$.*.extension_options', json: definitionsObj });
-  const representation_options = JSONPath({ path: '$.*.representation_options', json: definitionsObj });
-  const insights_options = JSONPath({ path: '$.*.insights_options', json: definitionsObj });
-  // specifications
-  const specification_id = JSONPath({ path: '$.*.specification_id', json: specificationsObj });
-  const specification = JSONPath({ path: '$.*.specification', json: specificationsObj });
-  const definition_key = JSONPath({ path: '$.*.definition_id', json: specificationsObj });
-  // subscriptions
-  const subscription_id = JSONPath({ path: '$.*.subscription_id', json: subscriptionsObj });
-  const specification_key = JSONPath({ path: '$.*.metric_id', json: subscriptionsObj });
-
-  Object.entries(definitionsObj).forEach(([key, value]) => {
-    metrics.push(
-      
-    )
-  });
-
-
-
-  // Iterate through indexing array and create leaves in the return object
-  names.forEach((name, index) => {
-    metrics2[index] = {
-      name: name, 
-      description: description[index], // Add the corresponding properties by index
-      subscription_id: subscription_id[index],
-      specification_id: specification_id[index],
-      specification_key: specification_key[index],
-      specification: specification[index],
-      definition_id: definition_id[index],
-      definition_key: definition_key[index], 
-      definition: definition[index],
-      extension_options: extension_options[index],
-      representation_options: representation_options[index],
-      insights_options: insights_options[index],
+  for (const [key, definitionObj] of Object.entries(definitionsObj)) {
+    let metric = {
+      name: definitionObj.name,
+      description: definitionObj.description,
+      id: definitionObj.id,
+      definition: definitionObj.definition,
+      extension_options: definitionObj.extension_options,
+      representation_options: definitionObj.representation_options,
+      insights_options: definitionObj.insights_options,
+      specification_id: undefined,
+      specification: undefined,
+      subscription_id: undefined,
+      created: undefined,
+      updated: undefined,
     };
-  });
-
-  // console.log('METRICS', metrics);
+    
+    metric = matchSpecification(specificationsObj, metric);
+    metric = matchSubscription(subscriptionsObj, metric);
+  }
 
   return metrics;
 }
+
+const matchSpecification = (specificationsObj, metric) => {
+  for (const [key, specificationObj] of Object.entries(specificationsObj)) {
+    if (specificationObj.definition_id === metric.id) {
+      metric.specification_id = specificationObj.specification_id;
+      metric.specification = specificationObj.specification;
+      return metric;
+    }
+  }
+}
+
+const matchSubscription = (subscriptionsObj, metric) => {
+  for (const [key, subscriptionObj] of Object.entries(subscriptionsObj)) {
+    if (subscriptionObj.metric_id === metric.specification_id) {
+      metric.subscription_id = subscriptionObj.subscription_id;
+      metric.created = subscriptionObj.create_time;
+      metric.updated = subscriptionObj.update_time;
+      return metric;
+    }
+  }
+} 
