@@ -77,25 +77,3 @@ export const parseSpecifications = (specificationsResponse) => {
   });
   return definitions;
 }
-
-
-const matchSpecification = (specificationsObj, metric) => {
-  for (const [key, specificationObj] of Object.entries(specificationsObj)) {
-    if (specificationObj.definition_id === metric.id) {
-      metric.specification_id = specificationObj.specification_id;
-      metric.specification = specificationObj.specification;
-      return metric;
-    }
-  }
-}
-
-const matchSubscription = (subscriptionsObj, metric) => {
-  for (const [key, subscriptionObj] of Object.entries(subscriptionsObj)) {
-    if (subscriptionObj.metric_id === metric.specification_id) {
-      metric.subscription_id = subscriptionObj.subscription_id;
-      metric.created = subscriptionObj.create_time;
-      metric.updated = subscriptionObj.update_time;
-      return metric;
-    }
-  }
-} 
