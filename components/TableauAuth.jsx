@@ -4,43 +4,35 @@ import { useMetrics } from '../models/Metrics';
 
 export default function TableauAuth() {
   const [userID, setUserID] = useState(undefined);
-  // const { status, data } = useSession({
-  //   required: true,
-  //   onUnauthenticated() {
-  //     // The user is not authenticated, handle it here.
-  //   },
-  // })
-  const sesh = useSession();
+  const { status, data } = useSession({
+    required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      // => This component should wrap all other Tableau components: https://next-auth.js.org/getting-started/client#require-session
+    },
+  })
+  // const sesh = useSession();
   const metrics = useMetrics(userID);
 
   useEffect(() => {
-    if (sesh.status === 'authenticated') {
-      setUserID('a3302788-5406-4ab7-bbe3-e2dd39b9eb6f');
-      console.log('metrics for user:', sesh.data.user);
+    if (status === 'authenticated') {
+      setUserID(data.user.name);
     }
-  }, [sesh]);
+  }, [status, data]);
 
-  if (sesh.status === 'loading') {
+  if (status === 'authenticated') {
     return (
       <>
-        <p className="nx-font-bold m-4">{sesh.status}</p> 
+        <p className="nx-font-bold m-4">{data.user.name} is {status}</p> 
         <button className="btn glass" onClick={() => signOut()}>Sign out</button>
       </>
     );
   }
 
-  if (sesh.status === 'authenticated') {
-    return (
-      <>
-        <p className="nx-font-bold m-4">{sesh.data.user.name} is {sesh.status}</p> 
-        <button className="btn glass" onClick={() => signOut()}>Sign out</button>
-      </>
-    );
-  }
-
+  // 'loading' state is the default because session.required === true: https://next-auth.js.org/getting-started/client#require-session
   return (
     <>
-      <p className="nx-font-bold m-4">User is {sesh.status}</p> 
+      <p className="nx-font-bold m-4">User is unauthenticated</p> 
       <button className="btn glass" onClick={() => signIn()}>Sign in</button>
     </>
   );
