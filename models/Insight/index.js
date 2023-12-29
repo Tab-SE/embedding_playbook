@@ -1,5 +1,5 @@
 import { matchSpecification, matchSubscription } from './controller/utils/parse'
-import { syncInsights } from './controller/methods';
+import { handleInsights } from './controller/methods';
 /* 
 Metric
 Stores and generates Insights from Tableau Pulse generated from user specific metrics
