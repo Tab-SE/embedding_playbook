@@ -32,4 +32,8 @@ export default class MetricModel {
     this.created = sub.created;
     this.updated = sub.updated;
   }
+
+  syncInsights = async (apiKey) => {
+    return this.insights;
+  }
 }
