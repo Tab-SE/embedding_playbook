@@ -1,14 +1,14 @@
 import { getInsights } from './utils/rest'
+import { parseInsights } from './utils/parse';
 
-export const syncInsights = async (metrics) => {
+export const handleInsights = async (metrics) => {
   try {
     const response = await getInsights(metrics);
     responseHandler(response); // output any errors returned from Tableau Pulse request
-    const parsedData = parseSubscriptions(response);
+    const parsedData = parseInsights(response);
     return parsedData;
   } catch(err) {
     console.error(err);
-    const parsedData = parseSubscriptions(Subscriptions);
     return parsedData;
   }
 }
