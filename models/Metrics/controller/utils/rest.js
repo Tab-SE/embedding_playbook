@@ -5,7 +5,7 @@ const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const path = '/api/-/pulse'; // path to resource
 
 // runs the axios HTTP request
-const makeRequest = async (endpoint, config) => {
+const getRequest = async (endpoint, config) => {
   try {
     const response = await axios.get(endpoint, config);
     if (response.status === 200){
@@ -36,7 +36,7 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
     },
   };
 
-  return makeRequest(endpoint, config);
+  return getRequest(endpoint, config);
 }
 
 // get specifications for the provided metric IDs
@@ -55,7 +55,7 @@ export const getSpecifications = async (apiKey, metric_ids) => {
     },
   };
 
-  return makeRequest(endpoint, config);
+  return getRequest(endpoint, config);
 }
 
 // get definitions for the provided metric IDs
@@ -74,7 +74,7 @@ export const getDefinitions = async (apiKey, definition_ids) => {
     },
   };
 
-  return makeRequest(endpoint, config);
+  return getRequest(endpoint, config);
 }
 
 // private serverless function for this project, requests and parses metric data from Tableau
@@ -88,5 +88,5 @@ export const getMetrics = async () => {
     }
   }
 
-  return makeRequest(endpoint, config);
+  return getRequest(endpoint, config);
 }
