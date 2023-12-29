@@ -8,13 +8,13 @@ const handler = async (req, res) => {
   const token = await getToken({ req });
   const session = await getServerSession(req, res, authOptions);
 
+  // Signed in
   if (token && session) {
-    // Signed in 
     // console.log("Server Token", JSON.stringify(token, null, 2));
     // console.log("Server Session", JSON.stringify(session, null, 2));
 
     // get user attributes for temporary authorized sessions
-    const { user, key } = token.rest.pulse;
+    const { user, key, expires } = token.rest.pulse;
 
     if (req.method === 'GET') {
       try {
