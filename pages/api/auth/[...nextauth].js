@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
-import Session from "../../../utils/Session"
+import Session from "../../../models/Session"
 import rls from "../../../rls.json"
 
 export const authOptions = {
