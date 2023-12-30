@@ -15,12 +15,14 @@ const handler = async (req, res) => {
 
     if (req.method === 'GET') {
       console.log('insight req body:', req.body);
-      if(Array.isArray(req.body.metrics)) {
+      if (Array.isArray(req.body.metrics)) {
         try {
-          // const insights = new MetricsModel(user); // instantiate a new Metrics object for the logged in user
-          // const payload = await metrics.syncMetrics(key); // request metrics for the user
-          // console.log('P A Y L O A D ! :', payload);
-          res.status(200).json();
+          req.body.metrics.forEach(metric => {
+            const insights = []; // temporar
+            // bundle = metric.syncInsights(key);
+            // insights.push[bundle];
+          });
+          res.status(200).json('nothing');
         } catch (err) {
           res.status(500).json({ error: err });
         }
