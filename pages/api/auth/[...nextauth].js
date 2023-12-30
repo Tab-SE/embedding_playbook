@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import Session from "../../../models/Session"
 import rls from "../../../rls.json"
 
+
 export const authOptions = {
   session: {
     strategy: "jwt",
@@ -30,6 +31,8 @@ export const authOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
+        const pat_name = process.env.PULSE_PAT_NAME;
+        const pat_secret = process.env.PULSE_PAT_SECRET;
         let user = null;
         let sesh = null;
         for (const [key, value] of Object.entries(rls.users)) { // check all keys in rls.json user store
@@ -38,10 +41,19 @@ export const authOptions = {
           }
         }
         if (user) {
-          sesh = new Session(credentials.username);
-          await sesh.authorize();
+          sesh = new Session(user.name); // user provided during authentication is used to create a new Session
+          await sesh.authorize(pat_name, pat_secret); // authorize to Tableau via PAT
           if (sesh.authorized) {
-            user.rest = sesh.rest;
+            // spread members of the Session "sesh"
+             const { 
+              username, user_id, embed_key, rest_key, site_id, site, created, expires,
+            } = sesh;
+            // add members to a new tableau object in user
+            user.tableau = {
+              username, user_id, embed_key, rest_key, site_id, site, created, expires,
+            }
+
+            user.rest_key = sesh.rest_key; // TODO delete
           }
           return sesh.authorized ? user : false; // Return false to display a default error message
         } else {
@@ -77,21 +89,22 @@ export const authOptions = {
     },
     async jwt({ token, account, profile, user }) {
       // console.count('jwt runs');
-      // console.log('user', user);
-      // console.log('token', token);
+      // console.log('jwt token', token);
+
       // persist metadata added to user object in authorize() callback to the JWT as claims
       if (user) {
+        console.log('jwt user', user);
         token.picture = user.picture;
-        token.uaf = user.UAF;
-        token.rest = user.rest;
+        token.uaf = user.uaf; // user attribute function claims
+        token.tableau = user.tableau; // tableau session object
+        token.rest_key = user.rest_key; // TODO delete
       }
       return token
     },
     async session({ session, token, user }) {
       // database sessions pass user, JWT sessions pass token
       // console.count('session runs');
-      // console.log('session', session);
-      // console.log('token', token);
+
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
       return session
