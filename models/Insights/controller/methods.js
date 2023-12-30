@@ -1,4 +1,4 @@
-import { getInsights } from './utils/rest'
+import { getInsights } from '../../../libs/requests'
 import { parseInsights } from './utils/parse';
 
 export const handleInsights = async (apiKey, params) => {
