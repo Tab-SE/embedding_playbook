@@ -33,14 +33,9 @@ class Session {
     }
   }
 
-  getEmbed = async (config) => {
-    this.embed = true;
-  }
-
   authorize = async () => {
     const errors = new Array;
     await this.getRest(config);
-    await this.getEmbed(config);
     // loops through rest objects to find error entries
     for (const [auth, result] of Object.entries(this.rest)) {
       for (const [key, value] of Object.entries(result)) {
