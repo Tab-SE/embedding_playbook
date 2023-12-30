@@ -1,5 +1,5 @@
-import { getSubscriptions, getSpecifications, getDefinitions, getInsights } from "../../../libs/requests"
-import { parseSubscriptions, parseSpecifications, parseDefinitions } from "./utils/parse"
+import { getSubscriptions, getSpecifications, getDefinitions, getInsights } from "../../../libs"
+import { parseSubscriptions, parseSpecifications, parseDefinitions } from "../../../utils"
 
 /* 
 Request and process data for metrics. The "sync" prefix indicates that these methods

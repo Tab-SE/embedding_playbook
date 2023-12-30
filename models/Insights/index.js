@@ -1,4 +1,4 @@
-import { matchSpecification, matchSubscription } from './controller/utils/parse'
+import { matchSpecification, matchSubscription } from '../../utils'
 import { handleInsights } from './controller/methods';
 /* 
 Metric

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import tab_embed from '../../../libs/embed_api/embed_api'
+import { tab_embed } from '../../../libs'
 import { useEffect, useState, forwardRef } from 'react'
 import TabScale from '../utils/tabscale'
 

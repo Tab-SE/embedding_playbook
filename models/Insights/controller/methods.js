@@ -1,5 +1,5 @@
 import { getInsights } from '../../../libs/requests'
-import { parseInsights } from './utils/parse';
+import { parseInsights } from '../../../utils';
 
 export const handleInsights = async (apiKey, params) => {
   try {
