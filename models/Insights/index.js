@@ -1,11 +1,11 @@
 import { matchSpecification, matchSubscription } from '../../utils'
-import { handleInsights } from './controller/methods';
+import { handleInsights } from './controller';
 /* 
 Metric
 Stores and generates Insights from Tableau Pulse generated from user specific metrics
 */
 
-export default class InsightsModel {
+export class InsightsModel {
   // stores user, definition, specification and subscription data for generating insights
   constructor(userId, definitionObj, specificationsObj, subscriptionsObj) {
     this.name = definitionObj.name;
