@@ -1,5 +1,5 @@
-import { handleSubscriptions, handleSpecifications, handleDefinitions } from './controller/methods'
-import InsightModel from '../Insight'
+import { handleSubscriptions, handleSpecifications, handleDefinitions, handleInsights } from './controller/methods'
+import InsightsModel from '../Insights'
 
 /* 
 Metrics Factory
@@ -25,18 +25,26 @@ export default class MetricsModel {
     this.definitions = await handleDefinitions(apiKey, this.specifications);
 
     // make a metrics object
-    this.makeMetrics();    
+    this.makeMetrics();  
+    
+    return this.metrics;
+  }
+
+  async syncInsights(apiKey) {
+    console.log('metrics BEFORE insights:', this.metrics);
+    // client-side request to a private API for further processing
+    this.metrics = await handleInsights(apiKey, this.metrics);
+
+    console.log('metrics AFTER insights:', this.metrics);
 
     return this.metrics;
   }
 
   makeMetrics = () => {
     for (const [key, definition] of Object.entries(this.definitions)) {
-      const Insight = new InsightModel(this.user_id, definition, this.specifications, this.subscriptions);
-      this.metrics.push(Insight);
+      const Metric = new InsightsModel(this.user_id, definition, this.specifications, this.subscriptions);
+      this.metrics.push(Metric);
     }
   }
 
 }
-
-export { useMetrics } from './controller/hooks';
