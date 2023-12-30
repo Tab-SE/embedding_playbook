@@ -1,35 +1,39 @@
 import axios from "axios";
 
 /* 
-defines utilities for HTTP request used throughout the project
+defines utilities for HTTP requests used throughout the project
 HTTP request functions are designed for reuse
 */
 
-export const get = async (endpoint, config) => {
+export const httpGet = async (endpoint, config) => {
   try {
+    // call pattern: axios.get(url[, config])
     const response = await axios.get(endpoint, config);
     if (response.status === 200){
       return response.data;
     } else {
-      throw new Error(`ERROR: Cannot GET for endpoint: ${endpoint}`);
+      throw new Error(`ERROR: Cannot GET for endpoint: ${endpoint} and response: ${response.data}`);
     }
   } catch (error) {
     console.error(error);
-    return null;
+    return error;
   }
 };
 
 
-export const post = async (endpoint, config) => {
+export const httpPost = async (endpoint, body, config) => {
+  // request bodies must be stringified
+  const payload = JSON.stringify(body);
   try {
-    const response = await axios.post(endpoint, config);
+    // call pattern: axios.post(url[, data[, config]])
+    const response = await axios.post(endpoint, payload, config);
     if (response.status === 200){
       return response.data;
     } else {
-      throw new Error(`ERROR: Cannot POST for endpoint: ${endpoint}`);
+      throw new Error(`ERROR: Cannot POST for endpoint: ${endpoint} and response: ${response.data}`);
     }
   } catch (error) {
     console.error(error);
-    return null;
+    return error;
   }
 };
