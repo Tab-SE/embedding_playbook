@@ -1,6 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { useMetrics } from '../models/Metrics';
+import { useMetrics, useInsights } from '../hooks';
 
 export default function TableauAuth() {
   const [user, setUser] = useState(undefined);
@@ -11,8 +11,13 @@ export default function TableauAuth() {
       // => This component should wrap all other Tableau components: https://next-auth.js.org/getting-started/client#require-session
     },
   })
-  // const sesh = useSession();
+
+  // query hooks, indexed by user
   const metrics = useMetrics(user);
+  
+  // 
+
+  // console.log(insights);
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -20,7 +25,13 @@ export default function TableauAuth() {
     }
   }, [status, data]);
 
+  if (Array.isArray(metrics)) {
+    metrics.forEach((metric) => {
+    });
+  }
+
   if (status === 'authenticated') {
+    // console.log(metrics);
     return (
       <>
         <p className="nx-font-bold m-4">{data.user.name} is {status}</p> 
