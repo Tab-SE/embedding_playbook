@@ -1,3 +1,25 @@
+import { JSONPath } from 'jsonpath-plus';
+
+ // return an minimal representation for insights
+ export const parseInsights = (subscriptionsResponse) => {
+  const subscriptions = {};
+
+  // Retrieve properties using JSONPath
+  const subscription_ids = JSONPath({ path: '$.subscriptions[*].id', json: subscriptionsResponse }); // indexing array
+  const metric_ids = JSONPath({ path: '$.subscriptions[*].metric_id', json: subscriptionsResponse });
+
+  // Iterate through indexing array and create leaves in the return object
+  subscription_ids.forEach((subscription, index) => {
+    subscriptions[index] = {
+      subscription_id: subscription, 
+      metric_id: metric_ids[index], // Add the corresponding properties by index
+
+    };
+  });
+  // return subscriptions;
+  return subscriptionsResponse;
+}
+
 // finds the matching specification from the array
 export const matchSpecification = (specificationsObj, definitionObj) => {
   for (const [key, specificationObj] of Object.entries(specificationsObj)) {

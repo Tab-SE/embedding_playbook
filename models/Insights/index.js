@@ -5,7 +5,7 @@ Metric
 Stores and generates Insights from Tableau Pulse generated from user specific metrics
 */
 
-export default class InsightModel {
+export default class InsightsModel {
   // stores user, definition, specification and subscription data for generating insights
   constructor(userId, definitionObj, specificationsObj, subscriptionsObj) {
     this.name = definitionObj.name;
@@ -38,6 +38,22 @@ export default class InsightModel {
 
   // requests insights from Tableau Pulse
   syncInsights = async (apiKey) => {
+    const response = await handleInsights(apiKey, {
+      name: this.name,
+      metric_id: this.specification_id,
+      definition_id: this.id,
+      definition: this.definition,
+      metric_specification: this.specification,
+      extension_options: this.extension_options,
+      representation_options: this.representation_options,
+      insights_options: this.insights_options,
+    });
+
+    // populate array with insights from response
+    response.forEach((insight) => {
+      this.insights.push(insight);
+    });
+
     return this.insights;
   }
 }
