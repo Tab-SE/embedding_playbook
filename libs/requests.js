@@ -3,6 +3,44 @@ import { get, post } from "../utils/http"
 const public_url = process.env.NEXT_PUBLIC_API_BASE_URL; // URL for Serverless functions
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
+const api = process.env.PULSE_API;
+const contentUrl = process.env.PULSE_SITE;
+const pat_name = process.env.PULSE_PAT_NAME;
+const pat_secret = process.env.PULSE_PAT_SECRET;
+
+// authenticate to Tableau
+export const tabSignIn = async () => {
+  const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
+
+  const config = {
+    tableau_domain,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: {
+      credentials: {
+        personalAccessTokenName: pat_name,
+        personalAccessTokenSecret: pat_secret,
+        site: {
+          contentUrl: contentUrl,
+        }
+      }
+    },
+  };
+
+  const response = get(endpoint, config);
+  console.log('response data', response.data);
+  // const { 
+  //   site_id: site, 
+  //   user_id: user, 
+  //   api_key: token, 
+  //   expiration: estimatedTimeToExpiration, 
+  // } = response.data.credentials;
+
+  return response.data;
+}
+
 
 // get subscription IDs for the provided user
 export const getSubscriptions = async (apiKey, userId, pageSize) => {
