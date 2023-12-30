@@ -1,54 +1,43 @@
-import axios from "axios"
-import config from "../utils/config";
+import { tabSignIn } from "../libs";
 
-// factory designed to return a sessions object
+// Session designed to securely authorize users server-side in the /auth route
 class Session {
   constructor(username) {
-    this.authorized = false;
+    this.authorized = false; // flag controlling access
     this.username = username;
-    this.embed = false;
-    this.rest = {};
+    this.user_id = undefined;
+    this.embed_key = undefined;
+    this.rest_key = undefined;
+    this.site_id = undefined;
+    this.site = undefined; // site name
+    this.created = undefined; // Get the current time in seconds since the epoch
+    this.expires = undefined; // estimated future expiry date
   }
 
-  getRest = async (config) => {
-    for (const [key, value] of Object.entries(config)) {
-      try {
-        // console.log(`AUTH ATTEMPT: ${key}`, value);
-        const res = await axios.post(`${value.domain}/api/${value.api}/auth/signin`, {
-          credentials: {
-            personalAccessTokenName: value.pat_name,
-            personalAccessTokenSecret: value.pat_secret,
-            site: {
-              contentUrl: value.site,
-            }
-          }
-        });
-
-        const { site, user, token, estimatedTimeToExpiration } = res.data.credentials;
-        const config = { key: token, site: site.id, user: user.id, expires: estimatedTimeToExpiration };
-        this.rest[key] = config;
-      } catch (err) {
-        this.rest[key] = { error: err.response.data };
-      }
-    }
+  authorize = async (pat_name, pat_secret) => {
+    const { site_id, site, user_id, api_key, expiration }  = await tabSignIn(pat_name, pat_secret);
+    this.created = Math.floor(Date.now() / 1000); // Get the current time in seconds since the epoch
+    this.site_id = site_id;
+    this.site = site;
+    this.user_id = user_id;
+    this.rest_key = api_key;
+    this.expires = this.lifespan(expiration);
+    this.authorized = true;
   }
 
-  authorize = async () => {
-    const errors = new Array;
-    await this.getRest(config);
-    // loops through rest objects to find error entries
-    for (const [auth, result] of Object.entries(this.rest)) {
-      for (const [key, value] of Object.entries(result)) {
-        if (key === 'error') {
-          value.method = auth;
-          errors.push(value); // adds error to array indicating method
-        }
-      }
-    }
-    if (errors.length === 0) { // if no errors are found then authorize the user
-      this.authorized = true;
-    }
-  }
+  // calculates the lifespan for the session (estimated)
+  lifespan = (estimatedTimeToExpiration) => {
+    // parse the duration string into hours, minutes, and seconds
+    const [hours, minutes, seconds] = estimatedTimeToExpiration.split(':').map(Number);
+    // calculate the total seconds in the duration
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    // calculate the expiration time in seconds
+    const expirationTime = this.created + totalSeconds;
+    // convert the timestamps back to a Date objects
+    this.created = new Date(this.created * 1000);
+    const expirationDate = new Date(expirationTime * 1000);
+    return expirationDate
+  };
 }
 
 export default Session;
