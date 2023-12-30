@@ -1,5 +1,9 @@
 import axios from "axios";
 
+/* 
+defines utilities for HTTP request used throughout the project
+HTTP request functions are designed for reuse
+*/
 
 export const get = async (endpoint, config) => {
   try {
