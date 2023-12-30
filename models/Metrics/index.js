@@ -1,5 +1,5 @@
-import { handleSubscriptions, handleSpecifications, handleDefinitions, handleInsights } from './controller/methods'
-import InsightsModel from '../Insights'
+import { handleSubscriptions, handleSpecifications, handleDefinitions, handleInsights } from './controller'
+import { InsightsModel } from '../Insights'
 
 /* 
 Metrics Factory
@@ -8,7 +8,7 @@ used to generate individual metric objects for storing data insights
 designed to run isomorphically server-side and client-side (once Custom Domains is supported)
 */
 
-export default class MetricsModel {
+export class MetricsModel {
   constructor(userId) {
     this.user_id = userId;
     this.metrics = [];
