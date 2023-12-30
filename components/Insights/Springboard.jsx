@@ -1,6 +1,6 @@
-import VegaLiteViz from "../../VegaLiteViz";
+import VegaLiteViz from "../VegaLiteViz";
 
-function BAN(props) {
+function Springboard(props) {
   const summaries = props.insights.ban.summaries[0].result;
   const insights = props.insights.ban.insights[0].result;
   const viz = summaries?.viz;
@@ -22,4 +22,4 @@ function BAN(props) {
   )
 }
 
-export default BAN;
+export default Springboard;

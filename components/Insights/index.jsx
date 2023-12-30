@@ -1,5 +1,6 @@
-import BAN  from './components/BAN'
-import Detail from './components/Detail'
+import BAN  from './BAN'
+import Detail from './Detail'
+import Springboard from './Springboard'
 import PowerLevel from '../../models/Metrics/mocks/PowerLevel/PowerLevel.json'
 
 export default function Insights(props) {
@@ -21,4 +22,4 @@ const parseInsights = (metric) => {
   return insights;
 }
 
-export { BAN, Detail };
+export { BAN, Detail, Springboard };

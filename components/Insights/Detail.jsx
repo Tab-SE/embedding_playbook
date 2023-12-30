@@ -1,4 +1,4 @@
-import VegaLiteViz from "../../VegaLiteViz";
+import VegaLiteViz from "../VegaLiteViz";
 
 function Detail(props) {
   const summaries = props.insights?.top?.summaries[0]?.result;
