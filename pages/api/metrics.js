@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt"
-import MetricsModel from '../../models/Metrics'
+import { MetricsModel } from '../../models'
 
 
 const handler = async (req, res) => {
