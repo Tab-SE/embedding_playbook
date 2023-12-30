@@ -52,8 +52,6 @@ export const authOptions = {
             user.tableau = {
               username, user_id, embed_key, rest_key, site_id, site, created, expires,
             }
-
-            user.rest_key = sesh.rest_key; // TODO delete
           }
           return sesh.authorized ? user : false; // Return false to display a default error message
         } else {
@@ -93,11 +91,9 @@ export const authOptions = {
 
       // persist metadata added to user object in authorize() callback to the JWT as claims
       if (user) {
-        console.log('jwt user', user);
         token.picture = user.picture;
         token.uaf = user.uaf; // user attribute function claims
         token.tableau = user.tableau; // tableau session object
-        token.rest_key = user.rest_key; // TODO delete
       }
       return token
     },
