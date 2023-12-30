@@ -1,4 +1,5 @@
 import Insights from './Insights'
+import { useMetrics } from '../hooks';
 
 function Metrics(props) {
 
