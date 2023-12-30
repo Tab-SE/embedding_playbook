@@ -8,8 +8,8 @@ const handler = async (req, res) => {
   if (token.name) {
     // console.log("Server Token", JSON.stringify(token, null, 2));
 
-    // get user attributes for temporary authorized sessions
-    const { user, key } = token.rest.pulse;
+    // get attributes from token for secure server-side processing
+    const { user_id, rest_key } = token.tableau;
 
     console.log('req:', req);
 
