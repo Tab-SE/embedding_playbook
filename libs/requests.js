@@ -1,16 +1,24 @@
-import { get, post } from "../utils/http"
+import { httpGet, httpPost } from "../utils/http"
 
 const public_url = process.env.NEXT_PUBLIC_API_BASE_URL; // URL for Serverless functions
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
-const api = process.env.PULSE_API;
-const contentUrl = process.env.PULSE_SITE;
-const pat_name = process.env.PULSE_PAT_NAME;
-const pat_secret = process.env.PULSE_PAT_SECRET;
+const api = process.env.PULSE_API; // Tableau API version (classic resources)
+const contentUrl = process.env.PULSE_SITE; // Tableau site name
 
 // authenticate to Tableau
-export const tabSignIn = async () => {
+export const tabSignIn = async (pat_name, pat_secret) => {
   const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
+
+  const body = {
+    credentials: {
+      personalAccessTokenName: pat_name,
+      personalAccessTokenSecret: pat_secret,
+      site: {
+        contentUrl: contentUrl,
+      }
+    }
+  };
 
   const config = {
     tableau_domain,
@@ -18,27 +26,17 @@ export const tabSignIn = async () => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: {
-      credentials: {
-        personalAccessTokenName: pat_name,
-        personalAccessTokenSecret: pat_secret,
-        site: {
-          contentUrl: contentUrl,
-        }
-      }
-    },
   };
 
-  const response = get(endpoint, config);
-  console.log('response data', response.data);
-  // const { 
-  //   site_id: site, 
-  //   user_id: user, 
-  //   api_key: token, 
-  //   expiration: estimatedTimeToExpiration, 
-  // } = response.data.credentials;
+  const response = await httpPost(endpoint, body, config);
 
-  return response.data;
+  const site_id = response.credentials.site.id;
+  const site = response.credentials.site.contentUrl;
+  const user_id = response.credentials.user.id;
+  const api_key = response.credentials.token;
+  const expiration = response.credentials.estimatedTimeToExpiration;
+
+  return { site_id, site, user_id, api_key, expiration };
 }
 
 
@@ -59,7 +57,7 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
     },
   };
 
-  return get(endpoint, config);
+  return await httpGet(endpoint, config);
 }
 
 // get specifications for the provided metric IDs
@@ -78,7 +76,7 @@ export const getSpecifications = async (apiKey, metric_ids) => {
     },
   };
 
-  return get(endpoint, config);
+  return await httpGet(endpoint, config);
 }
 
 // get definitions for the provided metric IDs
@@ -97,7 +95,7 @@ export const getDefinitions = async (apiKey, definition_ids) => {
     },
   };
 
-  return get(endpoint, config);
+  return await httpGet(endpoint, config);
 }
 
 // requests parsed metrics from private API
@@ -111,7 +109,7 @@ export const getMetrics = async () => {
     }
   }
 
-  return get(endpoint, config);
+  return await httpGet(endpoint, config);
 }
 
 // requests parsed insights from private API
@@ -134,22 +132,22 @@ export const getInsights = async (metrics) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body,
   };
 
-  return post(endpoint, config);
+  return await httpPost(endpoint, body, config);
 }
 
 // requests insight bundles for all supported types given a metric (params)
-export const getInsightBundles = (apiKey, params) => {
+export const getInsightBundles = async (apiKey, params) => {
+  const insights = [];
   // 3 types of insight bundles available
   const resources = ['/ban', '/detail', '/springboard'];
-  const insights = [];
+  // create a request body
+  const body = makeInsightsBody(params);
 
-  resources.forEach((resource) => {
+  resources.forEach(async (resource) => {
     const endpoint = tableau_domain + path + resource;
-    // create a request body
-    const body = makeInsightsBody(params);
+    
     const config = {
       tableau_domain,
       headers: {
@@ -160,7 +158,7 @@ export const getInsightBundles = (apiKey, params) => {
       body,
     };
 
-    const bundle = post(endpoint, config);
+    const bundle = await httpPost(endpoint, body, config);
     insights.push(bundle);
   })
 
