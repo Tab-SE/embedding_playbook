@@ -1,0 +1,71 @@
+{
+  "bundle_request": {
+    "version": "1",
+    "options": {
+      "output_format": "OUTPUT_FORMAT_TEXT",
+      "time_zone": "America/Vancouver"
+    },
+    "input": {
+      "metadata": {
+        "name": "Maintenance Hours",
+        "metric_id": "d83882d5-82d6-4373-8b15-097be38e6364",
+        "definition_id": "3f03b620-9234-4f70-9a4c-6e8a39dacf0f"
+      },
+      "metric": {
+        "definition": {
+          "datasource": {
+            "id": "34efbdfa-00d1-4188-a54f-b5799a9f51e2"
+          },
+          "basic_specification": {
+            "measure": {
+              "field": "Exam Agg",
+              "aggregation": "AGGREGATION_SUM"
+            },
+            "time_dimension": {
+              "field": "Report Date"
+            },
+            "filters": []
+          },
+          "is_running_total": false
+        },
+        "metric_specification": {
+          "filters": [],
+          "measurement_period": {
+            "granularity": "GRANULARITY_BY_DAY",
+            "range": "RANGE_CURRENT_PARTIAL"
+          },
+          "comparison": {
+            "comparison": "TIME_COMPARISON_PREVIOUS_PERIOD"
+          }
+        },
+        "extension_options": {
+          "allowed_dimensions": [
+            "Site",
+            "Modality"
+          ],
+          "allowed_granularities": []
+        },
+        "representation_options": {
+          "type": "NUMBER_FORMAT_TYPE_NUMBER",
+          "number_units": {
+            "singular_noun": "",
+            "plural_noun": ""
+          },
+          "sentiment_type": "SENTIMENT_TYPE_NONE",
+          "row_level_id_field": {
+            "identifier_col": "",
+            "identifier_label": ""
+          },
+          "row_level_entity_names": {
+            "entity_name_singular": "",
+            "entity_name_plural": ""
+          }
+        },
+        "insights_options": {
+          "show_insights": true,
+          "settings": []
+        }
+      }
+    }
+  }
+}
