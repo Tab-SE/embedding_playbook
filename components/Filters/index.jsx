@@ -17,15 +17,6 @@ function Filters(props) {
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
   const modal = ref.current;
-  
-
-
-// <button className="btn btn-outline btn-secondary w-32 justify-self-end">Reset</button>
-// <button 
-//   className="btn btn-outline btn-primary w-32 justify-self-end"
-// >
-//   Apply All
-// </button>
 
   return (
     <>
