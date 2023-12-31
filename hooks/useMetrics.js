@@ -15,7 +15,7 @@ export const useMetrics = async (user) => {
       if (!user) {
         throw new Error("user is required.");
       }
-      return await getMetrics();
+      return getMetrics();
     },
     enabled: !!user,
   });
