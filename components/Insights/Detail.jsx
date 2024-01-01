@@ -27,15 +27,15 @@ function Detail(props) {
         {parsedBundles.map((insight, index) => {
           const { viz, question, markup, id } = insight;
           return insight.type !== 'popc' ? (
-            <div key={id} className="max-w-2xl w-full mx-4">
+            <div key={id} className="mx-4">
               <p className="text-orange-400 italic text-2xl font-semibold my-4">
                 Insight
                 <span className="text-slate-100 italic text-2xl font-semibold my-4 ml-4" 
                   dangerouslySetInnerHTML={{__html: question}} 
                 />
               </p>
-              {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={104} spec={viz}></VegaLiteViz>}
-              <p className="text-slate-100 text-lg my-4" dangerouslySetInnerHTML={{__html: markup}} />
+              {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={104} width={800} spec={viz}></VegaLiteViz>}
+              <p className="text-slate-100 max-w-4xl flex text-lg my-4" dangerouslySetInnerHTML={{__html: markup}} />
             </div>
           ) : <span key={id} />
         })}
