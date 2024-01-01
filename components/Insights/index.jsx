@@ -9,10 +9,10 @@ export default function Insights(props) {
   return (
     <>
       <div className='flex items-end p-4'>
-        <h1 className='flex-0 font-bold text-3xl text-stone-800'>
+        <h1 className='flex-0 font-bold text-4xl text-stone-800'>
           {props.title}:
         </h1>
-        <p className='flex-1 font-bold text-3xl text-stone-600 mx-2'>{props.value}</p>
+        <p className='flex-1 font-bold text-4xl text-stone-600 mx-2'>{props.value}</p>
       </div>
       <div className='my-8'>
         <Detail 
