@@ -6,7 +6,7 @@ parsing functions are designed for reuse
 */
 
 
- // return an minimal representation of subscriptions
+// return an minimal representation of subscriptions
 export const parseSubscriptions = (subscriptionsResponse) => {
   const subscriptions = {};
 
@@ -30,7 +30,7 @@ export const parseSubscriptions = (subscriptionsResponse) => {
 }
 
 
- // return an minimal representation of specifications
+// return an minimal representation of specifications
 export const parseSpecifications = (specificationsResponse) => {
   const specifications = {};
 
@@ -53,8 +53,8 @@ export const parseSpecifications = (specificationsResponse) => {
 }
 
 
- // return an minimal representation of core metrics
- export const parseDefinitions = (definitionsResponse) => {
+// return an minimal representation of core metrics
+export const parseDefinitions = (definitionsResponse) => {
   const definitions = {};
 
   // Retrieve properties using JSONPath
@@ -127,3 +127,39 @@ export const matchSubscription = (subscriptionsObj, specification_id) => {
   }
 } 
 
+// return an minimal representation of BAN (current metric value) insight bundles
+export const parseBan = (banBundle) => {
+  const insights = [];
+
+  // Retrieve properties using JSONPath
+  const ids = JSONPath({ path: '$.[*][*][*].insights.[*].result.id', json: banBundle }); // indexing array
+  const types = JSONPath({ path: '$.[*][*][*].insights.[*].result.type', json: banBundle });
+  const markups = JSONPath({ path: '$.[*][*][*].insights.[*].result.markup', json: banBundle });
+  const contents = JSONPath({ path: '$.[*][*][*].insights.[*].result.content', json: banBundle });
+  const vizs = JSONPath({ path: '$.[*][*][*].insights.[*].result.viz', json: banBundle });
+  const questions = JSONPath({ path: '$.[*][*][*].insights.[*].result.question', json: banBundle });
+  const facts = JSONPath({ path: '$.[*][*][*].insights.[*].result.facts', json: banBundle });
+  const values = JSONPath({ path: '$.[*][*][*].insights.[*].result.facts.target_period_value.formatted', json: banBundle });
+
+  // Iterate through indexing array and create leaves in the return object
+  ids.forEach((id, index) => {
+    // Using splice to insert the element at the specified index
+    insights.splice(index, 0, {
+      id: id, 
+      type: types[index], // Add the corresponding properties by index
+      markup: markups[index],
+      content: contents[index],
+      viz: vizs[index], 
+      question: questions[index], 
+      fact: facts[index], 
+      value: values[index], 
+    });
+  });
+  return insights;
+}
+
+export const parseBundle = (bundle) => {
+  const insights = [];
+
+  return insights;
+}
