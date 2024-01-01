@@ -39,13 +39,19 @@
     "@tanstack/react-query": "^5.4.3",
     "@tanstack/react-query-devtools": "^5.4.3",
     "axios": "^1.6.2",
+    "jsonpath-plus": "^7.2.0",
     "next": "^13.5.4",
     "next-auth": "^4.24.5",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tabscale": "gitlab:jhegele/tabscale"
+    "tabscale": "gitlab:jhegele/tabscale",
+    "uuid": "^9.0.1",
+    "vega": "^5.26.1",
+    "vega-interpreter": "^1.0.5",
+    "vega-lite": "^5.16.3",
+    "vega-tooltip": "^0.33.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import tab_embed from '../../Tableau/embed_api/embed_api'
+import { tab_embed } from '../../../libs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileArrowDown, faFileCsv, faFileExcel, 
   faFileImage, faFilePdf, faFilePowerpoint, faFilePen  
@@ -9,32 +9,34 @@ function Option(props) {
 
   async function  handleDownload(event) {
     const option = event.target.getAttribute('data-download');
-    try {
-      switch(option) {
-        case 'All Data':
-          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportData);
-          break;
-        case 'Chart Data':
-          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportCrossTab);
-          break;
-        case 'Image':
-          await props.viz.exportImageAsync();
-          break;
-        case 'PDF':
-          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportPDF);
-          break;
-        case 'Powerpoint':
-          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportPowerPoint);
-          break;
-        case 'Workbook':
-          await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportWorkbook);
-          break;
-        default:
-          throw new Error('Download Error: does not match TableauDialogType');
+    if (tab_embed.TableauDialogType) {
+      try {
+        switch(option) {
+          case 'All Data':
+            await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportData);
+            break;
+          case 'Chart Data':
+            await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportCrossTab);
+            break;
+          case 'Image':
+            await props.viz.exportImageAsync();
+            break;
+          case 'PDF':
+            await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportPDF);
+            break;
+          case 'Powerpoint':
+            await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportPowerPoint);
+            break;
+          case 'Workbook':
+            await props.viz.displayDialogAsync(tab_embed.TableauDialogType.ExportWorkbook);
+            break;
+          default:
+            throw new Error('Download Error: does not match TableauDialogType');
+        }
       }
-    }
-    catch (e) {
-      console.error('Download Error: ', e.toString());
+      catch (e) {
+        console.error('Download Error: ', e.toString());
+      }
     }
   }
 

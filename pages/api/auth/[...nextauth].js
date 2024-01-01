@@ -1,34 +1,9 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
-import axios from "axios"
+import Session from "../../../models/Session"
 import rls from "../../../rls.json"
 
-// environment variables
-const {
-  NODE_ENV, 
-  NEXTAUTH_SECRET,
-  TABLEAU_DOMAIN, TABLEAU_API, TABLEAU_SITE, TABLEAU_PAT_NAME, TABLEAU_PAT_SECRET,
-  PULSE_DOMAIN, PULSE_API, PULSE_SITE, PULSE_PAT_NAME, PULSE_PAT_SECRET,
-  GITHUB_ID, GITHUB_SECRET 
-} = process.env;
-
-const REST = {
-  tableau: {
-    domain: TABLEAU_DOMAIN,
-    api: TABLEAU_API, 
-    site: TABLEAU_SITE, 
-    pat_name: TABLEAU_PAT_NAME, 
-    pat_secret: TABLEAU_PAT_SECRET,
-  },
-  pulse: {
-    domain: PULSE_DOMAIN,
-    api: PULSE_API, 
-    site: PULSE_SITE, 
-    pat_name: PULSE_PAT_NAME, 
-    pat_secret: PULSE_PAT_SECRET,
-  }
-}
 
 export const authOptions = {
   session: {
@@ -56,102 +31,52 @@ export const authOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
+        const pat_name = process.env.PULSE_PAT_NAME;
+        const pat_secret = process.env.PULSE_PAT_SECRET;
         let user = null;
+        let sesh = null;
         for (const [key, value] of Object.entries(rls.users)) { // check all keys in rls.json user store
           if (key.toUpperCase() === credentials.ID.toUpperCase()) { // find keys that match credential
             user = value; // if a match is found store value as user
-            user.what = Math.random();
-
           }
         }
-
         if (user) {
-          return user;
+          sesh = new Session(user.name); // user provided during authentication is used to create a new Session
+          await sesh.authorize(pat_name, pat_secret); // authorize to Tableau via PAT
+          if (sesh.authorized) {
+            // spread members of the Session "sesh"
+             const { 
+              username, user_id, embed_key, rest_key, site_id, site, created, expires,
+            } = sesh;
+            // add members to a new tableau object in user
+            user.tableau = {
+              username, user_id, embed_key, rest_key, site_id, site, created, expires,
+            }
+          }
+          return sesh.authorized ? user : false; // Return false to display a default error message
         } else {
           return false;
         }
       }
     }),
     GithubProvider({
-      clientId: GITHUB_ID,
-      clientSecret: GITHUB_SECRET,
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     }),
     // ...add more providers here
   ],
   callbacks: {
     // documented here: https://next-auth.js.org/configuration/callbacks
     async signIn({ user, account, credentials }) {
-      // console.log('user', user);
-      // console.log('account', account);
-      // console.log('credentials', credentials);
-
-      let isAllowedToSignIn = false;
-
-      class Session {
-        constructor(username) {
-          this.authorized = false;
-          this.username = username;
-          this.embed = false;
-          this.rest = {};
-        }
-
-        getRest = async (rest) => {
-          for (const [key, value] of Object.entries(rest)) {
-            try {
-              // console.log(`AUTH ATTEMPT: ${key}`, value);
-              const res = await axios.post(`${value.domain}/api/${value.api}/auth/signin`, {
-                credentials: {
-                  personalAccessTokenName: value.pat_name,
-                  personalAccessTokenSecret: value.pat_secret,
-                  site: {
-                    contentUrl: value.site,
-                  }
-                }
-              });
-              const { site, user, token, estimatedTimeToExpiration } = res.data.credentials;
-              const config = { key: token, site: site.id, user: user.id, expires: estimatedTimeToExpiration };
-              this.rest[key] = config;
-            } catch (err) {
-              this.rest[key] = { error: err.response.data };
-            }
-          }
-        }
-
-        getEmbed = async (rest) => {
-          this.embed = true;
-        }
-
-        authorize = async (rest) => {
-          const errors = new Array;
-          await this.getRest(rest);
-          await this.getEmbed(rest);
-          // loops through rest objects to find error entries
-          for (const [auth, result] of Object.entries(this.rest)) {
-            for (const [key, value] of Object.entries(result)) {
-              if (key === 'error') {
-                value.method = auth;
-                errors.push(value); // adds error to array indicating method
-              }
-            }
-          }
-          if (errors.length === 0) { // if no errors are found then authorize the user
-            this.authorized = true;
-            
-          }
-        }
+      const isAllowedToSignIn = true
+      if (isAllowedToSignIn) {
+        return true
+      } else {
+        // Return false to display a default error message
+        return false
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
       }
-
-      const sesh = new Session(credentials.username);
-      await sesh.authorize(REST);
-
-      // console.log('sesh', sesh);
-      // console.log('sesh.authorized', sesh.authorized);
-
-      if (sesh.authorized) {
-        isAllowedToSignIn = true;
-      }
-
-      return sesh.authorized ? sesh : false; // Return false to display a default error message
     },
     async redirect({ url, baseUrl }) {
       // Allows relative callback URLs
@@ -161,25 +86,27 @@ export const authOptions = {
       return baseUrl
     },
     async jwt({ token, account, profile, user }) {
-      // Persist the OAuth access_token to the token right after signin
-      console.count('jwt runs');
-      console.log('token', token);
-      console.log('account', account);
-      console.log('profile', profile);
-      console.log('user', user);
+      // console.count('jwt runs');
+      // console.log('jwt token', token);
 
-      if (account) {
-        token.accessToken = account.access_token
+      // persist metadata added to user object in authorize() callback to the JWT as claims
+      if (user) {
+        token.picture = user.picture;
+        token.uaf = user.uaf; // user attribute function claims
+        token.tableau = user.tableau; // tableau session object
       }
       return token
     },
     async session({ session, token, user }) {
+      // database sessions pass user, JWT sessions pass token
+      // console.count('session runs');
+
       // Send properties to the client, like an access_token from a provider.
-      session.accessToken = token.accessToken
+      session.accessToken = token.accessToken;
       return session
     }
   },
-  debug: NODE_ENV === 'development' ? true : false,
+  debug: process.env.NODE_ENV === 'development' ? true : false,
 }
 
 export default NextAuth(authOptions)

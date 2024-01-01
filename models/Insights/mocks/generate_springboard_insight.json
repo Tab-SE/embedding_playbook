@@ -1,0 +1,904 @@
+{
+  "bundle_response": {
+      "result": {
+          "insight_groups": [
+              {
+                  "type": "ban",
+                  "insights": [
+                      {
+                          "result": {
+                              "type": "popc",
+                              "version": 1,
+                              "content": "",
+                              "markup": "There was an  increase of +12 (+28.6%) over December 29, 2023.",
+                              "viz": {},
+                              "facts": {
+                                  "target_time_period": {
+                                      "label": "Dec 30",
+                                      "granularity": "day",
+                                      "start_timestamp": "2023-12-30T00:00:00Z",
+                                      "end_timestamp": "2023-12-31T00:00:00Z",
+                                      "range": "Dec 30, 2023"
+                                  },
+                                  "comparison_time_period": {
+                                      "range": "Dec 29, 2023",
+                                      "label": "Dec 29",
+                                      "granularity": "day",
+                                      "start_timestamp": "2023-12-29T00:00:00Z",
+                                      "end_timestamp": "2023-12-30T00:00:00Z"
+                                  },
+                                  "difference": {
+                                      "absolute": {
+                                          "raw": 12,
+                                          "formatted": "12"
+                                      },
+                                      "relative": {
+                                          "raw": 0.2857142857142857,
+                                          "formatted": "28.6%"
+                                      },
+                                      "direction": "up"
+                                  },
+                                  "sentiment": "neutral",
+                                  "target_period_value": {
+                                      "raw": 54,
+                                      "formatted": "54"
+                                  },
+                                  "comparison_period_value": {
+                                      "raw": 42,
+                                      "formatted": "42"
+                                  }
+                              },
+                              "characterization": "CHARACTERIZATION_UNSPECIFIED",
+                              "question": "How has Maintenance Hours changed?",
+                              "score": 0,
+                              "id": "8562e7de-7f39-476e-8b17-138945a3889c",
+                              "insight_feedback_metadata": {
+                                  "type": "popc",
+                                  "score": 0,
+                                  "dimension_hash": ""
+                              }
+                          },
+                          "insight_type": "popc"
+                      }
+                  ],
+                  "summaries": [
+                      {
+                          "result": {
+                              "id": "",
+                              "markup": "",
+                              "viz": {
+                                  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                                  "params": [
+                                      {
+                                          "name": "axisLabelFontFace",
+                                          "value": "'SF Pro Text', 'SF Pro Display', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, ubuntu, 'Fire Sans', 'Helvetica Neue', sans-serif"
+                                      },
+                                      {
+                                          "name": "axisLabelFontSize",
+                                          "value": 13
+                                      },
+                                      {
+                                          "name": "axisLabelAngle",
+                                          "value": 0
+                                      },
+                                      {
+                                          "value": 0,
+                                          "name": "axisLabelPadding"
+                                      },
+                                      {
+                                          "name": "axisLabelOffset",
+                                          "value": 0
+                                      },
+                                      {
+                                          "name": "axisLabelColorDefault",
+                                          "value": "#343A3F"
+                                      },
+                                      {
+                                          "name": "axisLabelColorActive",
+                                          "value": "#040507"
+                                      },
+                                      {
+                                          "name": "currentValueCircleColor1",
+                                          "value": "#1B96FF"
+                                      },
+                                      {
+                                          "name": "currentValueCircleColor2",
+                                          "value": "#fff"
+                                      },
+                                      {
+                                          "name": "currentValueCircleSize",
+                                          "value": 120
+                                      },
+                                      {
+                                          "name": "currentValueCircleStrokeWidth",
+                                          "value": 3
+                                      },
+                                      {
+                                          "value": "'SF Pro Text', 'SF Pro Display', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, ubuntu, 'Fire Sans', 'Helvetica Neue', sans-serif",
+                                          "name": "currentValueFontFace"
+                                      },
+                                      {
+                                          "name": "currentValueFontSize",
+                                          "value": 13
+                                      },
+                                      {
+                                          "name": "currentValueFontWeight",
+                                          "value": 600
+                                      },
+                                      {
+                                          "name": "currentValuePadding",
+                                          "value": 12
+                                      },
+                                      {
+                                          "name": "leftYAxisOffset",
+                                          "value": 12
+                                      },
+                                      {
+                                          "name": "lineColor",
+                                          "value": "#1B96FF"
+                                      },
+                                      {
+                                          "name": "lineStrokeWidth",
+                                          "value": 3
+                                      },
+                                      {
+                                          "value": [
+                                              6,
+                                              3
+                                          ],
+                                          "name": "lineStrokeDash"
+                                      },
+                                      {
+                                          "value": "#E3F2FF",
+                                          "name": "normalRangeColor"
+                                      },
+                                      {
+                                          "value": 1,
+                                          "name": "normalRangeOpacity"
+                                      },
+                                      {
+                                          "name": "xAxisScalePadding",
+                                          "value": -20
+                                      },
+                                      {
+                                          "name": "xAxisOffset",
+                                          "value": 20
+                                      },
+                                      {
+                                          "value": "#6B7280",
+                                          "name": "xAxisGridColorDefault"
+                                      },
+                                      {
+                                          "name": "xAxisGridColorActive",
+                                          "value": "#040507"
+                                      },
+                                      {
+                                          "name": "xAxisLabelFontWeightDefault",
+                                          "value": "normal"
+                                      },
+                                      {
+                                          "value": 600,
+                                          "name": "xAxisLabelFontWeightActive"
+                                      },
+                                      {
+                                          "name": "mode",
+                                          "value": "LastComplete"
+                                      },
+                                      {
+                                          "name": "xAxisLabelsDataValues",
+                                          "value": [
+                                              "2023-12-30T00:00:00Z",
+                                              "2023-12-24T00:00:00Z"
+                                          ]
+                                      },
+                                      {
+                                          "value": [
+                                              "41.0000"
+                                          ],
+                                          "name": "yAxisLabelsDataValues"
+                                      }
+                                  ],
+                                  "width": "container",
+                                  "config": {
+                                      "customFormatTypes": true,
+                                      "axis": {
+                                          "labelFont": {
+                                              "expr": "axisLabelFontFace"
+                                          },
+                                          "labelOffset": {
+                                              "expr": "axisLabelOffset"
+                                          },
+                                          "ticks": false,
+                                          "labelFontSize": {
+                                              "expr": "axisLabelFontSize"
+                                          },
+                                          "labelAngle": {
+                                              "expr": "axisLabelAngle"
+                                          },
+                                          "title": null,
+                                          "domain": false,
+                                          "labelLineHeight": {
+                                              "expr": "axisLabelFontSize"
+                                          },
+                                          "labelPadding": {
+                                              "expr": "axisLabelPadding"
+                                          }
+                                      }
+                                  },
+                                  "resolve": {
+                                      "axis": {
+                                          "y": "independent"
+                                      }
+                                  },
+                                  "customFormatterMaps": {
+                                      "xAxis": {
+                                          "2023-12-30T00:00:00Z": "Dec 30",
+                                          "2023-12-24T00:00:00Z": "Dec 24"
+                                      },
+                                      "yAxis": {
+                                          "54.0000": "54",
+                                          "42.0000": "42",
+                                          "37.0000": "37",
+                                          "45.0000": "45",
+                                          "49.0000": "49",
+                                          "41.0000": "41",
+                                          "0.0000": "0"
+                                      }
+                                  },
+                                  "layer": [
+                                      {
+                                          "name": "normal-range",
+                                          "description": "The normal range band around the line",
+                                          "mark": {
+                                              "type": "errorband",
+                                              "color": {
+                                                  "expr": "normalRangeColor"
+                                              },
+                                              "opacity": {
+                                                  "expr": "normalRangeOpacity"
+                                              }
+                                          },
+                                          "encoding": {
+                                              "y": {
+                                                  "field": "ci1",
+                                                  "type": "quantitative",
+                                                  "scale": {
+                                                      "zero": false
+                                                  },
+                                                  "title": "Normal range",
+                                                  "axis": null
+                                              },
+                                              "y2": {
+                                                  "field": "ci0"
+                                              }
+                                          }
+                                      },
+                                      {
+                                          "name": "line",
+                                          "description": "The line based of time series data",
+                                          "mark": {
+                                              "opacity": 1,
+                                              "clip": true,
+                                              "type": "line",
+                                              "stroke": {
+                                                  "expr": "lineColor"
+                                              },
+                                              "strokeWidth": {
+                                                  "expr": "lineStrokeWidth"
+                                              }
+                                          },
+                                          "encoding": {
+                                              "strokeDash": {
+                                                  "condition": {
+                                                      "test": "datum.dashed",
+                                                      "value": {
+                                                          "expr": "lineStrokeDash"
+                                                      }
+                                                  },
+                                                  "field": "dashed",
+                                                  "type": "nominal",
+                                                  "legend": null
+                                              },
+                                              "y": {
+                                                  "field": "rawValue",
+                                                  "type": "quantitative",
+                                                  "axis": null
+                                              }
+                                          }
+                                      },
+                                      {
+                                          "name": "current-value-circle",
+                                          "description": "Circle at the end of the line on the current data point",
+                                          "mark": {
+                                              "opacity": 1,
+                                              "stroke": {
+                                                  "expr": "mode === 'CurrentPartial' ? currentValueCircleColor1 : currentValueCircleColor2 "
+                                              },
+                                              "strokeWidth": {
+                                                  "expr": "currentValueCircleStrokeWidth"
+                                              },
+                                              "type": "point",
+                                              "filled": true,
+                                              "fill": {
+                                                  "expr": "mode === 'CurrentPartial' ? currentValueCircleColor2 : currentValueCircleColor1"
+                                              },
+                                              "size": {
+                                                  "expr": "datum.point*currentValueCircleSize"
+                                              }
+                                          },
+                                          "encoding": {
+                                              "y": {
+                                                  "field": "rawValue",
+                                                  "type": "quantitative",
+                                                  "axis": {
+                                                      "format": {
+                                                          "custom": true,
+                                                          "mapName": "yAxis"
+                                                      },
+                                                      "labelAlign": "right",
+                                                      "labelBaseline": {
+                                                          "condition": {
+                                                              "test": "datum.value === 0",
+                                                              "value": "bottom"
+                                                          },
+                                                          "value": "middle"
+                                                      },
+                                                      "labelColor": {
+                                                          "expr": "datum.index === 1 ? axisLabelColorActive : axisLabelColorDefault"
+                                                      },
+                                                      "offset": {
+                                                          "expr": "leftYAxisOffset"
+                                                      },
+                                                      "values": {
+                                                          "expr": "yAxisLabelsDataValues"
+                                                      },
+                                                      "grid": false
+                                                  }
+                                              }
+                                          }
+                                      },
+                                      {
+                                          "name": "isolated-point-value-circle",
+                                          "description": "Circle for isolated points in data series",
+                                          "mark": {
+                                              "type": "point",
+                                              "filled": true,
+                                              "size": {
+                                                  "expr": "datum.showIsolatedPoint*currentValueCircleSize"
+                                              },
+                                              "opacity": 1,
+                                              "strokeWidth": {
+                                                  "expr": "currentValueCircleStrokeWidth"
+                                              }
+                                          },
+                                          "encoding": {
+                                              "y": {
+                                                  "field": "rawValue",
+                                                  "type": "quantitative",
+                                                  "axis": null
+                                              }
+                                          }
+                                      },
+                                      {
+                                          "name": "current-value-text",
+                                          "description": "The current value text after the end of the line",
+                                          "mark": {
+                                              "text": {
+                                                  "expr": "datum.point === 1 ? datum.formattedRawValue : \"\""
+                                              },
+                                              "dx": {
+                                                  "expr": "currentValuePadding"
+                                              },
+                                              "type": "text",
+                                              "fontSize": {
+                                                  "expr": "currentValueFontSize"
+                                              },
+                                              "font": {
+                                                  "expr": "currentValueFontFace"
+                                              },
+                                              "fontWeight": {
+                                                  "expr": "currentValueFontWeight"
+                                              },
+                                              "align": "left"
+                                          },
+                                          "encoding": {
+                                              "y": {
+                                                  "field": "rawValue",
+                                                  "type": "quantitative",
+                                                  "axis": null
+                                              }
+                                          }
+                                      },
+                                      {
+                                          "description": "Manual left x-axis grid line to overlay the errorband that occludes the real axis grid line",
+                                          "mark": {
+                                              "type": "rule",
+                                              "color": {
+                                                  "expr": "xAxisGridColorDefault"
+                                              },
+                                              "opacity": {
+                                                  "expr": "length(data('series')) > 0 && datum.truncDate === peek(data('series')).truncDate ? 1 : 0"
+                                              }
+                                          },
+                                          "name": "left-x-axis-overlay"
+                                      }
+                                  ],
+                                  "view": {
+                                      "stroke": null
+                                  },
+                                  "height": "container",
+                                  "encoding": {
+                                      "x": {
+                                          "field": "truncDate",
+                                          "type": "ordinal",
+                                          "axis": {
+                                              "gridOpacity": {
+                                                  "expr": "datum.index === 0 ? 0 : 1"
+                                              },
+                                              "labelColor": {
+                                                  "condition": [
+                                                      {
+                                                          "test": "mode === 'CurrentPartial' && datum.index === 0.5",
+                                                          "expr": "axisLabelColorActive"
+                                                      },
+                                                      {
+                                                          "expr": "axisLabelColorActive",
+                                                          "test": "mode === 'LastComplete' && datum.index === 1"
+                                                      }
+                                                  ],
+                                                  "expr": "axisLabelColorDefault"
+                                              },
+                                              "labelFontWeight": {
+                                                  "condition": [
+                                                      {
+                                                          "expr": "xAxisLabelFontWeightActive",
+                                                          "test": "mode === 'CurrentPartial' && datum.index === 0.5"
+                                                      },
+                                                      {
+                                                          "test": "mode === 'LastComplete' && datum.index === 1",
+                                                          "expr": "xAxisLabelFontWeightActive"
+                                                      }
+                                                  ],
+                                                  "expr": "xAxisLabelFontWeightDefault"
+                                              },
+                                              "values": {
+                                                  "expr": "xAxisLabelsDataValues"
+                                              },
+                                              "gridColor": {
+                                                  "condition": [
+                                                      {
+                                                          "expr": "xAxisGridColorActive",
+                                                          "test": "mode === 'CurrentPartial' && datum.index === 0.5"
+                                                      },
+                                                      {
+                                                          "test": "mode === 'LastComplete' && datum.index === 1",
+                                                          "expr": "xAxisGridColorActive"
+                                                      }
+                                                  ],
+                                                  "expr": "xAxisGridColorDefault"
+                                              },
+                                              "format": {
+                                                  "custom": true,
+                                                  "mapName": "xAxis"
+                                              },
+                                              "labelAlign": {
+                                                  "value": "center",
+                                                  "condition": [
+                                                      {
+                                                          "test": "datum.index === 0",
+                                                          "value": "left"
+                                                      },
+                                                      {
+                                                          "test": "datum.index === 1",
+                                                          "value": "right"
+                                                      }
+                                                  ]
+                                              },
+                                              "grid": true,
+                                              "offset": {
+                                                  "expr": "xAxisOffset"
+                                              },
+                                              "labelOverlap": true
+                                          },
+                                          "scale": {
+                                              "type": "point",
+                                              "padding": {
+                                                  "expr": "xAxisScalePadding"
+                                              }
+                                          }
+                                      }
+                                  },
+                                  "data": {
+                                      "values": [
+                                          {
+                                              "truncDate": "2023-12-30T00:00:00Z",
+                                              "point": 1,
+                                              "dashed": false,
+                                              "ci0": "34.7285",
+                                              "showIsolatedPoint": 0,
+                                              "ci1": "59.1405",
+                                              "formattedRawValue": "54",
+                                              "rawValue": "54.0000",
+                                              "formattedTruncDate": "Dec 30"
+                                          },
+                                          {
+                                              "rawValue": "42.0000",
+                                              "point": 0,
+                                              "dashed": false,
+                                              "formattedTruncDate": "Dec 29",
+                                              "showIsolatedPoint": 0,
+                                              "ci1": "58.1083",
+                                              "ci0": "33.6964",
+                                              "formattedRawValue": "42",
+                                              "truncDate": "2023-12-29T00:00:00Z"
+                                          },
+                                          {
+                                              "dashed": false,
+                                              "showIsolatedPoint": 0,
+                                              "ci1": "57.1018",
+                                              "formattedTruncDate": "Dec 28",
+                                              "ci0": "32.6899",
+                                              "formattedRawValue": "37",
+                                              "truncDate": "2023-12-28T00:00:00Z",
+                                              "rawValue": "37.0000",
+                                              "point": 0
+                                          },
+                                          {
+                                              "ci0": "31.7083",
+                                              "showIsolatedPoint": 0,
+                                              "rawValue": "45.0000",
+                                              "formattedTruncDate": "Dec 27",
+                                              "point": 0,
+                                              "dashed": false,
+                                              "ci1": "56.1203",
+                                              "formattedRawValue": "45",
+                                              "truncDate": "2023-12-27T00:00:00Z"
+                                          },
+                                          {
+                                              "dashed": false,
+                                              "showIsolatedPoint": 0,
+                                              "formattedTruncDate": "Dec 26",
+                                              "ci1": "55.1600",
+                                              "truncDate": "2023-12-26T00:00:00Z",
+                                              "ci0": "30.7480",
+                                              "rawValue": "42.0000",
+                                              "formattedRawValue": "42",
+                                              "point": 0
+                                          },
+                                          {
+                                              "ci0": "29.8009",
+                                              "point": 0,
+                                              "dashed": false,
+                                              "showIsolatedPoint": 0,
+                                              "formattedRawValue": "49",
+                                              "truncDate": "2023-12-25T00:00:00Z",
+                                              "rawValue": "49.0000",
+                                              "ci1": "54.2129",
+                                              "formattedTruncDate": "Dec 25"
+                                          },
+                                          {
+                                              "rawValue": "41.0000",
+                                              "formattedRawValue": "41",
+                                              "truncDate": "2023-12-24T00:00:00Z",
+                                              "formattedTruncDate": "Dec 24",
+                                              "point": 0,
+                                              "ci0": "28.8542",
+                                              "dashed": false,
+                                              "showIsolatedPoint": 0,
+                                              "ci1": "53.2662"
+                                          }
+                                      ],
+                                      "name": "series"
+                                  }
+                              },
+                              "generation_id": ""
+                          }
+                      }
+                  ]
+              },
+              {
+                  "type": "top",
+                  "insights": [
+                      {
+                          "result": {
+                              "type": "top-drivers",
+                              "version": 1,
+                              "content": "",
+                              "markup": "During the last day, Maintenance Hours increased by 12. Ultrasound, X-Ray, and SPECT increased the most.\n",
+                              "viz": {
+                                  "encoding": {
+                                      "y": {
+                                          "sort": {
+                                              "field": "index",
+                                              "order": "ascending"
+                                          },
+                                          "axis": {
+                                              "labelFont": {
+                                                  "expr": "contributorAxisLabelFontFace"
+                                              },
+                                              "labelFontSize": {
+                                                  "expr": "contributorAxisLabelFontSize"
+                                              },
+                                              "labelColor": {
+                                                  "expr": "contributorAxisLabelColor"
+                                              },
+                                              "title": null,
+                                              "offset": {
+                                                  "expr": "contributorAxisOffset"
+                                              },
+                                              "domain": false,
+                                              "labelPadding": {
+                                                  "expr": "includesNegativeValues ? contributorAxisLabelMaxWidth + 16 : contributorAxisLabelPadding"
+                                              }
+                                          },
+                                          "field": "entityName",
+                                          "type": "nominal"
+                                      },
+                                      "x": {
+                                          "scale": {
+                                              "padding": {
+                                                  "expr": "xScalePadding"
+                                              }
+                                          },
+                                          "axis": {
+                                              "gridColor": {
+                                                  "expr": "contributorAxisDomainColor"
+                                              },
+                                              "domain": false,
+                                              "title": null,
+                                              "grid": true,
+                                              "gridCap": {
+                                                  "expr": "contributorAxisDomainCap"
+                                              },
+                                              "labelOpacity": 0,
+                                              "zindex": 1,
+                                              "gridOpacity": {
+                                                  "expr": "datum.value === 0 ? 1 : 0"
+                                              },
+                                              "gridWidth": {
+                                                  "expr": "contributorAxisDomainWidth"
+                                              }
+                                          },
+                                          "stack": "null",
+                                          "field": "value",
+                                          "type": "quantitative"
+                                      }
+                                  },
+                                  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                                  "params": [
+                                      {
+                                          "name": "barCornerRadius",
+                                          "value": 4
+                                      },
+                                      {
+                                          "name": "barValueLabelColorAverage",
+                                          "value": "#343A3F"
+                                      },
+                                      {
+                                          "value": "#1EA562",
+                                          "name": "barValueLabelColorFavorable"
+                                      },
+                                      {
+                                          "name": "barValueLabelColorUnfavorable",
+                                          "value": "#C6154A"
+                                      },
+                                      {
+                                          "value": "#1678CC",
+                                          "name": "barValueLabelColorUnspecified"
+                                      },
+                                      {
+                                          "name": "barValueLabelFontFace",
+                                          "value": "'SF Pro Text', 'SF Pro Display', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, ubuntu, 'Fire Sans', 'Helvetica Neue', sans-serif"
+                                      },
+                                      {
+                                          "name": "barValueLabelFontSize",
+                                          "value": 14
+                                      },
+                                      {
+                                          "value": 500,
+                                          "name": "barValueLabelFontWeight"
+                                      },
+                                      {
+                                          "name": "barValueLabelMaxWidth",
+                                          "value": 72
+                                      },
+                                      {
+                                          "name": "barValueLabelPadding",
+                                          "value": 4
+                                      },
+                                      {
+                                          "value": "round",
+                                          "name": "contributorAxisDomainCap"
+                                      },
+                                      {
+                                          "name": "contributorAxisDomainColor",
+                                          "value": "#343A3F"
+                                      },
+                                      {
+                                          "name": "contributorAxisDomainWidth",
+                                          "value": 2
+                                      },
+                                      {
+                                          "name": "contributorAxisLabelColor",
+                                          "value": "#343A3F"
+                                      },
+                                      {
+                                          "name": "contributorAxisLabelPadding",
+                                          "value": 10
+                                      },
+                                      {
+                                          "name": "contributorAxisLabelMaxWidth",
+                                          "value": 72
+                                      },
+                                      {
+                                          "name": "contributorAxisLabelFontFace",
+                                          "value": "'SF Pro Text', 'SF Pro Display', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, ubuntu, 'Fire Sans', 'Helvetica Neue', sans-serif"
+                                      },
+                                      {
+                                          "value": 14,
+                                          "name": "contributorAxisLabelFontSize"
+                                      },
+                                      {
+                                          "name": "contributorAxisOffset",
+                                          "value": 2
+                                      },
+                                      {
+                                          "value": "#C8CED8",
+                                          "name": "contributorBarColorAverage"
+                                      },
+                                      {
+                                          "name": "contributorBarColorFavorable",
+                                          "value": "#66DDA3"
+                                      },
+                                      {
+                                          "value": "#FA5F8D",
+                                          "name": "contributorBarColorUnfavorable"
+                                      },
+                                      {
+                                          "name": "contributorBarColorUnspecified",
+                                          "value": "#5FB5FF"
+                                      },
+                                      {
+                                          "name": "xScalePadding",
+                                          "value": 0
+                                      },
+                                      {
+                                          "name": "mode",
+                                          "value": "unspecified"
+                                      },
+                                      {
+                                          "name": "includesNegativeValues",
+                                          "value": true
+                                      },
+                                      {
+                                          "name": "xDomain",
+                                          "value": [
+                                              -2.5,
+                                              11
+                                          ]
+                                      }
+                                  ],
+                                  "config": {
+                                      "axis": {
+                                          "ticks": false
+                                      }
+                                  },
+                                  "data": {
+                                      "values": [
+                                          {
+                                              "formattedValue": "+11",
+                                              "average": false,
+                                              "index": 0,
+                                              "entityName": "Ultrasound",
+                                              "value": 11
+                                          },
+                                          {
+                                              "entityName": "X-Ray",
+                                              "value": 6,
+                                              "formattedValue": "+6",
+                                              "average": false,
+                                              "index": 1
+                                          },
+                                          {
+                                              "average": false,
+                                              "index": 2,
+                                              "entityName": "SPECT",
+                                              "value": 5,
+                                              "formattedValue": "+5"
+                                          },
+                                          {
+                                              "index": 3,
+                                              "entityName": "Average of 4 others",
+                                              "value": -2.5,
+                                              "formattedValue": "-2.5",
+                                              "average": true
+                                          }
+                                      ],
+                                      "name": "series"
+                                  },
+                                  "view": {
+                                      "stroke": null
+                                  },
+                                  "height": "container",
+                                  "layer": [
+                                      {
+                                          "description": "Layer for the bar chart",
+                                          "mark": {
+                                              "binSpacing": 0,
+                                              "color": {
+                                                  "expr": "\n            if(datum.average, contributorBarColorAverage,\n              if(mode === 'favorable', contributorBarColorFavorable,\n                if(mode === 'unfavorable', contributorBarColorUnfavorable,\n                contributorBarColorUnspecified\n                )\n              )\n            )"
+                                              },
+                                              "type": "bar",
+                                              "height": 24,
+                                              "cornerRadiusTopRight": {
+                                                  "expr": "datum.value < 0 ? 0 : barCornerRadius"
+                                              },
+                                              "cornerRadiusBottomRight": {
+                                                  "expr": "datum.value < 0 ? 0 : barCornerRadius"
+                                              },
+                                              "cornerRadiusTopLeft": {
+                                                  "expr": "datum.value >= 0 ? 0 : barCornerRadius"
+                                              },
+                                              "cornerRadiusBottomLeft": {
+                                                  "expr": "datum.value >= 0 ? 0 : barCornerRadius"
+                                              }
+                                          },
+                                          "name": "bar-chart"
+                                      },
+                                      {
+                                          "name": "value-text-label",
+                                          "description": "Layer for the absolute value text labels",
+                                          "mark": {
+                                              "limit": {
+                                                  "expr": "includesNegativeValues ? contributorAxisLabelMaxWidth : barValueLabelMaxWidth "
+                                              },
+                                              "fontSize": {
+                                                  "expr": "barValueLabelFontSize"
+                                              },
+                                              "font": {
+                                                  "expr": "barValueLabelFontFace"
+                                              },
+                                              "fontWeight": {
+                                                  "expr": "barValueLabelFontWeight"
+                                              },
+                                              "text": {
+                                                  "expr": "datum.formattedValue"
+                                              },
+                                              "type": "text",
+                                              "baseline": "middle",
+                                              "color": {
+                                                  "expr": "\n            if(datum.average, barValueLabelColorAverage,\n              if(mode === 'favorable', barValueLabelColorFavorable,\n                if(mode === 'unfavorable', barValueLabelColorUnfavorable,\n                  barValueLabelColorUnspecified\n                )\n              )\n            )"
+                                              },
+                                              "align": {
+                                                  "expr": "datum.value < 0 ? 'right' : 'left'"
+                                              },
+                                              "dx": {
+                                                  "expr": "datum.value < 0 ? barValueLabelPadding * -1 : barValueLabelPadding"
+                                              }
+                                          }
+                                      }
+                                  ],
+                                  "width": "container"
+                              },
+                              "facts": {},
+                              "characterization": "CHARACTERIZATION_UNSPECIFIED",
+                              "question": "Which Modality increased the most?",
+                              "score": 0.7333333333333333,
+                              "id": "a4580590-2192-4f2b-bdf4-2bc80735bc2c",
+                              "insight_feedback_metadata": {
+                                  "type": "top-drivers",
+                                  "score": 0.7333333333333333,
+                                  "dimension_hash": "XpnX0Sbb+XoDvM25EobHxYs8IIo6UM1Uw3LMQaDtqFM="
+                              }
+                          },
+                          "insight_type": "top-drivers"
+                      }
+                  ],
+                  "summaries": []
+              }
+          ],
+          "has_errors": false,
+          "characterization": "CHARACTERIZATION_UNSPECIFIED"
+      }
+  }
+}
