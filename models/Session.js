@@ -1,7 +1,7 @@
 import { tabSignIn } from "../libs";
 
 // Session designed to securely authorize users server-side in the /auth route
-class Session {
+export class Session {
   constructor(username) {
     this.authorized = false; // flag controlling access
     this.username = username;
