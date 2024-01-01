@@ -8,8 +8,9 @@ export default function Insights(props) {
 
   return (
     <>
-      <BAN insights={insights} title={props.title} />
-      <Detail insights={insights} title={props.title} />
+      <BAN insights={insights} title={props.title} setMetricValue={props.setMetricValue} pushQA={props.pushQA} />
+      <Detail insights={insights} title={props.title} qa={props.qa} pushQA={props.pushQA} />
+      <Springboard title={props.title} qa={props.qa} pushQA={props.pushQA} />
     </>
   )
 }
