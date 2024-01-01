@@ -3,9 +3,9 @@ import VegaLiteViz from "../VegaLiteViz";
 import { parseBan } from "../../utils/parse";
 import bundle from "../../models/Insights/mocks/generate_current_metric_value_insight_bundle.json"
 
-
+// returns a minimal representation for the UI
 function BAN(props) {
-  // returns a minimal representation for the UI
+  const setMetricValue = props.setMetricValue;
   const parsedBundle = parseBan(bundle);
   const { value, question, markup, viz  } = parsedBundle[0];
 
@@ -13,8 +13,8 @@ function BAN(props) {
 
   useEffect(() => {
     // the metric value is controlled in the parent component but set here
-    props.setMetricValue(value);
-  }, [value]);
+    setMetricValue(value);
+  }, [value, setMetricValue]);
 
   return (
     <>

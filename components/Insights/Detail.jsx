@@ -4,8 +4,9 @@ import { parseBan } from "../../utils/parse";
 import Carousel from "../Carousel";
 import bundle from "../../models/Insights/mocks/generate_detail_insight.json"
 
+// returns a minimal representation for the UI
 function Detail(props) {
-  // returns a minimal representation for the UI
+  const setMetricValue = props.setMetricValue;
   const parsedBundles = parseBan(bundle);
   const { value } = parsedBundles[0];
   
@@ -16,8 +17,8 @@ function Detail(props) {
 
   useEffect(() => {
     // the metric value is controlled in the parent component but set here
-    props.setMetricValue(value);
-  }, [value]);
+    setMetricValue(value);
+  }, [value, setMetricValue]);
 
 
   return (
