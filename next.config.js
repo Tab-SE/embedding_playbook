@@ -18,9 +18,9 @@ let basePath = '';
 //   basePath = `/${path}`;
 // }
 
-let unoptimized = false;
+let staticOptimized = true;
 if (process.env.HOSTING === 'local') {
-  unoptimized = true;
+  staticOptimized = false;
 }
 
 // initializes the withNextra config object with theme settings
@@ -28,12 +28,12 @@ if (process.env.HOSTING === 'local') {
 const withNextra = require('nextra')({
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.tsx',
-  staticImage: true,
+  staticImage: staticOptimized,
 });
 
 module.exports = withNextra({
   images: {
-    unoptimized: true,
+    unoptimized: !staticOptimized,
   },
   assetPrefix: assetPrefix,
   webpack(config) {
