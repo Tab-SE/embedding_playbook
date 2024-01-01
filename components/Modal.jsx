@@ -4,13 +4,14 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
 
 function Modal(props) {
+  const setModal = props.setModal;
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
 
   useEffect(() => {
     // the modal is controlled in the parent component but set here
-    props.setModal(ref.current);
-  }, [ref]);
+    setModal(ref.current);
+  }, [ref, setModal]);
 
 
   return (

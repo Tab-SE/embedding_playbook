@@ -18,6 +18,11 @@ let basePath = '';
 //   basePath = `/${path}`;
 // }
 
+let unoptimized = false;
+if (process.env.HOSTING === 'local') {
+  unoptimized = true;
+}
+
 // initializes the withNextra config object with theme settings
 // set staticImage: false to avoid usage of IMGIX at a loss of image optimization
 const withNextra = require('nextra')({
@@ -27,6 +32,9 @@ const withNextra = require('nextra')({
 });
 
 module.exports = withNextra({
+  images: {
+    unoptimized: true,
+  },
   assetPrefix: assetPrefix,
   webpack(config) {
     // uses svgr for safe usage of SVGs in React
