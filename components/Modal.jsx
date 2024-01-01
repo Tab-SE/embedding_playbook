@@ -22,7 +22,9 @@ function Modal(props) {
               <FontAwesomeIcon icon={faCircleXmark} size='2xl' />
             </button>
           </form>
-          {props.children}
+          <div>
+            {props.children}
+          </div>
           <p className="pt-6 text-sm">(Press <kbd className="kbd">ESC</kbd> key or click outside to close)</p>
         </div>
         <form method="dialog" className="modal-backdrop">

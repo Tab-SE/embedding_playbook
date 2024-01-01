@@ -20,11 +20,11 @@ export default function Metric(props) {
     <div className="stats shadow bg-stone-50 w-52 h-36 cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
       <div className="stat">
         <div className="stat-title">{name}</div>
-        <div className="stat-value">{metricValue ? metricValue : '89,400'}</div>
+        <div className="stat-value">{metricValue ? metricValue : '0'}</div>
         <div className="stat-desc">21% more than last month</div>
       </div>
       <Modal setModal={setModal} >
-        <Insights title={name} setMetricValue={setMetricValue} qa={qa} pushQA={pushQA} />
+        <Insights title={name} value={metricValue} setMetricValue={setMetricValue} qa={qa} pushQA={pushQA} />
       </Modal>
     </div>
   )

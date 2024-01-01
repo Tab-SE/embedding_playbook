@@ -8,9 +8,21 @@ export default function Insights(props) {
 
   return (
     <>
-      <BAN insights={insights} title={props.title} setMetricValue={props.setMetricValue} pushQA={props.pushQA} />
-      <Detail insights={insights} title={props.title} qa={props.qa} pushQA={props.pushQA} />
-      <Springboard title={props.title} qa={props.qa} pushQA={props.pushQA} />
+      <div className='flex items-end p-4'>
+        <h1 className='flex-0 font-bold text-3xl text-stone-800'>
+          {props.title}:
+        </h1>
+        <p className='flex-1 font-bold text-3xl text-stone-600 mx-2'>{props.value}</p>
+      </div>
+      <div className='my-8'>
+        <Detail 
+          insights={insights} 
+          title={props.title} 
+          qa={props.qa} 
+          pushQA={props.pushQA} 
+          setMetricValue={props.setMetricValue}
+        />
+      </div>
     </>
   )
 }

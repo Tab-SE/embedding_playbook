@@ -14,10 +14,6 @@ export default function TableauAuth() {
 
   // query hooks, indexed by user
   const metrics = useMetrics(user);
-  
-  // 
-
-  // console.log(insights);
 
   useEffect(() => {
     if (status === 'authenticated') {

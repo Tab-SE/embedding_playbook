@@ -1,29 +1,47 @@
 import { useEffect } from "react";
+import VegaLiteViz from "../VegaLiteViz";
 import { parseBan } from "../../utils/parse";
+import Carousel from "../Carousel";
 import bundle from "../../models/Insights/mocks/generate_detail_insight.json"
 
 function Detail(props) {
-  const summaries = props.insights?.top?.summaries[0]?.result;
-  const insights = props.insights?.top?.insights[0]?.result;
-  const viz = insights?.viz;
-  const markup = insights?.markup;
-  const value = insights?.facts?.target_period_value?.formatted;
-  const label = insights?.facts?.target_period_value?.label;
 
   // returns a minimal representation for the UI
-  const parsedBundle = parseBan(bundle);
-  // const { value, question, markup, viz  } = parsedBundle[0];
+  const parsedBundles = parseBan(bundle);
+  parsedBundles[0];
+  
+  // useEffect(() => {
+  //   // the metric value is controlled in the parent component but set here
+  //   props.pushQA(value);
+  // }, [value]);
 
-  // console.log('parsedDetail', parsedBundle);
+  const { value  } = parsedBundles[0];
+  parsedBundles.pop(0);
 
   useEffect(() => {
     // the metric value is controlled in the parent component but set here
-    props.pushQA(value);
+    props.setMetricValue(value);
   }, [value]);
 
+
   return (
-    <p dangerouslySetInnerHTML={{__html: markup}} /> 
-  )
+    <div className="flex justify-center">
+      <Carousel> 
+      {parsedBundles.map((insight, index) => {
+        const { viz, question, markup } = insight;
+        if (insight.type !== 'popc') {
+          return (
+            <div key={index} className="max-w-2xl w-full mx-4">
+              <p className="text-slate-100" dangerouslySetInnerHTML={{__html: question}} />
+              {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={104} spec={viz}></VegaLiteViz>}
+              <p className="text-slate-100" dangerouslySetInnerHTML={{__html: markup}} />
+            </div>
+          );
+        }
+      })}
+      </Carousel>
+    </div>
+  ) 
 }
 
 export default Detail;
