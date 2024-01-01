@@ -31,11 +31,8 @@ export class MetricsModel {
   }
 
   async syncInsights(apiKey) {
-    console.log('metrics BEFORE insights:', this.metrics);
     // client-side request to a private API for further processing
     this.metrics = await handleInsights(apiKey, this.metrics);
-
-    console.log('metrics AFTER insights:', this.metrics);
 
     return this.metrics;
   }

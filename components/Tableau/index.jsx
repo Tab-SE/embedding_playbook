@@ -28,12 +28,9 @@ const Tableau = forwardRef(function Tableau(props, ref) {
 
   useFilters(dashboard, id).then(({ status, isFetched, isLoading, isSuccess, data, isError, error }) => {
     if (status === 'pending') {
-      // console.log('requesting data...');
       if (isLoading) {
-        // console.log('loading data...');
       }
     } else if (status === 'success') {
-      // console.log(status, `The number of filters is: ${data.length}`, data);
     }
   }, (e) => {
     console.error(e);

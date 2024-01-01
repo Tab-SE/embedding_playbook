@@ -9,8 +9,6 @@ function BAN(props) {
   const parsedBundle = parseBan(bundle);
   const { value, question, markup, viz  } = parsedBundle[0];
 
-  // console.log('parsedBAN', parsedBundle);
-
   useEffect(() => {
     // the metric value is controlled in the parent component but set here
     setMetricValue(value);

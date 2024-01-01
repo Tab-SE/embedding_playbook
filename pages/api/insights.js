@@ -6,15 +6,11 @@ const handler = async (req, res) => {
 
   // Signed in
   if (token.name) {
-    // console.log("Server Token", JSON.stringify(token, null, 2));
 
     // get attributes from token for secure server-side processing
     const { user_id, rest_key } = token.tableau;
 
-    console.log('req:', req);
-
     if (req.method === 'GET') {
-      console.log('insight req body:', req.body);
       if (Array.isArray(req.body.metrics)) {
         try {
           req.body.metrics.forEach(metric => {

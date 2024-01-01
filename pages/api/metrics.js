@@ -7,7 +7,6 @@ const handler = async (req, res) => {
 
   // Signed in
   if (token.name) {
-    // console.log("Server Token", JSON.stringify(token, null, 2));
 
     // get attributes from token for secure server-side processing
     const { user_id, rest_key } = token.tableau;
@@ -16,7 +15,6 @@ const handler = async (req, res) => {
       try {
         const metrics = new MetricsModel(user_id); // instantiate a new Metrics object for the logged in user
         const payload = await metrics.syncMetrics(rest_key); // request metrics for the user
-        // console.log('P A Y L O A D ! :', payload);
         res.status(200).json(payload);
       } catch (err) {
         res.status(500).json({ error: err });

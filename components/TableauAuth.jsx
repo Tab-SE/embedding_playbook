@@ -27,7 +27,6 @@ export default function TableauAuth() {
   }
 
   if (status === 'authenticated') {
-    // console.log(metrics);
     return (
       <>
         <p className="nx-font-bold m-4">{data.user.name} is {status}</p> 
