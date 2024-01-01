@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -6,8 +6,12 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 function Modal(props) {
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
-  // the modal is controlled in the parent component but set here
-  props.setModal(ref.current);
+
+  useEffect(() => {
+    // the modal is controlled in the parent component but set here
+    props.setModal(ref.current);
+  }, [ref]);
+
 
   return (
     <>
@@ -18,11 +22,6 @@ function Modal(props) {
               <FontAwesomeIcon icon={faCircleXmark} size='2xl' />
             </button>
           </form>
-          <div>
-            <h3 className="font-bold text-3xl mb-9">
-              <span className='p-4'>{props.title}</span>
-            </h3>
-          </div>
           {props.children}
           <p className="pt-6 text-sm">(Press <kbd className="kbd">ESC</kbd> key or click outside to close)</p>
         </div>
