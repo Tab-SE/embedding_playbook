@@ -1,6 +1,6 @@
 import { httpGet, httpPost } from "../utils/http"
 
-const public_url = process.env.NEXT_PUBLIC_API_BASE_URL; // URL for Serverless functions
+const public_url = 'api'; // URL for Serverless functions
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 const api = process.env.PULSE_API; // Tableau API version (classic resources)
@@ -100,9 +100,8 @@ export const getDefinitions = async (apiKey, definition_ids) => {
 
 // requests parsed metrics from private API
 export const getMetrics = async () => {
-  const endpoint = public_url + '/metrics';
+  const endpoint = '/api/metrics';
   const config = {
-    public_url,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -114,7 +113,7 @@ export const getMetrics = async () => {
 
 // requests parsed insights from private API
 export const getInsights = async (metrics) => {
-  const endpoint = public_url + '/insights';
+  const endpoint = '/api/insights';
   const body = {};
 
   if (Array.isArray(metrics)) {
@@ -127,7 +126,6 @@ export const getInsights = async (metrics) => {
   }
   
   const config = {
-    public_url,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
