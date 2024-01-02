@@ -18,6 +18,6 @@ export const useMetrics = async (user) => {
       return getMetrics();
     },
     enabled: !!user,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }
