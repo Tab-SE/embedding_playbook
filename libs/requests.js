@@ -7,7 +7,7 @@ const api = process.env.PULSE_API; // Tableau API version (classic resources)
 const contentUrl = process.env.PULSE_SITE; // Tableau site name
 
 // authenticate to Tableau
-export const tabSignIn = async (pat_name, pat_secret) => {
+export const tabAuthPAT = async (pat_name, pat_secret) => {
   const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
 
   const body = {
