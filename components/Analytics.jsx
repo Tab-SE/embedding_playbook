@@ -2,10 +2,13 @@ import { useState, useRef } from 'react'
 import Tableau from './Tableau'
 import Metrics from './Metrics';
 import Toolbar from './Toolbar'
+import { useTableauSession } from '../hooks';
 
 function Analytics(props) {
   const viz = useRef(null); // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const [interactive, setInteractive] = useState(false);
+  
+  const authenticated = useTableauSession();
 
   return (
     <section className='bg-colorblind-lgray rounded'> 

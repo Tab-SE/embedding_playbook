@@ -14,7 +14,7 @@ export default function Insights(props) {
         </h1>
         <p className='flex-1 font-bold text-4xl text-stone-600 mx-2'>{props.value}</p>
       </div>
-      <div className='my-8'>
+      <div className='my-8' >
         <Detail 
           insights={insights} 
           title={props.title} 

@@ -22,8 +22,6 @@ export const useFilters = async (activeSheet, id) => {
   // show # and names of categorical filters in the Console
   // categoricalFilters = dashFilters.filter((df) => df.filterType === FilterType.Categorical);
   // nonCategoricalFilters = dashFilters.filter((df) => df.filterType !== FilterType.Categorical);
-  // console.log(`Filters: ${filter.map((s) => s.fieldName)}`);
-  // console.log('Available categorical dashboard filters:', filter);
 
   return useQuery({
     queryKey: ['tableau', 'viz', 'filters', id],

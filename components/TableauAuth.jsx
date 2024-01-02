@@ -5,15 +5,8 @@ import { useMetrics, useInsights } from '../hooks';
 export default function TableauAuth() {
   const [user, setUser] = useState(undefined);
   const { status, data } = useSession({
-    required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
-    onUnauthenticated() {
-      // The user is not authenticated, handle it here.
-      // => This component should wrap all other Tableau components: https://next-auth.js.org/getting-started/client#require-session
-    },
+    required: false, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
   })
-
-  // query hooks, indexed by user
-  const metrics = useMetrics(user);
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -21,13 +14,7 @@ export default function TableauAuth() {
     }
   }, [status, data]);
 
-  if (Array.isArray(metrics)) {
-    metrics.forEach((metric) => {
-    });
-  }
-
   if (status === 'authenticated') {
-    // console.log(metrics);
     return (
       <>
         <p className="nx-font-bold m-4">{data.user.name} is {status}</p> 

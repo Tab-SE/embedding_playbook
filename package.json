@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "info": "next info",
+    "demo": "next build && next start",
     "static": "next build && next export",
     "serve": "HOSTING=local npm run static && npx serve out",
     "checkout": "git checkout prod",

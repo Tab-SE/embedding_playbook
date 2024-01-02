@@ -7,11 +7,6 @@ function Springboard(props) {
    // returns a minimal representation for the UI
    const parsedBundle = parseBan(bundle);
    // const { value, question, markup, viz  } = parsedBundle[0];
-  //  console.log('parsedSpringboard', parsedBundle);
-
-  //  console.log('parsedBundle[0]', parsedBundle[0]?.viz);
-  //  console.log('parsedBundle[1]', parsedBundle[1]?.viz)
-
 
    const viz = parsedBundle[1].viz;
    const markup = parsedBundle[1].markup;

@@ -18,5 +18,6 @@ export const useInsights = async (user, metric) => {
       return await getInsights();
     },
     enabled: !!user,
+    staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }
