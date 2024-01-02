@@ -8,9 +8,7 @@ function Analytics(props) {
   const viz = useRef(null); // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const [interactive, setInteractive] = useState(false);
   
-  const { user, metrics } = useTableauSession();
-
-  console.log(user, metrics);
+  const authenticated = useTableauSession();
 
   return (
     <section className='bg-colorblind-lgray rounded'> 

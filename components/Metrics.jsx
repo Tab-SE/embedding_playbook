@@ -9,11 +9,6 @@ function Metrics(props) {
   const [metrics, setMetrics] = useState(undefined);
   const [status, setStatus] = useState('loading');
   const { status: session_status, data: session_data } = useSession({
-    required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
-    onUnauthenticated() {
-      // The user is not authenticated, handle it here.
-      // => This component should wrap all other Tableau components: https://next-auth.js.org/getting-started/client#require-session
-    },
   });
 
   // updates user for authenticated components
