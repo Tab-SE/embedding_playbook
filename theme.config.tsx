@@ -4,7 +4,6 @@ import Logo from './components/Logo';
 import Head from './components/Head'
 
 const vercel = process.env.NEXT_PUBLIC_BASE_URL;
-console.log('vercel', vercel);
 // const public_url = process.env.NEXT_PUBLIC_API_BASE_URL; // URL for Serverless functions
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
 

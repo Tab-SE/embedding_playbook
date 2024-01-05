@@ -9,7 +9,7 @@ const handler = async (req, res) => {
   const token = await getToken({ req });
 
   // Signed in
-  if (token.tableau) {
+  if (token?.tableau) { // tableau object containing asset data for the user
     if (req.method === 'GET') {
       try {
         const sesh = new Session(token.tableau.username); // user provided during authentication is used to create a new Session
