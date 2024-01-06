@@ -1,13 +1,14 @@
 import { tabAuthPAT } from "../../libs";
+import { authorizePAT } from "./controller";
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
   constructor(username) {
-    this.authorized = false; // flag controlling access
+    this.authorized = false; // flag controlling access to authenticated operations
     this.username = username;
     this.user_id = undefined;
-    this.embed_key = undefined;
-    this.rest_key = undefined;
+    this.embed_key = undefined; // only JWT authentication supports embed keys
+    this.rest_key = undefined; // some authentication methods only support REST API keys (PAT)
     this.site_id = undefined;
     this.site = undefined; // site name
     this.created = undefined; // Get the current time in seconds since the epoch
@@ -28,6 +29,17 @@ export class Session {
    } else {
     return null;
    }
+  }
+
+  authorize = () => {
+    this.created = Math.floor(Date.now() / 1000); // Get the current time in seconds since the epoch
+    this.expires = this.lifespan(expiration); // calculates the approximate expiration time
+    this.authorized = true; // allows authenticated operations to proceed
+    return this.returnSession();
+  }
+
+  pat = async (pat_name, pat_secret) => {
+
   }
 
   authorizePAT = async (pat_name, pat_secret) => {
