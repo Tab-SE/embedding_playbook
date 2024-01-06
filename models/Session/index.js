@@ -15,10 +15,11 @@ export class Session {
     this.expires = undefined; // estimated future expiry date
   }
 
-  returnSession = () => {
+  _returnSession = () => {
+    console.log('Session', this);
     if (this.authorized) {
       return { 
-       name: this.username,
+       username: this.username,
        user_id: this.user_id, 
        rest_key: this.rest_key, 
        site_id: this.site_id, 
@@ -44,7 +45,7 @@ export class Session {
     this.expires = this.lifespan(expiration); 
     // allows authenticated operations to proceed
     this?.created && this?.expires ? this.authorized = true : null; 
-    return this.returnSession();
+    return this._returnSession();
   }
 
   pat = async (pat_name, pat_secret) => {
@@ -67,11 +68,11 @@ export class Session {
     this.rest_key = rest_key;
     this.expires = this.lifespan(expiration);
     this.authorized = true;
-    return this.returnSession();
+    return this._returnSession();
   }
 
   authorizeJWT = async (jwt) => {
-    return this.returnSession();
+    return this._returnSession();
   }
 
   // calculates the lifespan for the session (estimated)
