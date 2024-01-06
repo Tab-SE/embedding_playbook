@@ -6,7 +6,7 @@ export const authorizePAT = async (pat_name, pat_secret) => {
     site_id: site_id, 
     site: site, 
     user_id: user_id, 
-    rest_key: api_key, // only REST API key is returned, embed key not supported via PAT
+    rest_key: rest_key, // only REST API key is returned, embed key not supported via PAT
     expiration: expiration 
   }  = await tabAuthPAT(pat_name, pat_secret);
 
