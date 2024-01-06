@@ -1,4 +1,4 @@
-import { tabAuthPAT } from "../libs";
+import { tabAuthPAT } from "../../libs";
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
