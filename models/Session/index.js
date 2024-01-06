@@ -31,24 +31,40 @@ export class Session {
    }
   }
 
-  authorize = () => {
-    this.created = Math.floor(Date.now() / 1000); // Get the current time in seconds since the epoch
-    this.expires = this.lifespan(expiration); // calculates the approximate expiration time
-    this.authorized = true; // allows authenticated operations to proceed
+  _authorize = (credentials) => {
+    // set data store
+    this.site_id = credentials?.site_id;
+    this.site = credentials?.site;
+    this.user_id = credentials?.user_id;
+    credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
+    credentials?.embed_key ? this.embed_key = credentials.embed_key : null;
+    // Get the current time in seconds since the epoch
+    this.created = Math.floor(Date.now() / 1000); 
+    // calculates the approximate expiration time
+    this.expires = this.lifespan(expiration); 
+    // allows authenticated operations to proceed
+    this?.created && this?.expires ? this.authorized = true : null; 
     return this.returnSession();
   }
 
   pat = async (pat_name, pat_secret) => {
-
+    const credentials = { 
+      site_id: site_id, 
+      site: site, 
+      user_id: user_id, 
+      rest_key: rest_key, // only REST API key is returned, embed key not supported via PAT
+      expiration: expiration 
+    }  = await authorizePAT(pat_name, pat_secret);
+    this._authorize(credentials);
   }
 
   authorizePAT = async (pat_name, pat_secret) => {
-    const { site_id, site, user_id, api_key, expiration }  = await tabAuthPAT(pat_name, pat_secret);
+    const { site_id, site, user_id, rest_key, expiration }  = await tabAuthPAT(pat_name, pat_secret);
     this.created = Math.floor(Date.now() / 1000); // Get the current time in seconds since the epoch
     this.site_id = site_id;
     this.site = site;
     this.user_id = user_id;
-    this.rest_key = api_key;
+    this.rest_key = rest_key;
     this.expires = this.lifespan(expiration);
     this.authorized = true;
     return this.returnSession();
