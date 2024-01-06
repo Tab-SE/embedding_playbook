@@ -1,5 +1,5 @@
 import { tabAuthPAT } from "../../libs";
-import { authorizePAT } from "./controller";
+import { handlePAT } from "./controller";
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
@@ -16,7 +16,7 @@ export class Session {
   }
 
   _returnSession = () => {
-    console.log('Session', this);
+    console.log('_returnSession', this);
     if (this.authorized) {
       return { 
        username: this.username,
@@ -33,6 +33,7 @@ export class Session {
   }
 
   _authorize = (credentials) => {
+    console.log('_authorize', credentials);
     // set data store
     this.site_id = credentials?.site_id;
     this.site = credentials?.site;
@@ -44,22 +45,19 @@ export class Session {
     // calculates the approximate expiration time
     this.expires = this.lifespan(expiration); 
     // allows authenticated operations to proceed
-    this?.created && this?.expires ? this.authorized = true : null; 
+    this.authorized = true; 
     return this._returnSession();
   }
 
   pat = async (pat_name, pat_secret) => {
-    const credentials = { 
-      site_id: site_id, 
-      site: site, 
-      user_id: user_id, 
-      rest_key: rest_key, // only REST API key is returned, embed key not supported via PAT
-      expiration: expiration 
-    }  = await authorizePAT(pat_name, pat_secret);
-    this._authorize(credentials);
+    console.log('pat', pat_name, pat_secret);
+    console.log('pat', this);
+    await handlePAT(pat_name, pat_secret);
+    console.log('pat', credentials);
+    // this._authorize(credentials);
   }
 
-  authorizePAT = async (pat_name, pat_secret) => {
+  _authorizePAT = async (pat_name, pat_secret) => {
     const { site_id, site, user_id, rest_key, expiration }  = await tabAuthPAT(pat_name, pat_secret);
     this.created = Math.floor(Date.now() / 1000); // Get the current time in seconds since the epoch
     this.site_id = site_id;
@@ -68,10 +66,6 @@ export class Session {
     this.rest_key = rest_key;
     this.expires = this.lifespan(expiration);
     this.authorized = true;
-    return this._returnSession();
-  }
-
-  authorizeJWT = async (jwt) => {
     return this._returnSession();
   }
 
@@ -90,5 +84,3 @@ export class Session {
   };
   
 }
-
-export default Session;
