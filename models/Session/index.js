@@ -16,7 +16,6 @@ export class Session {
   }
 
   _returnSession = () => {
-    console.log('_returnSession', this);
     if (this.authorized) {
       return { 
        username: this.username,
@@ -33,40 +32,25 @@ export class Session {
   }
 
   _authorize = (credentials) => {
-    console.log('_authorize', credentials);
     // set data store
     this.site_id = credentials?.site_id;
     this.site = credentials?.site;
     this.user_id = credentials?.user_id;
-    credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
-    credentials?.embed_key ? this.embed_key = credentials.embed_key : null;
+    credentials?.rest_key ? this.rest_key = credentials.rest_key : undefined;
+    credentials?.embed_key ? this.embed_key = credentials.embed_key : undefined;
     // Get the current time in seconds since the epoch
     this.created = Math.floor(Date.now() / 1000); 
     // calculates the approximate expiration time
-    this.expires = this.lifespan(expiration); 
+    this.expires = this.lifespan(credentials.expiration); 
     // allows authenticated operations to proceed
     this.authorized = true; 
     return this._returnSession();
   }
 
+  // Personal Access Token authentication
   pat = async (pat_name, pat_secret) => {
-    console.log('pat', pat_name, pat_secret);
-    console.log('pat', this);
-    await handlePAT(pat_name, pat_secret);
-    console.log('pat', credentials);
-    // this._authorize(credentials);
-  }
-
-  _authorizePAT = async (pat_name, pat_secret) => {
-    const { site_id, site, user_id, rest_key, expiration }  = await tabAuthPAT(pat_name, pat_secret);
-    this.created = Math.floor(Date.now() / 1000); // Get the current time in seconds since the epoch
-    this.site_id = site_id;
-    this.site = site;
-    this.user_id = user_id;
-    this.rest_key = rest_key;
-    this.expires = this.lifespan(expiration);
-    this.authorized = true;
-    return this._returnSession();
+    const credentials = await handlePAT(pat_name, pat_secret);
+    this._authorize(credentials);
   }
 
   // calculates the lifespan for the session (estimated)
