@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { Session, MetricsModel } from "../../../models"
+import { Session } from "../../../models"
 import rls from "../../../rls.json"
 
 
@@ -42,7 +42,7 @@ export const authOptions = {
         }
         if (user) {
           sesh = new Session(user.name); // user provided during authentication is used to create a new Session
-          await sesh.authorizePAT(pat_name, pat_secret); // authorize to Tableau via PAT
+          await sesh.pat(pat_name, pat_secret); // authorize to Tableau via PAT
           if (sesh.authorized) {
             // spread members of the Session "sesh"
              const { 
