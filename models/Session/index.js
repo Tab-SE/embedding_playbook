@@ -1,5 +1,4 @@
-import { tabAuthPAT } from "../../libs";
-import { handlePAT } from "./controller";
+import { lifespan, handlePAT } from "./controller";
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
@@ -38,10 +37,9 @@ export class Session {
     this.user_id = credentials?.user_id;
     credentials?.rest_key ? this.rest_key = credentials.rest_key : undefined;
     credentials?.embed_key ? this.embed_key = credentials.embed_key : undefined;
-    // Get the current time in seconds since the epoch
-    this.created = Math.floor(Date.now() / 1000); 
-    // calculates the approximate expiration time
-    this.expires = this.lifespan(credentials.expiration); 
+    const { created, expires } = lifespan(credentials.expiration);
+    this.created = created; 
+    this.expires = expires; 
     // allows authenticated operations to proceed
     this.authorized = true; 
     return this._returnSession();
@@ -52,19 +50,5 @@ export class Session {
     const credentials = await handlePAT(pat_name, pat_secret);
     this._authorize(credentials);
   }
-
-  // calculates the lifespan for the session (estimated)
-  lifespan = (estimatedTimeToExpiration) => {
-    // parse the duration string into hours, minutes, and seconds
-    const [hours, minutes, seconds] = estimatedTimeToExpiration.split(':').map(Number);
-    // calculate the total seconds in the duration
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
-    // calculate the expiration time in seconds
-    const expirationTime = this.created + totalSeconds;
-    // convert the timestamps back to a Date objects
-    this.created = new Date(this.created * 1000);
-    const expirationDate = new Date(expirationTime * 1000);
-    return expirationDate
-  };
   
 }
