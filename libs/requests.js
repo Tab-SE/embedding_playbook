@@ -8,7 +8,6 @@ const contentUrl = process.env.PULSE_SITE; // Tableau site name
 
 // authenticate to Tableau with Personal Access Tokens
 export const tabAuthPAT = async (pat_name, pat_secret) => {
-  console.log('tabAuthPAT', pat_name, pat_secret);
   const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
 
   const body = {
@@ -36,9 +35,6 @@ export const tabAuthPAT = async (pat_name, pat_secret) => {
   const user_id = response.credentials.user.id;
   const rest_key = response.credentials.token; // only REST API authentication supported via PAT
   const expiration = response.credentials.estimatedTimeToExpiration;
-
-  console.log('tabAuthPAT', { site_id, site, user_id, rest_key, expiration });
-
   return { site_id, site, user_id, rest_key, expiration };
 }
 
