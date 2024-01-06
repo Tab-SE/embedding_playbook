@@ -13,8 +13,9 @@ const handler = async (req, res) => {
     if (req.method === 'GET') {
       try {
         const sesh = new Session(token.tableau.username); // user provided during authentication is used to create a new Session
-        const { name, user_id, rest_key, site_id, site, created, expires,
+        const { username, user_id, rest_key, site_id, site, created, expires,
         } = await sesh.authorizePAT(pat_name, pat_secret); // authorize to Tableau via PAT
+        // console.log(username, user_id, rest_key);
         // request metrics
         const metrics = new MetricsModel(user_id); // instantiate a new Metrics object for the logged in user
         const payload = await metrics.syncMetrics(rest_key); // request metrics for the user
@@ -31,20 +32,6 @@ const handler = async (req, res) => {
     res.status(401).json({ error: 'Unauthorized' });
   }
   res.end();
-
 }
 
 export default handler;
-
-const getTokens = async (username, pat_name, pat_secret) => {
-  const sesh = new Session(username); // user provided during authentication is used to create a new Session
-  const { name, user_id, rest_key, site_id, site, created, expires,
-  } = await sesh.authorizePAT(pat_name, pat_secret); // authorize to Tableau via PAT
-
-  if (sesh.authorized) {
-    // spread members of the Session "sesh"
-     return { 
-      name, user_id, embed_key, rest_key, site_id, site, created, expires,
-    };
-  }
-}
