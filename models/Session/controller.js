@@ -1,11 +1,5 @@
 import { tabAuthPAT } from "../../libs";
 
-// Tableau REST API authentication via Personal Access Token
-export const handlePAT = async (pat_name, pat_secret) => {
-  const credentials = await tabAuthPAT(pat_name, pat_secret);
-  return credentials;
-}
-
 // calculates the lifespan for the session (estimated)
 export const lifespan = (estimatedTimeToExpiration) => {
   // Get the current time in seconds since the epoch
@@ -19,6 +13,18 @@ export const lifespan = (estimatedTimeToExpiration) => {
   // convert the timestamps back to a Date objects
   created = new Date(created * 1000);
   const expirationDate = new Date(expirationTime * 1000);
-  
+
   return { created: created, expires: expirationDate };
 };
+
+// Tableau REST API authentication via Personal Access Token
+export const handlePAT = async (pat_name, pat_secret) => {
+  const credentials = await tabAuthPAT(pat_name, pat_secret);
+  return credentials;
+}
+
+// Tableau Embed and REST API authentication via JWT
+export const handleJWT = async (pat_name, pat_secret) => {
+  const credentials = await tabAuthPAT(pat_name, pat_secret);
+  return credentials;
+}
