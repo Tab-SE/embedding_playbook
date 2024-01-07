@@ -1,4 +1,4 @@
-import { lifespan, handlePAT } from "./controller";
+import { lifespan, handlePAT, handleJWT } from "./controller";
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
@@ -14,6 +14,7 @@ export class Session {
     this.expires = undefined; // estimated future expiry date
   }
 
+  // securely return session data
   _returnSession = () => {
     if (this.authorized) {
       return { 
@@ -30,6 +31,7 @@ export class Session {
    }
   }
 
+  // set class members and authorized status
   _authorize = (credentials) => {
     // set data store
     this.site_id = credentials?.site_id;
@@ -37,6 +39,7 @@ export class Session {
     this.user_id = credentials?.user_id;
     credentials?.rest_key ? this.rest_key = credentials.rest_key : undefined;
     credentials?.embed_key ? this.embed_key = credentials.embed_key : undefined;
+    // calculate useful timestamps as Date objects
     const { created, expires } = lifespan(credentials.expiration);
     this.created = created; 
     this.expires = expires; 
@@ -48,6 +51,11 @@ export class Session {
   // Personal Access Token authentication
   pat = async (pat_name, pat_secret) => {
     const credentials = await handlePAT(pat_name, pat_secret);
+    this._authorize(credentials);
+  }
+
+  jwt = async () => {
+    const credentials = await handleJWT();
     this._authorize(credentials);
   }
   
