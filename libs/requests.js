@@ -1,10 +1,45 @@
 import { httpGet, httpPost } from "../utils/http"
 
-const public_url = 'api'; // URL for Serverless functions
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
+const tableau_domain2 = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 const api = process.env.PULSE_API; // Tableau API version (classic resources)
+const api2 = process.env.TABLEAU_API; // Tableau API version (classic resources)
 const contentUrl = process.env.PULSE_SITE; // Tableau site name
+const contentUrl2 = process.env.TABLEAU_SITE; // Tableau site name
+
+
+// authenticate to Tableau with JSON Web Tokens
+export const tabAuthJWT = async (username, jwt_secret, jwt_secret_id, jwt_client_id) => {
+  const endpoint = `${tableau_domain2}/api/${api}/auth/signin`;
+  const jwt = '';
+
+  const body = {
+    credentials: {
+      jwt: jwt,
+      site: {
+        contentUrl: contentUrl,
+      }
+    }
+  };
+
+  const config = {
+    tableau_domain,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const response = await httpPost(endpoint, body, config);
+
+  const site_id = response.credentials.site.id;
+  const site = response.credentials.site.contentUrl;
+  const user_id = response.credentials.user.id;
+  const rest_key = response.credentials.token; // only REST API authentication supported via PAT
+  const expiration = response.credentials.estimatedTimeToExpiration;
+  return { site_id, site, user_id, rest_key, expiration };
+}
 
 // authenticate to Tableau with Personal Access Tokens
 export const tabAuthPAT = async (pat_name, pat_secret) => {
