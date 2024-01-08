@@ -1,4 +1,4 @@
-import { tabAuthPAT } from "../../libs";
+import { tabAuthPAT, tabAuthJWT, jwtEncode, jwtDecode } from "../../libs";
 
 // calculates the lifespan for the session (estimated)
 export const lifespan = (estimatedTimeToExpiration) => {
@@ -24,7 +24,13 @@ export const handlePAT = async (pat_name, pat_secret) => {
 }
 
 // Tableau Embed and REST API authentication via JWT
-export const handleJWT = async (pat_name, pat_secret) => {
-  const credentials = await tabAuthPAT(pat_name, pat_secret);
-  return credentials;
+export const handleJWT = async (username, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
+  const jwt = jwtEncode(username, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+  const valid = jwtDecode(jwt, username, jwt_secret, jwt_client_id);
+  if (valid) {
+    const credentials = await tabAuthJWT(jwt);
+    return credentials;
+  } else {
+    throw new Error('JWT is not valid');
+  }
 }
