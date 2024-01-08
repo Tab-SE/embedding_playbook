@@ -10,9 +10,8 @@ const contentUrl2 = process.env.TABLEAU_SITE; // Tableau site name
 
 
 // authenticate to Tableau with JSON Web Tokens
-export const tabAuthJWT = async (username, jwt_secret, jwt_secret_id, jwt_client_id) => {
+export const tabAuthJWT = async (jwt) => {
   const endpoint = `${tableau_domain2}/api/${api}/auth/signin`;
-  const jwt = '';
 
   const body = {
     credentials: {
