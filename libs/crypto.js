@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
-export const jwtEncode = (username, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
+export const jwtSign = (username, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
     // https://help.tableau.com/current/online/en-us/connected_apps_direct.htm#step-3-configure-the-jwt
     try {
         const payload = {
@@ -31,7 +31,7 @@ export const jwtEncode = (username, jwt_secret, jwt_secret_id, jwt_client_id, sc
 }
 
 
-export const jwtDecode = (token, username, jwt_secret, jwt_client_id) => {
+export const jwtVerify = (token, username, jwt_secret, jwt_client_id) => {
     try {
         // decode and validate the JWT making sure it matches the following
         const valid = jwt.verify(token, jwt_secret, {

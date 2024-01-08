@@ -4,4 +4,4 @@ export {
   tabAuthJWT, tabAuthPAT, getSubscriptions, getSpecifications, getDefinitions, getMetrics, getInsights, getInsightBundles 
 } from './requests';
 
-export { jwtEncode, jwtDecode } from './crypto';
+export { jwtSign, jwtVerify } from './crypto';
