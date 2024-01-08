@@ -38,7 +38,6 @@ export class Session {
     this.site = credentials?.site;
     this.user_id = credentials?.user_id;
     credentials?.rest_key ? this.rest_key = credentials.rest_key : undefined;
-    credentials?.embed_key ? this.embed_key = credentials.embed_key : undefined;
     // Authentication methods differ on availability of session life
     if (credentials?.created && credentials?.expiration) {
       // if session life is available, set local variables
