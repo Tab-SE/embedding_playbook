@@ -42,7 +42,7 @@ export const jwtDecode = (token, username, jwt_secret, jwt_client_id) => {
             'maxAge': '10m',
             'clockTimestamp': Math.floor(Date.now() / 1000), // current time in seconds since the epoch
         });
-        return valid;
+        return true;
     } catch (error) {
         console.error('Error verifying JWT:', error);
         throw error;
