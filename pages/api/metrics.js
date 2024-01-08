@@ -20,6 +20,7 @@ const handler = async (req, res) => {
         await sesh.pat(pat_name, pat_secret); // authorize to Tableau via PAT
       } catch (err) {
         res.status(500).json({ error: err });
+        throw err;
       }
       if (sesh.authorized) {
         // spread members of the Session "sesh"
