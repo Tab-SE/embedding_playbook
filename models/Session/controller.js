@@ -17,12 +17,6 @@ export const lifespan = (estimatedTimeToExpiration) => {
   return { created: created, expires: expirationDate };
 };
 
-// Tableau REST API authentication via Personal Access Token
-export const handlePAT = async (pat_name, pat_secret) => {
-  const credentials = await tabAuthPAT(pat_name, pat_secret);
-  return credentials;
-}
-
 // Tableau Embed and REST API authentication via JWT
 export const handleJWT = async (username, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
   const jwt = jwtEncode(username, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
@@ -33,4 +27,10 @@ export const handleJWT = async (username, jwt_secret, jwt_secret_id, jwt_client_
   } else {
     throw new Error('JWT is not valid');
   }
-}
+};
+
+// Tableau REST API authentication via Personal Access Token
+export const handlePAT = async (pat_name, pat_secret) => {
+  const credentials = await tabAuthPAT(pat_name, pat_secret);
+  return credentials;
+};

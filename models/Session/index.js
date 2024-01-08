@@ -54,8 +54,9 @@ export class Session {
     this._authorize(credentials);
   }
 
-  jwt = async () => {
-    const credentials = await handleJWT();
+  // JSON Web Token authentication
+  jwt = async (username, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
+    const credentials = await handleJWT(username, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
     this._authorize(credentials);
   }
   
