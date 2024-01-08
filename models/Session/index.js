@@ -39,10 +39,18 @@ export class Session {
     this.user_id = credentials?.user_id;
     credentials?.rest_key ? this.rest_key = credentials.rest_key : undefined;
     credentials?.embed_key ? this.embed_key = credentials.embed_key : undefined;
-    // calculate useful timestamps as Date objects
-    const { created, expires } = lifespan(credentials.expiration);
-    this.created = created; 
-    this.expires = expires; 
+    // Authentication methods differ on availability of session life
+    if (credentials?.created && credentials?.expiration) {
+      // if session life is available, set local variables
+      this.created = new Date(credentials.created * 1000); // convert the timestamps back to a Date objects
+      this.expires = new Date(credentials.expiration * 1000); 
+    } else if (credentials?.expiration) {
+      // if only expiration is available, calculate created
+      const { created, expires } = lifespan(credentials.expiration); // calculate useful timestamps as Date objects
+      this.created = created; 
+      this.expires = expires;
+    }
+    
     // allows authenticated operations to proceed
     this.authorized = true; 
     return this._returnSession();
@@ -55,8 +63,8 @@ export class Session {
   }
 
   // JSON Web Token authentication
-  jwt = async (username, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
-    const credentials = await handleJWT(username, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+  jwt = async (sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
+    const credentials = await handleJWT(sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
     this._authorize(credentials);
   }
   

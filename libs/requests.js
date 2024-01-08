@@ -35,9 +35,8 @@ export const tabAuthJWT = async (jwt) => {
   const site_id = response.credentials.site.id;
   const site = response.credentials.site.contentUrl;
   const user_id = response.credentials.user.id;
-  const rest_key = response.credentials.token; // only REST API authentication supported via PAT
-  const expiration = response.credentials.estimatedTimeToExpiration;
-  return { site_id, site, user_id, rest_key, expiration };
+  const key = response.credentials.token; // Embed and REST API authentication supported via JWT
+  return { site_id, site, user_id, key };
 }
 
 // authenticate to Tableau with Personal Access Tokens

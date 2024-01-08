@@ -3,21 +3,33 @@ import { Session, MetricsModel } from "../../models";
 
 
 const handler = async (req, res) => {
-  const pat_name = process.env.PULSE_PAT_NAME;
-  const pat_secret = process.env.PULSE_PAT_SECRET;
-  // get attributes from token for secure server-side processing
   const token = await getToken({ req });
 
   // Signed in
-  if (token?.tableau) { // tableau object containing asset data for the user
+  if (token?.name && token?.sub) {
     if (req.method === 'GET') {
       let sesh;
       try {
-        sesh = new Session(token.tableau.username); // user provided during authentication is used to create a new Session
-        // const { username, user_id, rest_key, site_id, site, created, expires,
-        // } = await sesh.pat(pat_name, pat_secret); // authorize to Tableau via PAT
-        // console.log(username, user_id, rest_key);
-        await sesh.pat(pat_name, pat_secret); // authorize to Tableau via PAT
+        // server-side env vars
+        const pat_name = process.env.PULSE_PAT_NAME;
+        const pat_secret = process.env.PULSE_PAT_SECRET;
+        const jwt_secret = process.env.TABLEAU_JWT_SECRET; 
+        const jwt_secret_id = process.env.TABLEAU_JWT_SECRET_ID; 
+        const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID; 
+        // Scopes for Tableau metrics https://help.tableau.com/current/online/en-us/connected_apps_scopes.htm#pulse
+        const scopes = [
+          'tableau:insight_definitions_metrics:read', 
+          'tableau:insight_metrics:read', 
+          'tableau:metric_subscriptions:read'
+        ];
+        // user provided during authentication is used to create a new Session
+        sesh = new Session(token.name);
+        // authorize to Tableau via JWT
+        await sesh.jwt(token.sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+        console.log('sesh JWT', sesh);
+        // authorize to Tableau via PAT
+        await sesh.pat(pat_name, pat_secret);
+        console.log('sesh PAT', sesh);
       } catch (err) {
         res.status(500).json({ error: err });
         throw err;
@@ -27,10 +39,12 @@ const handler = async (req, res) => {
         const { 
           username, user_id, embed_key, rest_key, site_id, site, created, expires,
         } = sesh;
-        const payload = await getMetrics(user_id, rest_key);
+        // new Metrics model with data obtained using temporary key
+        const payload = await getMetrics(user_id, rest_key); 
         res.status(200).json(payload);
       } else {
-        res.status(401).json({ error: 'Unauthorized to perform operation' }); // cannot establish a session locally
+        // cannot establish a session locally
+        res.status(401).json({ error: 'Unauthorized to perform operation' }); 
       }
 
     } else {
@@ -39,18 +53,21 @@ const handler = async (req, res) => {
   } else {
     // Not Signed in
     console.debug('unauthorized');
-    res.status(401).json({ error: 'Unauthorized' }); // no application token available
+    // no application token available
+    res.status(401).json({ error: 'Unauthorized' }); 
   }
   res.end();
 }
 
 export default handler;
 
+// request metrics
 const getMetrics = async (user_id, rest_key) => {
   try {
-    // request metrics
-    const factory = new MetricsModel(user_id); // instantiate a new Metrics object for the logged in user
-    const metrics = await factory.syncMetrics(rest_key); // request metrics for the user
+    // instantiate a new Metrics object for the logged in user
+    const factory = new MetricsModel(user_id); 
+    // request metrics for the user
+    const metrics = await factory.syncMetrics(rest_key); 
     return metrics;
   } catch (err) {
     throw new Error('Metrics Error:', err);
