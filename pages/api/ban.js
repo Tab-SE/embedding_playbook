@@ -6,7 +6,7 @@ const handler = async (req, res) => {
   const token = await getToken({ req });
   // Signed in
   if (token?.name && token?.sub) {
-    if (req.method === 'GET') {
+    if (req.method === 'POST') {
       // session object
       let session; 
       try {
@@ -40,24 +40,17 @@ export default handler;
 const makePayload = async (session, metric) => {
   if (session.authorized) {
     const { user_id, rest_key } = session;
-    // request insights
-    if (Array.isArray(metrics)) {
-      try {
-        metrics.forEach((metric, index) => {
-          console.log(index, metric);
-          const insights = []; // temporar
-          // bundle = metric.syncInsights(key);
-          // insights.push[bundle];
-        });
+    
+    try {
+      // request insights
+      console.log('metric', session, metric);
 
-      } catch (err) {
-        return err;
-      }
-    } else {
-      return new Error('Cannot form payload: metrics and resources must both be arrays');
-    } 
+
+    } catch (err) {
+      return err;
+    }
     // 
-    const payload = ''; 
+    const payload = 'payload'; 
     return payload;
   } else {
     // errors resolve to false when checked

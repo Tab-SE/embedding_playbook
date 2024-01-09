@@ -144,6 +144,21 @@ export const getMetrics = async () => {
 }
 
 // requests parsed insights from private API
+export const getBan = async (metric) => {
+  const endpoint = '/api/ban';
+  const body = { metric };
+  
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return await httpPost(endpoint, body, config);
+}
+
+// requests parsed insights from private API
 export const getInsights = async (metric, resources) => {
   const endpoint = '/api/insights';
   const body = { metric };
