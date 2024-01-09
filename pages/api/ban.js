@@ -15,7 +15,7 @@ const handler = async (req, res) => {
         res.status(500).json({ error: err });
         throw err;
       }
-      const payload = await makePayload(session, req.body.metrics);
+      const payload = await makePayload(session, req.body.metric);
       if (payload) {
         res.status(200).json(payload);
       } else {
@@ -37,7 +37,7 @@ const handler = async (req, res) => {
 export default handler;
 
 // makes the response body for the API
-const makePayload = async (session, metrics) => {
+const makePayload = async (session, metric) => {
   if (session.authorized) {
     const { user_id, rest_key } = session;
     // request insights
