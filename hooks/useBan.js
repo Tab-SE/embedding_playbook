@@ -5,9 +5,26 @@ import { getInsights } from "../libs/requests"
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
 
-export const useInsights = async (user, metric) => {
+export const useBan = async (user, metric) => {
+   // set to an empty array if enumerated function parameters are not available in array
+   const queryKey = [user].every(param => param != null) ? ["tableau", "insights", "ban", metric.id, metric.name] : []; 
+
+   return useQuery({
+     queryKey: queryKey, 
+     queryFn: async () => {
+       if (!metric) {
+         throw new Error("metric is required.");
+       }
+       return await getInsights(metric);
+     },
+     enabled: !!metric,
+     staleTime: 5 * 60 * 1000, // 5 minutes
+   });
+}
+
+export const useSpringboard = async (user, metric) => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [user].every(param => param != null) ? ["tableau", "insights", "detail", metric.id, metric.name] : []; 
+  const queryKey = [user].every(param => param != null) ? ["tableau", "insights", "springboard", metric.id, metric.name] : []; 
 
   return useQuery({
     queryKey: queryKey, 
