@@ -5,6 +5,8 @@ import { Session, MetricsModel } from "../../models";
 const handler = async (req, res) => {
   const token = await getToken({ req });
 
+  console.log('token', token);
+
   // Signed in
   if (token?.name && token?.sub) {
     if (req.method === 'GET') {
@@ -20,16 +22,14 @@ const handler = async (req, res) => {
         const scopes = [
           'tableau:insight_definitions_metrics:read', 
           'tableau:insight_metrics:read', 
-          'tableau:metric_subscriptions:read'
+          'tableau:metric_subscriptions:read',
         ];
         // user provided during authentication is used to create a new Session
         sesh = new Session(token.name);
         // authorize to Tableau via JWT
         await sesh.jwt(token.sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
-        console.log('sesh JWT', sesh);
         // authorize to Tableau via PAT
         await sesh.pat(pat_name, pat_secret);
-        console.log('sesh PAT', sesh);
       } catch (err) {
         res.status(500).json({ error: err });
         throw err;
