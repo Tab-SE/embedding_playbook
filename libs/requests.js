@@ -144,17 +144,17 @@ export const getMetrics = async () => {
 }
 
 // requests parsed insights from private API
-export const getInsights = async (metrics) => {
+export const getInsights = async (metric, resources) => {
   const endpoint = '/api/insights';
-  const body = {};
+  const body = { metric };
 
-  if (Array.isArray(metrics)) {
-    if (metrics.length === 0) {
-      throw new Error('metrics must have at least one element');
+  if (Array.isArray(resources)) {
+    if (resources.length === 0) {
+      throw new Error('resources must have at least one element');
     }
-    body.metrics = metrics;
+    body.resources = resources;
   } else {
-    throw new Error('metrics must be an array!');
+    throw new Error('resources must be an array!');
   }
   
   const config = {
