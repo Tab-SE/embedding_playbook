@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
-export const jwtSign = (sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
+export const jwtSign = (sub, jwt_options, scopes) => {
     // https://help.tableau.com/current/online/en-us/connected_apps_direct.htm#step-3-configure-the-jwt
     try {
         const payload = {
-            'iss': jwt_client_id, // Connected App configuration
+            'iss': jwt_options.jwt_client_id, // Connected App configuration
             'jti': uuidv4(),
             'aud': 'tableau',
             'sub': sub, // enforces user level permissions on embed and REST APIs
@@ -13,13 +13,13 @@ export const jwtSign = (sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes) =
         };
 
         const header = {
-            'kid': jwt_secret_id, // Connected App configuration
-            'iss': jwt_client_id, // Connected App configuration
+            'kid': jwt_options.jwt_secret_id, // Connected App configuration
+            'iss': jwt_options.jwt_client_id, // Connected App configuration
             'alg': 'HS256',
         };
 
         // sign the JWT with provided header, payload and secret
-        const token = jwt.sign(payload, jwt_secret, { 
+        const token = jwt.sign(payload, jwt_options.jwt_secret, { 
             header: header,
             expiresIn: '8m', // https://github.com/auth0/node-jsonwebtoken?tab=readme-ov-file#token-expiration-exp-claim
         });

@@ -6,7 +6,7 @@ export class Session {
     this.authorized = false; // flag controlling access to authenticated operations
     this.username = username;
     this.user_id = undefined;
-    this.embed_key = undefined; // only JWT authentication supports embed keys
+    this.embed_token = undefined; // only JWT authentication supports embed keys
     this.rest_key = undefined; // some authentication methods only support REST API keys (PAT)
     this.site_id = undefined;
     this.site = undefined; // site name
@@ -32,7 +32,7 @@ export class Session {
   }
 
   // set class members and authorized status
-  _authorize = (credentials, embed_key) => {
+  _authorize = (credentials, embed_token) => {
     // set data store
     this.site_id = credentials?.site_id;
     this.site = credentials?.site;
@@ -40,7 +40,7 @@ export class Session {
     // API key from the REST API credentials response
     credentials?.rest_key ? this.rest_key = credentials.rest_key : undefined;
     // JWT token used for embedding on the frontend
-    embed_key ? this.embed_key = embed_key : undefined;
+    embed_token ? this.embed_token = embed_token : undefined;
     // Authentication methods differ on availability of session life
     if (credentials?.created && credentials?.expiration) {
       // if session life is available, set local variables
@@ -53,7 +53,7 @@ export class Session {
       this.expires = expires;
     }
 
-    if (this.rest_key || this.embed_key) {
+    if (this.rest_key || this.embed_token) {
       // allows authenticated operations to proceed
       this.authorized = true; 
       return this._returnSession();
@@ -71,9 +71,9 @@ export class Session {
   }
 
   // JSON Web Token authentication
-  jwt = async (sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
-    const { credentials, embed_key } = await handleJWT(sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
-    this._authorize(credentials, embed_key);
+  jwt = async (sub, jwt_options, scopes) => {
+    const { credentials, embed_token } = await handleJWT(sub, jwt_options, scopes);
+    this._authorize(credentials, embed_token);
   }
   
 }
