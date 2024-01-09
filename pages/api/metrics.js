@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt"
 import { serverJWT, serverPAT, makeMetrics } from "../../libs";
 
-
+// handles authentication, HTTP methods and responding with data or errors
 const handler = async (req, res) => {
   const token = await getToken({ req });
   // Signed in
@@ -10,46 +10,18 @@ const handler = async (req, res) => {
       // session object
       let sesh; 
       try {
-        // server-side env vars
-        const pat_name = process.env.PULSE_PAT_NAME;
-        const pat_secret = process.env.PULSE_PAT_SECRET;
-        const jwt_options = { 
-          jwt_secret: process.env.TABLEAU_JWT_SECRET, 
-          jwt_secret_id: process.env.TABLEAU_JWT_SECRET_ID, 
-          jwt_client_id: process.env.TABLEAU_JWT_CLIENT_ID, 
-        };
-        // name for session reference, sub for token signing
-        const user = {
-          name: token.name,
-          sub: token.sub,
-        };
-        // Scopes for Tableau metrics https://help.tableau.com/current/online/en-us/connected_apps_scopes.htm#pulse
-        const scopes = [
-          'tableau:insight_definitions_metrics:read', 
-          'tableau:insight_metrics:read', 
-          'tableau:metric_subscriptions:read',
-        ];
-        // authorize to Tableau via JWT
-        sesh = await serverJWT(user, jwt_options, scopes);
-        // authorize to Tableau via PAT
-        sesh = await serverPAT(user.name, pat_name, pat_secret);
+        sesh = await getCredentials(token);
       } catch (err) {
         res.status(500).json({ error: err });
         throw err;
       }
-      if (sesh.authorized) {
-        // spread members of the Session "sesh"
-        const { 
-          username, user_id, embed_token, rest_key, site_id, site, created, expires,
-        } = sesh;
-        // new Metrics model with data obtained using temporary key
-        const payload = await makeMetrics(user_id, rest_key); 
+      const payload = await makePayload(sesh);
+      if (payload) {
         res.status(200).json(payload);
       } else {
         // cannot establish a session locally
-        res.status(401).json({ error: 'Unauthorized to perform operation' }); 
+        res.status(401).json({ error: payload }); 
       }
-
     } else {
       res.status(405).json({ error: 'Method Not Allowed' });
     }
@@ -64,6 +36,21 @@ const handler = async (req, res) => {
 
 export default handler;
 
+// makes the response body for the API
+const makePayload = async (session) => {
+  if (session.authorized) {
+    // spread members of the Session "sesh"
+    const { user_id, rest_key } = session;
+    // new Metrics model with data obtained using temporary key
+    const payload = await makeMetrics(user_id, rest_key); 
+    return payload;
+  } else {
+    // errors resolve to false when checked
+    return new Error('Unauthorized to perform operation');
+  }
+}
+
+// establishes REST API authentication with Tableau
 const getCredentials = async (token) => {
   // server-side env vars
   const pat_name = process.env.PULSE_PAT_NAME;
@@ -85,10 +72,10 @@ const getCredentials = async (token) => {
     'tableau:metric_subscriptions:read',
   ];
   // authorize to Tableau via JWT
-  sesh = await serverJWT(user, jwt_options, scopes);
+  let session = await serverJWT(user, jwt_options, scopes);
   // authorize to Tableau via PAT
-  sesh = await serverPAT(user.name, pat_name, pat_secret);
+  session = await serverPAT(user.name, pat_name, pat_secret);
 
-  return sesh;
+  return session;
 }
 
