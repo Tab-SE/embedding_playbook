@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useInsights } from "../hooks";
 import Modal from "./Modal";
 import Insights from "./Insights";
 
@@ -25,6 +26,11 @@ export default function Metric(props) {
       </div>
       <Modal setModal={setModal} >
         <Insights title={name} value={metricValue} setMetricValue={setMetricValue} qa={qa} pushQA={pushQA} />
+        <div className="flex justify-center gap-12 w-full">
+          <kbd className="kbd kbd-lg">◀︎</kbd>
+          <kbd className="kbd kbd-lg">Swipe</kbd>
+          <kbd className="kbd kbd-lg">▶︎</kbd>
+        </div>
       </Modal>
     </div>
   )

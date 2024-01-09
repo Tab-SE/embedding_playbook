@@ -5,9 +5,9 @@ import { getInsights } from "../libs/requests"
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
 
-export const useInsights = async (user, metric) => {
+export const useInsights = async (user, metric, resources) => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [user].every(param => param != null) ? ["tableau", "insights", user, metric.name] : []; 
+  const queryKey = [user].every(param => param != null) ? ["tableau", "insights", metric.id, metric.name] : []; 
 
   return useQuery({
     queryKey: queryKey, 
@@ -15,7 +15,7 @@ export const useInsights = async (user, metric) => {
       if (!user) {
         throw new Error("user is required.");
       }
-      return await getInsights();
+      return await getInsights(metric, resources);
     },
     enabled: !!user,
     staleTime: 2 * 60 * 1000, // 2 minutes

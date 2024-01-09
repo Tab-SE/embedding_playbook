@@ -1,9 +1,9 @@
-import { getInsights } from '../../libs/requests'
+import { getInsightBundles } from '../../libs/requests'
 import { parseInsights } from '../../utils';
 
 export const handleInsights = async (apiKey, params) => {
   try {
-    const insights = await getInsights(apiKey, params);
+    const insights = await getInsightBundles(apiKey, params);
     responseHandler(insights); // output any errors returned from Tableau Pulse request
     const parsedData = parseInsights(insights);
     return parsedData;

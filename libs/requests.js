@@ -1,12 +1,45 @@
 import { httpGet, httpPost } from "../utils/http"
 
-const public_url = 'api'; // URL for Serverless functions
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
+const tableau_domain2 = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 const api = process.env.PULSE_API; // Tableau API version (classic resources)
+const api2 = process.env.TABLEAU_API; // Tableau API version (classic resources)
 const contentUrl = process.env.PULSE_SITE; // Tableau site name
+const contentUrl2 = process.env.TABLEAU_SITE; // Tableau site name
 
-// authenticate to Tableau
+
+// authenticate to Tableau with JSON Web Tokens
+export const tabAuthJWT = async (jwt) => {
+  const endpoint = `${tableau_domain2}/api/${api2}/auth/signin`;
+
+  const body = {
+    credentials: {
+      jwt: jwt,
+      site: {
+        contentUrl: contentUrl2,
+      }
+    }
+  };
+
+  const config = {
+    tableau_domain2,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const response = await httpPost(endpoint, body, config);
+
+  const site_id = response.credentials.site.id;
+  const site = response.credentials.site.contentUrl;
+  const user_id = response.credentials.user.id;
+  const rest_key = response.credentials.token; // Embed and REST API authentication supported via JWT
+  return { site_id, site, user_id, rest_key };
+}
+
+// authenticate to Tableau with Personal Access Tokens
 export const tabAuthPAT = async (pat_name, pat_secret) => {
   const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
 
@@ -33,10 +66,9 @@ export const tabAuthPAT = async (pat_name, pat_secret) => {
   const site_id = response.credentials.site.id;
   const site = response.credentials.site.contentUrl;
   const user_id = response.credentials.user.id;
-  const api_key = response.credentials.token;
+  const rest_key = response.credentials.token; // only REST API authentication supported via PAT
   const expiration = response.credentials.estimatedTimeToExpiration;
-
-  return { site_id, site, user_id, api_key, expiration };
+  return { site_id, site, user_id, rest_key, expiration };
 }
 
 
@@ -112,17 +144,17 @@ export const getMetrics = async () => {
 }
 
 // requests parsed insights from private API
-export const getInsights = async (metrics) => {
+export const getInsights = async (metric, resources) => {
   const endpoint = '/api/insights';
-  const body = {};
+  const body = { metric };
 
-  if (Array.isArray(metrics)) {
-    if (metrics.length === 0) {
-      throw new Error('metrics must have at least one element');
+  if (Array.isArray(resources)) {
+    if (resources.length === 0) {
+      throw new Error('resources must have at least one element');
     }
-    body.metrics = metrics;
+    body.resources = resources;
   } else {
-    throw new Error('metrics must be an array!');
+    throw new Error('resources must be an array!');
   }
   
   const config = {
