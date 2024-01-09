@@ -17,8 +17,7 @@ export default function Insights(props) {
       <div className='my-8' >
         <Detail 
           insights={insights} 
-          title={props.title} 
-          qa={props.qa} 
+          title={props.title}
           pushQA={props.pushQA} 
           setMetricValue={props.setMetricValue}
         />

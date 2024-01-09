@@ -15,7 +15,7 @@ export const useBan = async (user, metric) => {
        if (!metric) {
          throw new Error("metric is required.");
        }
-       return await getInsights(metric);
+       return await 'getInsights(metric)';
      },
      enabled: !!metric,
      staleTime: 5 * 60 * 1000, // 5 minutes
