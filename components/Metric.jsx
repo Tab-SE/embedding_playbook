@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useInsights } from "../hooks";
 import Modal from "./Modal";
 import Insights from "./Insights";
 
