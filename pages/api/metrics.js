@@ -8,14 +8,14 @@ const handler = async (req, res) => {
   if (token?.name && token?.sub) {
     if (req.method === 'GET') {
       // session object
-      let sesh; 
+      let session; 
       try {
-        sesh = await getCredentials(token);
+        session = await getCredentials(token);
       } catch (err) {
         res.status(500).json({ error: err });
         throw err;
       }
-      const payload = await makePayload(sesh);
+      const payload = await makePayload(session);
       if (payload) {
         res.status(200).json(payload);
       } else {
@@ -39,7 +39,6 @@ export default handler;
 // makes the response body for the API
 const makePayload = async (session) => {
   if (session.authorized) {
-    // spread members of the Session "sesh"
     const { user_id, rest_key } = session;
     // new Metrics model with data obtained using temporary key
     const payload = await makeMetrics(user_id, rest_key); 
