@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useMetrics, useInsights } from '../hooks';
+import { useMetrics } from '../hooks';
 import Metric from "./Metric";
 
 
