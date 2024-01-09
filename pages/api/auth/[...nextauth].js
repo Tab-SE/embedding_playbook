@@ -31,8 +31,6 @@ export const authOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        const pat_name = process.env.PULSE_PAT_NAME;
-        const pat_secret = process.env.PULSE_PAT_SECRET;
         let user = null;
         let sesh = null;
         for (const [key, value] of Object.entries(rls.users)) { // check all keys in rls.json user store
@@ -41,10 +39,20 @@ export const authOptions = {
           }
         }
         if (user) {
+          // server-side env vars
+          const jwt_secret = process.env.TABLEAU_JWT_SECRET; 
+          const jwt_secret_id = process.env.TABLEAU_JWT_SECRET_ID; 
+          const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID; 
+          // Scopes for Tableau metrics https://help.tableau.com/current/online/en-us/connected_apps_scopes.htm#pulse
+          const scopes = [
+            'tableau:views:embed',
+            'tableau:views:embed_authoring',
+            'tableau:insights:embed',
+          ];
           // user provided during authentication is used to create a new Session
           sesh = new Session(user.name); 
           // authorize to Tableau via JWT
-          await sesh.jwt(token.sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+          await sesh.jwt(user.email, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
           if (sesh.authorized) {
             // spread members of the Session "sesh"
              const { 
@@ -53,9 +61,9 @@ export const authOptions = {
             // add members to a new tableau object in user
             user.tableau = {
               username, user_id, embed_key, rest_key, site_id, site, created, expires,
-            }
+            };
           }
-          return sesh.authorized ? user : false; // Return false to display a default error message
+          return sesh.authorized && user.tableau.embed_key ? user : false; // Return false to display a default error message
         } else {
           return false;
         }
@@ -70,22 +78,22 @@ export const authOptions = {
   callbacks: {
     // documented here: https://next-auth.js.org/configuration/callbacks
     async signIn({ user, account, credentials }) {
-      const isAllowedToSignIn = true
+      const isAllowedToSignIn = true;
       if (isAllowedToSignIn) {
-        return true
+        return true;
       } else {
         // Return false to display a default error message
-        return false
+        return false;
         // Or you can return a URL to redirect to:
         // return '/unauthorized'
       }
     },
     async redirect({ url, baseUrl }) {
       // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
       // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url
-      return baseUrl
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
     async jwt({ token, account, profile, user }) {
       // console.count('jwt runs');
@@ -97,7 +105,7 @@ export const authOptions = {
         token.uaf = user.uaf; // user attribute function claims
         token.tableau = user.tableau; // tableau session object
       }
-      return token
+      return token;
     },
     async session({ session, token, user }) {
       // database sessions pass user, JWT sessions pass token
@@ -105,7 +113,7 @@ export const authOptions = {
 
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
-      return session
+      return session;
     }
   },
   debug: process.env.NODE_ENV === 'development' ? true : false,
