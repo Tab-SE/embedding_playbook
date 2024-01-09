@@ -32,12 +32,15 @@ export class Session {
   }
 
   // set class members and authorized status
-  _authorize = (credentials) => {
+  _authorize = (credentials, embed_key) => {
     // set data store
     this.site_id = credentials?.site_id;
     this.site = credentials?.site;
     this.user_id = credentials?.user_id;
+    // API key from the REST API credentials response
     credentials?.rest_key ? this.rest_key = credentials.rest_key : undefined;
+    // JWT token used for embedding on the frontend
+    embed_key ? this.embed_key = embed_key : undefined;
     // Authentication methods differ on availability of session life
     if (credentials?.created && credentials?.expiration) {
       // if session life is available, set local variables
@@ -49,10 +52,16 @@ export class Session {
       this.created = created; 
       this.expires = expires;
     }
-    
-    // allows authenticated operations to proceed
-    this.authorized = true; 
-    return this._returnSession();
+
+    if (this.rest_key || this.embed_key) {
+      // allows authenticated operations to proceed
+      this.authorized = true; 
+      return this._returnSession();
+    } else {
+      // no keys, no session
+      this.authorized = false; 
+      throw new Error('Cannot authorize user')
+    }
   }
 
   // Personal Access Token authentication
@@ -63,8 +72,8 @@ export class Session {
 
   // JSON Web Token authentication
   jwt = async (sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
-    const credentials = await handleJWT(sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
-    this._authorize(credentials);
+    const { credentials, embed_key } = await handleJWT(sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+    this._authorize(credentials, embed_key);
   }
   
 }
