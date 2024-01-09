@@ -4,6 +4,6 @@ export {
   tabAuthJWT, tabAuthPAT, getSubscriptions, getSpecifications, getDefinitions, getMetrics, getInsights, getInsightBundles 
 } from './requests';
 
-export { serverJWT, serverPAT } from './responses.js';
+export { serverJWT, serverPAT, makeMetrics } from './responses.js';
 
 export { jwtSign, jwtVerify } from './crypto';

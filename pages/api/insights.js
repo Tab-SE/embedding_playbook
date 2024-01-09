@@ -1,16 +1,18 @@
 import { getToken } from "next-auth/jwt"
+import { Session, InsightsModel } from "../../models";
 
 
 const handler = async (req, res) => {
   const token = await getToken({ req });
 
   // Signed in
-  if (token.name) {
-
-    // get attributes from token for secure server-side processing
-    const { user_id, rest_key } = token.tableau;
-
+  if (token?.name && token?.sub) {
     if (req.method === 'GET') {
+      // session object
+      let sesh;
+
+
+
       if (Array.isArray(req.body.metrics)) {
         try {
           req.body.metrics.forEach(metric => {
