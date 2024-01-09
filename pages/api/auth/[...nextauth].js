@@ -51,19 +51,20 @@ export const authOptions = {
           ];
           // user provided during authentication is used to create a new Session
           sesh = new Session(user.name); 
+          const jwt_options = { jwt_secret, jwt_secret_id, jwt_client_id };
           // authorize to Tableau via JWT
-          await sesh.jwt(user.email, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+          await sesh.jwt(user.email, jwt_options, scopes);
           if (sesh.authorized) {
             // spread members of the Session "sesh"
              const { 
-              username, user_id, embed_key, rest_key, site_id, site, created, expires,
+              username, user_id, embed_token, rest_key, site_id, site, created, expires,
             } = sesh;
             // add members to a new tableau object in user
             user.tableau = {
-              username, user_id, embed_key, rest_key, site_id, site, created, expires,
+              username, user_id, embed_token, rest_key, site_id, site, created, expires,
             };
           }
-          return sesh.authorized && user.tableau.embed_key ? user : false; // Return false to display a default error message
+          return sesh.authorized && user.tableau.embed_token ? user : false; // Return false to display a default error message
         } else {
           return false;
         }

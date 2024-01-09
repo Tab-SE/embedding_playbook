@@ -5,12 +5,11 @@ import { Session, MetricsModel } from "../../models";
 const handler = async (req, res) => {
   const token = await getToken({ req });
 
-  console.log('token', token);
-
   // Signed in
   if (token?.name && token?.sub) {
     if (req.method === 'GET') {
-      let sesh;
+      // session object
+      let sesh; 
       try {
         // server-side env vars
         const pat_name = process.env.PULSE_PAT_NAME;
@@ -26,8 +25,9 @@ const handler = async (req, res) => {
         ];
         // user provided during authentication is used to create a new Session
         sesh = new Session(token.name);
+        const jwt_options = { jwt_secret, jwt_secret_id, jwt_client_id };
         // authorize to Tableau via JWT
-        await sesh.jwt(token.sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+        await sesh.jwt(token.sub, jwt_options, scopes);
         // authorize to Tableau via PAT
         await sesh.pat(pat_name, pat_secret);
       } catch (err) {
@@ -37,7 +37,7 @@ const handler = async (req, res) => {
       if (sesh.authorized) {
         // spread members of the Session "sesh"
         const { 
-          username, user_id, embed_key, rest_key, site_id, site, created, expires,
+          username, user_id, embed_token, rest_key, site_id, site, created, expires,
         } = sesh;
         // new Metrics model with data obtained using temporary key
         const payload = await getMetrics(user_id, rest_key); 
