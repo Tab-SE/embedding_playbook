@@ -41,8 +41,10 @@ export const authOptions = {
           }
         }
         if (user) {
-          sesh = new Session(user.name); // user provided during authentication is used to create a new Session
-          await sesh.pat(pat_name, pat_secret); // authorize to Tableau via PAT
+          // user provided during authentication is used to create a new Session
+          sesh = new Session(user.name); 
+          // authorize to Tableau via JWT
+          await sesh.jwt(token.sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
           if (sesh.authorized) {
             // spread members of the Session "sesh"
              const { 
