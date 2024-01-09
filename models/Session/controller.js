@@ -19,17 +19,20 @@ export const lifespan = (estimatedTimeToExpiration) => {
 
 // Tableau Embed and REST API authentication via JWT
 export const handleJWT = async (sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes) => {
-  // first encode a new JWT
-  const jwt = jwtSign(sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
-  // then verify the JWT against the same parameters
-  const valid = jwtVerify(jwt, sub, jwt_secret, jwt_client_id);
-  if (valid) {
+  // encode and sign new JWTs for Embed and REST APIs
+  const embed_key = jwtSign(sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+  const rest_key = jwtSign(sub, jwt_secret, jwt_secret_id, jwt_client_id, scopes);
+  // verify the JWT against the same parameters
+  const valid_embed = jwtVerify(embed_key, sub, jwt_secret, jwt_client_id);
+  const valid_rest = jwtVerify(rest_key, sub, jwt_secret, jwt_client_id);
+  
+  if (valid_embed && valid_rest) {
     // only return credentials if JWT meets requirements
-    const credentials = await tabAuthJWT(jwt);
+    const credentials = await tabAuthJWT(rest_key);
     // JWT library automatically calculates session life
-    credentials.created = valid.iat;
-    credentials.expiration = valid.exp;
-    return credentials;
+    credentials.created = valid_rest.iat;
+    credentials.expiration = valid_rest.exp;
+    return { credentials, embed_key };
   } else {
     throw new Error('JWT is not valid');
   }
