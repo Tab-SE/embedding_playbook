@@ -33,6 +33,21 @@ const handler = async (req, res) => {
 
 export default handler;
 
+
+// makes the response body for the API
+const makePayload = async (tableau) => {
+  const { rest_id, rest_key } = tableau;
+  if (rest_id && rest_key) {
+    // new Metrics model with data obtained using temporary key
+    const payload = await makeMetrics(rest_id, rest_key); 
+    return payload;
+  } else {
+    // errors resolve to false when checked
+    return new Error('Unauthorized to perform operation');
+  }
+}
+
+
 // server-side env vars
 const pat_name = process.env.PULSE_PAT_NAME;
 const pat_secret = process.env.PULSE_PAT_SECRET;
@@ -61,17 +76,4 @@ const getCredentials = async (token) => {
   let session = await serverPAT(token.name, pat_name, pat_secret);
 
   return session;
-}
-
-// makes the response body for the API
-const makePayload = async (tableau) => {
-  const { rest_id, rest_key } = tableau;
-  if (rest_id && rest_key) {
-    // new Metrics model with data obtained using temporary key
-    const payload = await makeMetrics(rest_id, rest_key); 
-    return payload;
-  } else {
-    // errors resolve to false when checked
-    return new Error('Unauthorized to perform operation');
-  }
 }

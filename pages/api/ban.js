@@ -1,20 +1,16 @@
 import { getToken } from "next-auth/jwt"
-import { serverJWT, serverPAT, getBanBundle } from "../../libs";
+import { getBanBundle } from "../../libs";
 
 
 // handles authentication, HTTP methods and responding with data or errors
 const handler = async (req, res) => {
   // session token specific to each user
   const token = await getToken({ req });
-  // session object
-  // const session = await getCachedCredentials(token); 
   // Signed in
   if (token?.tableau) {
-    // session = await getCredentials(token);
     if (req.method === 'POST') {
+      // only responds with data to authorized users
       const payload = await makePayload(token.tableau.rest_key, req.body.metric);
-      console.log('payload', payload);
-      // await session.signout(); // clear session for subsequent calls
       if (payload) {
         res.status(200).json(payload);
       } else {
@@ -51,7 +47,6 @@ const makePayload = async (rest_key, metric) => {
     try {
       // request insights
       bundle = await getBanBundle(rest_key, metric);
-      // console.log(`bundle ${metric.name}`, bundle);
     } catch (err) {
       return err;
     }
