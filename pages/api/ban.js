@@ -1,5 +1,14 @@
 import { getToken } from "next-auth/jwt"
-import { serverJWT, serverPAT } from "../../libs";
+import { serverJWT, serverPAT, getBanBundle, getSubscriptions } from "../../libs";
+
+// server-side env vars
+const pat_name = process.env.PULSE_PAT_NAME;
+const pat_secret = process.env.PULSE_PAT_SECRET;
+const jwt_options = { 
+  jwt_secret: process.env.TABLEAU_JWT_SECRET, 
+  jwt_secret_id: process.env.TABLEAU_JWT_SECRET_ID, 
+  jwt_client_id: process.env.TABLEAU_JWT_CLIENT_ID, 
+};
 
 // handles authentication, HTTP methods and responding with data or errors
 const handler = async (req, res) => {
@@ -38,36 +47,29 @@ export default handler;
 
 // makes the response body for the API
 const makePayload = async (session, metric) => {
-  if (session.authorized) {
+  if (session.authorized && metric) {
     const { user_id, rest_key } = session;
-    
+    let bundle;
     try {
-      // request insights
-      console.log('metric', session, metric);
+      // bundle = await getSubscriptions(rest_key, user_id)
+      // console.log(`subs ${metric.name}`, bundle);
 
+      // request insights
+      bundle = await getBanBundle(rest_key, metric);
+      // console.log(`bundle ${metric.name}`, bundle);
 
     } catch (err) {
       return err;
     }
-    // 
-    const payload = 'payload'; 
-    return payload;
+    return bundle;
   } else {
     // errors resolve to false when checked
-    return new Error('Unauthorized to perform operation');
+    return new Error('Cannot perform operation without required params');
   }
 }
 
 // establishes REST API authentication with Tableau
 const getCredentials = async (token) => {
-  // server-side env vars
-  const pat_name = process.env.PULSE_PAT_NAME;
-  const pat_secret = process.env.PULSE_PAT_SECRET;
-  const jwt_options = { 
-    jwt_secret: process.env.TABLEAU_JWT_SECRET, 
-    jwt_secret_id: process.env.TABLEAU_JWT_SECRET_ID, 
-    jwt_client_id: process.env.TABLEAU_JWT_CLIENT_ID, 
-  };
   // name for session reference, sub for token signing
   const user = {
     name: token.name,
@@ -75,14 +77,12 @@ const getCredentials = async (token) => {
   };
   // Scopes for Tableau metrics https://help.tableau.com/current/online/en-us/connected_apps_scopes.htm#pulse
   const scopes = [
-    'tableau:insight_definitions_metrics:read', 
-    'tableau:insight_metrics:read', 
-    'tableau:metric_subscriptions:read',
+    'tableau:insights:read',
   ];
   // authorize to Tableau via JWT
-  let session = await serverJWT(user, jwt_options, scopes);
+  // let session = await serverJWT(user, jwt_options, scopes);
   // authorize to Tableau via PAT
-  session = await serverPAT(user.name, pat_name, pat_secret);
+  let session = await serverPAT(token.name, pat_name, pat_secret);
 
   return session;
 }
