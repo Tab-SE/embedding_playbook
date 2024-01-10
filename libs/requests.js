@@ -71,6 +71,19 @@ export const tabAuthPAT = async (pat_name, pat_secret) => {
   return { site_id, site, user_id, rest_key, expiration };
 }
 
+export const tabSignOut = async () => {
+  const endpoint = tableau_domain + '/auth/signout';
+
+  const config = {
+    tableau_domain,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return await httpPost(endpoint, config);
+}
 
 // get subscription IDs for the provided user
 export const getSubscriptions = async (apiKey, userId, pageSize) => {
@@ -158,6 +171,40 @@ export const getBan = async (metric) => {
   return await httpPost(endpoint, body, config);
 }
 
+// requests insight bundles for all supported types given a metric (params)
+export const getBanBundle = async (apiKey, metric) => {
+  // console.log('getBanBundle metric', apiKey, metric);
+  const insights = [];
+
+  // create a request body (standard for all Pulse bundle requests)
+  const body = makeBundleBody(metric);
+
+  const endpoint = tableau_domain + pulse_path + '/insights/ban';
+    
+  const config = {
+    tableau_domain,
+    headers: {
+      'X-Tableau-Auth': apiKey,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const bundle = await httpPost(endpoint, body, config);
+
+  if (!bundle.bundle_response) {
+    console.log('endpoint', endpoint);
+    console.log('body', body);
+    console.log('config', config);
+
+    console.log('getBanBundle', bundle);
+  }
+
+  insights.push(bundle);
+
+  return insights;
+}
+
 // requests parsed insights from private API
 export const getInsights = async (metric, resources) => {
   const endpoint = '/api/insights';
@@ -188,7 +235,7 @@ export const getInsightBundles = async (apiKey, params) => {
   // 3 types of insight bundles available
   const resources = ['/ban', '/detail', '/springboard'];
   // create a request body
-  const body = makeInsightsBody(params);
+  const body = makeBundleBody(params);
 
   resources.forEach(async (resource) => {
     const endpoint = tableau_domain + path + resource;
@@ -211,40 +258,46 @@ export const getInsightBundles = async (apiKey, params) => {
 }
 
 // generetes the complex request body required to generate an insights bundle
-const makeInsightsBody = (params) => {
-  // Get the current date and time in this format YYYY-MM-DD
-  const currentTime = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+const makeBundleBody = (metric) => {
+  // calculate time for "now" value in required format
+  const currentTime = new Date();
+  // Get the date components
+  const year = currentTime.getFullYear();
+  const month = (currentTime.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+  const day = currentTime.getDate().toString().padStart(2, '0');
+  const hour = currentTime.getHours().toString().padStart(2, '0');
+  const minute = currentTime.getMinutes().toString().padStart(2, '0');
+  const second = currentTime.getSeconds().toString().padStart(2, '0');
+  // Format the date as "YYYY-MM-DD HH:mm:ss"
+  const formattedDate = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+
   // Get the time zone
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  // spread members from params object
+
+  // all other object members
   const { 
-    name,
-    metric_id,
-    definition_id,
-    definition,
-    metric_specification,
-    extension_options,
-    representation_options,
-    insights_options,
-   } = params;
+    name, id, specification_id, definition, specification, 
+    extension_options, representation_options, insights_options,
+   } = metric;
+
 
   const body = {
     bundle_request: {
       version: "1",
       options: {
         output_format: "OUTPUT_FORMAT_TEXT",
-        now: currentTime,
+        now: formattedDate,
         time_zone: timeZone
       },
       input: {
         metadata: {
           name: name,
-          metric_id: metric_id,
-          definition_id: definition_id
+          metric_id: specification_id,
+          definition_id: id
         },
         metric: {
           definition: definition,
-          metric_specification: metric_specification,
+          metric_specification: specification,
           extension_options: extension_options,
           representation_options: representation_options,
           insights_options: insights_options
