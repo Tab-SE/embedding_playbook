@@ -1,5 +1,5 @@
 import { useQuery, } from "@tanstack/react-query"
-import { getInsights } from "../libs/requests"
+import { getSpringboard } from "../libs/requests"
 // implements custom hooks with tanstack query for asynchronous state management
 // concepts described here: https://tkdodo.eu/blog/react-query-as-a-state-manager
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
@@ -15,7 +15,7 @@ export const useSpringboard = async (user, metric) => {
       if (!metric) {
         throw new Error("metric is required.");
       }
-      return await getInsights(metric);
+      return await getSpringboard(metric);
     },
     enabled: !!metric,
     staleTime: 5 * 60 * 1000, // 5 minutes
