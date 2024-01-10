@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt"
-import { serverJWT, serverPAT, getBanBundle, getSubscriptions } from "../../libs";
+import { serverJWT, serverPAT, getBanBundle } from "../../libs";
 
 // server-side env vars
 const pat_name = process.env.PULSE_PAT_NAME;
@@ -25,6 +25,7 @@ const handler = async (req, res) => {
         throw err;
       }
       const payload = await makePayload(session, req.body.metric);
+      await session.signout(); // clear session for subsequent calls
       if (payload) {
         res.status(200).json(payload);
       } else {

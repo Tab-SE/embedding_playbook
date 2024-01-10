@@ -25,6 +25,7 @@ const handler = async (req, res) => {
         throw err;
       }
       const payload = await makePayload(session);
+      await session.signout(); // clear session for subsequent calls
       if (payload) {
         res.status(200).json(payload);
       } else {
