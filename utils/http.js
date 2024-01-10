@@ -32,7 +32,6 @@ export const httpPost = async (endpoint, body, config) => {
       console.log('------------------------------------------------');
       console.log(config);
     }
-    
   }
   try {
     // call pattern: axios.post(url[, data[, config]])
