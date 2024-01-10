@@ -172,26 +172,6 @@ export const getBan = async (metric) => {
 }
 
 // requests insight bundles for all supported types given a metric (params)
-export const getBanBundle = async (apiKey, metric) => {
-  // create a request body (standard for all Pulse bundle requests)
-  const body = makeBundleBody(metric);
-
-  const endpoint = tableau_domain + pulse_path + '/insights/ban';
-    
-  const config = {
-    tableau_domain,
-    headers: {
-      'X-Tableau-Auth': apiKey,
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const bundle = await httpPost(endpoint, body, config);
-  return bundle;
-}
-
-// requests insight bundles for all supported types given a metric (params)
 export const getInsightBundle = async (apiKey, metric, resource) => {
   // create a request body (standard for all Pulse bundle requests)
   const body = makeBundleBody(metric);
