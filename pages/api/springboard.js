@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt"
-import { getBanBundle } from "../../libs";
+import { getInsightBundle } from "../../libs";
 
 
 // handles authentication, HTTP methods and responding with data or errors
@@ -46,7 +46,7 @@ const makePayload = async (rest_key, metric) => {
     let bundle;
     try {
       // request insights
-      bundle = await getBanBundle(rest_key, metric);
+      bundle = await getInsightBundle(rest_key, metric, '/springboard');
     } catch (err) {
       return err;
     }
