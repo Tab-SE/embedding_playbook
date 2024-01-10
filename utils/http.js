@@ -12,11 +12,10 @@ export const httpGet = async (endpoint, config) => {
     if (response.status === 200){
       return response.data;
     } else {
-      throw new Error(`ERROR: Cannot GET for endpoint: ${endpoint} and response: ${response.data}`);
+      throw new Error(`ERROR: Cannot GET for endpoint: ${endpoint}`);
     }
   } catch (error) {
-    console.error(error);
-    return error;
+    return formatError(error);
   }
 };
 
@@ -24,16 +23,33 @@ export const httpGet = async (endpoint, config) => {
 export const httpPost = async (endpoint, body, config) => {
   // request bodies must be stringified
   const payload = JSON.stringify(body);
+  if (body.bundle_request) {
+    const input = body.bundle_request.input;
+    if (input.metadata.name === 'Maintenance Hours') {
+      console.log('httpPost', endpoint);
+      console.log('------------------------------------------------');
+      console.log(payload);
+      console.log('------------------------------------------------');
+      console.log(config);
+    }
+    
+  }
   try {
     // call pattern: axios.post(url[, data[, config]])
     const response = await axios.post(endpoint, payload, config);
     if (response.status === 200){
       return response.data;
     } else {
-      throw new Error(`ERROR: Cannot POST for endpoint: ${endpoint} and response: ${response.data}`);
+      throw new Error(`ERROR: Cannot POST for endpoint: ${endpoint}`);
     }
   } catch (error) {
-    console.error(error);
-    return error;
+    return formatError(error);
   }
 };
+
+const formatError = (error) => {
+  const errMessage = new Error(
+    `HTTP - ${error.config.method} ${error.response.status} ${error.code}: ${error.response.data.message}`
+  );
+  return errMessage;
+}
