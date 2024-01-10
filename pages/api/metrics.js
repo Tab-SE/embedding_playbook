@@ -1,29 +1,15 @@
 import { getToken } from "next-auth/jwt"
 import { serverJWT, serverPAT, makeMetrics } from "../../libs";
 
-// server-side env vars
-const pat_name = process.env.PULSE_PAT_NAME;
-const pat_secret = process.env.PULSE_PAT_SECRET;
-const jwt_options = { 
-  jwt_secret: process.env.TABLEAU_JWT_SECRET, 
-  jwt_secret_id: process.env.TABLEAU_JWT_SECRET_ID, 
-  jwt_client_id: process.env.TABLEAU_JWT_CLIENT_ID, 
-};
-
 // handles authentication, HTTP methods and responding with data or errors
 const handler = async (req, res) => {
+  // session token specific to each user
   const token = await getToken({ req });
+  // session object
+  const session = await getCredentials(token);
   // Signed in
   if (token?.name && token?.sub) {
     if (req.method === 'GET') {
-      // session object
-      let session; 
-      try {
-        session = await getCredentials(token);
-      } catch (err) {
-        res.status(500).json({ error: err });
-        throw err;
-      }
       const payload = await makePayload(session);
       await session.signout(); // clear session for subsequent calls
       if (payload) {
@@ -46,18 +32,14 @@ const handler = async (req, res) => {
 
 export default handler;
 
-// makes the response body for the API
-const makePayload = async (session) => {
-  if (session.authorized) {
-    const { user_id, rest_key } = session;
-    // new Metrics model with data obtained using temporary key
-    const payload = await makeMetrics(user_id, rest_key); 
-    return payload;
-  } else {
-    // errors resolve to false when checked
-    return new Error('Unauthorized to perform operation');
-  }
-}
+// server-side env vars
+const pat_name = process.env.PULSE_PAT_NAME;
+const pat_secret = process.env.PULSE_PAT_SECRET;
+const jwt_options = { 
+  jwt_secret: process.env.TABLEAU_JWT_SECRET, 
+  jwt_secret_id: process.env.TABLEAU_JWT_SECRET_ID, 
+  jwt_client_id: process.env.TABLEAU_JWT_CLIENT_ID, 
+};
 
 // establishes REST API authentication with Tableau
 const getCredentials = async (token) => {
@@ -80,3 +62,15 @@ const getCredentials = async (token) => {
   return session;
 }
 
+// makes the response body for the API
+const makePayload = async (session) => {
+  if (session.authorized) {
+    const { user_id, rest_key } = session;
+    // new Metrics model with data obtained using temporary key
+    const payload = await makeMetrics(user_id, rest_key); 
+    return payload;
+  } else {
+    // errors resolve to false when checked
+    return new Error('Unauthorized to perform operation');
+  }
+}

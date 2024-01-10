@@ -173,9 +173,6 @@ export const getBan = async (metric) => {
 
 // requests insight bundles for all supported types given a metric (params)
 export const getBanBundle = async (apiKey, metric) => {
-  // console.log('getBanBundle metric', apiKey, metric);
-  const insights = [];
-
   // create a request body (standard for all Pulse bundle requests)
   const body = makeBundleBody(metric);
 
@@ -190,19 +187,12 @@ export const getBanBundle = async (apiKey, metric) => {
     },
   };
 
+  // console.log('getBanBundle key', apiKey);
+  // console.log('getBanBundle body', JSON.stringify(body));
+
   const bundle = await httpPost(endpoint, body, config);
-
-  if (!bundle.bundle_response) {
-    console.log('endpoint', endpoint);
-    console.log('body', body);
-    console.log('config', config);
-
-    console.log('getBanBundle', bundle);
-  }
-
-  insights.push(bundle);
-
-  return insights;
+  console.log('getBanBundle bundle', bundle);
+  return bundle;
 }
 
 // requests parsed insights from private API
