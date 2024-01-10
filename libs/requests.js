@@ -188,10 +188,12 @@ export const getBanBundle = async (apiKey, metric) => {
   };
 
   // console.log('getBanBundle key', apiKey);
+  // console.log('getBanBundle config', config);
+
   // console.log('getBanBundle body', JSON.stringify(body));
 
   const bundle = await httpPost(endpoint, body, config);
-  console.log('getBanBundle bundle', bundle);
+  // console.log('getBanBundle bundle', metric.name, bundle);
   return bundle;
 }
 

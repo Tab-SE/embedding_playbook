@@ -6,12 +6,13 @@ const handler = async (req, res) => {
   // session token specific to each user
   const token = await getToken({ req });
   // session object
-  const session = await getCredentials(token);
+  // const session = await getCredentials(token);
   // Signed in
-  if (token?.name && token?.sub) {
+  if (token?.tableau) {
     if (req.method === 'GET') {
-      const payload = await makePayload(session);
-      await session.signout(); // clear session for subsequent calls
+      console.log('token', token);
+      const payload = await makePayload(token.tableau);
+      // await session.signout(); // clear session for subsequent calls
       if (payload) {
         res.status(200).json(payload);
       } else {
@@ -63,11 +64,11 @@ const getCredentials = async (token) => {
 }
 
 // makes the response body for the API
-const makePayload = async (session) => {
-  if (session.authorized) {
-    const { user_id, rest_key } = session;
+const makePayload = async (tableau) => {
+  const { rest_id, rest_key } = tableau;
+  if (rest_id && rest_key) {
     // new Metrics model with data obtained using temporary key
-    const payload = await makeMetrics(user_id, rest_key); 
+    const payload = await makeMetrics(rest_id, rest_key); 
     return payload;
   } else {
     // errors resolve to false when checked
