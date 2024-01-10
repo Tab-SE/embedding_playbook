@@ -187,66 +187,28 @@ export const getBanBundle = async (apiKey, metric) => {
     },
   };
 
-  // console.log('getBanBundle key', apiKey);
-  // console.log('getBanBundle config', config);
-
-  // console.log('getBanBundle body', JSON.stringify(body));
-
   const bundle = await httpPost(endpoint, body, config);
-  // console.log('getBanBundle bundle', metric.name, bundle);
   return bundle;
 }
 
-// requests parsed insights from private API
-export const getInsights = async (metric, resources) => {
-  const endpoint = '/api/insights';
-  const body = { metric };
+// requests insight bundles for all supported types given a metric (params)
+export const getInsightBundle = async (apiKey, metric, resource) => {
+  // create a request body (standard for all Pulse bundle requests)
+  const body = makeBundleBody(metric);
 
-  if (Array.isArray(resources)) {
-    if (resources.length === 0) {
-      throw new Error('resources must have at least one element');
-    }
-    body.resources = resources;
-  } else {
-    throw new Error('resources must be an array!');
-  }
-  
+  const endpoint = tableau_domain + pulse_path + '/insights' + resource;
+    
   const config = {
+    tableau_domain,
     headers: {
+      'X-Tableau-Auth': apiKey,
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
   };
 
-  return await httpPost(endpoint, body, config);
-}
-
-// requests insight bundles for all supported types given a metric (params)
-export const getInsightBundles = async (apiKey, params) => {
-  const insights = [];
-  // 3 types of insight bundles available
-  const resources = ['/ban', '/detail', '/springboard'];
-  // create a request body
-  const body = makeBundleBody(params);
-
-  resources.forEach(async (resource) => {
-    const endpoint = tableau_domain + path + resource;
-    
-    const config = {
-      tableau_domain,
-      headers: {
-        'X-Tableau-Auth': apiKey,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body,
-    };
-
-    const bundle = await httpPost(endpoint, body, config);
-    insights.push(bundle);
-  })
-
-  return insights;
+  const bundle = await httpPost(endpoint, body, config);
+  return bundle;
 }
 
 // generetes the complex request body required to generate an insights bundle
