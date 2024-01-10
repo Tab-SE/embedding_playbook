@@ -171,6 +171,36 @@ export const getBan = async (metric) => {
   return await httpPost(endpoint, body, config);
 }
 
+// requests parsed insights from private API
+export const getSpringboard = async (metric) => {
+  const endpoint = '/api/springboard';
+  const body = { metric };
+  
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return await httpPost(endpoint, body, config);
+}
+
+// requests parsed insights from private API
+export const getDetail = async (metric) => {
+  const endpoint = '/api/detail';
+  const body = { metric };
+  
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return await httpPost(endpoint, body, config);
+}
+
 // requests insight bundles for all supported types given a metric (params)
 export const getInsightBundle = async (apiKey, metric, resource) => {
   // create a request body (standard for all Pulse bundle requests)
