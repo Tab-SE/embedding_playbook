@@ -1,4 +1,5 @@
 import { lifespan, handlePAT, handleJWT } from "./controller";
+import { tabSignOut } from "../../libs";
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
@@ -62,6 +63,11 @@ export class Session {
       this.authorized = false; 
       throw new Error('Cannot authorize user')
     }
+  }
+
+  // must be called after sessions are used to prevent server 401
+  signout = async () => {
+    await tabSignOut();
   }
 
   // Personal Access Token authentication
