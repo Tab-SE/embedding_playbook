@@ -5,9 +5,9 @@ import { getSpringboard } from "../libs/requests"
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
 
-export const useSpringboard = async (user, metric) => {
+export const useSpringboard = async (metric) => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [user].every(param => param != null) ? ["tableau", "insights", "springboard", metric.id, metric.name] : []; 
+  const queryKey = [metric].every(param => param != null) ? ["tableau", "insights", "springboard", metric.id, metric.name] : []; 
 
   return useQuery({
     queryKey: queryKey, 

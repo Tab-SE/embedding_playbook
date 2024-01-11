@@ -5,9 +5,9 @@ import { getDetail } from "../libs/requests"
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
 
-export const useDetail = async (user, metric) => {
+export const useDetail = async (metric) => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [user].every(param => param != null) ? ["tableau", "insights", "detail", metric.id, metric.name] : []; 
+  const queryKey = [metric].every(param => param != null) ? ["tableau", "insights", "detail", metric.id, metric.name] : []; 
 
   return useQuery({
     queryKey: queryKey, 
