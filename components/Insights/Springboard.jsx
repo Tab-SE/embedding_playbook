@@ -1,15 +1,32 @@
 import { useEffect } from "react";
+import { useSpringboard } from "../../hooks";
 import VegaLiteViz from "../VegaLiteViz";
 import { parseBan } from "../../utils/parse";
 import bundle from "../../models/Insights/mocks/generate_springboard_insight.json"
 
+ 
 function Springboard(props) {
+    const { metric } = props;
+    const { name, description } = metric;
    // returns a minimal representation for the UI
    const parsedBundle = parseBan(bundle);
    // const { value, question, markup, viz  } = parsedBundle[0];
-
    const viz = parsedBundle[1].viz;
    const markup = parsedBundle[1].markup;
+
+  // syncs with user metric generated insights - many metrics, one resource - optimized for homepage
+  const springboardQuery = useSpringboard(metric).then((result) => {
+    const { status, data, error, isError, isSuccess } = result;
+    if (isError) {
+      setBanStatus(status);
+      console.debug(error);
+    }
+    if (isSuccess) {
+      setBanStatus(status);
+      setBan(data);
+    }
+  });
+
 
   return (
     <>
