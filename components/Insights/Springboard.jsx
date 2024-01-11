@@ -18,12 +18,9 @@ function Springboard(props) {
   const springboardQuery = useSpringboard(metric).then((result) => {
     const { status, data, error, isError, isSuccess } = result;
     if (isError) {
-      setBanStatus(status);
       console.debug(error);
     }
     if (isSuccess) {
-      setBanStatus(status);
-      setBan(data);
     }
   });
 

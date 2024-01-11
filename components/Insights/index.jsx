@@ -4,6 +4,7 @@ import Springboard from './Springboard'
 import PowerLevel from '../../models/Metrics/mocks/PowerLevel/PowerLevel.json'
 
 export default function Insights(props) {
+  const { metric } = props;
   const insights = parseInsights(PowerLevel);
 
   return (
@@ -20,6 +21,9 @@ export default function Insights(props) {
           title={props.title}
           pushQA={props.pushQA} 
           setMetricValue={props.setMetricValue}
+        />
+        <Springboard 
+          metric={metric}
         />
       </div>
     </>

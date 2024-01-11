@@ -33,7 +33,7 @@ export default function Metric(props) {
         <div className="stat-desc">21% more than last month</div>
       </div>
       <Modal setModal={setModal} >
-        <Insights title={name} value={metricValue} setMetricValue={setMetricValue} ban={ban} />
+        <Insights metric={metric} title={name} value={metricValue} setMetricValue={setMetricValue} ban={ban} />
         <div className="flex justify-center gap-12 w-full">
           <kbd className="kbd kbd-lg">◀︎</kbd>
           <kbd className="kbd kbd-lg">Swipe</kbd>
