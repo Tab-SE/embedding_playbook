@@ -33,5 +33,3 @@ const parseInsights = (metric) => {
   });
   return insights;
 }
-
-export { BAN, Detail, Springboard };
