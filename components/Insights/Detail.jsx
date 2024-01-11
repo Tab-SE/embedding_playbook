@@ -6,19 +6,8 @@ import bundle from "../../models/Insights/mocks/generate_detail_insight.json"
 
 // returns a minimal representation for the UI
 function Detail(props) {
-  const setMetricValue = props.setMetricValue;
   const parsedBundles = parseBan(bundle);
   const { value } = parsedBundles[0];
-  
-  // useEffect(() => {
-  //   // the metric value is controlled in the parent component but set here
-  //   props.pushQA(value);
-  // }, [value]);
-
-  useEffect(() => {
-    // the metric value is controlled in the parent component but set here
-    setMetricValue(value);
-  }, [value, setMetricValue]);
 
 
   return (

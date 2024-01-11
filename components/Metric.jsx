@@ -5,35 +5,34 @@ import Insights from "./Insights";
 
 
 export default function Metric(props) {
-  const { metric, metricStatus } = props;
+  const { metric } = props;
   const [modal, setModal] = useState(undefined);
-  const [metricValue, setMetricValue] = useState(undefined);
-  const [ban, setBan] = useState(undefined);
-  const [banStatus, setBanStatus] = useState('loading');
-  const { name, description } = metric;
+  let result; // contains question, markup and facts
+  let facts; // contains values, changes
+  // tanstack query hook
+  const { status, data, error, isError, isSuccess } = useBan(metric);
 
-  // syncs with user metric generated insights - many metrics, one resource - optimized for homepage
-  const banQuery = useBan(metric).then((result) => {
-    const { status, data, error, isError, isSuccess } = result;
-    if (isError) {
-      setBanStatus(status);
-      console.debug(error);
-    }
-    if (isSuccess) {
-      setBanStatus(status);
-      setBan(data);
-    }
-   });
+  if (isError) {
+    console.debug(error);
+  }
+
+  if (isSuccess) {
+    // BAN responses only have 1 insight_groups and 1 insights
+    result = data?.bundle_response.result.insight_groups[0].insights[0].result; 
+    facts = result.facts;
+  }
+
+  console.log(status, data);
 
   return (
     <div className="stats shadow bg-stone-50 w-52 h-36 cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
       <div className="stat">
-        <div className="stat-title">{name}</div>
-        <div className="stat-value">{metricValue ? metricValue : '0'}</div>
-        <div className="stat-desc">21% more than last month</div>
+        <div className="stat-title">{metric.name}</div>
+        <div className="stat-value">{facts ? facts.target_period_value.formatted : '0'}</div>
+        <div className="stat-desc">{result ? result.markup : 'Querying Insights...'}</div>
       </div>
       <Modal setModal={setModal} >
-        <Insights metric={metric} title={name} value={metricValue} setMetricValue={setMetricValue} ban={ban} />
+        <Insights metric={metric} title={metric.name} />
         <div className="flex justify-center gap-12 w-full">
           <kbd className="kbd kbd-lg">◀︎</kbd>
           <kbd className="kbd kbd-lg">Swipe</kbd>
@@ -43,3 +42,4 @@ export default function Metric(props) {
     </div>
   )
 }
+

@@ -15,14 +15,13 @@ function Springboard(props) {
    const markup = parsedBundle[1].markup;
 
   // syncs with user metric generated insights - many metrics, one resource - optimized for homepage
-  const springboardQuery = useSpringboard(metric).then((result) => {
-    const { status, data, error, isError, isSuccess } = result;
-    if (isError) {
-      console.debug(error);
-    }
-    if (isSuccess) {
-    }
-  });
+  const { status, data, error, isError, isSuccess } = useSpringboard(metric);
+
+  if (isError) {
+    console.debug(error);
+  }
+  if (isSuccess) {
+  }
 
 
   return (
