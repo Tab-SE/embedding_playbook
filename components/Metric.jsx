@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useBan } from "../hooks";
 import Modal from "./Modal";
 import Insights from "./Insights";
@@ -13,7 +13,7 @@ export default function Metric(props) {
   const { name, description } = metric;
 
   // syncs with user metric generated insights - many metrics, one resource - optimized for homepage
-  const banQuery = useBan(name, metric).then((result) => {
+  const banQuery = useBan(metric).then((result) => {
     const { status, data, error, isError, isSuccess } = result;
     if (isError) {
       setBanStatus(status);
@@ -24,8 +24,6 @@ export default function Metric(props) {
       setBan(data);
     }
    });
-
-  console.log('ban', banStatus, ban);
 
   return (
     <div className="stats shadow bg-stone-50 w-52 h-36 cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
