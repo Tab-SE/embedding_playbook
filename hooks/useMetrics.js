@@ -1,4 +1,4 @@
-import { useQuery, } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { getMetrics } from "../libs/requests"
 // implements custom hooks with tanstack query for asynchronous state management
 // concepts described here: https://tkdodo.eu/blog/react-query-as-a-state-manager
