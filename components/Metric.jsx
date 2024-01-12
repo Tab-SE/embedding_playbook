@@ -18,18 +18,18 @@ export default function Metric(props) {
 
   if (isSuccess) {
     // BAN responses only have 1 insight_groups and 1 insights
-    result = data?.bundle_response.result.insight_groups[0].insights[0].result; 
-    facts = result.facts;
+    result = data?.bundle_response?.result.insight_groups[0].insights[0].result; 
+    facts = result?.facts;
   }
 
   console.log(status, data);
 
   return (
-    <div className="stats shadow bg-stone-50 w-52 h-36 cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
+    <div className="stats shadow bg-stone-50 w-60 cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
       <div className="stat">
-        <div className="stat-title">{metric.name}</div>
-        <div className="stat-value">{facts ? facts.target_period_value.formatted : '0'}</div>
-        <div className="stat-desc">{result ? result.markup : 'Querying Insights...'}</div>
+        <div className="stat-title whitespace-normal">{metric.name}</div>
+        <div className="stat-value whitespace-normal mt-2 mb-3">{facts ? facts.target_period_value.formatted : '0'}</div>
+        <div className="stat-desc whitespace-normal">{result ? result.markup : 'Querying Insights...'}</div>
       </div>
       <Modal setModal={setModal} >
         <Insights metric={metric} title={metric.name} />
