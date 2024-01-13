@@ -5,14 +5,10 @@ import { serverJWT, serverPAT, makeMetrics } from "../../libs";
 const handler = async (req, res) => {
   // session token specific to each user
   const token = await getToken({ req });
-  // session object
-  // const session = await getCredentials(token);
   // Signed in
   if (token?.tableau) {
     if (req.method === 'GET') {
-      console.log('token', token);
       const payload = await makePayload(token.tableau);
-      // await session.signout(); // clear session for subsequent calls
       if (payload) {
         res.status(200).json(payload);
       } else {
