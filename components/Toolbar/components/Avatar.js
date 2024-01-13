@@ -1,9 +1,38 @@
+import { useState, useEffect } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Image from 'next/image'
 
 
+
 function Menu(props) {
+  const [user, setUser] = useState(undefined);
+  // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
+  const { status, data } = useSession({ required: false })
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      setUser(data.user.name);
+    }
+  }, [status, data]);
+
+  if (status === 'authenticated') {
+    return (
+      <div>
+        <li>
+          <a className="justify-between">
+            Profile
+            <span className="badge badge-accent">New</span>
+          </a>
+        </li>
+        <li><a>Settings</a></li>
+        <li><a><button onClick={() => signOut()}>Sign out</button></a></li>
+      </div> 
+    );
+  }
+
+  // 'loading' state is the default because session.required === true: https://next-auth.js.org/getting-started/client#require-session
   return (
-    <>
+    <div>
       <li>
         <a className="justify-between">
           Profile
@@ -11,10 +40,12 @@ function Menu(props) {
         </a>
       </li>
       <li><a>Settings</a></li>
-      <li><a>Logout</a></li>
-    </>
-  )
+      <li><a><button onClick={() => signIn()}>Sign in</button></a></li>
+    </div>
+  );
 }
+
+
 
 function Avatar(props) {
   return (

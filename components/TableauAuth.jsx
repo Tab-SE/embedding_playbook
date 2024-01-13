@@ -3,9 +3,8 @@ import { useState, useEffect } from "react";
 
 export default function TableauAuth() {
   const [user, setUser] = useState(undefined);
-  const { status, data } = useSession({
-    required: false, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
-  })
+  // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
+  const { status, data } = useSession({ required: false })
 
   useEffect(() => {
     if (status === 'authenticated') {
