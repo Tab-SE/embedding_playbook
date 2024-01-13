@@ -22,8 +22,6 @@ export default function Metric(props) {
     facts = result?.facts;
   }
 
-  console.log(status, data);
-
   return (
     <div className="stats shadow bg-stone-50 w-60 cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
       <div className="stat">
