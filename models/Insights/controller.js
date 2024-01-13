@@ -1,15 +1,21 @@
-import { getInsightBundles } from '../../libs/requests'
+import { getInsightBundle } from '../../libs/requests';
 import { parseInsights } from '../../utils';
 
-export const handleInsights = async (apiKey, params) => {
+export const handleInsights = async (apiKey, metric, resource) => {
   try {
-    const insights = await getInsightBundles(apiKey, params);
-    responseHandler(insights); // output any errors returned from Tableau Pulse request
-    const parsedData = parseInsights(insights);
-    return parsedData;
+    const insights = await getInsightBundle(apiKey, metric, resource);
+    const data = responseHandler(insights); // output any errors returned from Tableau Pulse request
+    if (data) {
+      // parse Insights if no errors were found
+      const parsedData = parseInsights(insights);
+      return parsedData;
+    } else {
+      // return errors
+      return false;
+    }
   } catch(err) {
     console.error(err);
-    return parsedData;
+    return err;
   }
 }
 
@@ -19,7 +25,10 @@ const responseHandler = (response) => {
     throw new Error('REQUEST ERROR: cannot perform request');
   } else if (response?.errors) { // Pulse response includes an errors object with detailed errors per response
     if (response.errors.length > 0) {
-      // console.debug(`Errors found while servicing request: ${JSON.stringify(response.errors, null, 2)}`);
+      console.debug(`Errors found while servicing request: ${JSON.stringify(response.errors, null, 2)}`);
+      return false;
     }
+  } else {
+    return response;
   }
 }

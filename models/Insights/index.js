@@ -37,18 +37,8 @@ export class InsightsModel {
   }
 
   // requests insights from Tableau Pulse
-  syncInsights = async (apiKey) => {
-    const response = await handleInsights(apiKey, {
-      name: this.name,
-      metric_id: this.specification_id,
-      definition_id: this.id,
-      definition: this.definition,
-      metric_specification: this.specification,
-      extension_options: this.extension_options,
-      representation_options: this.representation_options,
-      insights_options: this.insights_options,
-    });
-
+  syncInsights = async (apiKey, metric, resource) => {
+    const response = await handleInsights(apiKey, metric, resource);
     // populate array with insights from response
     response.forEach((insight) => {
       this.insights.push(insight);

@@ -1,23 +1,10 @@
-import { getSubscriptions, getSpecifications, getDefinitions, getInsights } from "../../libs"
+import { getSubscriptions, getSpecifications, getDefinitions } from "../../libs"
 import { parseSubscriptions, parseSpecifications, parseDefinitions } from "../../utils"
 
 /* 
 Request and process data for metrics. The "sync" prefix indicates that these methods
 should eventually support Tanstack client-side or SWR server-side for state management
 */
-
-export const handleInsights = async (apiKey, metrics) => {
-  try {
-    const response = await getInsights(apiKey, metrics);
-    responseHandler(response); // output any errors returned from Tableau Pulse request
-    // const parsedData = parseSubscriptions(response);
-    const parsedData = response;
-    return parsedData;
-  } catch(err) {
-    console.error(err);
-    return parsedData;
-  }
-}
 
 export const handleSubscriptions = async (apiKey, userId) => {
   try {
@@ -65,7 +52,7 @@ const responseHandler = (response) => {
     throw new Error('REQUEST ERROR: cannot perform request');
   } else if (response?.errors) { // Pulse response includes an errors object with detailed errors per response
     if (response.errors.length > 0) {
-      // console.debug(`Errors found while servicing request: ${JSON.stringify(response.errors, null, 2)}`);
+      console.debug(`Errors found while servicing request: ${JSON.stringify(response.errors, null, 2)}`);
     }
   }
 }
