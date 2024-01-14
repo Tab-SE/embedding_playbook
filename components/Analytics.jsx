@@ -13,7 +13,7 @@ function Analytics(props) {
   return (
     <section className='bg-colorblind-lgray rounded'> 
       <Toolbar viz={viz.current} interactive={interactive} />
-      <div className='min-h-[64rem] my-2'>
+      <div className='min-h-[63rem] my-2'>
         <div className='block h-36 items-center justify-center'>
           <Metrics /> 
         </div>

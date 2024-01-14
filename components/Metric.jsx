@@ -41,11 +41,11 @@ export default function Metric(props) {
   }
 
   return (
-    <div className="cursor-pointer w-44" onClick={()=> modal ? modal.showModal() : false }>
+    <div className="cursor-pointer w-40" onClick={()=> modal ? modal.showModal() : false }>
       <div className="stat h-32">
         <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
-        <div className="stat-value text-3xl">{facts ? facts.target_period_value.formatted : '0'}</div>
-        <div className="stat-desc">{direction} {absolute} {relative ? `(${relative})` : null}</div>
+        <div className="stat-value text-3xl whitespace-normal">{facts ? facts.target_period_value.formatted : '0'}</div>
+        <div className="stat-desc whitespace-normal">{direction} {absolute} {relative ? `(${relative})` : null}</div>
       </div>
       <Modal setModal={setModal} >
         <Insights metric={metric} title={metric.name} />
