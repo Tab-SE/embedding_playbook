@@ -13,8 +13,8 @@ function Analytics(props) {
   return (
     <section className='bg-colorblind-lgray rounded'> 
       <Toolbar viz={viz.current} interactive={interactive} />
-      <div className='min-h-[80rem] py-2'>
-        <div className='block h-96'>
+      <div className='min-h-[80rem] my-2'>
+        <div className='block h-50 items-center justify-center'>
           <Metrics /> 
         </div>
         <Tableau

@@ -9,6 +9,10 @@ export default function Metric(props) {
   const [modal, setModal] = useState(undefined);
   let result; // contains question, markup and facts
   let facts; // contains values, changes
+  let sentiment;
+  let direction;
+  let absolute;
+  let relative;
   // tanstack query hook
   const { status, data, error, isError, isSuccess } = useBan(metric);
 
@@ -20,14 +24,28 @@ export default function Metric(props) {
     // BAN responses only have 1 insight_groups and 1 insights
     result = data?.bundle_response?.result.insight_groups[0].insights[0].result; 
     facts = result?.facts;
+    // absolute difference in unit of measurement
+    absolute = facts?.difference.absolute.formatted;
+    // always a percentage
+    relative = facts?.difference.relative.formatted;
+    // direction of the arrow icon
+    direction = facts?.difference.direction;
+    if (direction === 'up') {
+      direction = '↗︎';
+    } else if (direction === 'down') {
+      direction = '↘︎';
+    } else if (direction === 'flat') {
+      direction = '→';
+    }
+    console.log(`${metric.name} sentiment`, sentiment);
   }
 
   return (
-    <div className="stats shadow bg-stone-50 w-60 cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
-      <div className="stat">
-        <div className="stat-title whitespace-normal">{metric.name}</div>
-        <div className="stat-value whitespace-normal mt-2 mb-3">{facts ? facts.target_period_value.formatted : '0'}</div>
-        <div className="stat-desc whitespace-normal">{result ? result.markup : 'Querying Insights...'}</div>
+    <div className="cursor-pointer w-44" onClick={()=> modal ? modal.showModal() : false }>
+      <div className="stat h-32">
+        <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
+        <div className="stat-value text-3xl">{facts ? facts.target_period_value.formatted : '0'}</div>
+        <div className="stat-desc">{direction} {absolute} {relative ? `(${relative})` : null}</div>
       </div>
       <Modal setModal={setModal} >
         <Insights metric={metric} title={metric.name} />
@@ -40,4 +58,3 @@ export default function Metric(props) {
     </div>
   )
 }
-
