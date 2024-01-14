@@ -9,10 +9,7 @@ export default function Metric(props) {
   const [modal, setModal] = useState(undefined);
   let result; // contains question, markup and facts
   let facts; // contains values, changes
-  let sentiment;
-  let direction;
-  let absolute;
-  let relative;
+  let stats = { sentiment: undefined }; // prop storing key facts
   // tanstack query hook
   const { status, data, error, isError, isSuccess } = useBan(metric);
 
@@ -24,31 +21,32 @@ export default function Metric(props) {
     // BAN responses only have 1 insight_groups and 1 insights
     result = data?.bundle_response?.result.insight_groups[0].insights[0].result; 
     facts = result?.facts;
+    // formatted current value
+    stats.value = facts?.target_period_value.formatted;
     // absolute difference in unit of measurement
-    absolute = facts?.difference.absolute.formatted;
+    stats.absolute = facts?.difference.absolute.formatted;
     // always a percentage
-    relative = facts?.difference.relative.formatted;
+    stats.relative = facts?.difference.relative.formatted;
     // direction of the arrow icon
-    direction = facts?.difference.direction;
-    if (direction === 'up') {
-      direction = '↗︎';
-    } else if (direction === 'down') {
-      direction = '↘︎';
-    } else if (direction === 'flat') {
-      direction = '→';
+    const dir = facts?.difference.direction;
+    if (dir === 'up') {
+      stats.direction = '↗︎';
+    } else if (dir === 'down') {
+      stats.direction = '↘︎';
+    } else if (dir === 'flat') {
+      stats.direction = '→';
     }
-    console.log(`${metric.name} sentiment`, sentiment);
   }
 
   return (
     <div className="cursor-pointer w-40" onClick={()=> modal ? modal.showModal() : false }>
       <div className="stat h-32">
         <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
-        <div className="stat-value text-3xl whitespace-normal">{facts ? facts.target_period_value.formatted : '0'}</div>
-        <div className="stat-desc whitespace-normal">{direction} {absolute} {relative ? `(${relative})` : null}</div>
+        <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
+        <div className="stat-desc whitespace-normal">{stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}</div>
       </div>
       <Modal setModal={setModal} >
-        <Insights metric={metric} title={metric.name} />
+        <Insights metric={metric} stats={stats} title={metric.name} />
         <div className="flex justify-center gap-12 w-full">
           <kbd className="kbd kbd-lg">◀︎</kbd>
           <kbd className="kbd kbd-lg">Swipe</kbd>

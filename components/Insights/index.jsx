@@ -4,24 +4,23 @@ import Springboard from './Springboard'
 import PowerLevel from '../../models/Metrics/mocks/PowerLevel/PowerLevel.json'
 
 export default function Insights(props) {
-  const { metric } = props;
+  const { metric, stats } = props;
+
   const insights = parseInsights(PowerLevel);
+
 
   return (
     <>
       <div className='flex items-end p-4'>
         <h1 className='flex-0 font-bold text-4xl text-stone-800'>
-          {props.title}:
+          {metric.name}:
         </h1>
-        <p className='flex-1 font-bold text-4xl text-stone-600 mx-2'>{'props.value'}</p>
+        <p className='flex-1 font-bold text-4xl text-stone-600 mx-2'>{stats.value}</p>
       </div>
       <div className='my-8' >
         <Detail 
           insights={insights} 
-          title={props.title}
-        />
-        <Springboard 
-          metric={metric}
+          title={metric.name}
         />
       </div>
     </>
