@@ -5,7 +5,7 @@ import Carousel from "../Carousel";
 
 // returns a minimal representation for the UI
 function Detail(props) {
-  const { metric, stats } = props;
+  const { metric, stats, setBundleCount } = props;
   let details;
 
   // tanstack query hook
@@ -18,6 +18,7 @@ function Detail(props) {
   if (isSuccess) {
     // main data found in insight groups
     details = parseDetail(data);
+    setBundleCount(details.length);
   }
 
 

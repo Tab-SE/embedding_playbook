@@ -1,7 +1,7 @@
 import Detail from './Detail';
 
 export default function Insights(props) {
-  const { metric, stats } = props;
+  const { metric, stats, setBundleCount } = props;
 
   return (
     <>
@@ -15,6 +15,7 @@ export default function Insights(props) {
         <Detail 
           metric={metric}
           stats={stats}
+          setBundleCount={setBundleCount}
         />
       </div>
     </>
