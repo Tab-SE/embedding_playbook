@@ -7,6 +7,7 @@ import Insights from "./Insights";
 export default function Metric(props) {
   const { metric } = props;
   const [modal, setModal] = useState(undefined);
+  const [bundleCount, setBundleCount] = useState(0);
   let result; // contains question, markup and facts
   let facts; // contains values, changes
   let stats = { sentiment: undefined }; // prop storing key facts
@@ -39,14 +40,19 @@ export default function Metric(props) {
   }
 
   return (
-    <div className="cursor-pointer w-40" onClick={()=> modal ? modal.showModal() : false }>
-      <div className="stat h-32">
+    <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
+      <div className="stat h-36 w-40">
         <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
         <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
-        <div className="stat-desc whitespace-normal">{stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}</div>
+        <div className="stat-desc whitespace-normal">
+          &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
+        </div> 
+        <div className="stat-desc whitespace-normal mt-2">
+          Insights: <span className="badge badge-sm badge-primary ml-1">{bundleCount}</span>
+        </div>      
       </div>
       <Modal setModal={setModal} >
-        <Insights metric={metric} stats={stats} />
+        <Insights metric={metric} stats={stats} setBundleCount={setBundleCount} />
         <div className="flex justify-center gap-12 w-full">
           <kbd className="kbd kbd-lg">◀︎</kbd>
           <kbd className="kbd kbd-lg">Swipe</kbd>
