@@ -1,21 +1,32 @@
-import { useEffect } from "react";
+import { useDetail } from "../../hooks";
+import { parseDetail } from "../../utils/parse";
 import VegaLiteViz from "../VegaLiteViz";
-import { parseBan } from "../../utils/parse";
 import Carousel from "../Carousel";
-import bundle from "../../models/Insights/mocks/generate_detail_insight.json"
 
 // returns a minimal representation for the UI
 function Detail(props) {
-  const parsedBundles = parseBan(bundle);
-  const { value } = parsedBundles[0];
+  const { metric, stats } = props;
+  let details;
+
+  // tanstack query hook
+  const { status, data, error, isError, isSuccess } = useDetail(metric);
+
+  if (isError) {
+    console.debug(error);
+  }
+
+  if (isSuccess) {
+    // main data found in insight groups
+    details = parseDetail(data);
+  }
 
 
   return (
     <div className="flex justify-center">
       <Carousel> 
-        {parsedBundles.map((insight, index) => {
-          const { viz, question, markup, id } = insight;
-          return insight.type !== 'popc' ? (
+        {!details ? null : details.map((insight, index) => {
+          const { id, type, markup, viz, fact, characterization, question, score } = insight;
+          return type !== 'ban' ? (
             <div key={id} className="mx-4">
               <p className="text-orange-400 italic text-2xl font-semibold my-4">
                 Insight
@@ -24,9 +35,9 @@ function Detail(props) {
                 />
               </p>
               {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={104} width={800} spec={viz}></VegaLiteViz>}
-              <p className="text-slate-100 max-w-4xl flex text-lg my-4" dangerouslySetInnerHTML={{__html: markup}} />
+              <p className="text-slate-100 max-w-3xl flex text-lg my-4" dangerouslySetInnerHTML={{__html: markup}} />
             </div>
-          ) : <span key={id} />
+          ) : null
         })}
       </Carousel>
     </div>
