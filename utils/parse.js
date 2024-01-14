@@ -158,8 +158,41 @@ export const parseBan = (banBundle) => {
   return insights;
 }
 
-export const parseBundle = (bundle) => {
-  const insights = [];
+// return an minimal representation of Detail insight bundles
+export const parseDetail = (bundle) => {
+  const details = [];
 
-  return insights;
+  // Retrieve properties using JSONPath
+  const ids = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.id', json: bundle }); // indexing array
+  const types = JSONPath({ path: '$.bundle_response.result.insight_groups[*].type', json: bundle });
+  const markups = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.markup', json: bundle });
+  const vizzes = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.viz', json: bundle });
+  const facts = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.facts', json: bundle });
+  const characterizations = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.characterization', json: bundle });
+  const questions = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.question', json: bundle });
+  const scores = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.score', json: bundle });
+
+
+  // Iterate through indexing array and create leaves in the return object
+  ids.forEach((id, index) => {
+    // Using splice to insert the element at the specified index
+    details.splice(index, 0, {
+      id: id, 
+      type: types[index], // Add the corresponding properties by index
+      markup: markups[index],
+      viz: vizzes[index], 
+      fact: facts[index],
+      characterization: characterizations[index],
+      question: questions[index], 
+      score: scores[index], 
+    });
+  });
+
+  // sorts the array based on the "score" property
+  const sortedDetails = details.sort((a, b) => b.score - a.score);
+
+  // remove elements with type === 'ban'
+  const filteredDetails = sortedDetails.filter(item => item.type !== 'ban');
+
+  return filteredDetails;
 }
