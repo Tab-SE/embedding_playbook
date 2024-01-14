@@ -46,7 +46,7 @@ export default function Metric(props) {
         <div className="stat-desc whitespace-normal">{stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}</div>
       </div>
       <Modal setModal={setModal} >
-        <Insights metric={metric} stats={stats} title={metric.name} />
+        <Insights metric={metric} stats={stats} />
         <div className="flex justify-center gap-12 w-full">
           <kbd className="kbd kbd-lg">◀︎</kbd>
           <kbd className="kbd kbd-lg">Swipe</kbd>
