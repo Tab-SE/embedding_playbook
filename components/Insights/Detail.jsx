@@ -27,15 +27,13 @@ function Detail(props) {
         {!details ? null : details.map((insight, index) => {
           const { id, type, markup, viz, fact, characterization, question, score } = insight;
           return type !== 'ban' ? (
-            <div key={id} className="mx-4">
+            <div key={id} className="mx-4 w-full">
               <p className="text-orange-400 italic text-2xl font-semibold my-4">
                 Insight
-                <span className="text-slate-100 italic text-2xl font-semibold my-4 ml-4" 
-                  dangerouslySetInnerHTML={{__html: question}} 
-                />
+                <span className="text-slate-100 italic text-2xl font-semibold my-4 ml-4" >{question}</span>
               </p>
-              {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={104} width={800} spec={viz}></VegaLiteViz>}
-              <p className="text-slate-100 max-w-3xl flex text-lg my-4" dangerouslySetInnerHTML={{__html: markup}} />
+              {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={104} width={900} spec={viz}></VegaLiteViz>}
+              <p className="text-slate-100 flex text-lg my-4" >{markup}</p>
             </div>
           ) : null
         })}
