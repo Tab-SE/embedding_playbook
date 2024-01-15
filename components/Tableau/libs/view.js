@@ -19,10 +19,10 @@ const Viz = forwardRef(function Viz(props, ref) {
       // apply a few inline styles to new iframe
       const iframe = viz.shadowRoot.querySelector('iframe');
       iframe.style.margin = "auto";
-      const tabScale = new TabScale.Scale(viz); // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
+      // const tabScale = new TabScale.Scale(viz); // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
       
       viz.addEventListener('firstinteractive', async (event) => { // add the custom event listener to <tableau-viz>
-        tabScale.initialize(); // initializing tabScale
+        // tabScale.initialize(); // initializing tabScale
         setInteractive(true); // update state to indicate that the Tableau viz is interactive
       });
     }

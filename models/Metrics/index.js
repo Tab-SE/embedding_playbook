@@ -1,4 +1,4 @@
-import { handleSubscriptions, handleSpecifications, handleDefinitions, handleInsights } from './controller'
+import { handleSubscriptions, handleSpecifications, handleDefinitions } from './controller'
 import { InsightsModel } from '../Insights'
 
 /* 
@@ -27,13 +27,6 @@ export class MetricsModel {
     // make a metrics object
     this.makeMetrics();  
     
-    return this.metrics;
-  }
-
-  async syncInsights(apiKey) {
-    // client-side request to a private API for further processing
-    this.metrics = await handleInsights(apiKey, this.metrics);
-
     return this.metrics;
   }
 

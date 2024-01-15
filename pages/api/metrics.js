@@ -3,19 +3,12 @@ import { serverJWT, serverPAT, makeMetrics } from "../../libs";
 
 // handles authentication, HTTP methods and responding with data or errors
 const handler = async (req, res) => {
+  // session token specific to each user
   const token = await getToken({ req });
   // Signed in
-  if (token?.name && token?.sub) {
+  if (token?.tableau) {
     if (req.method === 'GET') {
-      // session object
-      let session; 
-      try {
-        session = await getCredentials(token);
-      } catch (err) {
-        res.status(500).json({ error: err });
-        throw err;
-      }
-      const payload = await makePayload(session);
+      const payload = await makePayload(token.tableau);
       if (payload) {
         res.status(200).json(payload);
       } else {
@@ -36,12 +29,13 @@ const handler = async (req, res) => {
 
 export default handler;
 
+
 // makes the response body for the API
-const makePayload = async (session) => {
-  if (session.authorized) {
-    const { user_id, rest_key } = session;
+const makePayload = async (tableau) => {
+  const { rest_id, rest_key } = tableau;
+  if (rest_id && rest_key) {
     // new Metrics model with data obtained using temporary key
-    const payload = await makeMetrics(user_id, rest_key); 
+    const payload = await makeMetrics(rest_id, rest_key); 
     return payload;
   } else {
     // errors resolve to false when checked
@@ -49,16 +43,18 @@ const makePayload = async (session) => {
   }
 }
 
+
+// server-side env vars
+const pat_name = process.env.PULSE_PAT_NAME;
+const pat_secret = process.env.PULSE_PAT_SECRET;
+const jwt_options = { 
+  jwt_secret: process.env.TABLEAU_JWT_SECRET, 
+  jwt_secret_id: process.env.TABLEAU_JWT_SECRET_ID, 
+  jwt_client_id: process.env.TABLEAU_JWT_CLIENT_ID, 
+};
+
 // establishes REST API authentication with Tableau
 const getCredentials = async (token) => {
-  // server-side env vars
-  const pat_name = process.env.PULSE_PAT_NAME;
-  const pat_secret = process.env.PULSE_PAT_SECRET;
-  const jwt_options = { 
-    jwt_secret: process.env.TABLEAU_JWT_SECRET, 
-    jwt_secret_id: process.env.TABLEAU_JWT_SECRET_ID, 
-    jwt_client_id: process.env.TABLEAU_JWT_CLIENT_ID, 
-  };
   // name for session reference, sub for token signing
   const user = {
     name: token.name,
@@ -71,10 +67,9 @@ const getCredentials = async (token) => {
     'tableau:metric_subscriptions:read',
   ];
   // authorize to Tableau via JWT
-  let session = await serverJWT(user, jwt_options, scopes);
+  // let session = await serverJWT(user, jwt_options, scopes);
   // authorize to Tableau via PAT
-  session = await serverPAT(user.name, pat_name, pat_secret);
+  let session = await serverPAT(token.name, pat_name, pat_secret);
 
   return session;
 }
-
