@@ -1,25 +1,44 @@
-import { useDetail } from "../../hooks";
-import { parseDetail } from "../../utils/parse";
-import VegaLiteViz from "../VegaLiteViz";
-import Carousel from "../Carousel";
+import { useDetail } from '../hooks';
+import { parseDetail } from '../utils/parse';
+import VegaLiteViz from './VegaLiteViz';
+import Carousel from './Carousel';
 
-// returns a minimal representation for the UI
+// Insights modal
+export default function Insights(props) {
+  const { metric, stats } = props;
+
+  return (
+    <>
+      <div className='flex items-end p-4'>
+        <h1 className='flex-0 font-bold text-4xl text-stone-600'>
+          {metric.name}:
+        </h1>
+        <p className='flex-1 font-bold text-4xl text-stone-800 mx-2'>{stats.value}</p>
+      </div>
+      <div className='my-8' >
+        <Detail 
+          metric={metric}
+          stats={stats}
+        />
+      </div>
+    </>
+  )
+}
+
+// Insights displayed inside a carousel
 function Detail(props) {
   const { metric, stats } = props;
   let details;
 
   // tanstack query hook
   const { status, data, error, isError, isSuccess } = useDetail(metric);
-
   if (isError) {
     console.debug(error);
   }
-
   if (isSuccess) {
     // main data found in insight groups
     details = parseDetail(data);
   }
-
 
   return (
     <div className="flex justify-center">
@@ -41,5 +60,3 @@ function Detail(props) {
     </div>
   ) 
 }
-
-export default Detail;
