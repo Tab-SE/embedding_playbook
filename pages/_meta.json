@@ -4,7 +4,10 @@
   },
   "index": {
     "title": "Tableau Embedding Playbook",
-    "display": "hidden"
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
+    }
   },
   "architecture": {
     "title": "Architecture"
