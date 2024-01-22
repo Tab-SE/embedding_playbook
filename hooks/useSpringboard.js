@@ -12,9 +12,6 @@ export const useSpringboard = (metric) => {
   return useQuery({
     queryKey: queryKey, 
     queryFn: () => {
-      if (!metric) {
-        throw new Error("metric is required.");
-      }
       return getSpringboard(metric);
     },
     enabled: !!metric,
