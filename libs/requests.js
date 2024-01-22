@@ -157,7 +157,7 @@ export const getMetrics = async () => {
 }
 
 // requests parsed insights from private API
-export const getBan = async (metric) => {
+export async function getBan(metric) {
   const endpoint = '/api/ban';
   const body = { metric };
   
@@ -168,7 +168,17 @@ export const getBan = async (metric) => {
     },
   };
 
-  return await httpPost(endpoint, body, config);
+  const res = await httpPost(endpoint, body, config);
+
+  // throw errors at the function level to 
+  if (res instanceof Error) {
+    if (res.code === 504) {
+      throw new Error('Cannot request ban bundle', res);
+    }
+    return null;
+  } 
+
+  return res;
 }
 
 // requests parsed insights from private API
