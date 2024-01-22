@@ -19,8 +19,16 @@ const config: DocsThemeConfig = {
     backToTop: true
   },
   useNextSeoProps() {
-    return {
-      titleTemplate: '%s'
+    const { route } = useRouter();
+    // changes title on home '/' route
+    if (route !== '/') {
+      return {
+        titleTemplate: '%s ✨ Embed Tableau'
+      };
+    } else {
+      return {
+        titleTemplate: 'Embed Tableau ✨ Home'
+      };
     }
   },
   head: function useHead() {
@@ -48,7 +56,7 @@ const config: DocsThemeConfig = {
         <link rel="icon" href={imgHost + "/svg/dark.svg?h=32&w=32"} type="image/svg+xml" media="(prefers-color-scheme: dark)" />
         <link rel="icon" href={imgHost + "/img/tableau/tableau_logo_dark.png?h=32&w=32"} type="image/png" media="(prefers-color-scheme: dark)" />
       </>
-    )
+    );
   }
 }
 
