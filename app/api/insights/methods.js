@@ -36,10 +36,7 @@ const getInsightBundle = async (apiKey, metric, resource) => {
     },
   };
 
-  // console.log('getInsightBundle body', body);
-
   const res = await httpPost(endpoint, body, config);
-  console.log('getInsightBundle res', res);
   // handles errors found in response to determine if a serverless timeout occurred
   const timeout = isServerlessTimeout(res); 
   return timeout ? null : res;
