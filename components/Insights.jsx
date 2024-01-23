@@ -1,4 +1,4 @@
-import { useDetail, useInsights } from '../hooks';
+import { useInsights } from '../hooks';
 import { parseDetail } from '../utils/parse';
 import VegaLiteViz from './VegaLiteViz';
 import Carousel from './Carousel';

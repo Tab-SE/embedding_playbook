@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useBan, useDetail } from "../hooks";
+import { useBan, useInsights } from "../hooks";
 import { parseDetail } from "../utils";
 import Modal from "./Modal";
 import Insights from "./Insights";
@@ -58,7 +58,7 @@ function Stat(props) {
   const { metric, stats } = props;
   const [bundleCount, setBundleCount] = useState(0);
   // tanstack query hook
-  const { status, data, error, isError, isSuccess } = useDetail(metric);
+  const { status, data, error, isError, isSuccess } = useInsights(metric);
 
   if (isError) {
     console.debug(error);
@@ -68,6 +68,7 @@ function Stat(props) {
     if (isSuccess) {
       // main data found in insight groups
       const details = parseDetail(data);
+      console.log('Stat details', details);
       setBundleCount(details.length);
     }
   }, [isSuccess, data]);
