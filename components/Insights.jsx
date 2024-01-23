@@ -1,4 +1,4 @@
-import { useDetail } from '../hooks';
+import { useDetail, useInsights } from '../hooks';
 import { parseDetail } from '../utils/parse';
 import VegaLiteViz from './VegaLiteViz';
 import Carousel from './Carousel';
@@ -31,7 +31,8 @@ function Detail(props) {
   let details;
 
   // tanstack query hook
-  const { status, data, error, isError, isSuccess } = useDetail(metric);
+  const { status, data, error, isError, isSuccess } = useInsights(metric);
+
   if (isError) {
     console.debug(error);
   }
