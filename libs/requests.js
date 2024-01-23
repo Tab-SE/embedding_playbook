@@ -159,7 +159,7 @@ export const getMetrics = async () => {
 }
 
 // requests parsed insights from private API
-export async function getBan(metric) {
+export const getBan = async (metric) => {
   const endpoint = '/api/ban';
   const body = { metric };
   
@@ -203,7 +203,22 @@ export const getDetail = async (metric) => {
       'Content-Type': 'application/json',
     },
   };
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+  return timeout ? null : res;
+}
 
+// requests parsed insights from private API
+export const getInsights = async (metric) => {
+  const endpoint = '/api/insights';
+  const body = { metric };
+  
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
   const res = await httpPost(endpoint, body, config);
   const timeout = isServerlessTimeout(res);
   return timeout ? null : res;
