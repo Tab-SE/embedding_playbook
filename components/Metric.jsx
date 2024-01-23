@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useBan, useInsights } from "../hooks";
-import { parseDetail } from "../utils";
+import { parseInsights } from "../utils";
 import Modal from "./Modal";
 import Insights from "./Insights";
 
@@ -12,46 +12,60 @@ export default function Metric(props) {
   let facts; // contains values, absolute and relative changes
   let stats = { sentiment: undefined }; // prop storing key facts
   // tanstack query hook
-  const { status, data, error, isError, isSuccess } = useBan(metric);
+  const { status, data, error, isError, isSuccess } = useInsights(metric);
 
   if (isError) {
     console.debug(error);
   }
 
   if (isSuccess) {
-    // BAN responses only have 1 insight_groups and 1 insights
-    result = data?.bundle_response?.result.insight_groups[0].insights[0].result; 
-    facts = result?.facts;
-    // formatted current value
-    stats.value = facts?.target_period_value.formatted;
-    // absolute difference in unit of measurement
-    stats.absolute = facts?.difference.absolute.formatted;
-    // always a percentage
-    stats.relative = facts?.difference.relative.formatted;
-    // direction of the arrow icon
-    const dir = facts?.difference.direction;
-    if (dir === 'up') {
-      stats.direction = '↗︎';
-    } else if (dir === 'down') {
-      stats.direction = '↘︎';
-    } else if (dir === 'flat') {
-      stats.direction = '→';
-    }
+    const insight_groups = data?.bundle_response?.result.insight_groups;
+    insight_groups.forEach((insight) => {
+      // uses the ban insight to generate stats
+      if (insight.type === 'ban') {
+        // BAN responses only have 1 insight_groups and 1 insights
+        result = data?.bundle_response?.result.insight_groups[0].insights[0].result; 
+        facts = result?.facts;
+        // formatted current value
+        stats.value = facts?.target_period_value.formatted;
+        // absolute difference in unit of measurement
+        stats.absolute = facts?.difference.absolute.formatted;
+        // always a percentage
+        stats.relative = facts?.difference.relative.formatted;
+        // direction of the arrow icon
+        const dir = facts?.difference.direction;
+        if (dir === 'up') {
+          stats.direction = '↗︎';
+        } else if (dir === 'down') {
+          stats.direction = '↘︎';
+        } else if (dir === 'flat') {
+          stats.direction = '→';
+        }
+      }
+    });
   }
 
   return (
     <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
       <Stat metric={metric} stats={stats} />
-      <Modal setModal={setModal} >
-        <Insights metric={metric} stats={stats} />
-        <div className="flex justify-center gap-12 w-full">
-          <kbd className="kbd kbd-lg">◀︎</kbd>
-          <kbd className="kbd kbd-lg">Swipe</kbd>
-          <kbd className="kbd kbd-lg">▶︎</kbd>
-        </div>
-      </Modal>
+      <Details metric={metric} stats={stats} setModal={setModal} />
     </div>
   )
+}
+
+function Details(props) {
+  const { metric, stats, setModal } = props;
+
+  return (
+    <Modal setModal={setModal} >
+      <Insights metric={metric} stats={stats} />
+      <div className="flex justify-center gap-12 w-full">
+        <kbd className="kbd kbd-lg">◀︎</kbd>
+        <kbd className="kbd kbd-lg">Swipe</kbd>
+        <kbd className="kbd kbd-lg">▶︎</kbd>
+      </div>
+    </Modal>
+  );
 }
 
 function Stat(props) {
@@ -67,8 +81,7 @@ function Stat(props) {
   useEffect(() => {
     if (isSuccess) {
       // main data found in insight groups
-      const details = parseDetail(data);
-      console.log('Stat details', details);
+      const details = parseInsights(data);
       setBundleCount(details.length);
     }
   }, [isSuccess, data]);

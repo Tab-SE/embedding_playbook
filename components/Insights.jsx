@@ -18,7 +18,6 @@ export default function Insights(props) {
       <div className='my-8' >
         <Detail 
           metric={metric}
-          stats={stats}
         />
       </div>
     </>
@@ -27,7 +26,7 @@ export default function Insights(props) {
 
 // Insights displayed inside a carousel
 function Detail(props) {
-  const { metric, stats } = props;
+  const { metric } = props;
   let details;
 
   // tanstack query hook
