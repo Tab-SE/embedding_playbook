@@ -153,7 +153,11 @@ export const getMetrics = async () => {
     }
   }
 
-  return await httpGet(endpoint, config);
+  const res = await httpGet(endpoint, config);
+
+  const timeout = isServerlessTimeout(res);
+
+  return timeout ? null : res;
 }
 
 // requests parsed insights from private API
@@ -170,15 +174,9 @@ export async function getBan(metric) {
 
   const res = await httpPost(endpoint, body, config);
 
-  // throw errors at the function level to 
-  if (res instanceof Error) {
-    if (res.code === 504) {
-      throw new Error('Cannot request ban bundle', res);
-    }
-    return null;
-  } 
+  const timeout = isServerlessTimeout(res);
 
-  return res;
+  return timeout ? null : res;
 }
 
 // requests parsed insights from private API
@@ -193,7 +191,11 @@ export const getSpringboard = async (metric) => {
     },
   };
 
-  return await httpPost(endpoint, body, config);
+  const res = await httpPost(endpoint, body, config);
+
+  const timeout = isServerlessTimeout(res);
+
+  return timeout ? null : res;
 }
 
 // requests parsed insights from private API
@@ -208,7 +210,11 @@ export const getDetail = async (metric) => {
     },
   };
 
-  return await httpPost(endpoint, body, config);
+  const res = await httpPost(endpoint, body, config);
+
+  const timeout = isServerlessTimeout(res);
+
+  return timeout ? null : res;
 }
 
 // requests insight bundles for all supported types given a metric (params)
@@ -281,4 +287,16 @@ const makeBundleBody = (metric) => {
   }
 
   return body;
+}
+
+const isServerlessTimeout = (res) => {
+  if (res instanceof Error) {
+    if (res.code === 504) {
+      // throw errors at the query function level to cause a retry on timeouts
+      throw new Error('Serverless Timeout Error:', res);
+    }
+    return true;
+  } else {
+    return false;
+  }
 }
