@@ -82,26 +82,6 @@ export const parseDefinitions = (definitionsResponse) => {
   return definitions;
 }
 
-// return an minimal representation for insights
-export const parseInsights = (subscriptionsResponse) => {
-  const subscriptions = {};
-
-  // Retrieve properties using JSONPath
-  const subscription_ids = JSONPath({ path: '$.subscriptions[*].id', json: subscriptionsResponse }); // indexing array
-  const metric_ids = JSONPath({ path: '$.subscriptions[*].metric_id', json: subscriptionsResponse });
-
-  // Iterate through indexing array and create leaves in the return object
-  subscription_ids.forEach((subscription, index) => {
-    subscriptions[index] = {
-      subscription_id: subscription, 
-      metric_id: metric_ids[index], // Add the corresponding properties by index
-
-    };
-  });
-  // return subscriptions;
-  return subscriptionsResponse;
-}
-
 // finds the matching specification from the array
 export const matchSpecification = (specificationsObj, definitionObj) => {
   for (const [key, specificationObj] of Object.entries(specificationsObj)) {
@@ -196,3 +176,39 @@ export const parseDetail = (bundle) => {
 
   return filteredDetails;
 }
+
+// return an minimal representation for insights
+export const parseInsights = (bundle) => {
+  const insights = [];
+  // get all insight groups using JSONPath
+  const insightGroups = JSONPath({ path: '$.bundle_response.result.insight_groups[*]', json: bundle });
+  // iterate through insight groups
+  insightGroups.forEach(group => {
+    const groupName = group.type; // ban, anchor, breakdown, followup, etc
+    // iterate through each insight in group
+    group.insights.forEach(insight => {
+      if (insight?.result) {
+        // get insight properties
+        const { result: { id, type, markup, viz, facts, characterization, question, score } } = insight;
+        // push insights into array
+        insights.push({
+          id,
+          group: groupName,
+          type,
+          markup,
+          viz,
+          fact: facts,
+          characterization,
+          question,
+          score,
+        });
+      }
+    });
+  });
+
+  // Sort the array based on the "score" property
+  const sortedInsights = insights.sort((a, b) => b.score - a.score);
+
+  return sortedInsights;
+};
+
