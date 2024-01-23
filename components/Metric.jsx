@@ -20,29 +20,31 @@ export default function Metric(props) {
 
   if (isSuccess) {
     const insight_groups = data?.bundle_response?.result.insight_groups;
-    insight_groups.forEach((insight) => {
-      // uses the ban insight to generate stats
-      if (insight.type === 'ban') {
-        // BAN responses only have 1 insight_groups and 1 insights
-        result = data?.bundle_response?.result.insight_groups[0].insights[0].result; 
-        facts = result?.facts;
-        // formatted current value
-        stats.value = facts?.target_period_value.formatted;
-        // absolute difference in unit of measurement
-        stats.absolute = facts?.difference.absolute.formatted;
-        // always a percentage
-        stats.relative = facts?.difference.relative.formatted;
-        // direction of the arrow icon
-        const dir = facts?.difference.direction;
-        if (dir === 'up') {
-          stats.direction = '↗︎';
-        } else if (dir === 'down') {
-          stats.direction = '↘︎';
-        } else if (dir === 'flat') {
-          stats.direction = '→';
+    if (Array.isArray(insight_groups)) {
+      insight_groups.forEach((insight) => {
+        // uses the ban insight to generate stats
+        if (insight.type === 'ban') {
+          // BAN responses only have 1 insight_groups and 1 insights
+          result = data?.bundle_response?.result.insight_groups[0].insights[0].result; 
+          facts = result?.facts;
+          // formatted current value
+          stats.value = facts?.target_period_value.formatted;
+          // absolute difference in unit of measurement
+          stats.absolute = facts?.difference.absolute.formatted;
+          // always a percentage
+          stats.relative = facts?.difference.relative.formatted;
+          // direction of the arrow icon
+          const dir = facts?.difference.direction;
+          if (dir === 'up') {
+            stats.direction = '↗︎';
+          } else if (dir === 'down') {
+            stats.direction = '↘︎';
+          } else if (dir === 'flat') {
+            stats.direction = '→';
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   return (
