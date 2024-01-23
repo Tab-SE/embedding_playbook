@@ -1,4 +1,4 @@
-import { httpGet, httpPost } from "../utils/http"
+import { httpGet, httpPost } from "../utils";
 
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const tableau_domain2 = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
@@ -154,9 +154,7 @@ export const getMetrics = async () => {
   }
 
   const res = await httpGet(endpoint, config);
-
   const timeout = isServerlessTimeout(res);
-
   return timeout ? null : res;
 }
 
@@ -173,9 +171,7 @@ export async function getBan(metric) {
   };
 
   const res = await httpPost(endpoint, body, config);
-
   const timeout = isServerlessTimeout(res);
-
   return timeout ? null : res;
 }
 
@@ -192,9 +188,7 @@ export const getSpringboard = async (metric) => {
   };
 
   const res = await httpPost(endpoint, body, config);
-
   const timeout = isServerlessTimeout(res);
-
   return timeout ? null : res;
 }
 
@@ -211,9 +205,7 @@ export const getDetail = async (metric) => {
   };
 
   const res = await httpPost(endpoint, body, config);
-
   const timeout = isServerlessTimeout(res);
-
   return timeout ? null : res;
 }
 
@@ -233,8 +225,7 @@ export const getInsightBundle = async (apiKey, metric, resource) => {
     },
   };
 
-  const bundle = await httpPost(endpoint, body, config);
-  return bundle;
+  return await httpPost(endpoint, body, config);
 }
 
 // generetes the complex request body required to generate an insights bundle
