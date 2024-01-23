@@ -3,8 +3,25 @@ import { httpPost } from "../../../utils";
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 
+// returns stringified payload to form responses
+export const makePayload = async (rest_key, metric) => {
+  if (rest_key && metric) {
+    let bundle;
+    try {
+      // request insights
+      bundle = await getInsightBundle(rest_key, metric, '/detail');
+    } catch (err) {
+      return JSON.stringify(err);
+    }
+    return JSON.stringify(bundle);
+  } else {
+    // errors resolve to false
+    return JSON.stringify(new Error('Cannot perform operation without required params'));
+  }
+}
+
 // requests insight bundles for all supported types given a metric (params)
-export const getInsightBundle = async (apiKey, metric, resource) => {
+const getInsightBundle = async (apiKey, metric, resource) => {
   // create a request body (standard for all Pulse bundle requests)
   const body = makeBundleBody(metric);
 
@@ -19,7 +36,10 @@ export const getInsightBundle = async (apiKey, metric, resource) => {
     },
   };
 
+  // console.log('getInsightBundle body', body);
+
   const res = await httpPost(endpoint, body, config);
+  console.log('getInsightBundle res', res);
   // handles errors found in response to determine if a serverless timeout occurred
   const timeout = isServerlessTimeout(res); 
   return timeout ? null : res;
@@ -75,4 +95,17 @@ const makeBundleBody = (metric) => {
   }
 
   return body;
+}
+
+// determines if a Serverless timeout occurred
+const isServerlessTimeout = (res) => {
+  if (res instanceof Error) {
+    if (res.code === 504) {
+      // throw errors at the query function level to cause a retry on timeouts
+      throw new Error('Serverless Timeout Error:', res);
+    }
+    return true;
+  } else {
+    return false;
+  }
 }
