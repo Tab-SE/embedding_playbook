@@ -1,5 +1,3 @@
-import { httpPost } from "../../../utils";
-
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 
@@ -26,20 +24,21 @@ const getInsightBundle = async (apiKey, metric, resource) => {
   const body = makeBundleBody(metric);
 
   const endpoint = tableau_domain + pulse_path + '/insights' + resource;
-    
-  const config = {
-    tableau_domain,
+
+  const request = new Request(endpoint, {
+    method: 'POST',
     headers: {
       'X-Tableau-Auth': apiKey,
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
-  };
+    body: JSON.stringify(body),
+  });
 
-  const res = await httpPost(endpoint, body, config);
+  const res = await fetch(request);
   // handles errors found in response to determine if a serverless timeout occurred
-  const timeout = isServerlessTimeout(res); 
-  return timeout ? null : res;
+  const timeout = isServerlessTimeout(res);
+  return timeout ? null : res.json();
 }
 
 // generetes the complex request body required to generate an insights bundle

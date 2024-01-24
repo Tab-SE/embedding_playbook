@@ -45,12 +45,20 @@ export default function Metric(props) {
         }
       });
     }
+
+    return (
+      <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
+        <Stat metric={metric} stats={stats} />
+        <Details metric={metric} stats={stats} setModal={setModal} />
+      </div>
+    )
   }
 
+
+
   return (
-    <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
-      <Stat metric={metric} stats={stats} />
-      <Details metric={metric} stats={stats} setModal={setModal} />
+    <div className="flex flex-col gap-4 h-36 w-40">
+      <div className="skeleton h-10 w-full"></div>
     </div>
   )
 }

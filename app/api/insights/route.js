@@ -1,3 +1,6 @@
+export const runtime = 'edge'; // 'nodejs' is the default
+export const dynamic = 'force-dynamic'; // static by default, unless reading the request
+
 import { getToken } from 'next-auth/jwt';
 import { makePayload } from './methods';
 
