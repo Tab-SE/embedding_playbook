@@ -1,5 +1,4 @@
-export const runtime = 'edge'; // 'nodejs' is the default
-export const dynamic = 'force-dynamic'; // static by default, unless reading the request
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds
 
 import { getToken } from 'next-auth/jwt';
 import { makePayload } from './methods';
