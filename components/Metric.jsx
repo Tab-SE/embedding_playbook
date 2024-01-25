@@ -52,15 +52,16 @@ export default function Metric(props) {
         <Details metric={metric} stats={stats} setModal={setModal} />
       </div>
     )
-  }
-
-
-
-  return (
-    <div className="flex flex-col gap-4 h-36 w-40">
-      <div className="skeleton h-10 w-full"></div>
-    </div>
-  )
+  } else {
+    return (
+      <div className="stat h-36 w-40">
+        <div className="skeleton w-full h-8"></div>
+        <div className="skeleton w-full h-8"></div>
+        <div className="skeleton w-9/12 h-4"></div>
+        <div className="skeleton w-9/12 h-4"></div>  
+      </div>
+    )
+  }  
 }
 
 function Details(props) {
