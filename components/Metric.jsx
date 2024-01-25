@@ -37,10 +37,16 @@ export default function Metric(props) {
           const dir = facts?.difference.direction;
           if (dir === 'up') {
             stats.direction = '↗︎';
+            stats.color = 'text-sky-600';
+            stats.badge = 'badge-primary';
           } else if (dir === 'down') {
             stats.direction = '↘︎';
+            stats.color = 'text-orange-600';
+            stats.badge = 'badge-secondary';
           } else if (dir === 'flat') {
             stats.direction = '→';
+            stats.color = 'text-stone-500';
+            stats.badge = 'badge-neutral';
           }
         }
       });
@@ -101,11 +107,11 @@ function Stat(props) {
     <div className="stat h-36 w-40">
       <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
       <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
-      <div className="stat-desc whitespace-normal">
+      <div className={`stat-desc ${stats.color} whitespace-normal`}>
         &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
       </div> 
       <div className="stat-desc whitespace-normal mt-2">
-        Insights: <span className="badge badge-sm badge-primary ml-1">{bundleCount}</span>
+        Insights: <span className={`badge badge-sm ${stats.badge} text-stone-50 ml-1`}>{bundleCount}</span>
       </div>      
     </div>
   )
