@@ -6,4 +6,41 @@ import Hero from '../components/Hero';
   height='830'
   hideTabs={true}
   device='default'
-/>
+>
+# Tableau Embedding Playbook
+
+Tableau is the world's leading end-to-end data and analytics platform.
+
+Leverage the analytical powerhouse of Tableau to analyze and visualize data. 
+The Embedding Playbook teaches you how to compose Tableau's varied product capabilities 
+into applications that thrill customers, coworkers, and friends!
+
+Beyond creating visual representations of data, Tableau provides 
+the greatest benefits as it helps people discover what information is valuable to others. 
+It enables users to analyze data and build the interfaces that represent them with unmatched speed 
+and flexibility resulting in a springboarding of ideas into value.
+
+```js {1,4-5}
+import { TableauEventType } from 'https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.js';
+
+// Get the viz object from the HTML web component
+const viz = document.querySelector('tableau-viz');
+
+// Wait for the viz to become interactive
+await new Promise((resolve, reject) => {
+  // Add an event listener to verify the viz becomes interactive
+  viz.addEventListener(TableauEventType.FirstInteractive, () => {
+    console.log('Viz is interactive!');
+    resolve();
+  });
+});
+
+// Make the Overview dashboard the active sheet
+const dashboard = await viz.workbook.activateSheetAsync('Overview');
+
+// Get the worksheet we want to use
+const worksheet = dashboard.worksheets.find((ws) => ws.name === 'SaleMap');
+
+// *** Insert your code below! ***
+```
+</Hero>
