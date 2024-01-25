@@ -12,9 +12,6 @@ export const useDetail = (metric) => {
   return useQuery({
     queryKey: queryKey, 
     queryFn: () => {
-      if (!metric) {
-        throw new Error("metric is required.");
-      }
       return getDetail(metric);
     },
     enabled: !!metric,

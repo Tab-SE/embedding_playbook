@@ -17,7 +17,7 @@ function Modal(props) {
   return (
     <>
       <dialog id="tab_modal" className="modal" ref={ref}>
-        <div className="modal-box md:max-w-5xl bg-sf-white dark:bg-sf-neutral-80">
+        <div className="modal-box md:max-w-5xl bg-stone-100 dark:bg-stone-300">
           <form method="dialog">
             <button className="btn btn-circle btn-ghost absolute right-2 top-2 outline-none">
               <FontAwesomeIcon icon={faCircleXmark} size='2xl' />

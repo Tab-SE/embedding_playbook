@@ -12,9 +12,6 @@ export const useMetrics = (user) => {
   return useQuery({
     queryKey: queryKey, 
     queryFn: () => {
-      if (!user) {
-        throw new Error("user is required.");
-      }
       return getMetrics();
     },
     enabled: !!user,

@@ -1,4 +1,4 @@
-import { httpGet, httpPost } from "../utils/http"
+import { httpGet, httpPost } from "../utils";
 
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const tableau_domain2 = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
@@ -153,7 +153,9 @@ export const getMetrics = async () => {
     }
   }
 
-  return await httpGet(endpoint, config);
+  const res = await httpGet(endpoint, config);
+  const timeout = isServerlessTimeout(res);
+  return timeout ? null : res;
 }
 
 // requests parsed insights from private API
@@ -168,7 +170,9 @@ export const getBan = async (metric) => {
     },
   };
 
-  return await httpPost(endpoint, body, config);
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+  return timeout ? null : res;
 }
 
 // requests parsed insights from private API
@@ -183,7 +187,9 @@ export const getSpringboard = async (metric) => {
     },
   };
 
-  return await httpPost(endpoint, body, config);
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+  return timeout ? null : res;
 }
 
 // requests parsed insights from private API
@@ -197,8 +203,25 @@ export const getDetail = async (metric) => {
       'Content-Type': 'application/json',
     },
   };
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+  return timeout ? null : res;
+}
 
-  return await httpPost(endpoint, body, config);
+// requests parsed insights from private API
+export const getInsights = async (metric) => {
+  const endpoint = '/api/insights';
+  const body = { metric };
+  
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+  return timeout ? null : res;
 }
 
 // requests insight bundles for all supported types given a metric (params)
@@ -217,8 +240,7 @@ export const getInsightBundle = async (apiKey, metric, resource) => {
     },
   };
 
-  const bundle = await httpPost(endpoint, body, config);
-  return bundle;
+  return await httpPost(endpoint, body, config);
 }
 
 // generetes the complex request body required to generate an insights bundle
@@ -271,4 +293,16 @@ const makeBundleBody = (metric) => {
   }
 
   return body;
+}
+
+const isServerlessTimeout = (res) => {
+  if (res instanceof Error) {
+    if (res.code === 504) {
+      // throw errors at the query function level to cause a retry on timeouts
+      throw new Error('Serverless Timeout Error:', res);
+    }
+    return true;
+  } else {
+    return false;
+  }
 }

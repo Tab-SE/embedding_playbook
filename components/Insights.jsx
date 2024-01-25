@@ -1,4 +1,4 @@
-import { useDetail } from '../hooks';
+import { useInsights } from '../hooks';
 import { parseDetail } from '../utils/parse';
 import VegaLiteViz from './VegaLiteViz';
 import Carousel from './Carousel';
@@ -18,7 +18,6 @@ export default function Insights(props) {
       <div className='my-8' >
         <Detail 
           metric={metric}
-          stats={stats}
         />
       </div>
     </>
@@ -27,11 +26,12 @@ export default function Insights(props) {
 
 // Insights displayed inside a carousel
 function Detail(props) {
-  const { metric, stats } = props;
+  const { metric } = props;
   let details;
 
   // tanstack query hook
-  const { status, data, error, isError, isSuccess } = useDetail(metric);
+  const { status, data, error, isError, isSuccess } = useInsights(metric);
+
   if (isError) {
     console.debug(error);
   }
