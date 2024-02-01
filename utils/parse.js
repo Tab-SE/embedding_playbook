@@ -1,4 +1,5 @@
 import { JSONPath } from 'jsonpath-plus';
+import { array } from 'vega';
 
 /* 
 defines utilities for parsing JSON objects used throughout the project
@@ -152,29 +153,32 @@ export const parseDetail = (bundle) => {
   const questions = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.question', json: bundle });
   const scores = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.score', json: bundle });
 
-
-  // Iterate through indexing array and create leaves in the return object
-  ids.forEach((id, index) => {
-    // Using splice to insert the element at the specified index
-    details.splice(index, 0, {
-      id: id, 
-      type: types[index], // Add the corresponding properties by index
-      markup: markups[index],
-      viz: vizzes[index], 
-      fact: facts[index],
-      characterization: characterizations[index],
-      question: questions[index], 
-      score: scores[index], 
+  if (Array.isArray(ids)) {
+    // Iterate through indexing array and create leaves in the return object
+    ids.forEach((id, index) => {
+      // Using splice to insert the element at the specified index
+      details.splice(index, 0, {
+        id: id, 
+        type: types[index], // Add the corresponding properties by index
+        markup: markups[index],
+        viz: vizzes[index], 
+        fact: facts[index],
+        characterization: characterizations[index],
+        question: questions[index], 
+        score: scores[index], 
+      });
     });
-  });
 
-  // sorts the array based on the "score" property
-  const sortedDetails = details.sort((a, b) => b.score - a.score);
+    // sorts the array based on the "score" property
+    const sortedDetails = details.sort((a, b) => b.score - a.score);
 
-  // remove elements with type === 'ban'
-  const filteredDetails = sortedDetails.filter(item => item.type !== 'ban');
+    // remove elements with type === 'ban'
+    const filteredDetails = sortedDetails.filter(item => item.type !== 'ban');
 
-  return filteredDetails;
+    return filteredDetails;
+  } else {
+    throw new Error(`Error parsing detail bundle, could not form an array: ${bundle}`);
+  }
 }
 
 // return an minimal representation for insights
@@ -182,33 +186,37 @@ export const parseInsights = (bundle) => {
   const insights = [];
   // get all insight groups using JSONPath
   const insightGroups = JSONPath({ path: '$.bundle_response.result.insight_groups[*]', json: bundle });
-  // iterate through insight groups
-  insightGroups.forEach(group => {
-    const groupName = group.type; // ban, anchor, breakdown, followup, etc
-    // iterate through each insight in group
-    group.insights.forEach(insight => {
-      if (insight?.result) {
-        // get insight properties
-        const { result: { id, type, markup, viz, facts, characterization, question, score } } = insight;
-        // push insights into array
-        insights.push({
-          id,
-          group: groupName,
-          type,
-          markup,
-          viz,
-          fact: facts,
-          characterization,
-          question,
-          score,
-        });
-      }
+
+  if (Array.isArray(insightGroups)) {
+    // iterate through insight groups
+    insightGroups.forEach(group => {
+      const groupName = group.type; // ban, anchor, breakdown, followup, etc
+      // iterate through each insight in group
+      group.insights.forEach(insight => {
+        if (insight?.result) {
+          // get insight properties
+          const { result: { id, type, markup, viz, facts, characterization, question, score } } = insight;
+          // push insights into array
+          insights.push({
+            id,
+            group: groupName,
+            type,
+            markup,
+            viz,
+            fact: facts,
+            characterization,
+            question,
+            score,
+          });
+        }
+      });
     });
-  });
 
-  // Sort the array based on the "score" property
-  const sortedInsights = insights.sort((a, b) => b.score - a.score);
+    // Sort the array based on the "score" property
+    const sortedInsights = insights.sort((a, b) => b.score - a.score);
 
-  return sortedInsights;
-};
-
+    return sortedInsights;
+  } else {
+    throw new Error(`Error parsing insights bundle, could not form an array: ${bundle}`);
+  } 
+}
