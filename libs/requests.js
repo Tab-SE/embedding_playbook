@@ -1,4 +1,3 @@
-import { error } from "console";
 import { httpGet, httpPost } from "../utils";
 
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
