@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getDetail, getInsights } from "../libs/requests"
+import { getInsights } from "../libs/requests"
 // implements custom hooks with tanstack query for asynchronous state management
 // concepts described here: https://tkdodo.eu/blog/react-query-as-a-state-manager
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
