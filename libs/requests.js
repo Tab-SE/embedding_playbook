@@ -1,3 +1,4 @@
+import { error } from "console";
 import { httpGet, httpPost } from "../utils";
 
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
@@ -220,8 +221,11 @@ export const getInsights = async (metric) => {
     },
   };
   const res = await httpPost(endpoint, body, config);
-  const timeout = isServerlessTimeout(res);
-  return timeout ? null : res;
+  const timeout = isServerlessTimeout(res); // determine if response timed out
+  if (timeout) {
+    throw new Error('504: Serverless Timeout');
+  }
+  return res;
 }
 
 // requests insight bundles for all supported types given a metric (params)
