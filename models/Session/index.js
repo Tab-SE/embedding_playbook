@@ -6,13 +6,13 @@ export class Session {
   constructor(username) {
     this.authorized = false; // flag controlling access to authenticated operations
     this.username = username;
-    this.user_id = undefined;
-    this.embed_token = undefined; // only JWT authentication supports embed keys
-    this.rest_key = undefined; // some authentication methods only support REST API keys (PAT)
-    this.site_id = undefined;
-    this.site = undefined; // site name
-    this.created = undefined; // Get the current time in seconds since the epoch
-    this.expires = undefined; // estimated future expiry date
+    this.user_id = null;
+    this.embed_token = null; // only JWT authentication supports embed keys
+    this.rest_key = null; // some authentication methods only support REST API keys (PAT)
+    this.site_id = null;
+    this.site = null; // site name
+    this.created = null; // Get the current time in seconds since the epoch
+    this.expires = null; // estimated future expiry date
   }
 
   // securely return session data
@@ -39,9 +39,9 @@ export class Session {
     this.site = credentials?.site;
     this.user_id = credentials?.user_id;
     // API key from the REST API credentials response
-    credentials?.rest_key ? this.rest_key = credentials.rest_key : undefined;
+    credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
     // JWT token used for embedding on the frontend
-    embed_token ? this.embed_token = embed_token : undefined;
+    embed_token ? this.embed_token = embed_token : null;
     // Authentication methods differ on availability of session life
     if (credentials?.created && credentials?.expiration) {
       // if session life is available, set local variables

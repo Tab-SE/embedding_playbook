@@ -12,9 +12,9 @@ export class MetricsModel {
   constructor(userId) {
     this.user_id = userId;
     this.metrics = [];
-    this.subscriptions = undefined;
-    this.specifications = undefined;
-    this.definitions = undefined;
+    this.subscriptions = null;
+    this.specifications = null;
+    this.definitions = null;
   }
 
   // async methods defined in controller/

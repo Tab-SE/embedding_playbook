@@ -16,11 +16,11 @@ export class InsightsModel {
     this.extension_options = definitionObj.extension_options;
     this.representation_options = definitionObj.representation_options;
     this.insights_options = definitionObj.insights_options;
-    this.specification_id = undefined;
-    this.specification = undefined;
-    this.subscription_id = undefined;
-    this.created = undefined;
-    this.updated = undefined;
+    this.specification_id = null;
+    this.specification = null;
+    this.subscription_id = null;
+    this.created = null;
+    this.updated = null;
     this.insights = [];
     this.init(subscriptionsObj, specificationsObj, definitionObj);
   }
