@@ -1,9 +1,8 @@
+export const dynamic = 'force-dynamic'; // static by default, unless reading the request
+
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { makePayload } from './methods';
-
-export const maxDuration = 300; // This function can run for a maximum of 300 seconds
-export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 
 // handles authentication, HTTP methods and responding with data or errors
 export async function GET(req) {
