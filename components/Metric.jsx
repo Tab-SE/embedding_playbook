@@ -51,23 +51,14 @@ export default function Metric(props) {
         }
       });
     }
-
-    return (
-      <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
-        <Stat metric={metric} stats={stats} />
-        <Details metric={metric} stats={stats} setModal={setModal} />
-      </div>
-    )
-  } else {
-    return (
-      <div className="stat h-36 w-40 px-5">
-        <div className="skeleton w-full h-8"></div>
-        <div className="skeleton w-full h-8"></div>
-        <div className="skeleton w-9/12 h-4"></div>
-        <div className="skeleton w-9/12 h-4"></div>  
-      </div>
-    )
-  }  
+  }
+  
+  return (
+    <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
+      <Stat metric={metric} stats={stats} />
+      <Details metric={metric} stats={stats} setModal={setModal} />
+    </div>
+  )
 }
 
 function Stat(props) {
@@ -75,10 +66,6 @@ function Stat(props) {
   const [bundleCount, setBundleCount] = useState(0);
   // tanstack query hook
   const { status, data, error, isError, isSuccess } = useInsights(metric);
-
-  if (isError) {
-    console.debug(error);
-  }
 
   useEffect(() => {
     if (isSuccess) {
@@ -88,18 +75,34 @@ function Stat(props) {
     }
   }, [isSuccess, data]);
 
-  return (
-    <div className="stat h-36 w-40 pl-4 pr-3 pt-3 pb-5">
-      <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
-      <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
-      <div className={`stat-desc ${stats.color} whitespace-normal`}>
-        &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
-      </div> 
-      <div className="stat-desc whitespace-normal mt-2">
-        Insights: <span className={`badge badge-sm ${stats.badge} text-stone-50 ml-1`}>{bundleCount}</span>
-      </div>      
-    </div>
-  )
+  if (isError) {
+    console.debug(error);
+  }
+
+  if (isSuccess) {
+    return (
+      <div className="stat h-36 w-40 pl-4 pr-3 pt-3 pb-5">
+        <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
+        <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
+        <div className={`stat-desc ${stats.color} whitespace-normal`}>
+          &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
+        </div> 
+        <div className="stat-desc whitespace-normal mt-2">
+          Insights: <span className={`badge badge-sm ${stats.badge} text-stone-50 ml-1`}>{bundleCount}</span>
+        </div>      
+      </div>
+    )
+  } else {
+    // if in a loading state, display the metric name and a skeleton
+    return (
+      <div className="stat h-36 w-40 pl-4 pr-3 pt-3 pb-5">
+        <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
+        <div className="skeleton w-full h-8"></div>
+        <div className="skeleton w-9/12 h-4"></div>
+        <div className="skeleton w-9/12 h-4"></div>     
+      </div>
+    )
+  }
 }
 
 function Details(props) {
