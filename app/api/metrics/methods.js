@@ -1,37 +1,7 @@
-import { getToken } from "next-auth/jwt"
-import { serverJWT, serverPAT, makeMetrics } from "../../libs";
-
-// handles authentication, HTTP methods and responding with data or errors
-const handler = async (req, res) => {
-  // session token specific to each user
-  const token = await getToken({ req });
-  // Signed in
-  if (token?.tableau) {
-    if (req.method === 'GET') {
-      const payload = await makePayload(token.tableau);
-      if (payload) {
-        res.status(200).json(payload);
-      } else {
-        // cannot establish a session locally
-        res.status(401).json({ error: payload }); 
-      }
-    } else {
-      res.status(405).json({ error: 'Method Not Allowed' });
-    }
-  } else {
-    // Not Signed in
-    console.debug('unauthorized');
-    // no application token available
-    res.status(401).json({ error: 'Unauthorized' }); 
-  }
-  res.end();
-}
-
-export default handler;
-
+import { serverJWT, serverPAT, makeMetrics } from "../../../libs";
 
 // makes the response body for the API
-const makePayload = async (tableau) => {
+export const makePayload = async (tableau) => {
   const { rest_id, rest_key } = tableau;
   if (rest_id && rest_key) {
     // new Metrics model with data obtained using temporary key
@@ -42,7 +12,6 @@ const makePayload = async (tableau) => {
     return new Error('Unauthorized to perform operation');
   }
 }
-
 
 // server-side env vars
 const pat_name = process.env.PULSE_PAT_NAME;
