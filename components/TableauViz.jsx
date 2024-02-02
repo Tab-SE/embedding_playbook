@@ -1,16 +1,20 @@
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from '../libs';
-import { useEffect, useState, useRef, forwardRef } from 'react';
+import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 
 // forwardRef HOC receives ref from parent
 export const TableauViz = forwardRef(function TableauViz(props, ref) {
-  const { src, height, width, device, hideTabs, id } = props;
+  const { src, height, width, device, hideTabs } = props;
   // to be used if parent did not forward a ref
   const localRef = useRef(null);
+  // creates a unique identifier for the embed
+  const id = `id-${useId()}`; 
   // prevents viz from initializing on node backends, only clients are supported
   const [isMounted, setisMounted] = useState(false);
-  // stores state from 'firstinteractive'
+  // most viz interactions must wait until interactive
   const [interactive, setInteractive] = useState(false);
+  // the target of most viz interactions
+  const [activeSheet, setActiveSheet] = useState(null);
 
   // Use the forwarded ref if provided, otherwise use the local ref
   const innerRef = ref || localRef;
@@ -31,16 +35,21 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
         // tabScale.initialize(); // initializing tabScale
         setInteractive(true); // update state to indicate that the Tableau viz is interactive
       });
+
+      // after viz initialization, the 'firstinteractive' event fires and sets state in the component
+      if (interactive) {
+        setActiveSheet(viz.workbook.activeSheet);
+      }
     }
 
     // cleanup after effects
     return () => {
+      setisMounted(false);
       if (viz && isMounted) {
         viz.removeEventListener('firstinteractive', async (event) => {
           setInteractive(false);
         });
       }
-      setisMounted(false);
     }
   }, [innerRef, isMounted, setisMounted, interactive, setInteractive]);
 
