@@ -89,7 +89,7 @@ function Stat(props) {
   }, [isSuccess, data]);
 
   return (
-    <div className="stat h-36 w-40 px-5">
+    <div className="stat h-36 w-40 pl-4 pr-3 pt-3 pb-5">
       <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
       <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
       <div className={`stat-desc ${stats.color} whitespace-normal`}>
