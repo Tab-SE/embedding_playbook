@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useInsights } from "../hooks";
 import { parseInsights } from "../utils";
 import Modal from "./Modal";
-import Insights from "./Insights";
+import { Insights } from "./Insights";
 
 
 export default function Metric(props) {
