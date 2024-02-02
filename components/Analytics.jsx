@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react'
-import Tableau from './Tableau'
-import Metrics from './Metrics';
-import Toolbar from './Toolbar'
+import { useState, useRef } from 'react';
+import Tableau from './Tableau';
+import { Metrics } from './Metrics';
+import Toolbar from './Toolbar';
 import { useTableauSession } from '../hooks';
 
 export const Analytics = (props) => {

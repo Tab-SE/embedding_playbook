@@ -4,7 +4,7 @@ import { useMetrics } from '../hooks';
 import { Metric } from "./Metric";
 
 
-function Metrics(props) {
+export const Metrics = (props) => {
   const [user, setUser] = useState(undefined);
   const { status: session_status, data: session_data } = useSession({});
 
@@ -40,5 +40,3 @@ function Metrics(props) {
     );
   }
 }
-
-export default Metrics;

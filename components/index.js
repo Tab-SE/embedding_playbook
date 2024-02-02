@@ -5,6 +5,7 @@ export { Hero } from './Hero';
 export { Insights } from './Insights';
 export { Logo } from './Logo';
 export { Metric } from './Metric';
+export { Metrics } from './Metrics';
 export { Modal } from './Modal';
 export { TableauAuth } from './TableauAuth';
 export { TableauViz } from './TableauViz';
