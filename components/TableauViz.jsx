@@ -42,7 +42,7 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
       }
       setisMounted(false);
     }
-  }, [ref, isMounted, setisMounted, interactive, setInteractive]);
+  }, [innerRef, isMounted, setisMounted, interactive, setInteractive]);
 
   return (
     <>
