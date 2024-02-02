@@ -1,6 +1,6 @@
-import LogoColor from '../public/svg/logo_color.svg'
+import LogoColor from '../public/svg/logo_color.svg';
 
-function Logo(props) {
+export const Logo = (props) => {
 
   return (
   <>
@@ -19,5 +19,3 @@ function Logo(props) {
   </>
   );
 }
-
-export default Logo;
