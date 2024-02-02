@@ -2,6 +2,7 @@ import { useState, useId, useRef, forwardRef, useEffect } from 'react'
 import { useFilters } from './libs/controller'
 import View from './libs/view'
 import Model from './libs/model'
+import { TableauViz } from '../../components'
 
 // HOC following MVC pattern: https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09, forwardRef HOC receives ref from parent
 const Tableau = forwardRef(function Tableau(props, ref) {
@@ -38,7 +39,7 @@ const Tableau = forwardRef(function Tableau(props, ref) {
 
   
   return (
-    <View
+    <TableauViz
       interactive={props.interactive ? props.interactive : localInteractive}
       setInteractive={props.setInteractive ? props.setInteractive : setLocalInteractive}
       ref={props.viz ? props.viz : viz}

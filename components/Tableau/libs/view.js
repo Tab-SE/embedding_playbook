@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import { tab_embed } from '../../../libs'
-import { useEffect, useState, forwardRef } from 'react'
-import TabScale from '../utils/tabscale'
+import { tab_embed } from '../../../libs';
+import { useEffect, useState, forwardRef } from 'react';
+import TabScale from '../utils/tabscale';
 
 // forwardRef HOC receives ref from parent
 const Viz = forwardRef(function Viz(props, ref) {
