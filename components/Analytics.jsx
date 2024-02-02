@@ -4,7 +4,7 @@ import Metrics from './Metrics';
 import Toolbar from './Toolbar'
 import { useTableauSession } from '../hooks';
 
-function Analytics(props) {
+export const Analytics = (props) => {
   const viz = useRef(null); // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const [interactive, setInteractive] = useState(false);
   
@@ -31,5 +31,3 @@ function Analytics(props) {
     </section>
   )
 }
-
-export default Analytics;

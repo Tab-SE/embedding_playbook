@@ -1,6 +1,6 @@
-import Analytics from './Analytics';
+import { Analytics } from '../components';
 
-export default function Hero(props) {
+export const Hero = (props) => {
   const { children, src, width, height, hideTabs, device } = props;
 
   return (
