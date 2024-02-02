@@ -222,10 +222,8 @@ export const getInsights = async (metric) => {
   const res = await httpPost(endpoint, body, config);
   const timeout = isServerlessTimeout(res); // determine if response timed out
   if (timeout) {
-    console.log('timeout', timeout);
     throw new Error('504: Serverless Timeout');
   }
-  console.log('res', res);
 
   return res;
 }

@@ -21,7 +21,6 @@ export async function POST(req) {
     // only responds with data to authorized users
     const payload = await makePayload(token.tableau.rest_key, requestBody.metric);
     if (payload) {
-      console.log('/insights payload', payload);
       return NextResponse.json(payload, { status: 200 });
     } else {
       return NextResponse.json({ error: '500: Internal error: cannot generate payload' }, { status: 500 });

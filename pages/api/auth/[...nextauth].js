@@ -102,8 +102,6 @@ export const authOptions = {
       return baseUrl;
     },
     async jwt({ token, account, profile, user }) {
-      // console.count('jwt runs');
-      // console.log('jwt token', token);
 
       // persist metadata added to user object in authorize() callback to the JWT as claims
       if (user) {
