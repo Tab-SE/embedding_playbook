@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import Tableau from './Tableau';
+import { TableauViz } from './TableauViz';
 import { Metrics } from './Metrics';
 import Toolbar from './Toolbar';
 import { useTableauSession } from '../hooks';
@@ -17,7 +17,7 @@ export const Analytics = (props) => {
         <div className='block h-40 items-center justify-center'>
           <Metrics /> 
         </div>
-        <Tableau
+        <TableauViz
           interactive={interactive}
           setInteractive={setInteractive}
           viz={viz}

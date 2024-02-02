@@ -19,7 +19,7 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
   useEffect(() => {
     setisMounted(true);
     // using ref forwarded from parent
-    const viz = ref.current;
+    const viz = innerRef.current;
     // only runs if there is a mounted viz with interactive state
     if (viz && isMounted) {
       // apply a few inline styles to new iframe
