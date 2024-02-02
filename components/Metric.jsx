@@ -5,7 +5,7 @@ import Modal from "./Modal";
 import { Insights } from "./Insights";
 
 
-export default function Metric(props) {
+export const Metric = (props) => {
   const { metric } = props;
   const [modal, setModal] = useState(undefined);
   let result; // contains question, markup and facts

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useMetrics } from '../hooks';
-import Metric from "./Metric";
+import { Metric } from "./Metric";
 
 
 function Metrics(props) {
