@@ -1,6 +1,4 @@
-
-function Head(props) {
-
+export const Head = (props) => {
   return (
     <>
       <meta name="msapplication-TileColor" content="#fff" />
@@ -41,5 +39,3 @@ function Head(props) {
   )
 
 }
-
-export default Head;
