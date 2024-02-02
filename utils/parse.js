@@ -1,11 +1,9 @@
 import { JSONPath } from 'jsonpath-plus';
-import { array } from 'vega';
 
 /* 
 defines utilities for parsing JSON objects used throughout the project
 parsing functions are designed for reuse
 */
-
 
 // return an minimal representation of subscriptions
 export const parseSubscriptions = (subscriptionsResponse) => {
