@@ -60,7 +60,7 @@ export default function Metric(props) {
     )
   } else {
     return (
-      <div className="stat h-36 w-40">
+      <div className="stat h-36 w-40 px-5">
         <div className="skeleton w-full h-8"></div>
         <div className="skeleton w-full h-8"></div>
         <div className="skeleton w-9/12 h-4"></div>
@@ -68,21 +68,6 @@ export default function Metric(props) {
       </div>
     )
   }  
-}
-
-function Details(props) {
-  const { metric, stats, setModal } = props;
-
-  return (
-    <Modal setModal={setModal} >
-      <Insights metric={metric} stats={stats} />
-      <div className="flex justify-center gap-12 w-full">
-        <kbd className="kbd kbd-lg">◀︎</kbd>
-        <kbd className="kbd kbd-lg">Swipe</kbd>
-        <kbd className="kbd kbd-lg">▶︎</kbd>
-      </div>
-    </Modal>
-  );
 }
 
 function Stat(props) {
@@ -104,7 +89,7 @@ function Stat(props) {
   }, [isSuccess, data]);
 
   return (
-    <div className="stat h-36 w-40">
+    <div className="stat h-36 w-40 px-5">
       <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
       <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
       <div className={`stat-desc ${stats.color} whitespace-normal`}>
@@ -116,3 +101,20 @@ function Stat(props) {
     </div>
   )
 }
+
+function Details(props) {
+  const { metric, stats, setModal } = props;
+
+  return (
+    <Modal setModal={setModal} >
+      <Insights metric={metric} stats={stats} />
+      <div className="flex justify-center gap-12 w-full">
+        <kbd className="kbd kbd-lg">◀︎</kbd>
+        <kbd className="kbd kbd-lg">Swipe</kbd>
+        <kbd className="kbd kbd-lg">▶︎</kbd>
+      </div>
+    </Modal>
+  );
+}
+
+
