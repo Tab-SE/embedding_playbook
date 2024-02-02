@@ -1,6 +1,6 @@
 import { useInsights } from '../hooks';
 import { parseDetail } from '../utils/parse';
-import VegaLiteViz from './VegaLiteViz';
+import { VegaLiteViz } from './VegaLiteViz';
 import { Carousel } from './Carousel';
 
 // Insights modal

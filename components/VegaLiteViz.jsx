@@ -44,7 +44,7 @@ function _applyFormatConfig(obj, formatterFunctionName) {
 }
 
 //  Define the VegaLite Viz function
-const VegaLiteViz = ({ height, spec, testId, width, }) => {
+export const VegaLiteViz = ({ height, spec, testId, width, }) => {
   const containerRef = useRef(null);
   const style = {
     width: width ? `${width}px` : '100%',
@@ -78,5 +78,3 @@ const VegaLiteViz = ({ height, spec, testId, width, }) => {
 
   return <div ref={containerRef} style={style} data-tb-test-id={testId} />;
 };
-
-export default VegaLiteViz;
