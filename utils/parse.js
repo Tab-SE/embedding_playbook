@@ -151,6 +151,7 @@ export const parseDetail = (bundle) => {
   const questions = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.question', json: bundle });
   const scores = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.score', json: bundle });
 
+
   if (Array.isArray(ids)) {
     // Iterate through indexing array and create leaves in the return object
     ids.forEach((id, index) => {
