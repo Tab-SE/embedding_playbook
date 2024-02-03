@@ -9,7 +9,9 @@ import { makePayload } from './methods';
 export async function POST(req) {
   // Check if req is defined
   if (!req) {
-    return NextResponse.json({ error: '400: Bad Request' }, { status: 400 });
+    const msg = '400: Bad Request';
+    console.debug(msg);
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   // session token specific to each user
@@ -23,10 +25,14 @@ export async function POST(req) {
     if (payload) {
       return NextResponse.json(payload, { status: 200 });
     } else {
-      return NextResponse.json({ error: '500: Internal error: cannot generate payload' }, { status: 500 });
+      const msg = '500: Internal error: cannot generate payload';
+      console.debug(msg);
+      return NextResponse.json({ error: msg }, { status: 500 });
     }
   } else {
     // Not Signed in
-    return NextResponse.json({ error: '401: Unauthorized' }, { status: 401 });
+    const msg = '401: Unauthorized';
+    console.debug(msg);
+    return NextResponse.json({ error: msg }, { status: 401 });
   }  
 };
