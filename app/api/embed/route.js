@@ -14,10 +14,9 @@ export async function POST(req) {
 
   // Check if token is defined
   if (token?.tableau) {
+    const payload = token.tableau.rest_key;
     if (payload) {
-      const embed = token.tableau;
-      console.log(embed);
-      return NextResponse.json(embed, { status: 200 });
+      return NextResponse.json(payload, { status: 200 });
     } else {
       return NextResponse.json({ error: '500: Internal error: cannot generate payload' }, { status: 500 });
     }
