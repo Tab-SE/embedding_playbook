@@ -5,7 +5,7 @@ import Toolbar from './Toolbar';
 import { useTableauSession } from '../hooks';
 
 export const Analytics = (props) => {
-  const { src, token, height, width, hideTabs, device } = props;
+  const { src, height, width, hideTabs, device } = props;
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
   const [interactive, setInteractive] = useState(false);
@@ -22,7 +22,6 @@ export const Analytics = (props) => {
         <TableauViz
           ref={ref}
           src={src}
-          token={token}
           height={height}
           width={width}
           hideTabs={hideTabs}

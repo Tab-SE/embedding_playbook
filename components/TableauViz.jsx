@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 
 // forwardRef HOC receives ref from parent
 export const TableauViz = forwardRef(function TableauViz(props, ref) {
-  const { src, token, height, width, device, hideTabs } = props;
+  const { src, height, width, device, hideTabs } = props;
   // to be used if parent did not forward a ref
   const localRef = useRef(null);
   // creates a unique identifier for the embed
@@ -18,6 +18,8 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
 
   // Use the forwarded ref if provided, otherwise use the local ref
   const innerRef = ref || localRef;
+
+  const token = '';
 
   
   useEffect(() => {
