@@ -5,7 +5,8 @@ import { useTableauSession } from '../hooks';
 
 // forwardRef HOC receives ref from parent
 export const TableauViz = forwardRef(function TableauViz(props, ref) {
-  const { src, height, width, device, hideTabs } = props;
+  const { src, height, width, device, hideTabs, toolbar } = props;
+  const containerSize = `h-[${height}px] w-[${width+10}px]`;
   // creates a unique identifier for the embed
   const id = `id-${useId()}`; 
   // to be used if parent did not forward a ref
@@ -19,10 +20,8 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
   // the target of most viz interactions
   const [activeSheet, setActiveSheet] = useState(null);
 
-  const token = useTableauSession();
-
-  console.log('token', token);
-
+  // tanstack query hook
+  const { status, data, error, isError, isSuccess } = useTableauSession('a');
   
   useEffect(() => {
     setisMounted(true);
@@ -57,20 +56,24 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
     }
   }, [innerRef, isMounted, setisMounted, interactive, setInteractive]);
 
+  console.log('hideTabs', hideTabs);
+
   return (
-    <>
+    <div className={containerSize} >
       {isMounted ? 
         <tableau-viz 
           ref={innerRef}
           id="tableauViz"       
           src={src}
-          height={height}
-          width={width}
+          token={data}
+          height={`${height}px`}
+          width={`${width}px`}
           device={device}
           hide-tabs={hideTabs ? true : false}
-          class='my-3 mx-6'
+          toolbar={toolbar}
+          class='my-3 mx-5'
           data-viz={id}
         />  : <></>}
-    </>
+    </div >
   )
 });

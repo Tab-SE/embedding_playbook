@@ -1,7 +1,7 @@
 import { Analytics } from '../components';
 
 export const Hero = (props) => {
-  const { children, src, width, height, hideTabs, device } = props;
+  const { children, src, width, height, hideTabs, device, toolbar } = props;
 
   return (
     <div className='mt-12 grid grid-cols-1 md:grid-cols-8 md:gap-16'>
@@ -15,6 +15,7 @@ export const Hero = (props) => {
           height={height}
           hideTabs={hideTabs}
           device={device}
+          toolbar={"hidden"}
         />
       </div>
     </div>

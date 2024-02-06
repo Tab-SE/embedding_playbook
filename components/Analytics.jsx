@@ -4,7 +4,7 @@ import { Metrics } from './Metrics';
 import Toolbar from './Toolbar';
 
 export const Analytics = (props) => {
-  const { src, height, width, hideTabs, device } = props;
+  const { src, height, width, hideTabs, device, toolbar } = props;
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
   const [interactive, setInteractive] = useState(false);
@@ -23,6 +23,7 @@ export const Analytics = (props) => {
           width={width}
           hideTabs={hideTabs}
           device={device}
+          toolbar={toolbar}
         />
       </div>
     </section>
