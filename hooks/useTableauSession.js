@@ -6,31 +6,30 @@ import { getEmbed } from "../libs/requests";
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v5/docs/framework/react/guides/dependent-queries
 // more on retries (default 3): https://tanstack.com/query/v5/docs/framework/react/guides/query-retries
+// secures UI components via these methods: https://next-auth.js.org/getting-started/client#require-session
 
-export const useTableauSession = async (userName) => {
+export const useTableauSession = (userName) => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [userName].every(param => param != null) ? ["tableau", "embed", userName] : []; 
+  const queryKey = [userName].every(param => param != null) ? ["tableau", "embed", userName] : [];
 
-  const { status, data } = useSession({
+  const { status: session_status, data: session_data } = useSession({
     required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
     async onUnauthenticated() {
       // The user is not authenticated, handle it here.
-      // => This component should wrap all other Tableau components: https://next-auth.js.org/getting-started/client#require-session
       const { error, status, ok } = await signIn('demo-user', { redirect: false, ID: userName });
-      if (ok) {
-        console.log('ok');
-      }
     }
   });
 
-  console.log('data', data);
-
+  // controls dependent query
+  const signedIn = session_status === 'authenticated';
+  
+  // tanstack query hook
   return useQuery({
     queryKey: queryKey, 
     queryFn: () => {
-      return getEmbed(userName);
+      return getEmbed(session_data.user.email);
     },
-    enabled: status === "authenticated",
+    enabled: signedIn,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
