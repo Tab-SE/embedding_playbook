@@ -32,9 +32,12 @@ export const authOptions = {
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
         let user = null;
-        for (const [key, value] of Object.entries(rls.users)) { // check all keys in rls.json user store
-          if (key.toUpperCase() === credentials.ID.toUpperCase()) { // find keys that match credential
-            user = value; // if a match is found store value as user
+        // check all keys in rls.json user store
+        for (const [key, value] of Object.entries(rls.users)) { 
+          // find keys that match credential
+          if (key.toUpperCase() === credentials.ID.toUpperCase()) { 
+            // if a match is found store value as user
+            user = value; 
           }
         }
         if (user) {
