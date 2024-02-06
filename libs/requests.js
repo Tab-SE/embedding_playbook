@@ -203,6 +203,7 @@ export const getEmbed = async (userId) => {
       'Content-Type': 'application/json',
     },
   };
+
   const res = await httpPost(endpoint, body, config);
   const timeout = isServerlessTimeout(res);
   return timeout ? null : res;

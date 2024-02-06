@@ -20,9 +20,10 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
   // the target of most viz interactions
   const [activeSheet, setActiveSheet] = useState(null);
 
-  // tanstack query hook
-  const { status, data, error, isError, isSuccess } = useTableauSession('a');
+  // tanstack query hook to manage embed sessions
+  const { status, data, error, isSuccess, isError, isLoading } = useTableauSession('a');
   
+  // handles event listeners upon mount
   useEffect(() => {
     setisMounted(true);
     // using ref forwarded from parent
@@ -56,22 +57,33 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
     }
   }, [innerRef, isMounted, setisMounted, interactive, setInteractive]);
 
-  return (
-    <div className={containerSize} >
-      {isMounted ? 
-        <tableau-viz 
-          ref={innerRef}
-          id="tableauViz"       
-          src={src}
-          token={data}
-          height={`${height}px`}
-          width={`${width}px`}
-          device={device}
-          hide-tabs={hideTabs ? true : false}
-          toolbar={toolbar}
-          class='my-3 mx-5'
-          data-viz={id}
-        />  : <></>}
-    </div >
-  )
+  if (isError) {
+    console.debug(error);
+    return (<div className={containerSize}></div>)
+  }
+
+  if (isLoading) {
+    return (<div className={containerSize}></div>)
+  }
+
+  if (isSuccess) {
+    return (
+      <div className={containerSize} >
+        {isMounted && data ? 
+          <tableau-viz 
+            ref={innerRef}
+            id="tableauViz"       
+            src={src}
+            token={data}
+            height={`${height}px`}
+            width={`${width}px`}
+            device={device}
+            hide-tabs={hideTabs ? true : false}
+            toolbar={toolbar}
+            class='my-3 mx-5'
+            data-viz={id}
+          />  : <></>}
+      </div >
+    )
+  }
 });
