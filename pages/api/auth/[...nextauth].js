@@ -76,8 +76,8 @@ export const authOptions = {
             jwt_client_id 
           };
           const rest_session = new Session(user.name);
-          await rest_session.jwt(user.email, rest_options, rest_scopes);
-          // await rest_session.pat(pat_name, pat_secret);
+          // await rest_session.jwt(user.email, rest_options, rest_scopes);
+          await rest_session.pat(pat_name, pat_secret);
 
           if (embed_session.authorized && rest_session.authorized) {
             // frontend: user_id & embed_token
