@@ -1,14 +1,17 @@
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from '../libs';
 import { useEffect, useState, useRef, forwardRef, useId } from 'react';
+import { useTableauSession } from '../hooks';
 
 // forwardRef HOC receives ref from parent
 export const TableauViz = forwardRef(function TableauViz(props, ref) {
   const { src, height, width, device, hideTabs } = props;
-  // to be used if parent did not forward a ref
-  const localRef = useRef(null);
   // creates a unique identifier for the embed
   const id = `id-${useId()}`; 
+  // to be used if parent did not forward a ref
+  const localRef = useRef(null);
+  // Use the forwarded ref if provided, otherwise use the local ref
+  const innerRef = ref || localRef;
   // prevents viz from initializing on node backends, only clients are supported
   const [isMounted, setisMounted] = useState(false);
   // most viz interactions must wait until interactive
@@ -16,10 +19,9 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
   // the target of most viz interactions
   const [activeSheet, setActiveSheet] = useState(null);
 
-  // Use the forwarded ref if provided, otherwise use the local ref
-  const innerRef = ref || localRef;
+  const token = useTableauSession();
 
-  const token = '';
+  console.log('token', token);
 
   
   useEffect(() => {
@@ -62,7 +64,6 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
           ref={innerRef}
           id="tableauViz"       
           src={src}
-          token={token}
           height={height}
           width={width}
           device={device}
