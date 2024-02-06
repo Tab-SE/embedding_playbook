@@ -44,13 +44,26 @@ export const authOptions = {
           const pat_secret = process.env.PULSE_PAT_SECRET;
           const jwt_secret = process.env.TABLEAU_JWT_SECRET; 
           const jwt_secret_id = process.env.TABLEAU_JWT_SECRET_ID; 
-          const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID; 
-          // Scopes for Tableau metrics https://help.tableau.com/current/online/en-us/connected_apps_scopes.htm#pulse
+          const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
+
+          // const rest_scopes = [
+          //   'tableau:views:embed',
+          //   'tableau:views:embed_authoring',
+          //   'tableau:insights:embed',
+          // ];
+
+          // const embed_scopes = [
+          //   'tableau:views:embed',
+          //   'tableau:views:embed_authoring',
+          //   'tableau:insights:embed',
+          // ];
+
           const scopes = [
             'tableau:views:embed',
             'tableau:views:embed_authoring',
             'tableau:insights:embed',
           ];
+
           // user provided during authentication is used to create a new Session
           sesh = new Session(user.name); 
           const jwt_options = { jwt_secret, jwt_secret_id, jwt_client_id };
