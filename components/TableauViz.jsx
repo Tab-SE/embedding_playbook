@@ -56,8 +56,6 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
     }
   }, [innerRef, isMounted, setisMounted, interactive, setInteractive]);
 
-  console.log('hideTabs', hideTabs);
-
   return (
     <div className={containerSize} >
       {isMounted ? 
