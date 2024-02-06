@@ -14,7 +14,7 @@ export async function POST(req) {
 
   // Check if token is defined
   if (token?.tableau) {
-    const payload = token.tableau.rest_key;
+    const payload = token.tableau.embed_token;
     if (payload) {
       return NextResponse.json(payload, { status: 200 });
     } else {
