@@ -1,18 +1,29 @@
 import { useState, useEffect } from "react";
 import { useInsights } from "../hooks";
 import { parseInsights } from "../utils";
-import Modal from "./Modal";
-import Insights from "./Insights";
+import { Modal } from "./Modal";
+import { Insights } from "./Insights";
 
 
-export default function Metric(props) {
+export const Metric = (props) => {
   const { metric } = props;
+  // modal displays available insights
   const [modal, setModal] = useState(undefined);
+  // distinct count of insights
+  const [bundleCount, setBundleCount] = useState(0);
   let result; // contains question, markup and facts
   let facts; // contains values, absolute and relative changes
   let stats = { sentiment: undefined }; // prop storing key facts
   // tanstack query hook
-  const { status, data, error, isError, isSuccess } = useInsights(metric);
+  const { data, error, isError, isSuccess } = useInsights(metric);
+
+  useEffect(() => {
+    if (isSuccess) {
+      // main data found in insight groups
+      const details = parseInsights(data);
+      setBundleCount(details.length);
+    }
+  }, [isSuccess, data]);
 
   if (isError) {
     console.debug(error);
@@ -51,45 +62,28 @@ export default function Metric(props) {
         }
       });
     }
-  }
-  
-  return (
-    <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }>
-      <Stat metric={metric} stats={stats} />
-      <Details metric={metric} stats={stats} setModal={setModal} />
-    </div>
-  )
-}
 
-function Stat(props) {
-  const { metric, stats } = props;
-  const [bundleCount, setBundleCount] = useState(0);
-  // tanstack query hook
-  const { status, data, error, isError, isSuccess } = useInsights(metric);
-
-  useEffect(() => {
-    if (isSuccess) {
-      // main data found in insight groups
-      const details = parseInsights(data);
-      setBundleCount(details.length);
-    }
-  }, [isSuccess, data]);
-
-  if (isError) {
-    console.debug(error);
-  }
-
-  if (isSuccess) {
+    // fully loaded state
     return (
-      <div className="stat h-36 w-40 pl-4 pr-3 pt-3 pb-5">
-        <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
-        <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
-        <div className={`stat-desc ${stats.color} whitespace-normal`}>
-          &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
-        </div> 
-        <div className="stat-desc whitespace-normal mt-2">
-          Insights: <span className={`badge badge-sm ${stats.badge} text-stone-50 ml-1`}>{bundleCount}</span>
-        </div>      
+      <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }> 
+        <div className="stat h-36 w-40 pl-4 pr-3 pt-3 pb-5">
+          <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
+          <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
+          <div className={`stat-desc ${stats.color} whitespace-normal`}>
+            &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
+          </div> 
+          <div className="stat-desc whitespace-normal mt-2">
+            Insights: <span className={`badge badge-sm ${stats.badge} text-stone-50 ml-1`}>{bundleCount}</span>
+          </div>      
+        </div>
+        <Modal setModal={setModal} >
+          <Insights metric={metric} stats={stats} />
+          <div className="flex justify-center gap-12 w-full">
+            <kbd className="kbd kbd-lg">◀︎</kbd>
+            <kbd className="kbd kbd-lg">Swipe</kbd>
+            <kbd className="kbd kbd-lg">▶︎</kbd>
+          </div>
+        </Modal>
       </div>
     )
   } else {
@@ -104,20 +98,3 @@ function Stat(props) {
     )
   }
 }
-
-function Details(props) {
-  const { metric, stats, setModal } = props;
-
-  return (
-    <Modal setModal={setModal} >
-      <Insights metric={metric} stats={stats} />
-      <div className="flex justify-center gap-12 w-full">
-        <kbd className="kbd kbd-lg">◀︎</kbd>
-        <kbd className="kbd kbd-lg">Swipe</kbd>
-        <kbd className="kbd kbd-lg">▶︎</kbd>
-      </div>
-    </Modal>
-  );
-}
-
-

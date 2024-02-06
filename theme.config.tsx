@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import { useConfig, DocsThemeConfig } from 'nextra-theme-docs';
-import Logo from './components/Logo';
-import Head from './components/Head'
+import { Logo } from './components/Logo';
+import { Head } from './components/Head';
 
 const vercel = process.env.NEXT_PUBLIC_BASE_URL;
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";

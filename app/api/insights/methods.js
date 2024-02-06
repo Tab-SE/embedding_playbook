@@ -9,12 +9,15 @@ export const makePayload = async (rest_key, metric) => {
       // request insights
       bundle = await getInsightBundle(rest_key, metric, '/detail');
     } catch (err) {
+      console.debug(err);
       return err;
     }
     return bundle;
   } else {
     // errors resolve to false
-    return new Error('Cannot perform operation without required params');
+    const err = new Error('Cannot perform operation without required params');
+    console.debug(err);
+    return err;
   }
 }
 

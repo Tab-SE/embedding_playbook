@@ -68,7 +68,7 @@ Embedding in the Playbook relies on importing a reusable UI component into an ar
 2. Import the `<Tableau/>` component into the article and provide configuration options as shown here:
 
 ```md
-import Tableau from './../../components/tableau/tableau'
+import { TableauViz } from '../../components';
 
 # Embedding Tableau Views
 

@@ -1,10 +1,10 @@
 import { useInsights } from '../hooks';
 import { parseDetail } from '../utils/parse';
-import VegaLiteViz from './VegaLiteViz';
-import Carousel from './Carousel';
+import { VegaLiteViz } from './VegaLiteViz';
+import { Carousel } from './Carousel';
 
 // Insights modal
-export default function Insights(props) {
+export const Insights = (props) => {
   const { metric, stats } = props;
 
   return (

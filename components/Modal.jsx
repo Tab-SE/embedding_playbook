@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
 
-function Modal(props) {
+export const Modal = (props) => {
   const setModal = props.setModal;
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
@@ -35,5 +35,3 @@ function Modal(props) {
     </>
   )
 }
-
-export default Modal;

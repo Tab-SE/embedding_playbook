@@ -192,6 +192,23 @@ export const getSpringboard = async (metric) => {
   return timeout ? null : res;
 }
 
+// obtains a public token for the frontend
+export const getEmbed = async (userId) => {
+  const endpoint = '/api/embed';
+  const body = { userId };
+  
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+  return timeout ? null : res;
+}
+
 // requests parsed insights from private API
 export const getDetail = async (metric) => {
   const endpoint = '/api/detail';
@@ -222,10 +239,8 @@ export const getInsights = async (metric) => {
   const res = await httpPost(endpoint, body, config);
   const timeout = isServerlessTimeout(res); // determine if response timed out
   if (timeout) {
-    console.log('timeout', timeout);
     throw new Error('504: Serverless Timeout');
   }
-  console.log('res', res);
 
   return res;
 }
