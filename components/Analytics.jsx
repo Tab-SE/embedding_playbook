@@ -12,7 +12,7 @@ export const Analytics = (props) => {
   return (
     <section className='bg-colorblind-lgray rounded'> 
       <Toolbar viz={ref.current} interactive={interactive} />
-      <div className='min-h-[63rem] my-2'>
+      <div className='my-2'>
         <div className='block h-40 items-center justify-center'>
           <Metrics /> 
         </div>
