@@ -5,7 +5,7 @@ import { useTableauSession } from '../hooks';
 
 // forwardRef HOC receives ref from parent
 export const TableauViz = forwardRef(function TableauViz(props, ref) {
-  const { src, height, width, device, hideTabs, toolbar } = props;
+  const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
   const containerSize = `h-[${height}px] w-[${width+10}px]`;
   // creates a unique identifier for the embed
   const id = `id-${useId()}`; 
@@ -74,13 +74,13 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
             ref={innerRef}
             id="tableauViz"       
             src={src}
-            token={data}
+            token={!isPublic ? data : null}
             height={`${height}px`}
             width={`${width}px`}
             device={device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
-            class='my-3 mx-5'
+            class='my-3 mx-4'
             data-viz={id}
           />  : <></>}
       </div >
