@@ -6,7 +6,6 @@ import { useTableauSession } from '../hooks';
 // forwardRef HOC receives ref from parent
 export const TableauViz = forwardRef(function TableauViz(props, ref) {
   const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
-  const containerSize = `h-[${height}px] w-[${width+10}px]`;
   // creates a unique identifier for the embed
   const id = `id-${useId()}`; 
   // to be used if parent did not forward a ref
@@ -19,9 +18,15 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
   const [interactive, setInteractive] = useState(false);
   // the target of most viz interactions
   const [activeSheet, setActiveSheet] = useState(null);
-
   // tanstack query hook to manage embed sessions
   const { status, data, error, isSuccess, isError, isLoading } = useTableauSession('a');
+  // size of parent div placeholder
+  let containerHeight = height+30;
+  let containerWidth = width+10;
+  if (toolbar === 'hidden') {
+    containerHeight = height;
+    containerWidth = width+10;
+  }
   
   // handles event listeners upon mount
   useEffect(() => {
@@ -59,16 +64,16 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
 
   if (isError) {
     console.debug(error);
-    return (<div className={containerSize}></div>)
+    return (<div className={`h-${containerHeight}px w-${containerWidth}px mx-auto`}></div>)
   }
 
   if (isLoading) {
-    return (<div className={containerSize}></div>)
+    return (<div className={`h-${containerHeight}px w-${containerWidth}px mx-auto`}></div>)
   }
 
   if (isSuccess) {
     return (
-      <div className={containerSize} >
+      <div className={`flex items-center justify-center h-${containerHeight}px w-${containerWidth}px mx-auto`} >
         {isMounted && data ? 
           <tableau-viz 
             ref={innerRef}
@@ -80,7 +85,7 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
             device={device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
-            class='my-3 mx-4'
+            class='my-3 mx-auto'
             data-viz={id}
           />  : <></>}
       </div >
