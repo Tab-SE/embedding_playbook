@@ -63,7 +63,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
         <Viz  
           src={src}
           ref={ref}
-          token={!isPublic ? jwt : null}
+          jwt={jwt}
           height={height}
           width={width}
           device={device}
