@@ -22,7 +22,7 @@ function Vertical(props) {
             <FontAwesomeIcon icon={faCloud} className='fa-stack-2x text-primary' />
             <FontAwesomeIcon icon={faTruckFast} className='fa-stack-1x text-white' />
           </span>
-          Superstore Analytics
+          Northern Trail Outfitters
         </a>
       </label>
       <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
