@@ -10,22 +10,20 @@ export const Analytics = (props) => {
   const [interactive, setInteractive] = useState(false);
 
   return (
-    <section className='bg-colorblind-lgray rounded'> 
+    <section className='bg-colorblind-lgray rounded pb-3'> 
       <Toolbar viz={ref.current} interactive={interactive} />
-      <div className='min-h-[63rem] my-2'>
-        <div className='block h-40 items-center justify-center'>
-          <Metrics /> 
-        </div>
-        <TableauViz
-          ref={ref}
-          src={src}
-          height={height}
-          width={width}
-          hideTabs={hideTabs}
-          device={device}
-          toolbar={toolbar}
-        />
+      <div className='block h-40 items-center justify-center my-3'>
+        <Metrics /> 
       </div>
+      <TableauViz
+        ref={ref}
+        src={src}
+        height={height}
+        width={width}
+        hideTabs={hideTabs}
+        device={device}
+        toolbar={toolbar}
+      />
     </section>
   )
 }

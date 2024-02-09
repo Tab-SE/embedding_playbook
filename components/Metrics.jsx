@@ -27,7 +27,7 @@ export const Metrics = (props) => {
     return (
       <div className="flex items-center justify-center">
         <span className="btn btn-circle btn-xs mr-2 hidden sm:flex">❮</span>
-        <div className="stats stats-vertical max-w-[746px] sm:stats-horizontal shadow my-3">
+        <div className="stats stats-vertical max-w-3xl sm:stats-horizontal shadow my-3">
           {Array.isArray(data) ? data.map((metric) => (
             <Metric 
               key={metric.id} 
