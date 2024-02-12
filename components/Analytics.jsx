@@ -1,29 +1,29 @@
 import { useState, useRef } from 'react';
-import Image from "next/image"
+import Image from "next/image";
 
-import { Button } from "./ui"
+import { Button } from "./ui";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui"
+} from "./ui";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "./ui"
+} from "./ui";
 
 
 // import { CalendarDateRangePicker } from "@/app/examples/dashboard/components/date-range-picker"
-import { Workbooks } from './Workbooks'
+import { Workbooks } from './Workbooks';
 // import { Overview } from "@/app/examples/dashboard/components/overview"
 // import { RecentSales } from "@/app/examples/dashboard/components/recent-sales"
 // import { Search } from "@/app/examples/dashboard/components/search"
 // import TeamSwitcher from "@/app/examples/dashboard/components/team-switcher"
-// import { UserNav } from "@/app/examples/dashboard/components/user-nav"
+import { UserNav } from './UserNav';
 
 
 export const Analytics = (props) => {
@@ -57,7 +57,7 @@ export const Analytics = (props) => {
             {/* <TeamSwitcher /> */}
             <Workbooks className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
-              {/* <UserNav /> */}
+              <UserNav />
             </div>
           </div>
         </div>
