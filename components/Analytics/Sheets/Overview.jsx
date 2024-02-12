@@ -12,15 +12,24 @@ import {
   TabsTrigger,
 } from "../../ui";
 
+import { TableauViz } from '../../index'
+
 export const Overview = () => {
   return (
     <TabsContent value="overview" className="space-y-4">
-      <Card className="col-span-7">
+      <Card className="">
         <CardHeader>
           <CardTitle>Overview</CardTitle>
         </CardHeader>
         <CardContent className="pl-2">
-          {/* <Overview /> */}
+          <TableauViz 
+            src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore_embed/Profitability'
+            width={800}
+            height={800}
+            hideTabs={true}
+            device='default'
+            toolbar='hidden'
+          />
         </CardContent>
       </Card>
     </TabsContent>
