@@ -13,7 +13,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook/tree/main/',
   footer: {
-    text: 'Tableau Embedding Playbook',
+    text: 'Embed Tableau',
   },
   toc: {
     backToTop: true
