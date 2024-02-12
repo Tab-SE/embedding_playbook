@@ -1,14 +1,29 @@
 import { useState, useRef } from 'react';
+import Image from "next/image"
 
-import { 
-  Calendar,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger, 
-} from './ui';
+import { Button } from "./ui"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+} from "./ui"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "./ui"
+
+// import { CalendarDateRangePicker } from "@/app/examples/dashboard/components/date-range-picker"
+// import { MainNav } from "@/app/examples/dashboard/components/main-nav"
+// import { Overview } from "@/app/examples/dashboard/components/overview"
+// import { RecentSales } from "@/app/examples/dashboard/components/recent-sales"
+// import { Search } from "@/app/examples/dashboard/components/search"
+// import TeamSwitcher from "@/app/examples/dashboard/components/team-switcher"
+// import { UserNav } from "@/app/examples/dashboard/components/user-nav"
 
 
 export const Analytics = (props) => {
@@ -20,23 +35,18 @@ export const Analytics = (props) => {
 
   return (
     <section className='bg-colorblind-lgray rounded pb-3'> 
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        className="rounded-md border"
-      />
-      <DropdownMenu>
-        <DropdownMenuTrigger>Open</DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <Card>
+        <CardHeader>
+          <CardTitle>Card Title</CardTitle>
+          <CardDescription>Card Description</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>Card Content</p>
+        </CardContent>
+        <CardFooter>
+          <p>Card Footer</p>
+        </CardFooter>
+      </Card>
     </section>
   )
 }
