@@ -1,7 +1,7 @@
 export { Avatar, AvatarImage, AvatarFallback } from './Avatar';
 export { Button, buttonVariants } from './Button';
 export { Calendar } from './Calendar';
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
+// export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
 export {
   Command,
   CommandDialog,
