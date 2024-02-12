@@ -19,10 +19,7 @@ import {
 
 // import { CalendarDateRangePicker } from "@/app/examples/dashboard/components/date-range-picker"
 import { Workbooks } from './Workbooks';
-// import { Overview } from "@/app/examples/dashboard/components/overview"
-// import { RecentSales } from "@/app/examples/dashboard/components/recent-sales"
-// import { Search } from "@/app/examples/dashboard/components/search"
-// import TeamSwitcher from "@/app/examples/dashboard/components/team-switcher"
+import { ThemeSelect } from './ThemeSelect';
 import { UserNav } from './UserNav';
 
 
@@ -54,9 +51,9 @@ export const Analytics = (props) => {
       <div className="hidden flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            {/* <TeamSwitcher /> */}
             <Workbooks className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
+              <ThemeSelect />
               <UserNav />
             </div>
           </div>
