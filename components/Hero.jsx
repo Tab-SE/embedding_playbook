@@ -1,4 +1,4 @@
-import { Analytics } from '../components';
+import { Analytics } from './Analytics';
 
 export const Hero = (props) => {
   const { children, src, width, height, hideTabs, device, toolbar } = props;
