@@ -20,7 +20,7 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
 
   return (
     <div
-      className='flex items-center justify-center overflow-hidden mx-auto' 
+      className='flex items-center justify-center overflow-hidden mx-auto h-screen' 
       style={containerStyle}
     >
       <AuthLayer 
@@ -56,7 +56,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   }
 
   return (
-    <>
+    <div className='flex items-center justify-center overflow-hidden mx-auto h-screen'>
       {isSessionError ? <p>Authentication Error!</p> : null}
       {isSessionLoading ? <p>Authenticating the User...</p> : null}
       {isSessionSuccess ? 
@@ -71,7 +71,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
           toolbar={toolbar}
           isPublic={isPublic}
         /> : null}
-    </>
+    </div>
   )
 })
 
@@ -134,7 +134,7 @@ const Viz = forwardRef(function Viz(props, ref) {
       device={device}
       hide-tabs={hideTabs ? true : false}
       toolbar={toolbar}
-      class='mx-auto'
+      class='flex items-center justify-center overflow-hidden mx-auto h-screen'
       data-viz={id}
     />
   )
