@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "../ui";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../ui";
 
-import { useMetrics } from '../../hooks';
+import { useMetrics } from 'hooks';
 import { Metric } from "./Metric";
 
 
@@ -27,14 +33,25 @@ export const Metrics = (props) => {
   // metrics returned successfully 
   if (isSuccess) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {Array.isArray(data) ? data.map((metric) => (
-        <Metric 
-          key={metric.id} 
-          metric={metric} 
-        />
-      )) : null}
-    </div>
+      <div className="px-10">
+        <Carousel>
+          <CarouselContent>
+            {Array.isArray(data) ? data.map((metric) => (
+              <CarouselItem 
+                key={metric.id} 
+                className="basis-1/3"
+              >
+                <Metric 
+                  key={metric.id}
+                  metric={metric} 
+                />
+              </CarouselItem>
+            )) : null}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </div>
     );
   }
 
