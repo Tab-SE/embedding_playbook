@@ -1,5 +1,5 @@
 import { ThemeSelect } from '../ThemeSelect';
-import { UserNav } from '../UserNav';
+import { UserMenu } from './UserMenu';
 
 export const MainNav = () => {
   return (
@@ -10,7 +10,7 @@ export const MainNav = () => {
             <ThemeSelect />
           </div>
           <div>
-            <UserNav />
+            <UserMenu />
           </div>
         </div>
       </div>
