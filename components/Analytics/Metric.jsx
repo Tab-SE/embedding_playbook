@@ -82,30 +82,6 @@ export const Metric = (props) => {
         </CardContent>
       </Card>
     )
-
-    // fully loaded state
-    // return (
-    //   <div className="cursor-pointer" onClick={()=> modal ? modal.showModal() : false }> 
-    //     <div className="stat h-36 w-40 pl-4 pr-3 pt-3 pb-5">
-    //       <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
-    //       <div className="stat-value text-3xl whitespace-normal">{stats.value ? stats.value : '0'}</div>
-    //       <div className={`stat-desc ${stats.color} whitespace-normal`}>
-    //         &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
-    //       </div> 
-    //       <div className="stat-desc whitespace-normal mt-2">
-    //         Insights: <span className={`badge badge-sm ${stats.badge} text-stone-50 ml-1`}>{bundleCount}</span>
-    //       </div>      
-    //     </div>
-    //     <Modal setModal={setModal} >
-    //       <Insights metric={metric} stats={stats} />
-    //       <div className="flex justify-center gap-12 w-full">
-    //         <kbd className="kbd kbd-lg">◀︎</kbd>
-    //         <kbd className="kbd kbd-lg">Swipe</kbd>
-    //         <kbd className="kbd kbd-lg">▶︎</kbd>
-    //       </div>
-    //     </Modal>
-    //   </div>
-    // )
   } else {
     // if in a loading state, display the metric name and a skeleton
     return (
