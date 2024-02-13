@@ -2,6 +2,7 @@ export { Avatar, AvatarImage, AvatarFallback } from './Avatar';
 export { Button, buttonVariants } from './Button';
 export { Calendar } from './Calendar';
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
+export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from './Carousel';
 export {
   Command,
   CommandDialog,
