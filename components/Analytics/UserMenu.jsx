@@ -1,9 +1,11 @@
+import { useSession, signIn, signOut } from "next-auth/react";
+
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../ui"
-import { Button } from "../ui"
+} from "../ui";
+import { Button } from "../ui";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,25 +15,29 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "../ui"
+} from "../ui";
 
-export function UserNav() {
+export function UserMenu(props) {
+  const { src } = props;
+  const avatar = src ? src : 'img/users/mackenzie_day.png';
+
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-            <AvatarFallback>SC</AvatarFallback>
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={avatar} alt="@shadcn" />
+            <AvatarFallback>MD</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">shadcn</p>
+            <p className="text-sm font-medium leading-none">Superstore Analytics</p>
             <p className="text-xs leading-none text-muted-foreground">
-              m@example.com
+              mday@mail.com
             </p>
           </div>
         </DropdownMenuLabel>
