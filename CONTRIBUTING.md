@@ -47,3 +47,25 @@ To upload image files, add images to the `public` folder and push updates to the
 This results in writers being able to easily add images to markdown with the resulting app having a fully responsive set of images that are never too small or too large for the device that displays them. A common issue for websites that we are gladly avoiding. 
 
 >IMGIX highly recommends reading Eric Portis' [seminal article on srcset and sizes](https://ericportis.com/posts/2014/srcset-sizes/). This article explains the history of responsive images in responsive design, why they're necessary, and how all these technologies work together to save bandwidth and provide a better experience for users.
+
+# shadcn
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": false,
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "global.css",
+    "baseColor": "stone",
+    "cssVariables": false,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "components/",
+    "utils": "utils/"
+  }
+}
+```
