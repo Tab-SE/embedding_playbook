@@ -54,6 +54,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
     "date-fns": "^3.3.1",
+    "embla-carousel-react": "^8.0.0-rc22",
     "jsonpath-plus": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "next": "^13.5.4",
