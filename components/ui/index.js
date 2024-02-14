@@ -1,4 +1,5 @@
 export { Avatar, AvatarImage, AvatarFallback } from './Avatar';
+export { Badge, badgeVariants } from './Badge';
 export { Button, buttonVariants } from './Button';
 export { Calendar } from './Calendar';
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
