@@ -31,34 +31,36 @@ export const Metrics = (props) => {
   }
 
   // metrics returned successfully 
-  if (isSuccess) {
-    return (
-      <div className="min-h-32 px-16">
-        <Carousel>
-          <CarouselContent>
-            {Array.isArray(data) ? data.map((metric) => (
-              <CarouselItem 
-                key={metric.id} 
-                className="basis-1/3"
-              >
-                <Metric 
-                  key={metric.id}
-                  metric={metric} 
-                />
-              </CarouselItem>
-            )) : null}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
-    );
+  if (isSuccess && Array.isArray(data)) {
+    if (data.length > 0) {
+      return (
+        <div className="min-h-32 px-16">
+          <Carousel>
+            <CarouselContent>
+              {Array.isArray(data) ? data.map((metric) => (
+                <CarouselItem 
+                  key={metric.id} 
+                  className="basis-1/3"
+                >
+                  <Metric 
+                    key={metric.id}
+                    metric={metric} 
+                  />
+                </CarouselItem>
+              )) : null}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      );
+    } else {
+      return null;
+    } 
   }
 
-  // loading state
+  // placeholder
   return (
-    <div className="min-h-32">
-
-    </div>
+    <div className="min-h-32"></div>
   )
 }

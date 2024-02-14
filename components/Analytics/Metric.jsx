@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "../ui";
+import { Skeleton } from "../ui";
 
 import { useInsights } from "hooks";
 import { parseInsights } from "utils";
@@ -97,7 +98,12 @@ const Stats = (props) => {
   }
 
   return (
-    <></>
+    <>
+      <div className="space-y-2">
+        <Skeleton className="h-6 w-1/3" />
+        <Skeleton className="h-4 w-1/2" />
+      </div>
+    </>
   )
 }
 
