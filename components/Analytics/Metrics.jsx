@@ -33,7 +33,7 @@ export const Metrics = (props) => {
   // metrics returned successfully 
   if (isSuccess) {
     return (
-      <div className="px-16">
+      <div className="min-h-32 px-16">
         <Carousel>
           <CarouselContent>
             {Array.isArray(data) ? data.map((metric) => (
@@ -57,7 +57,7 @@ export const Metrics = (props) => {
 
   // loading state
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="min-h-32">
 
     </div>
   )

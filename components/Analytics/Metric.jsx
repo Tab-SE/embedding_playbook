@@ -65,34 +65,39 @@ export const Metric = (props) => {
         }
       });
     }
+  }
 
-    // fully loaded state 
+  // fully loaded state 
+  return (
+    <Card className="min-h-32">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">
+          {metric.name}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Stats isSuccess={isSuccess} stats={stats} />
+      </CardContent>
+    </Card>
+  )
+}
+
+const Stats = (props) => {
+  const { isSuccess, stats } = props;
+
+  if (isSuccess) {
     return (
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            {metric.name}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{stats.value ? stats.value : null}</div>
-          <p className={`text-xs text-muted-foreground ${stats.color}`}>
-            &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
-          </p>
-        </CardContent>
-      </Card>
-    )
-  } else {
-    // if in a loading state, display the metric name and a skeleton
-    return (
-      <div className="stat h-36 w-40 pl-4 pr-3 pt-3 pb-5">
-        <div className="stat-title text-sm font-bold flex items-end align-bottom whitespace-normal h-10">{metric.name}</div>
-        <div className="skeleton w-full h-8"></div>
-        <div className="skeleton w-9/12 h-4"></div>
-        <div className="skeleton w-9/12 h-4"></div>     
-      </div>
+      <>
+      <div className="text-2xl font-bold">{stats.value ? stats.value : null}</div>
+      <p className={`text-xs text-muted-foreground ${stats.color}`}>
+        &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
+      </p>
+      </>
     )
   }
 
-  
+  return (
+    <></>
+  )
 }
+
