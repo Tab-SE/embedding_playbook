@@ -19,8 +19,8 @@ export const Analytics = (props) => {
       <div className="hidden flex-col md:flex">
         <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-md md:shadow-xl">
           <MainNav />
+          <Metrics />
           <div className="flex-1 space-y-4 p-8 pt-6">
-            <Metrics />
             <Sheets />
           </div>
         </div>

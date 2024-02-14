@@ -8,7 +8,7 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
   const { src, height, width, device, hideTabs, toolbar, isPublic } = props; 
 
   // size of parent div placeholder
-  let containerHeight = height+30;
+  let containerHeight = height;
   let containerWidth = width;
   if (toolbar === 'hidden') {
     containerHeight = height;
@@ -20,7 +20,7 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
 
   return (
     <div
-      className='flex items-center justify-center overflow-hidden mx-auto h-screen' 
+      className='rounded' 
       style={containerStyle}
     >
       <AuthLayer 
@@ -56,7 +56,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   }
 
   return (
-    <div className='flex items-center justify-center overflow-hidden mx-auto h-screen'>
+    <div className='rounded'>
       {isSessionError ? <p>Authentication Error!</p> : null}
       {isSessionLoading ? <p>Authenticating the User...</p> : null}
       {isSessionSuccess ? 
@@ -134,7 +134,7 @@ const Viz = forwardRef(function Viz(props, ref) {
       device={device}
       hide-tabs={hideTabs ? true : false}
       toolbar={toolbar}
-      class='flex items-center justify-center overflow-hidden mx-auto h-screen'
+      class='rounded'
       data-viz={id}
     />
   )

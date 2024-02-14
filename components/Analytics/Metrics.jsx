@@ -33,7 +33,7 @@ export const Metrics = (props) => {
   // metrics returned successfully 
   if (isSuccess) {
     return (
-      <div className="px-10">
+      <div className="px-16">
         <Carousel>
           <CarouselContent>
             {Array.isArray(data) ? data.map((metric) => (
