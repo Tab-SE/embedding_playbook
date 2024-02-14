@@ -88,23 +88,26 @@ const Stats = (props) => {
 
   if (isSuccess) {
     return (
-      <div className="grid grid-cols-12 gap-2">
-        <div className="col-span-6 text-2xl font-bold text-right">{stats.value ? stats.value : null}</div>
-        <div className="col-span-6">
-          <div className="grid grid-cols-12">
-            <p className={`grid justify-self-stretch col-span-3 text-2xl text-bold text-muted-foreground ${stats.color}`}>
-              {stats.direction}
-            </p>
-            <div className="col-span-9">
-              <p className={`text-xs text-muted-foreground ${stats.color}`}>
-                &nbsp; {stats.absolute}
-              </p>
-              <p className={`text-xs text-muted-foreground ${stats.color}`}>
-                &nbsp; {stats.relative ? `(${stats.relative})` : null}
-              </p>
+      <div className="grid grid-rows-2 border">
+        <div className="grid grid-cols-12 border">
+          <div className="col-span-8 text-2xl font-bold text-center">
+            <div className="">
+              <span className={`text-2xl font-extrabold text-muted-foreground ${stats.color} pr-1`}>
+                {stats.direction}
+              </span>
+              <span className="">{stats.value ? stats.value : null}</span>
             </div>
           </div>
+          <div className="col-span-4">
+            <p className={`text-xs text-muted-foreground ${stats.color}`}>
+              &nbsp; {stats.absolute}
+            </p>
+            <p className={`text-xs text-muted-foreground ${stats.color}`}>
+              &nbsp; {stats.relative ? `(${stats.relative})` : null}
+            </p>
+          </div>
         </div>
+        <div></div>
       </div>
     )
   }
