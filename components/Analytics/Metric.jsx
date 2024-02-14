@@ -11,10 +11,8 @@ import { parseInsights } from "utils";
 
 export const Metric = (props) => {
   const { metric } = props;
-  // modal displays available insights
-  const [modal, setModal] = useState(undefined);
   // distinct count of insights
-  const [bundleCount, setBundleCount] = useState(0);
+  const [bundleCount, setBundleCount] = useState(null);
   let result; // contains question, markup and facts
   let facts; // contains values, absolute and relative changes
   let stats = { sentiment: undefined }; // prop storing key facts
