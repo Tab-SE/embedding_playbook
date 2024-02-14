@@ -17,11 +17,11 @@ import { TableauViz } from '../../index'
 export const Overview = () => {
   return (
     <TabsContent value="overview" className="space-y-4">
-      <Card className="">
+      <Card >
         <CardHeader>
           <CardTitle>Overview</CardTitle>
         </CardHeader>
-        <CardContent className="pl-2">
+        <CardContent className="flex justify-center pl-2">
           <TableauViz 
             src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore_embed/Profitability'
             width={800}
