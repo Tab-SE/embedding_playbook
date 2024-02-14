@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
+import { IconSparkles } from '@tabler/icons-react';
+import Image from "next/image";
 
 import { Card, CardContent, CardHeader, CardTitle } from "../ui";
 import { Skeleton } from "../ui";
+import { Badge } from "../ui";
 
 import { useInsights } from "hooks";
 import { parseInsights } from "utils";
-// import { Modal } from "./Modal";
-// import { Insights } from "./Insights";
 
 
 export const Metric = (props) => {
@@ -46,20 +47,25 @@ export const Metric = (props) => {
           stats.absolute = facts?.difference.absolute.formatted;
           // always a percentage
           stats.relative = facts?.difference.relative.formatted;
+          // show a plus sign for increments
+          if (!stats?.absolute.startsWith('-')) {
+            stats.absolute = '+' + stats.absolute;
+            stats.relative = '+' + stats.relative;
+          }
           // direction of the arrow icon
           const dir = facts?.difference.direction;
           if (dir === 'up') {
             stats.direction = '↗︎';
             stats.color = 'text-sky-600';
-            stats.badge = 'badge-primary';
+            stats.badge = 'bg-sky-600 dark:bg-sky-600';
           } else if (dir === 'down') {
             stats.direction = '↘︎';
             stats.color = 'text-orange-600';
-            stats.badge = 'badge-secondary';
+            stats.badge = 'bg-orange-600 dark:bg-orange-600';
           } else if (dir === 'flat') {
             stats.direction = '→';
-            stats.color = 'text-stone-500';
-            stats.badge = 'badge-neutral';
+            stats.color = 'text-stone-500 dark:text-stone-400';
+            stats.badge = 'bg-stone-500 dark:bg-stone-400';
           }
         }
       });
@@ -68,27 +74,27 @@ export const Metric = (props) => {
 
   // fully loaded state 
   return (
-    <Card className="min-h-32">
+    <Card className="min-h-28">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-1">
-        <CardTitle className="text-sm font-medium pl-4">
+        <CardTitle className="text-sm font-medium pl-3 whitespace-nowrap overflow-hidden">
           {metric.name}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-4 pt-0">
-        <Stats isSuccess={isSuccess} stats={stats} />
+      <CardContent className="px-4 pt-0 pb-2">
+        <Stats isSuccess={isSuccess} stats={stats} bundleCount={bundleCount} />
       </CardContent>
     </Card>
   )
 }
 
 const Stats = (props) => {
-  const { isSuccess, stats } = props;
+  const { isSuccess, stats, bundleCount } = props;
 
   if (isSuccess) {
     return (
-      <div className="grid grid-rows-2 border">
-        <div className="grid grid-cols-12 border">
-          <div className="col-span-8 text-2xl font-bold text-center">
+      <div className="grid grid-rows-2">
+        <div className="grid grid-cols-12">
+          <div className="col-span-7 text-2xl font-bold text-right mr-1">
             <div className="">
               <span className={`text-2xl font-extrabold text-muted-foreground ${stats.color} pr-1`}>
                 {stats.direction}
@@ -96,7 +102,7 @@ const Stats = (props) => {
               <span className="">{stats.value ? stats.value : null}</span>
             </div>
           </div>
-          <div className="col-span-4">
+          <div className="col-span-5">
             <p className={`text-xs text-muted-foreground ${stats.color}`}>
               &nbsp; {stats.absolute}
             </p>
@@ -105,7 +111,12 @@ const Stats = (props) => {
             </p>
           </div>
         </div>
-        <div></div>
+        <div className="flex flex-row">
+          <Badge className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}>
+            <IconSparkles width={15} height={15} className="mr-1"/>
+            Insights: {bundleCount}
+          </Badge>
+        </div>
       </div>
     )
   }

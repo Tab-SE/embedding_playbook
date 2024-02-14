@@ -55,7 +55,7 @@ export const Metrics = (props) => {
         </div>
       );
     } else {
-      return null;
+      <div className="min-h-32"></div>
     } 
   }
 
