@@ -71,12 +71,12 @@ export const Metric = (props) => {
   // fully loaded state 
   return (
     <Card className="min-h-32">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-1">
+        <CardTitle className="text-sm font-medium pl-4">
           {metric.name}
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 pt-0">
         <Stats isSuccess={isSuccess} stats={stats} />
       </CardContent>
     </Card>
@@ -88,12 +88,24 @@ const Stats = (props) => {
 
   if (isSuccess) {
     return (
-      <>
-      <div className="text-2xl font-bold">{stats.value ? stats.value : null}</div>
-      <p className={`text-xs text-muted-foreground ${stats.color}`}>
-        &nbsp; {stats.direction} {stats.absolute} {stats.relative ? `(${stats.relative})` : null}
-      </p>
-      </>
+      <div className="grid grid-cols-12 gap-2">
+        <div className="col-span-6 text-2xl font-bold text-right">{stats.value ? stats.value : null}</div>
+        <div className="col-span-6">
+          <div className="grid grid-cols-12">
+            <p className={`grid justify-self-stretch col-span-3 text-2xl text-bold text-muted-foreground ${stats.color}`}>
+              {stats.direction}
+            </p>
+            <div className="col-span-9">
+              <p className={`text-xs text-muted-foreground ${stats.color}`}>
+                &nbsp; {stats.absolute}
+              </p>
+              <p className={`text-xs text-muted-foreground ${stats.color}`}>
+                &nbsp; {stats.relative ? `(${stats.relative})` : null}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     )
   }
 
