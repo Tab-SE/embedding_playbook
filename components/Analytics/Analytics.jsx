@@ -17,10 +17,10 @@ export const Analytics = (props) => {
     <>
       <MobilePreview />
       <div className="hidden flex-col md:flex">
-        <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-md md:shadow-xl pb-6">
+        <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-md md:shadow-xl">
           <MainNav />
           <Metrics />
-          <div className="flex-1 space-y-4 p-6 h-screen">
+          <div className="p-6">
             <Sheets />
           </div>
         </div>

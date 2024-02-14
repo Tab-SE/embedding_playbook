@@ -28,11 +28,13 @@ export const Sheets = () => {
           Order Details
         </TabsTrigger>
       </TabsList>
-      <Overview />
-      <Customers />
-      <Product />
-      <Shipping />
-      <OrderDetails />
+      <section className="min-h-[892px]">
+        <Overview />
+        <Customers />
+        <Product />
+        <Shipping />
+        <OrderDetails />
+      </section>
     </Tabs>
   )
 }

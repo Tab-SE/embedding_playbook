@@ -70,6 +70,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           isPublic={isPublic}
+          class=''
         /> : null}
     </div>
   )
