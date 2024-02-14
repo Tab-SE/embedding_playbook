@@ -69,4 +69,5 @@ export {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from './Select';
+export { Skeleton } from './Skeleton';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './Tabs'
