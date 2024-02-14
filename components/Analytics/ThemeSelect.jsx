@@ -45,25 +45,50 @@ import {
   SelectValue,
 } from "../ui"
 
+// const groups = [
+//   {
+//     label: "Personal Account",
+//     teams: [
+//       {
+//         label: "Alicia Koch",
+//         value: "personal",
+//       },
+//     ],
+//   },
+//   {
+//     label: "Teams",
+//     teams: [
+//       {
+//         label: "Acme Inc.",
+//         value: "acme-inc",
+//       },
+//       {
+//         label: "Monsters Inc.",
+//         value: "monsters",
+//       },
+//     ],
+//   },
+// ];
+
 const groups = [
   {
-    label: "Personal Account",
+    label: "Default",
     teams: [
       {
-        label: "Alicia Koch",
-        value: "personal",
+        label: "Superstore Analytics",
+        value: "superstore",
       },
     ],
   },
   {
-    label: "Teams",
+    label: "Retail",
     teams: [
       {
-        label: "Acme Inc.",
-        value: "acme-inc",
+        label: "Northern Trail Outfitters",
+        value: "nto",
       },
       {
-        label: "Monsters Inc.",
+        label: "E-Bike",
         value: "monsters",
       },
     ],
@@ -76,7 +101,7 @@ export function ThemeSelect({ className }) {
   const [selectedTeam, setSelectedTeam] = React.useState(
     groups[0].teams[0]
   );
-
+{/* <h2 className="text-3xl font-bold tracking-tight">Superstore Analytics</h2> */}
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
       <Popover open={open} onOpenChange={setOpen}>
@@ -86,7 +111,7 @@ export function ThemeSelect({ className }) {
             role="combobox"
             aria-expanded={open}
             aria-label="Select a team"
-            className={cn("w-[200px] justify-between", className)}
+            className={cn("justify-between text-xl md:text-2xl font-bold tracking-tight p-6", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
@@ -97,7 +122,7 @@ export function ThemeSelect({ className }) {
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
             {selectedTeam.label}
-            <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+            <CaretSortIcon className="ml-3 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
