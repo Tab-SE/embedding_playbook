@@ -1,10 +1,10 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui";
 
 import { Customers, OrderDetails, Overview, Product, Shipping  } from './index';
 
 
-export const Sheets = () => {
+export const Superstore = () => {
   return (
     <Tabs defaultValue="overview" className="space-y-3">
       <TabsList>

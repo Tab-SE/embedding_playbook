@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 
-import { TableauViz } from '../../index'
+import { TableauViz } from '../../../index'
 
 export const Overview = () => {
   return (

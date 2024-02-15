@@ -1,6 +1,9 @@
-export { Customers } from './Customers';
-export { OrderDetails } from './OrderDetails';
-export { Overview } from './Overview';
-export { Product } from './Product';
-export { Sheets } from './Sheets';
-export { Shipping } from './Shipping';
+import { Superstore } from './Superstore'; 
+
+export const Sheets = (props) => {
+  const { theme } = props;
+
+  return (
+    <Superstore z/>
+  )
+}

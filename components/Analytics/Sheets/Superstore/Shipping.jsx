@@ -1,13 +1,13 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 
-export const Customers = () => {
+export const Shipping = () => {
   return (
-    <TabsContent value="customers" className="space-y-4">
+    <TabsContent value="shipping" className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
         <Card className="col-span-7 dark:bg-stone-900">
           <CardHeader>
-            <CardTitle>Customers</CardTitle>
+            <CardTitle>Shipping</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
             {/* <Overview /> */}
