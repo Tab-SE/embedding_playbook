@@ -5,6 +5,9 @@ import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui";
 import { Skeleton } from "../ui";
 import { Badge } from "../ui";
+import { 
+  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger,
+} from "../ui";
 
 import { useInsights } from "hooks";
 import { parseInsights } from "utils";
@@ -74,7 +77,7 @@ export const Metric = (props) => {
 
   // fully loaded state 
   return (
-    <Card className="min-h-[120px]">
+    <Card className="min-h-[120px] dark:bg-stone-900">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-1">
         <CardTitle className="text-sm font-medium pl-3 whitespace-nowrap overflow-hidden">
           {metric.name}
@@ -112,10 +115,23 @@ const Stats = (props) => {
           </div>
         </div>
         <div className="flex flex-row">
-          <Badge className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}>
-            <IconSparkles width={15} height={15} className="mr-1"/>
-            Insights: {bundleCount}
-          </Badge>
+          <Dialog>
+            <DialogTrigger>
+              <Badge className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}>
+                <IconSparkles width={15} height={15} className="mr-1"/>
+                Insights: {bundleCount}
+              </Badge>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will permanently delete your account
+                  and remove your data from our servers.
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     )
