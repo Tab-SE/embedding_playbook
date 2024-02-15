@@ -34,7 +34,7 @@ export const Metrics = (props) => {
   if (isSuccess && Array.isArray(data)) {
     if (data.length > 0) {
       return (
-        <div className="min-h-32 px-16">
+        <div className="min-h-[120px] px-16">
           <Carousel>
             <CarouselContent>
               {Array.isArray(data) ? data.map((metric) => (
@@ -55,12 +55,12 @@ export const Metrics = (props) => {
         </div>
       );
     } else {
-      <div className="min-h-32"></div>
+      <div className="min-h-[120px]"></div>
     } 
   }
 
   // placeholder
   return (
-    <div className="min-h-32"></div>
+    <div className="min-h-[120px]"></div>
   )
 }
