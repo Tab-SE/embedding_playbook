@@ -49,9 +49,11 @@ export const Metric = (props) => {
           // always a percentage
           stats.relative = facts?.difference.relative.formatted;
           // show a plus sign for increments
-          if (!stats?.absolute.startsWith('-')) {
-            stats.absolute = '+' + stats.absolute;
-            stats.relative = '+' + stats.relative;
+          if (stats.absolute) {
+            if (!stats?.absolute.startsWith('-')) {
+              stats.absolute = '+' + stats.absolute;
+              stats.relative = '+' + stats.relative;
+            }
           }
           // direction of the arrow icon
           const dir = facts?.difference.direction;

@@ -7,7 +7,7 @@ import { Sheets } from './Sheets';
 
 
 export const Analytics = (props) => {
-  const { src, height, width, hideTabs, device, toolbar } = props;
+  const { theme, hideMetrics, hideSheets } = props;
   // useRef accesses DOM nodes created with the render method https://reactjs.org/docs/refs-and-the-dom.html
   const ref = useRef(null); 
   const [interactive, setInteractive] = useState(false);
@@ -20,9 +20,9 @@ export const Analytics = (props) => {
         <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-xl">
           <MainNav />
           <div className='bg-stone-300 dark:bg-stone-700 pt-6'>
-            <Metrics />
+            {hideMetrics ? null : <Metrics theme={theme} />}
             <div className="p-6">
-              <Sheets />
+              {hideSheets ? null : <Sheets theme={theme} />}
             </div>
           </div>
         </div>
