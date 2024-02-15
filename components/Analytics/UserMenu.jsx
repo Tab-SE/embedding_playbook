@@ -35,7 +35,7 @@ export function UserMenu(props) {
   return (
     <DropdownMenu>
       <Trigger src={avatar} />
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-56 dark:bg-stone-700" align="end" forceMount>
         <Label />
         <Group />
         <Logout status={status} />
