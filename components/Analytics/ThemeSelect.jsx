@@ -101,7 +101,7 @@ export function ThemeSelect({ className }) {
   const [selectedTeam, setSelectedTeam] = React.useState(
     groups[0].teams[0]
   );
-{/* <h2 className="text-3xl font-bold tracking-tight">Superstore Analytics</h2> */}
+
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
       <Popover open={open} onOpenChange={setOpen}>
@@ -127,7 +127,7 @@ export function ThemeSelect({ className }) {
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command>
-            <CommandList>
+            <CommandList className="dark:bg-stone-700">
               <CommandInput placeholder="Search team..." />
               <CommandEmpty>No team found.</CommandEmpty>
               {groups.map((group) => (
@@ -165,7 +165,7 @@ export function ThemeSelect({ className }) {
             </CommandList>
             <CommandSeparator />
             <CommandList>
-              <CommandGroup>
+              <CommandGroup className="dark:bg-stone-700">
                 <DialogTrigger asChild>
                   <CommandItem
                     onSelect={() => {
