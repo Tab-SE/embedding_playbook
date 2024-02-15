@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
 import { IconSparkles } from '@tabler/icons-react';
-import Image from "next/image";
 
 import { Card, CardContent, CardHeader, CardTitle } from "../ui";
 import { Skeleton } from "../ui";
 import { Badge } from "../ui";
-import { 
-  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger,
-} from "../ui";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui";
 
 import { useInsights } from "hooks";
 import { parseInsights } from "utils";
+import { InsightsModal } from "./InsightsModal";
 
 
 export const Metric = (props) => {
@@ -84,19 +82,24 @@ export const Metric = (props) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-4 pt-0 pb-2">
-        <Stats isSuccess={isSuccess} stats={stats} bundleCount={bundleCount} />
+        <Stats 
+          isSuccess={isSuccess} 
+          stats={stats} 
+          bundleCount={bundleCount}
+          metric={metric}
+        />
       </CardContent>
     </Card>
   )
 }
 
 const Stats = (props) => {
-  const { isSuccess, stats, bundleCount } = props;
+  const { isSuccess, stats, bundleCount, metric } = props;
 
   if (isSuccess) {
     return (
       <div className="grid grid-rows-2">
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-12 gap-1">
           <div className="col-span-7 text-2xl font-bold text-right mr-1">
             <div className="">
               <span className={`text-2xl font-extrabold text-muted-foreground ${stats.color} pr-1`}>
@@ -107,10 +110,10 @@ const Stats = (props) => {
           </div>
           <div className="col-span-5">
             <p className={`text-xs text-muted-foreground ${stats.color}`}>
-              &nbsp; {stats.absolute}
+              {stats.absolute}
             </p>
             <p className={`text-xs text-muted-foreground ${stats.color}`}>
-              &nbsp; {stats.relative ? `(${stats.relative})` : null}
+              △ {stats.relative ? `${stats.relative}` : null}
             </p>
           </div>
         </div>
@@ -122,15 +125,7 @@ const Stats = (props) => {
                 Insights: {bundleCount}
               </Badge>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Are you absolutely sure?</DialogTitle>
-                <DialogDescription>
-                  This action cannot be undone. This will permanently delete your account
-                  and remove your data from our servers.
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
+            <InsightsModal metric={metric} stats={stats} />
           </Dialog>
         </div>
       </div>
