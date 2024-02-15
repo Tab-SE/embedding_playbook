@@ -19,7 +19,7 @@ export const Analytics = (props) => {
       <div className="hidden flex-col md:flex">
         <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-xl">
           <MainNav />
-          <div className='bg-stone-200 dark:bg-stone-900 pt-6'>
+          <div className='bg-stone-200 dark:bg-stone-700 pt-6'>
             <Metrics />
             <div className="p-6">
               <Sheets />

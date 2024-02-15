@@ -111,7 +111,7 @@ export function ThemeSelect({ className }) {
             role="combobox"
             aria-expanded={open}
             aria-label="Select a team"
-            className={cn("justify-between text-xl md:text-2xl font-bold tracking-tight p-6", className)}
+            className={cn("justify-between text-lg md:text-xl font-bold tracking-tight p-6 dark:bg-stone-900", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
