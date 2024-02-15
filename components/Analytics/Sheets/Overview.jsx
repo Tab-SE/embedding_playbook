@@ -1,23 +1,12 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../../ui";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui";
 
 import { TableauViz } from '../../index'
 
 export const Overview = () => {
   return (
     <TabsContent value="overview" className="space-y-4">
-      <Card >
+      <Card className='dark:bg-stone-900'>
         <CardHeader>
           <CardTitle>Overview</CardTitle>
         </CardHeader>

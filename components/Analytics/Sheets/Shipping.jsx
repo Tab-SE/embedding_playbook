@@ -1,22 +1,11 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../../ui";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui";
 
 export const Shipping = () => {
   return (
     <TabsContent value="shipping" className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
-        <Card className="col-span-7">
+        <Card className="col-span-7 dark:bg-stone-900">
           <CardHeader>
             <CardTitle>Shipping</CardTitle>
           </CardHeader>
@@ -24,7 +13,7 @@ export const Shipping = () => {
             {/* <Overview /> */}
           </CardContent>
         </Card>
-        <Card className="col-span-5">
+        <Card className="col-span-5 dark:bg-stone-900">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
             <CardDescription>

@@ -1,9 +1,5 @@
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../../ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui";
 
 import { Customers, OrderDetails, Overview, Product, Shipping  } from './index';
 
