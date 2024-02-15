@@ -10,7 +10,7 @@ import { Customers, OrderDetails, Overview, Product, Shipping  } from './index';
 
 export const Sheets = () => {
   return (
-    <Tabs defaultValue="overview" className="space-y-4">
+    <Tabs defaultValue="overview" className="space-y-3">
       <TabsList>
         <TabsTrigger value="overview">
           Overview
