@@ -57,7 +57,7 @@ export const ThemeSelect = (props) => {
 
   React.useEffect(() => {
     setTheme(selectedTeam);
-  }, [selectedTeam]);
+  }, [selectedTeam, setTheme]);
 
 
   return (
