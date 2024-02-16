@@ -1,13 +1,11 @@
 export const Head = (props) => {
   const { imgHost, title, description } = props;
+  const url = imgHost;
   const previewImage = imgHost + "/img/opengraph/embed_tableau.png";
-  const url = 'https://embedding-playbook.vercel.app';
   let formattedTitle = title + ' ✨ Embed Tableau';
   if (title === 'Index') {
     formattedTitle = 'Embed Tableau ✨';
   }
-
-  console.log(previewImage);
 
   return (
     <>
