@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
-import { Product, Sales  } from './index';
+import { Product, Sales, Inventory  } from './index';
 
 
 export const NTO = () => {
@@ -13,10 +13,14 @@ export const NTO = () => {
         <TabsTrigger value="product" >
           Product
         </TabsTrigger>
+        <TabsTrigger value="inventory" >
+          Inventory
+        </TabsTrigger>
       </TabsList>
       <section className="min-h-[892px]">
         <Sales />
         <Product />
+        <Inventory />
       </section>
     </Tabs>
   )
