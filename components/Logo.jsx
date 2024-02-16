@@ -14,7 +14,7 @@ export const Logo = (props) => {
     />
   </span>
   <p className='invisible md:visible'>
-    {props.name ? props.name : 'Embedding Playbook'}
+    {props.name ? props.name : 'Embed Tableau'}
   </p>
   </>
   );

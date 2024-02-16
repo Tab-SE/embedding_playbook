@@ -132,3 +132,6 @@ dist
 # MacOS
 .DS_Store
 .vercel
+
+# shadcn config file (conflicts with components/)
+components.json
