@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
-import { TableauViz } from '../../../index'
+import { TableauViz } from 'components';
 
 export const Overview = () => {
   return (
@@ -10,8 +10,8 @@ export const Overview = () => {
         <CardHeader>
           <CardTitle>Overview</CardTitle>
           <CardDescription>
-              Your personal digest of Superstore sales in North America
-            </CardDescription>
+            Your personal digest of Superstore sales in North America
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
           <TableauViz 
