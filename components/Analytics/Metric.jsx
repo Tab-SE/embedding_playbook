@@ -79,7 +79,7 @@ export const Metric = (props) => {
   return (
     <Card className="min-h-[111px] dark:bg-stone-900">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
-        <CardTitle className="text-stone-500 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden">
+        <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden">
           {metric.name}
         </CardTitle>
       </CardHeader>
