@@ -1,17 +1,17 @@
-import * as React from "react"
+import * as React from "react";
 import {
   CaretSortIcon,
   CheckIcon,
   PlusCircledIcon,
-} from "@radix-ui/react-icons"
+} from "@radix-ui/react-icons";
 
-import { cn } from "utils"
+import { cn } from "utils";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../ui"
-import { Button } from "../ui"
+} from "../ui";
+import { Button } from "components/ui";
 import {
   Command,
   CommandEmpty,
@@ -20,7 +20,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "../ui"
+} from "components/ui";
 import {
   Dialog,
   DialogContent,
@@ -29,46 +29,21 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui"
-import { Input } from "../ui"
-import { Label } from "../ui"
+} from "components/ui";
+import { Input } from "components/ui";
+import { Label } from "components/ui";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../ui"
+} from "components/ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui"
-
-// const groups = [
-//   {
-//     label: "Personal Account",
-//     teams: [
-//       {
-//         label: "Alicia Koch",
-//         value: "personal",
-//       },
-//     ],
-//   },
-//   {
-//     label: "Teams",
-//     teams: [
-//       {
-//         label: "Acme Inc.",
-//         value: "acme-inc",
-//       },
-//       {
-//         label: "Monsters Inc.",
-//         value: "monsters",
-//       },
-//     ],
-//   },
-// ];
+} from "components/ui";
 
 const groups = [
   {
@@ -95,12 +70,19 @@ const groups = [
   },
 ];
 
-export function ThemeSelect({ className }) {
+
+export const ThemeSelect = (props) => {
+  const { className, setTheme } = props;
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
   const [selectedTeam, setSelectedTeam] = React.useState(
     groups[0].teams[0]
   );
+
+  React.useEffect(() => {
+    setTheme(selectedTeam);
+  }, [selectedTeam]);
+
 
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>

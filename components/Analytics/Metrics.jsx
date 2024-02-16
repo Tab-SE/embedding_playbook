@@ -14,6 +14,7 @@ import { Metric } from "./Metric";
 
 
 export const Metrics = (props) => {
+  const { theme } = props;
   const [user, setUser] = useState(undefined);
   const { status: session_status, data: session_data } = useSession({});
   // syncs with user metrics, only fires query when user is defined -> controlled query

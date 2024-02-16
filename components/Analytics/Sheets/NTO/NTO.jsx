@@ -5,7 +5,7 @@ import { Product, Sales  } from './index';
 
 export const NTO = () => {
   return (
-    <Tabs defaultValue="overview" className="space-y-3">
+    <Tabs defaultValue="sales" className="space-y-3">
       <TabsList>
         <TabsTrigger value="sales">
           Sales Analysis
