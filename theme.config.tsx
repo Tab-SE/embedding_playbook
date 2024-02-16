@@ -36,6 +36,7 @@ const config: DocsThemeConfig = {
     const { route } = useRouter();
     const imgix = 'https://tableauembeddingplaybook.imgix.net';
     const imgHost = vercel;
+    console.log('imgHost', imgHost);
     const socialCard =
       route === '/' || !title
         ? imgHost + '/img/tableau/logo_text.png?w=350'

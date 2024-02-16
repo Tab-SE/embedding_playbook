@@ -7,6 +7,8 @@ export const Head = (props) => {
     formattedTitle = 'Embed Tableau ✨';
   }
 
+  console.log(previewImage);
+
   return (
     <>
       <meta name="robots" content="index, follow, archive, snippet" />
