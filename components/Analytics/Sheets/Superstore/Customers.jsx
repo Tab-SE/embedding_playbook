@@ -2,23 +2,35 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../ui";
 
+import { TableauViz } from 'components';
+
 export const Customers = () => {
   return (
     <TabsContent value="customers" className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
         <Card className="col-span-7 dark:bg-stone-900">
           <CardHeader>
-            <CardTitle>Customers</CardTitle>
+            <CardTitle>Profitability Matrix</CardTitle>
+            <CardDescription>
+              Compares profit vs sales where each mark is an individual customer
+            </CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
-            {/* <Overview /> */}
+            <TableauViz 
+              src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore/customer_scatter_plot'
+              width={450}
+              height={450}
+              hideTabs={true}
+              device='default'
+              toolbar='hidden'
+            />
           </CardContent>
         </Card>
         <Card className="col-span-5 dark:bg-stone-900">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
             <CardDescription>
-              You made 265 sales this month.
+              You made 265 sales this month
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -26,6 +38,25 @@ export const Customers = () => {
           </CardContent>
         </Card>
       </div>
+      <Card className="dark:bg-stone-900">
+        <CardHeader>
+          <CardTitle>Regional Performance</CardTitle>
+          <CardDescription>
+            A comparison of performance across North America
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pl-2">
+          <TableauViz 
+            src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore/customer_region'
+            width={800}
+            height={218}
+            hideTabs={true}
+            device='default'
+            toolbar='hidden'
+          />
+        </CardContent>
+      </Card>
+      
     </TabsContent>
   )
 }

@@ -9,6 +9,9 @@ export const Overview = () => {
       <Card className='dark:bg-stone-900'>
         <CardHeader>
           <CardTitle>Overview</CardTitle>
+          <CardDescription>
+              Your personal digest of Superstore sales in North America
+            </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
           <TableauViz 
