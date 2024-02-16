@@ -115,7 +115,7 @@ const Stats = (props) => {
               {stats.absolute}
             </p>
             <p className={`text-xs text-muted-foreground ${stats.color}`}>
-              △ {stats.relative ? `${stats.relative}` : null}
+              {stats.relative ? `${stats.relative}` : null} △
             </p>
           </div>
         </div>

@@ -8,6 +8,9 @@ export const Shipping = () => {
         <Card className="col-span-7 dark:bg-stone-900">
           <CardHeader>
             <CardTitle>Shipping</CardTitle>
+            <CardDescription>
+              description
+            </CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
             {/* <Overview /> */}

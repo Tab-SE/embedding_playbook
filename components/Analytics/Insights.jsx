@@ -43,8 +43,6 @@ const Insight = (props) => {
   const { insight } = props;
   const { id, type, markup, viz, fact, characterization, question, score } = insight;
 
-  console.log(fact);
-
   return type !== 'ban' ? (
     <Card>
       <CardHeader>
