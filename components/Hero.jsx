@@ -1,13 +1,15 @@
+import { DemoContextProvider } from './context';
 import { Analytics } from './Analytics';
 
 export const Hero = (props) => {
   const { children } = props;
 
   return (
-    <div>
+
+    <DemoContextProvider>
       <Md props={props} snippet={children} />
       <Lg props={props} snippet={children} />
-    </div>
+    </DemoContextProvider>
   );
 }
 
