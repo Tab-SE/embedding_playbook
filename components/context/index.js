@@ -1,1 +1,1 @@
-export { DemoContext, DemoContextProvider } from './DemoContext';
+export { DisplayContext, DisplayContextProvider } from './DisplayContext';
