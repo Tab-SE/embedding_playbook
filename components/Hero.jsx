@@ -1,45 +1,61 @@
-import { Analytics } from './Analytics';
+import { useContext } from 'react';
+import { cn } from 'utils';
+
+import { DisplayContextProvider, DisplayContext } from 'components/context';
+import { Analytics } from 'components';
 
 export const Hero = (props) => {
   const { children } = props;
 
   return (
-    <div>
+    <DisplayContextProvider>
       <Md props={props} snippet={children} />
       <Lg props={props} snippet={children} />
-    </div>
+    </DisplayContextProvider>
   );
 }
 
 const Md = (props) => {
   const { snippet, src, width, height, hideTabs, device } = props;
+  const { display } = useContext(DisplayContext);
 
   return (
     <div className='lg:hidden space-y-6'>
-      <Intro />
-      <Analytics 
-        src={src}
-        width={width}
-        height={height}
-        hideTabs={hideTabs}
-        device={device}
-        toolbar={"hidden"}
-      />
-      <EmbedCode snippet={snippet} />
+      <div className='my-12'>
+        <div className={cn(display === 'minimized' ? '' : 'hidden')}>
+          <Intro />
+        </div>
+        <div className='my-12'>
+          <Analytics 
+            src={src}
+            width={width}
+            height={height}
+            hideTabs={hideTabs}
+            device={device}
+            toolbar={"hidden"}
+          />
+        </div>
+        <div className={cn(display === 'minimized' ? '' : 'hidden')}>
+          <EmbedCode 
+            snippet={snippet}  
+          />
+        </div>
+      </div>     
     </div>
   )
 }
 
 const Lg = (props) => {
   const { snippet, src, width, height, hideTabs, device } = props;
+  const { display } = useContext(DisplayContext);
 
   return (
     <div className='hidden lg:grid mt-9 grid-cols-1 md:grid-cols-12 md:gap-9'>
-      <div className='col-span-4'>
+      <div className={cn(display === 'minimized' ? 'col-span-4' : 'hidden')}>
         <Intro />
         <EmbedCode snippet={snippet} />
       </div>
-      <div className='col-span-8'>
+      <div className={cn(display === 'minimized' ? 'col-span-8' : 'col-span-12')}>
         <Analytics 
           src={src}
           width={width}

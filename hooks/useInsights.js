@@ -16,6 +16,8 @@ export const useInsights = (metric) => {
       return getInsights(metric);
     },
     enabled: !!metric,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    cacheTime: 5 * 60 * 1000, // 5 minutes
   });
 }

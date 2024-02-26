@@ -1,3 +1,4 @@
+export { Analytics } from './Analytics'
 export { Head } from './Head';
 export { Hero } from './Hero';
 export { Logo } from './Logo';

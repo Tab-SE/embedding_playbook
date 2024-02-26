@@ -30,6 +30,6 @@ export const useTableauSession = (userName) => {
       return getEmbed(session_data.user.email);
     },
     enabled: signedIn,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: Infinity, // caches embed token without garbage collection, refresh via auth error handler
   });
 }

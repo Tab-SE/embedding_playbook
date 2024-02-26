@@ -40,11 +40,12 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
 // handles rendering logic during authentication
 const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
+  let jwt = null;
 
   // tanstack query hook to manage embed sessions
   const { 
     status, 
-    data: jwt, 
+    data: token, 
     error: sessionError, 
     isSuccess: isSessionSuccess, 
     isError: isSessionError, 
@@ -53,6 +54,10 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
 
   if (isSessionError) {
     console.debug(sessionError);
+  }
+
+  if (isSessionSuccess) {
+
   }
 
   return (
@@ -102,18 +107,9 @@ const Viz = forwardRef(function Viz(props, ref) {
       iframe.style.top = "-5px";
       iframe.style.left = "-5px";
 
-      // event listeners can only be added on initialized viz objects
-      viz.addEventListener('firstinteractive', async (event) => { // add the custom event listener to <tableau-viz>
-        // tabScale.initialize(); // initializing tabScale
-        setInteractive(true); // update state to indicate that the Tableau viz is interactive
-      });
-
-      // cleanup after effects
-      return () => {
-        viz.removeEventListener('firstinteractive', async (event) => {
-          setInteractive(false);
-        });
-      }
+      // handles all viz event listeners and clears them
+      const eventListeners = handleVizEventListeners(viz, setInteractive);
+      return eventListeners;
     }
   },[innerRef, setInteractive])
 
@@ -140,3 +136,24 @@ const Viz = forwardRef(function Viz(props, ref) {
     />
   )
 })
+
+const handleVizEventListeners = (viz, setInteractive) => {
+  // define named handlers to simplify handling after effects
+  const handleInteractive = async (event) => {
+    // tabScale.initialize(); // initializing tabScale
+    setInteractive(true); // update state to indicate that the Tableau viz is interactive
+  }
+  const handleVizLoadError = async (event) => {
+    console.error('vizloaderror', event);
+  }
+
+   // event listeners can only be added after component mounts
+  viz.addEventListener('firstinteractive', handleInteractive);
+  viz.addEventListener('vizloaderror', handleVizLoadError);
+
+  // cleanup after effects
+  return () => {
+    viz.removeEventListener('firstinteractive', handleInteractive);
+    viz.removeEventListener('vizloaderror', handleVizLoadError);
+  }
+}
