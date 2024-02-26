@@ -40,12 +40,11 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
 // handles rendering logic during authentication
 const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
-  let jwt = null;
 
   // tanstack query hook to manage embed sessions
   const { 
     status, 
-    data: token, 
+    data: jwt, 
     error: sessionError, 
     isSuccess: isSessionSuccess, 
     isError: isSessionError, 
@@ -57,7 +56,6 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   }
 
   if (isSessionSuccess) {
-
   }
 
   return (
