@@ -250,8 +250,16 @@ export const getInsights = async (metric) => {
   };
   const res = await httpPost(endpoint, body, config);
   const timeout = isServerlessTimeout(res); // determine if response timed out
+
+  // when used with tanstack queries, errors trigger retries
   if (timeout) {
     throw new Error('504: Serverless Timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  if (res.length <= 0) {
+    throw new Error('Empty array');
   }
 
   return res;
