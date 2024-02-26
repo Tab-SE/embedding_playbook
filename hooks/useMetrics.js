@@ -15,6 +15,7 @@ export const useMetrics = (user) => {
       return getMetrics();
     },
     enabled: !!user,
+    retry: 3,
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }

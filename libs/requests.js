@@ -155,7 +155,19 @@ export const getMetrics = async () => {
 
   const res = await httpGet(endpoint, config);
   const timeout = isServerlessTimeout(res);
-  return timeout ? null : res;
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  if (res.length <= 0) {
+    throw new Error('Empty array');
+  }
+
+  return res;
 }
 
 // requests parsed insights from private API
