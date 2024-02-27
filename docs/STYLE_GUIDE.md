@@ -12,7 +12,7 @@ As a result this documentation project is incredibly flexible while content is w
 
 ## Layouts
 
-Layouts in this Playbook are mainly generated from the file system itself and a configuration file that can be placed inside each folder. The app's navigation has 3 sections: top navbar, left navbar and right navbar.
+Layouts in this application are mainly generated from the file system itself and a configuration file that can be placed inside each folder. The app's navigation has 3 sections: top navbar, left navbar and right navbar.
 
 The behavior of files placed within the `pages` folder is described in the Nextra article called [Organize Files](https://nextra.site/docs/guide/organize-files).
 
@@ -35,7 +35,11 @@ import { TableauViz } from 'components';
 
 # Embedding Tableau Visualizations
 
-This is generic markdown content preceding the Tableau component of interest. Notice the following attributed provided for a viz from Tableau Public:
+This is *generic* markdown content preceding the **Tableau** component of interest.
+[Link Text](URL) 
+
+Notice the following attributes provided for a visualization
+hosted for free on Tableau Public:
 
 <TableauViz
   src='https://public.tableau.com/views/{viz}'
@@ -45,6 +49,9 @@ This is generic markdown content preceding the Tableau component of interest. No
   device='default'
   isPublic
 />
+
+Another block of text and an *image* can go after the embed.
+![Alt Text](Image URL)
 ```
 
 ## Images
