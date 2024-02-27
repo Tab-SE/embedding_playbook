@@ -1,4 +1,4 @@
-## About this App
+# About this App
 
 Embed Tableau was created with [Nextra](https://nextra.site), a documentation template built with the [Nextjs](https://nextjs.org/) web framework that uses [React](https://react.org/) to generate cutting-edge static webapps while content is written in [Markdown](https://www.markdownguide.org/getting-started/), an industry standard language for documentation. The app can be hosted on [Nextjs](https://vercel.com/solutions/nextjs?utm_source=next-site&utm_medium=banner&utm_campaign=home) or [self-hosted](https://nextjs.org/docs/pages/building-your-application/deploying#self-hosting) with [Docker](https://www.docker.com/).
 
