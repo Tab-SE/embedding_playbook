@@ -90,8 +90,8 @@ For more information on writing articles, adding images and displaying interacti
 
 ## About
 
-This application follows a "[docs-as-code](https://www.writethedocs.org/guide/docs-as-code/)" model of development which incorporates a powerful UI framework which interfaces with Markdown as the language of content, ultimately to help 
-developers and analysts collaborate with the community at-large or simply to keep up with the pace of change.
+This application follows a "[docs-as-code](https://www.writethedocs.org/guide/docs-as-code/)" model of development  incorporating a powerful UI framework which interfaces with Markdown as the language of content, this helps developers 
+and analysts collaborate with the community at-large and more importantly to keep up with the pace of change.
 
 For more information describing the overall architecture of this application as well as it's purpose and inspiration refer to [ABOUT.md](/docs/ABOUT.md).
 
@@ -100,7 +100,6 @@ For more information describing the overall architecture of this application as 
 Contributions to this project are more than welcome and may come in the form of enhancements to the codebase, writing articles, correcting or identifying bugs or even suggesting improvements.
 
 For more information please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md).
-
 
 ## License
 
