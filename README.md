@@ -11,13 +11,11 @@ them with unmatched speed and flexibility resulting in a springboarding of ideas
 
 ![tableau running on a laptop](public/img/opengraph/embed_tableau.png)
 
-To get started, go to [Embed Tableau](https://embedding-playbook.vercel.app/).
+To see the live app go to [Embed Tableau](https://embedding-playbook.vercel.app/).
 
 <br/>
 
-## Local Development
-
-Follow this guide to run the project locally and have it preview live changes that you make to the codebase. This setup is also useful when performing demos:
+## Quick Start
 
 1. First, clone this GitHub repository using your [method of choice](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
@@ -28,20 +26,18 @@ cd embedding_playbook
 
 3. Install dependencies (look for a file called `package.json` for more details).
 ```sh
-npm i
+npm install
 ```
 
-4. Create local environment files by copying the provided templates.
+4. Create a local environment file by copying the provided template.
 ```sh
 # copy the development template
 cp ./.env.development ./.env.development.local
-# copy the production template
-cp ./.env.production ./.env.production.local
 ```
 
-5. Provide values for all environment variables listed in `.env.development.local` (for local development) and `.env.production.local` (for creating local production builds).
+5. Provide values for all environment variables listed in `.env.development.local`.
 
-6. Finally, start the development server (`package.json` for more shell scripts).
+6. Finally, start the development server (see `package.json` for more shell scripts).
 ```sh
 npm run dev
 ```
@@ -50,25 +46,19 @@ npm run dev
 
 Visit `localhost:3000` to see the app. Enjoy!
 
+For more detailed installation instructions refer to [INSTALLATION.md](./docs/INSTALLATION.md) to learn about production deployments.
+
 >NOTE: Development on GitHub codespaces may differ from this process. Please refer to their documentation for further guidance.
-
-</br>
-
-## Deployment
-
-If you wish to deploy your own copy of [Embed Tableau](https://embedding-playbook.vercel.app/) these are your options:
-
-1. Host a fork on [Vercel](https://vercel.com/home)
-2. Host a fork [yourself](https://nextjs.org/docs/pages/building-your-application/deploying) (static export, Nodejs or Docker)
-
-> NOTE: Learn more about [forking repositories here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo).
-
-Of these options, hosting on Vercel is the most straightforward and the recommended path for beginners. It mostly consists of forking the repository, creating a free account on Vercel, connecting your profile to Github and importing project.
 
 ![up and down area chart](public/img/stock/up_down_area.png)
 
-## Writing Articles
+## Writing Analytical Posts
 
+Contributing to new or existing articles is done by editing `.mdx` files located in the `pages/` folder. The folder structure of `pages/` dictates the overall layout of the application which can be further customized via `_meta.json` files placed inside each folder. This architecture is designed and maintained by [Nextra which documents](https://nextra.site/docs/docs-theme/page-configuration) all available options for organizing content.
+
+Refer to this guide for help with [Markdown Syntax](https://www.markdownguide.org/) such as tables, quotes and more. These provide the basics elements that make up the Markdown language.
+
+For more information on writing articles refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
 
 
 ## Embedding Tableau
@@ -93,13 +83,16 @@ This is generic markdown content preceding the Tableau component of interest
   device='default'
 />
 ```
-</br>
+
+## About
+
+For more information describing the overall architecture of this application as well as it's purpose and inspiration refer to [ABOUT.md](/docs/ABOUT.md).
 
 ## Contributing
 
 Contributions to this project are more than welcome and may come in the form of enhancements to the codebase, writing articles, correcting or identifying bugs or even suggesting improvements.
 
-For more information please refer to the [Contribution Guide](./CONTRIBUTING.md).
+For more information please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 
 ## License
