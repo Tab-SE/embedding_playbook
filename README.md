@@ -37,16 +37,18 @@ cp ./.env.development ./.env.development.local
 
 5. Provide values for all environment variables listed in `.env.development.local`.
 
-6. Finally, start the development server (see `package.json` for more shell scripts).
+6. Finally, start the development server (see [USAGE.md](docs/USAGE.md) for more shell scripts).
 ```sh
 npm run dev
 ```
 
-7. From this point forward, any changes made to files in the codebase will be previewed live in development mode, noticeable in particular will be changes to React components (`.jsx` files) or Markdown articles (`.mdx` or `.md` files). 
+1. From this point forward, any changes made to files in the codebase will be previewed live in development mode, noticeable in particular will be changes to React components (`.jsx` files) or Markdown articles (`.mdx` or `.md` files). 
 
 Visit `localhost:3000` to see the app. Enjoy!
 
 For more detailed installation instructions refer to [INSTALLATION.md](./docs/INSTALLATION.md) to learn about production deployments.
+
+To learn more about developer scripts that run this application go to [USAGE.md](docs/USAGE.md).
 
 >NOTE: Development on GitHub codespaces may differ from this process. Please refer to their documentation for further guidance.
 
@@ -65,7 +67,11 @@ import { TableauViz } from 'components';
 
 # Embedding Tableau Visualizations
 
-This is generic markdown content preceding the Tableau component of interest. Notice the following attributed provided for a viz from Tableau Public:
+This is *generic* markdown content preceding the **Tableau** component of interest.
+[Link Text](URL) 
+
+Notice the following attributes provided for a visualization
+hosted for free on Tableau Public:
 
 <TableauViz
   src='https://public.tableau.com/views/{viz}'
@@ -75,11 +81,17 @@ This is generic markdown content preceding the Tableau component of interest. No
   device='default'
   isPublic
 />
+
+Another block of text and an *image* can go after the embed.
+![Alt Text](Image URL)
 ```
 
 For more information on writing articles, adding images and displaying interactive components such as a Tableau visualization refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
 
 ## About
+
+This application follows a "[docs-as-code](https://www.writethedocs.org/guide/docs-as-code/)" model of development which incorporates a powerful UI framework which interfaces with Markdown as the language of content, ultimately to help 
+developers and analysts collaborate with the community at-large or simply to keep up with the pace of change.
 
 For more information describing the overall architecture of this application as well as it's purpose and inspiration refer to [ABOUT.md](/docs/ABOUT.md).
 
