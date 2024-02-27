@@ -11,22 +11,26 @@ case_sensitive = true
 
 [*.js]
 quote_type = single
-insert_final_newline = true
 require_final_newline = true
 max_line_length = 100
-trim_trailing_whitespace = true
 
 [*.jsx]
 quote_type = single
-insert_final_newline = true
 require_final_newline = true
 max_line_length = 100
-trim_trailing_whitespace = true
+
+[*.ts]
+quote_type = single
+require_final_newline = true
+max_line_length = 100
+
+[*.tsx]
+quote_type = single
+require_final_newline = true
+max_line_length = 100
 
 [*.md]
 max_line_length = 100
-trim_trailing_whitespace = true
 
 [*.mdx]
 max_line_length = 100
-trim_trailing_whitespace = true
