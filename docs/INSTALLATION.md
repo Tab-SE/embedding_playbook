@@ -32,7 +32,7 @@ cp ./.env.production ./.env.production.local
 
 1. Provide values for all environment variables listed in `.env.development.local` (for local development) and `.env.production.local` (for creating local production builds).
 
-2. Finally, start the development server (`package.json` for more shell scripts).
+2. Finally, start the development server (see [USAGE.md](docs/USAGE.md) for more shell scripts).
 ```sh
 npm run dev
 ```
