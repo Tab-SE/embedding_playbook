@@ -23,7 +23,7 @@ To control the layout of the application you can add links to the navbar to crea
 For more information please refer to the Nextra article titled [Page Configuration](https://nextra.site/docs/docs-theme/page-configuration#pages).
 
 
-## Embedding Tableau
+## Embedding Tableau Visualizations
 
 Embedding in this app relies on importing a reusable UI component into an article that ends with `.mdx` as it designates the file as using a [superset of markdown](https://mdxjs.com/) that supports React components. To accomplish this, do the following:
 
@@ -31,18 +31,19 @@ Embedding in this app relies on importing a reusable UI component into an articl
 2. Import the `<Tableau/>` component into the article and provide configuration options as shown here:
 
 ```md
-import { TableauViz } from '../../components';
+import { TableauViz } from 'components';
 
-# Embedding Tableau Views
+# Embedding Tableau Visualizations
 
-This is generic markdown content preceding the Tableau component of interest
+This is generic markdown content preceding the Tableau component of interest. Notice the following attributed provided for a viz from Tableau Public:
 
-<Tableau
+<TableauViz
   src='https://public.tableau.com/views/{viz}'
   height='900'
   width='700'
   hideTabs='true'
   device='default'
+  isPublic
 />
 ```
 

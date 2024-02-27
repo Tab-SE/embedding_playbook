@@ -63,7 +63,7 @@ To embed a Tableau visualization you must first import the `<TableauViz>` compon
 ```md
 import { TableauViz } from 'components';
 
-# Embedding Tableau Views
+# Embedding Tableau Visualizations
 
 This is generic markdown content preceding the Tableau component of interest. Notice the following attributed provided for a viz from Tableau Public:
 
