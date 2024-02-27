@@ -1,97 +1,93 @@
-# Tableau Embedded Analytics Playbook 
+# Embed Tableau 
 
 [Tableau](https://www.tableau.com) is the world's leading end-to-end data and analytics platform. 
 
 ![tableau logo](public/img/tableau/logo_text.png)
 
-Leverage the analytical powerhouse of Tableau to analyze and visualize data. This Playbook teaches you how to compose Tableau's varied [product capabilities](https://www.tableau.com/products/our-platform) into applications that thrill customers, coworkers and friends!
+Leverage the analytical powerhouse of Tableau to analyze and visualize data. This guide teaches you how to compose Tableau's varied [product capabilities](https://www.tableau.com/products/our-platform) into applications that thrill customers, coworkers and friends!
 
 Beyond creating visual representations of data, Tableau provides the greatest benefits as it helps people discover what information is valuable to others. It enables users to analyze data and build the interfaces that represent 
 them with unmatched speed and flexibility resulting in a springboarding of ideas into value.
 
-![tableau running on a laptop](public/img/stock/environmental3.png)
+![tableau running on a laptop](public/img/opengraph/embed_tableau.png)
 
-To get started, go to the [Tableau Embedded Analytics Playbook](https://tab-se.github.io/embedding_playbook).
+To see the live app go to [Embed Tableau](https://embedding-playbook.vercel.app/).
 
 <br/>
 
-## Local Development
+## Quick Start
 
-First, clone this GitHub repository using your [method of choice](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+1. First, clone this GitHub repository using your [method of choice](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
-Then, navigate to the directory where you cloned the repository using your shell.
-
+2. Then, navigate to the directory where you cloned the repository using your shell.
 ```sh
 cd embedding_playbook
 ```
 
-Install dependencies (look for a file called `package.json`).
+3. Install dependencies (look for a file called `package.json` for more details).
 ```sh
-npm i
+npm install
 ```
 
-Finally, start the development server.
+4. Create a local environment file by copying the provided template.
+```sh
+# copy the development template
+cp ./.env.development ./.env.development.local
+```
+
+5. Provide values for all environment variables listed in `.env.development.local`.
+
+6. Finally, start the development server (see `package.json` for more shell scripts).
 ```sh
 npm run dev
 ```
 
+7. From this point forward, any changes made to files in the codebase will be previewed live in development mode, noticeable in particular will be changes to React components (`.jsx` files) or Markdown articles (`.mdx` or `.md` files). 
+
 Visit `localhost:3000` to see the app. Enjoy!
+
+For more detailed installation instructions refer to [INSTALLATION.md](./docs/INSTALLATION.md) to learn about production deployments.
 
 >NOTE: Development on GitHub codespaces may differ from this process. Please refer to their documentation for further guidance.
 
 ![up and down area chart](public/img/stock/up_down_area.png)
 
-## About the Playbook
+## Adding Content
 
-The Playbook was created with [Nextra](https://nextra.site), a documentation template built with the [Nextjs](https://nextjs.org/) web framework that uses [React](https://react.org/) to generate cutting-edge static webapps while content is written in [Markdown](https://www.markdownguide.org/getting-started/), an industry standard language for documentation. The app can be hosted on [Nextjs](https://vercel.com/solutions/nextjs?utm_source=next-site&utm_medium=banner&utm_campaign=home), [GitHub Pages](https://pages.github.com/) and other [static hosts](https://nextjs.org/docs/pages/building-your-application/deploying/static-exports#deploying).
+Contributing to new or existing articles is done by editing `.mdx` files located in the `pages/` folder. The folder structure of `pages/` dictates the overall layout of the application which can be further customized via `_meta.json` files placed inside each folder. This architecture is designed and maintained by [Nextra which documents](https://nextra.site/docs/docs-theme/page-configuration) all available options for organizing content.
 
-This architecture was selected for the following reasons:
-1. [React](https://react.org/) is great for creating dynamic UI elements such as Tableau embeds that fit seamlessly within product documentation. It's popularity makes it easier to find developers who can contribute to the codebase or teach others how to do so. [Nextjs](https://nextjs.org/) is the most popular React metaframework known for some of the [highest rated](https://2022.stateofjs.com/en-US/libraries/front-end-frameworks/#ratios-over-time) developer experiences out there.
-2. [Markdown](https://www.markdownguide.org/getting-started/) is a commonly used lightweight markup language that allows technical writers to produce content within a "[docs-as-code](https://www.writethedocs.org/guide/docs-as-code/)" framework. This is an established method for application developers and technical writers to work in the most agile way possible with no overhead expenses. It is also the established process for writing technical documentation within this organization.
-3. [Jamstack](https://jamstack.org/glossary/jamstack/) is the architectural approach that encompasses [SSG](https://jamstack.org/glossary/ssg/) (static site generation) which allows for the generation of complex and dynamic websites through 'builds' which result in a static app that can be hosted freely or inexpensively on some of the fastest web infrastructure, [CDNs](https://jamstack.org/glossary/cdn/).
+Refer to this guide for help with [Markdown Syntax](https://www.markdownguide.org/) such as tables, quotes and more. These provide the basics elements that make up the Markdown language.
 
-The combination works great for this use case since it is built to facilitate contributions towards content that fulfill the purpose of this Playbook while still allowing developers to write a dynamic application with cutting-edge best practices for the web. 
-
-Most technical documentation required to configure, alter or enhance this codebase is updated and maintained by professional teams listed here (in order of importance):
-
-1. [Nextra](https://nextra.site) (docs theme)
-2. [Nextjs](https://nextjs.org/) (framework)
-3. [React](https://react.org/) (UI library)
-
-</br>
-
-## Embedding Tableau
-
-Embedding in the Playbook relies on importing a reusable UI component into an article that ends with `.mdx` as it designates the file as using a [superset of markdown](https://mdxjs.com/) that supports React components. To accomplish this, do the following:
-
-1. Make sure the article ends in `.mdx` rather than `.md` which does not support React.
-2. Import the `<Tableau/>` component into the article and provide configuration options as shown here:
+To embed a Tableau visualization you must first import the `<TableauViz>` component into the `.mdx` article that you are writing and provide the attributes that it needs to display your analytics.
 
 ```md
-import { TableauViz } from '../../components';
+import { TableauViz } from 'components';
 
-# Embedding Tableau Views
+# Embedding Tableau Visualizations
 
-This is generic markdown content preceding the Tableau component of interest
+This is generic markdown content preceding the Tableau component of interest. Notice the following attributed provided for a viz from Tableau Public:
 
-<Tableau
+<TableauViz
   src='https://public.tableau.com/views/{viz}'
   height='900'
   width='700'
   hideTabs='true'
   device='default'
+  isPublic
 />
 ```
 
-![sample embed](public/img/run_audit.png)
+For more information on writing articles, adding images and displaying interactive components such as a Tableau visualization refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
 
-</br>
+## About
+
+For more information describing the overall architecture of this application as well as it's purpose and inspiration refer to [ABOUT.md](/docs/ABOUT.md).
 
 ## Contributing
 
 Contributions to this project are more than welcome and may come in the form of enhancements to the codebase, writing articles, correcting or identifying bugs or even suggesting improvements.
 
-For more information please refer to the [Contribution Guide](./CONTRIBUTING.md).
+For more information please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 
 ## License

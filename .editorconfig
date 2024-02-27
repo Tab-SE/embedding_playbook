@@ -1,0 +1,36 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+case_sensitive = true
+
+[*.js]
+quote_type = single
+require_final_newline = true
+max_line_length = 100
+
+[*.jsx]
+quote_type = single
+require_final_newline = true
+max_line_length = 100
+
+[*.ts]
+quote_type = single
+require_final_newline = true
+max_line_length = 100
+
+[*.tsx]
+quote_type = single
+require_final_newline = true
+max_line_length = 100
+
+[*.md]
+max_line_length = 100
+
+[*.mdx]
+max_line_length = 100
