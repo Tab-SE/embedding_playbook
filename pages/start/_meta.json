@@ -2,7 +2,13 @@
   "index": {
     "title": "Getting Started"
   },
+  "tableau": {
+    "title": "Tableau Platform"
+  },
   "architecture": {
     "title": "Architecture"
+  },
+  "next": {
+    "title": "Next Steps"
   }
 }
