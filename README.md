@@ -52,37 +52,32 @@ For more detailed installation instructions refer to [INSTALLATION.md](./docs/IN
 
 ![up and down area chart](public/img/stock/up_down_area.png)
 
-## Writing Analytical Posts
+## Adding Content
 
 Contributing to new or existing articles is done by editing `.mdx` files located in the `pages/` folder. The folder structure of `pages/` dictates the overall layout of the application which can be further customized via `_meta.json` files placed inside each folder. This architecture is designed and maintained by [Nextra which documents](https://nextra.site/docs/docs-theme/page-configuration) all available options for organizing content.
 
 Refer to this guide for help with [Markdown Syntax](https://www.markdownguide.org/) such as tables, quotes and more. These provide the basics elements that make up the Markdown language.
 
-For more information on writing articles refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
-
-
-## Embedding Tableau
-
-Embedding in this app relies on importing a reusable UI component into an article that ends with `.mdx` as it designates the file as using a [superset of markdown](https://mdxjs.com/) that supports React components. To accomplish this, do the following:
-
-1. Make sure the article ends in `.mdx` rather than `.md` which does not support React.
-2. Import the `<Tableau/>` component into the article and provide configuration options as shown here:
+To embed a Tableau visualization you must first import the `<TableauViz>` component into the `.mdx` article that you are writing and provide the attributes that it needs to display your analytics.
 
 ```md
-import { TableauViz } from '../../components';
+import { TableauViz } from 'components';
 
 # Embedding Tableau Views
 
-This is generic markdown content preceding the Tableau component of interest
+This is generic markdown content preceding the Tableau component of interest. Notice the following attributed provided for a viz from Tableau Public:
 
-<Tableau
+<TableauViz
   src='https://public.tableau.com/views/{viz}'
   height='900'
   width='700'
   hideTabs='true'
   device='default'
+  isPublic
 />
 ```
+
+For more information on writing articles, adding images and displaying interactive components such as a Tableau visualization refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
 
 ## About
 
