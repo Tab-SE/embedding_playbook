@@ -7,6 +7,10 @@ This section covers "builds"
 
 This is what the `components.json` file should contain when interacting with [shadcn](https://ui.shadcn.com/) via CLI such as when installing new UI components or updating existing ones.
 
+> NOTE: Placed in the project root only when running CLI operations, delete once done. 
+> Otherwise it will interfere with imports from components/ folder:
+
+`components.json`
 ```json
 {
   "$schema": "https://ui.shadcn.com/schema.json",

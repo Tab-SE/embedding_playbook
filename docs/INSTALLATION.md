@@ -54,4 +54,4 @@ If you wish to deploy your own copy of [Embed Tableau](https://embedding-playboo
 
 > NOTE: Learn more about [forking repositories here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo).
 
-Of these options, hosting on Vercel is the most straightforward and the recommended path for beginners. It mostly consists of forking the repository, creating a free account on Vercel, connecting your profile to Github and importing project.
+Of these options, hosting on Vercel is the most straightforward and the recommended path for beginners. It mostly consists of forking the repository, creating a free account on Vercel, connecting your profile to Github and importing your forked project.
