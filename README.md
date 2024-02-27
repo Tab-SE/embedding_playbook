@@ -52,7 +52,7 @@ Visit `localhost:3000` to see the app. Enjoy!
 
 >NOTE: Development on GitHub codespaces may differ from this process. Please refer to their documentation for further guidance.
 
-![up and down area chart](public/img/stock/up_down_area.png)
+</br>
 
 ## Deployment
 
@@ -64,6 +64,12 @@ If you wish to deploy your own copy of [Embed Tableau](https://embedding-playboo
 > NOTE: Learn more about [forking repositories here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo).
 
 Of these options, hosting on Vercel is the most straightforward and the recommended path for beginners. It mostly consists of forking the repository, creating a free account on Vercel, connecting your profile to Github and importing project.
+
+![up and down area chart](public/img/stock/up_down_area.png)
+
+## Writing Articles
+
+
 
 ## Embedding Tableau
 

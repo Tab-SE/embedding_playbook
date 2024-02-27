@@ -1,4 +1,4 @@
-# Tableau Embedded Analytics Playbook 
+# Embed Tableau 
 
 [Tableau](https://www.tableau.com) is the world's leading end-to-end data and analytics platform. 
 
@@ -8,7 +8,7 @@
 
 Contributions to this project are more than welcome and may come in the form of enhancements to the codebase, writing articles, correcting or identifying bugs or even suggesting improvements.
 
-This project has two separate contribution models, one designed for writing articles and the other intended for maintaining the codebase. The [About the Playbook](/README.md#about-the-playbook) section of the README explains how the architecture chosen for this app enables a twin contribution model.
+This project has two separate contribution models, one designed for writing articles and the other intended for maintaining the codebase. The [About this App](/CONTRIBUTING.md#about-this-app) section explains how the architecture chosen for this app enables a twin contribution model.
 
 Most contributions will come in the form of articles. Writing high-quality guidance for embedding Tableau is the main purpose of this project.
 
