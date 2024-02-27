@@ -1,4 +1,6 @@
 {
-  "auth": "Authentication & SSO",
-  "rls": "Row-Level Security"
+  "auth": "Authenticate Users",
+  "files": "Secure Files",
+  "rls": "Secure Data",
+  "infra": "Infrastructure"
 }
