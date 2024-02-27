@@ -1,6 +1,7 @@
 # Usage
 
 ## Scripts
+This section covers "builds"
 
 ## Importing UI Components from shadcn
 

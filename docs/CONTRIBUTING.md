@@ -17,3 +17,7 @@ Most contributions will come in the form of articles. Writing high-quality guida
 ## Writing Content
 
 For detailed instructions on how to write content, how to add images and how to display interactive UI components in this app, refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
+
+## Developers
+
+To contribute to the codebase of this application.
