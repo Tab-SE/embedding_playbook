@@ -215,6 +215,34 @@ export const getInsights = async (metric) => {
   return res;
 }
 
+// obtains metadata from private API for dynamic content
+export const getMetadata = async () => {
+  const endpoint = '/api/metadata';
+
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }
+  }
+
+  const res = await httpGet(endpoint, config);
+  const timeout = isServerlessTimeout(res);
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  if (res.length <= 0) {
+    throw new Error('Empty array');
+  }
+
+  return res;
+}
+
 const isServerlessTimeout = (res) => {
   if (res instanceof Error) {
     if (res.code === 504) {

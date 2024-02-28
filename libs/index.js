@@ -2,7 +2,7 @@ export const tab_embed = typeof window !== 'undefined' ? require("./tableau.embe
 
 export { 
   tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications, 
-  getDefinitions, getMetrics, getEmbed, getInsights
+  getDefinitions, getMetrics, getEmbed, getInsights, getMetadata
 } from './requests';
 
 export { serverJWT, serverPAT } from './responses.js';
