@@ -3,6 +3,8 @@ export const dynamic = 'force-dynamic'; // static by default, unless reading the
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
+import { getMetadata } from './methods';
+
 // local connected app
 export async function POST(req) {
   // Check if req is defined
@@ -14,7 +16,7 @@ export async function POST(req) {
 
   // Check if token is defined
   if (token?.tableau) {
-    const payload = token.tableau.embed_token;
+    const payload = await getMetadata(token.tableau);
     if (payload) {
       return NextResponse.json(payload, { status: 200 });
     } else {
