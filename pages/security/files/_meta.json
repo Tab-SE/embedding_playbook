@@ -1,6 +1,8 @@
 {
   "users": {
-    "title": "Users and Groups",
-    "permissions": "Permissions"
+    "title": "Users and Groups"
+  },
+  "permissions": {
+    "title": "Access and Permissions"
   }
 }

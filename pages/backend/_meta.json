@@ -1,8 +1,5 @@
 {
   "index": "Backend",
-  "---": {
-    "type": "separator"
-  },
   "rest": "REST API",
   "metadata": "Metadata API (GraphQL)",
   "webhooks": "Webhooks",
