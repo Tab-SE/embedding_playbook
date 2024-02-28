@@ -1,7 +1,7 @@
 {
-  "embedding_api": "Tableau Embedding API",
-  "non_views": "Embedding Non-View Content",
-  "other_apps": "Embedding into Other Apps",
-  "tableau": "Tableau Visualizations",
-  "pulse": "Pulse Metrics"
+  "index": "Frontend",
+  "visualizations": "Data Visualizations",
+  "pulse": "Metrics",
+  "explore": "Data Exploration",
+  "salesforce": "Tableau in Salesforce"
 }
