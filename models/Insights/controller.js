@@ -1,5 +1,5 @@
-import { getInsightBundle } from '../../libs/requests';
-import { parseInsights } from '../../utils';
+import { getInsightBundle } from 'libs';
+import { parseInsights } from 'utils';
 
 export const handleInsights = async (apiKey, metric, resource) => {
   try {
