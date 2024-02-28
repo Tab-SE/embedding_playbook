@@ -1,4 +1,10 @@
 {
-  "auth": "Authentication & SSO",
-  "rls": "Row-Level Security"
+  "index": "Security",
+  "---": {
+    "type": "separator"
+  },
+  "auth": "Authenticate Users",
+  "files": "Secure Files",
+  "rls": "Secure Data",
+  "infra": "Infrastructure"
 }

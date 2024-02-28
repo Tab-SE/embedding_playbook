@@ -50,7 +50,7 @@ Then, create a script that:
 
 If your tenants 'share' a database server, and there is logic in the database that determines which users can see which rows, you can build your datasources and workbooks using 'User Filters' which is a way to filter based on which user is currently logged in to Tableau Server.
 
-Essentially, when connecting to your data in Tableau Desktop you will JOIN the tables containing the data necessary for analysis to the entitlements table so that each row has a column ([Owner] in the below example) specifying which Tableau Server user it belongs to. Then you can create a calculation `username() = [Owner]` and filter to `True`.
+Essentially, when connecting to your data in Tableau Desktop you will JOIN the tables containing the data necessary for analysis to the entitlements table so that each row has a column (Owner in the below example) specifying which Tableau Server user it belongs to. Then you can create a calculation `username() = [Owner]` and filter to `True`.
 
 **See also**
 

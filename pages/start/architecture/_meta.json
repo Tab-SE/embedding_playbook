@@ -1,5 +1,8 @@
 {
-  "index": {
-    "title": "Introduction"
+  "cloud": {
+    "title": "Tableau Cloud"
+  },
+  "server": {
+    "title": "Tableau Server"
   }
 }

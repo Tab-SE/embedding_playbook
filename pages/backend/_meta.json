@@ -1,4 +1,11 @@
 {
-  "restapi": "Tableau REST API",
-  "devops": "Devops"
+  "index": "Backend",
+  "---": {
+    "type": "separator"
+  },
+  "rest": "REST API",
+  "metadata": "Metadata API (GraphQL)",
+  "webhooks": "Webhooks",
+  "devops": "DevOps",
+  "analytics": "Advanced Analytics"
 }
