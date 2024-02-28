@@ -19,7 +19,8 @@
       "sidebar": false,
       "toc": false,
       "pagination": false,
-      "navbar": false
+      "navbar": false,
+      "timestamp": false
     }
   },
   "start": {
