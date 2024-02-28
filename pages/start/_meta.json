@@ -2,6 +2,9 @@
   "index": {
     "title": "Getting Started"
   },
+  "---": {
+    "type": "separator"
+  },
   "tableau": {
     "title": "Tableau Platform"
   },

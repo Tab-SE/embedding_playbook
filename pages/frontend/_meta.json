@@ -1,7 +1,13 @@
 {
   "index": "Frontend",
+  "---": {
+    "type": "separator"
+  },
   "visualizations": "Data Visualizations",
   "pulse": "Metrics",
   "explore": "Data Exploration",
+  "----": {
+    "type": "separator"
+  },
   "salesforce": "Tableau in Salesforce"
 }
