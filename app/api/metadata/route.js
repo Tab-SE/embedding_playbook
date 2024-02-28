@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic'; // static by default, unless reading the
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-import { getMetadata } from './methods';
+import { getMetadata, makeContentMap } from './methods';
 
 // local connected app
 export async function GET(req) {
@@ -17,7 +17,9 @@ export async function GET(req) {
 
   // Check if token is defined
   if (token?.tableau) {
-    const payload = await getMetadata(token.tableau.rest_key);
+    const rawMetaData = await getMetadata(token.tableau.rest_key);
+    // creates a content map for displaying content dynamically
+    const payload = makeContentMap(rawMetaData);
     if (payload) {
       return NextResponse.json(payload, { status: 200 });
     } else {

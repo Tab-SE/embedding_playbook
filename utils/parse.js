@@ -28,7 +28,6 @@ export const parseSubscriptions = (subscriptionsResponse) => {
   return subscriptions;
 }
 
-
 // return an minimal representation of specifications
 export const parseSpecifications = (specificationsResponse) => {
   const specifications = {};
@@ -50,7 +49,6 @@ export const parseSpecifications = (specificationsResponse) => {
   });
   return specifications;
 }
-
 
 // return an minimal representation of core metrics
 export const parseDefinitions = (definitionsResponse) => {
@@ -105,37 +103,6 @@ export const matchSubscription = (subscriptionsObj, specification_id) => {
     }
   }
 } 
-
-// return an minimal representation of BAN (current metric value) insight bundles
-export const parseBan = (banBundle) => {
-  const insights = [];
-
-  // Retrieve properties using JSONPath
-  const ids = JSONPath({ path: '$.[*][*][*].insights.[*].result.id', json: banBundle }); // indexing array
-  const types = JSONPath({ path: '$.[*][*][*].insights.[*].result.type', json: banBundle });
-  const markups = JSONPath({ path: '$.[*][*][*].insights.[*].result.markup', json: banBundle });
-  const contents = JSONPath({ path: '$.[*][*][*].insights.[*].result.content', json: banBundle });
-  const vizs = JSONPath({ path: '$.[*][*][*].insights.[*].result.viz', json: banBundle });
-  const questions = JSONPath({ path: '$.[*][*][*].insights.[*].result.question', json: banBundle });
-  const facts = JSONPath({ path: '$.[*][*][*].insights.[*].result.facts', json: banBundle });
-  const values = JSONPath({ path: '$.[*][*][*].insights.[*].result.facts.target_period_value.formatted', json: banBundle });
-
-  // Iterate through indexing array and create leaves in the return object
-  ids.forEach((id, index) => {
-    // Using splice to insert the element at the specified index
-    insights.splice(index, 0, {
-      id: id, 
-      type: types[index], // Add the corresponding properties by index
-      markup: markups[index],
-      content: contents[index],
-      viz: vizs[index], 
-      question: questions[index], 
-      fact: facts[index], 
-      value: values[index], 
-    });
-  });
-  return insights;
-}
 
 // return an minimal representation of Detail insight bundles
 export const parseDetail = (bundle) => {
@@ -218,4 +185,81 @@ export const parseInsights = (bundle) => {
   } else {
     throw new Error(`Error parsing insights bundle, could not form an array: ${bundle}`);
   } 
+}
+
+// returns a content map used for dynamic display
+export const parseMetadata = (rawMetadata) => {
+  const contentMap = {};
+  const workbookProjects = parseWorkbooks(rawMetadata);
+  const dashboardWorkbooks = parseDashboards(rawMetadata);
+  const sheetDashboards = parseSheets(rawMetadata);
+  const dataSourceProjects = parseDataSources(rawMetadata);
+
+
+
+  return rawMetadata;
+}
+
+// creates a tree of workbooks using projects as their root
+const parseWorkbooks = (rawMetadata) => {
+  const workbookProjects = [];
+
+  // Retrieve properties using JSONPath
+  const projects = JSONPath({ path: '$.data.workbooks.*.projectName', json: rawMetadata }); // indexing array
+
+  if (Array.isArray(projects)) {
+    projects.forEach(project => {
+
+    });
+  }
+
+  return workbookProjects;
+}
+
+// creates a tree of dashboards using workbooks as their root
+const parseDashboards = (rawMetadata) => {
+  const dashboardsWorkbooks = [];
+
+  // Retrieve properties using JSONPath
+  const workbooks = JSONPath({ path: '$.data.workbooks.*.projectName', json: rawMetadata }); // indexing array
+
+  if (Array.isArray(workbooks)) {
+    workbooks.forEach(workbook => {
+
+    });
+  }
+
+  return dashboardsWorkbooks;
+}
+
+// creates a tree of sheets using dashboards as their root
+const parseSheets = (rawMetadata) => {
+  const sheetDashboards = [];
+
+  // Retrieve properties using JSONPath
+  const dashboards = JSONPath({ path: '$.data.workbooks.*.projectName', json: rawMetadata }); // indexing array
+
+  if (Array.isArray(dashboards)) {
+    dashboards.forEach(dashboard => {
+
+    });
+  }
+
+  return sheetDashboards;
+}
+
+// creates a tree of data sources using projects as their root
+const parseDataSources = (rawMetadata) => {
+  const dataSourceProjects = [];
+
+  // Retrieve properties using JSONPath
+  const projects = JSONPath({ path: '$.data.workbooks.*.projectName', json: rawMetadata }); // indexing array
+
+  if (Array.isArray(projects)) {
+    projects.forEach(project => {
+
+    });
+  }
+
+  return dataSourceProjects;
 }
