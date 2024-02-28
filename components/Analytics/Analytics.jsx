@@ -11,7 +11,7 @@ export const Analytics = (props) => {
   return (
     <>
       <MobilePreview />
-      <div className="hidden flex-col md:flex">
+      <div className="hidden flex-col md:flex my-6">
         <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-xl h-min-screen">
           <MainNav setTheme={setTheme} />
           <div className='bg-stone-300 dark:bg-stone-700 pt-6 h-[1170px]'>

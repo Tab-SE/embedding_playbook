@@ -5,6 +5,6 @@
   },
   "auth": "Authenticate Users",
   "files": "Secure Files",
-  "rls": "Secure Data",
+  "data": "Secure Data",
   "infra": "Infrastructure"
 }
