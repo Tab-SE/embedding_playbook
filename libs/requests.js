@@ -1,4 +1,4 @@
-import { httpGet, httpPost } from "../utils";
+import { httpGet, httpPost } from "utils";
 
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const tableau_domain2 = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
@@ -170,40 +170,6 @@ export const getMetrics = async () => {
   return res;
 }
 
-// requests parsed insights from private API
-export const getBan = async (metric) => {
-  const endpoint = '/api/ban';
-  const body = { metric };
-  
-  const config = {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const res = await httpPost(endpoint, body, config);
-  const timeout = isServerlessTimeout(res);
-  return timeout ? null : res;
-}
-
-// requests parsed insights from private API
-export const getSpringboard = async (metric) => {
-  const endpoint = '/api/springboard';
-  const body = { metric };
-  
-  const config = {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const res = await httpPost(endpoint, body, config);
-  const timeout = isServerlessTimeout(res);
-  return timeout ? null : res;
-}
-
 // obtains a public token for the frontend
 export const getEmbed = async (userId) => {
   const endpoint = '/api/embed';
@@ -216,22 +182,6 @@ export const getEmbed = async (userId) => {
     },
   };
 
-  const res = await httpPost(endpoint, body, config);
-  const timeout = isServerlessTimeout(res);
-  return timeout ? null : res;
-}
-
-// requests parsed insights from private API
-export const getDetail = async (metric) => {
-  const endpoint = '/api/detail';
-  const body = { metric };
-  
-  const config = {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  };
   const res = await httpPost(endpoint, body, config);
   const timeout = isServerlessTimeout(res);
   return timeout ? null : res;

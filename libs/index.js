@@ -2,9 +2,9 @@ export const tab_embed = typeof window !== 'undefined' ? require("./tableau.embe
 
 export { 
   tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications, getDefinitions, 
-  getMetrics, getBan, getSpringboard, getEmbed, getDetail, getInsights, getInsightBundle
+  getMetrics, getEmbed, getInsights, getInsightBundle
 } from './requests';
 
-export { serverJWT, serverPAT, makeMetrics } from './responses.js';
+export { serverJWT, serverPAT } from './responses.js';
 
 export { jwtSign, jwtVerify } from './crypto';
