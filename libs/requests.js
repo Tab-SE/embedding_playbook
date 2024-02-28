@@ -215,6 +215,13 @@ export const getInsights = async (metric) => {
   return res;
 }
 
+export const queryMetadata = async (apiKey) => {
+  const endpoint = `${tableau_domain2}/api/metadata/graphql`;
+
+
+
+}
+
 const isServerlessTimeout = (res) => {
   if (res instanceof Error) {
     if (res.code === 504) {

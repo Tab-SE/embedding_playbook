@@ -8,3 +8,5 @@ export {
 export { serverJWT, serverPAT } from './responses.js';
 
 export { jwtSign, jwtVerify } from './crypto';
+
+export { getMetadata } from './gql';
