@@ -11,11 +11,15 @@ export const MainNav = (props) => {
   const { setDisplay } = useContext(DisplayContext);
 
   const handleFullSized = (event) => {
-    setDisplay('fullsized');
+    if (setDisplay){
+      setDisplay('fullsized');
+    }
   }
   
   const handleMinimized = (event) => {
-    setDisplay('minimized');
+    if (setDisplay){
+      setDisplay('minimized');
+    }
   }
 
   return (

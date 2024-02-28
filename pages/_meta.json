@@ -9,6 +9,19 @@
       "layout": "full"
     }
   },
+  "demo": {
+    "title": "Demo",
+    "display": "hidden",
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "footer": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false,
+      "navbar": false
+    }
+  },
   "start": {
     "title": "Getting Started"
   },
