@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { MainNav, MobilePreview, Sheets } from './index';
-import { Metrics } from './Metrics';
+import { Metrics } from 'components';
 
 
 export const Analytics = (props) => {

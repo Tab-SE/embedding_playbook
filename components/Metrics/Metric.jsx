@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { IconSparkles } from '@tabler/icons-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from "../ui";
-import { Skeleton } from "../ui";
-import { Badge } from "../ui";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui";
+import { Card, CardContent, CardHeader, CardTitle } from "components/ui";
+import { Skeleton } from "components/ui";
+import { Badge } from "components/ui";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "components/ui";
 
 import { useInsights } from "hooks";
 import { parseInsights } from "utils";
-import { InsightsModal } from "./InsightsModal";
+import { InsightsModal } from "components";
 
 
 export const Metric = (props) => {

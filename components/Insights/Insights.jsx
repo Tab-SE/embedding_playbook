@@ -1,9 +1,9 @@
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '../ui';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from 'components/ui';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui";
 
 import { useInsights } from 'hooks';
 import { parseDetail } from 'utils';
-import { VegaLiteViz } from '../VegaLiteViz';
+import { VegaLiteViz } from 'components';
 
 export const Insights = (props) => {
   const { metric, stats } = props;

@@ -7,10 +7,10 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../ui";
+} from "components/ui";
 
 import { useMetrics } from 'hooks';
-import { Metric } from "./Metric";
+import { Metric } from "components";
 
 
 export const Metrics = (props) => {
