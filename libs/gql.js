@@ -1,7 +1,28 @@
 import { gql } from 'graphql-tag';
 
+import { httpPost } from "utils";
+
+const tableau_domain = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
+
+// makes request to Metadata API
+export const queryMetadata = async (apiKey) => {
+  const endpoint = `${tableau_domain}/api/metadata/graphql`;
+  const body = queryMetadataBody;
+
+  const config = {
+    headers: {
+      'X-Tableau-Auth': apiKey,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const res = await httpPost(endpoint, body, config);
+  return res;
+}
+
 // comprehensive GraphQL query obtains user specific assets on a Tableau environment
-export const getMetadata = gql`
+export const queryMetadataBody = gql`
 query GetMetadata {
   workbooks {
     id
@@ -107,6 +128,8 @@ query GetMetadata {
       updatedAt
       asset {
         id
+        luid
+        name
       }
     }
     dataQualityCertifications {
@@ -121,6 +144,8 @@ query GetMetadata {
       updatedAt
       asset {
         id
+        luid
+        name
       }
     }
     labels {
@@ -135,6 +160,8 @@ query GetMetadata {
       updatedAt
       asset {
         id
+        luid
+        name
       }
     }
     tags {
@@ -143,6 +170,10 @@ query GetMetadata {
     }
     createdAt
     updatedAt
+    downstreamWorkbooks {
+      id
+      luid
+    }
   }
 }
 `;

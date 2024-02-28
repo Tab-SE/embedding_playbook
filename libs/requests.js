@@ -1,4 +1,4 @@
-import { httpGet, httpPost } from "utils";
+import { httpGet, httpPost, queryMetadata } from "utils";
 
 const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
 const tableau_domain2 = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
@@ -213,13 +213,6 @@ export const getInsights = async (metric) => {
   }
 
   return res;
-}
-
-export const queryMetadata = async (apiKey) => {
-  const endpoint = `${tableau_domain2}/api/metadata/graphql`;
-
-
-
 }
 
 const isServerlessTimeout = (res) => {
