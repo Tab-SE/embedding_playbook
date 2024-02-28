@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui";
 
-import { Insights } from "./Insights";
+import { Insights } from "components";
 
 export const InsightsModal = (props) => {
   const { metric, stats } = props;

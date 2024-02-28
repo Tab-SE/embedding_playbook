@@ -1,8 +1,5 @@
 {
   "index": "Security",
-  "---": {
-    "type": "separator"
-  },
   "auth": "Authenticate Users",
   "files": "Secure Files",
   "data": "Secure Data",

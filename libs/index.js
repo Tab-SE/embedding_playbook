@@ -1,10 +1,12 @@
 export const tab_embed = typeof window !== 'undefined' ? require("./tableau.embedding.3.latest.min.js") : null;
 
 export { 
-  tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications, getDefinitions, 
-  getMetrics, getBan, getSpringboard, getEmbed, getDetail, getInsights, getInsightBundle
+  tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications, 
+  getDefinitions, getMetrics, getEmbed, getInsights, getMetadata
 } from './requests';
 
-export { serverJWT, serverPAT, makeMetrics } from './responses.js';
+export { serverJWT, serverPAT } from './responses.js';
 
 export { jwtSign, jwtVerify } from './crypto';
+
+export { queryMetadata, queryMetadataBody } from './gql';

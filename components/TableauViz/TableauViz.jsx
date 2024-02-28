@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import { tab_embed } from '../libs';
+import { tab_embed } from 'libs';
 import { useEffect, useState, useRef, forwardRef, useId } from 'react';
-import { useTableauSession } from '../hooks';
+import { useTableauSession } from 'hooks';
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauViz = forwardRef(function TableauViz(props, ref) {

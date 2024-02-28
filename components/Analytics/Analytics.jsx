@@ -1,12 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession } from "next-auth/react";
+
+import { Metrics } from 'components';
+import { useMetadata } from 'hooks';
 
 import { MainNav, MobilePreview, Sheets } from './index';
-import { Metrics } from './Metrics';
+
 
 
 export const Analytics = (props) => {
   const { hideMetrics, hideSheets } = props;
   const [theme, setTheme] = useState(null);
+  const [user, setUser] = useState(null);
+  const { status: session_status, data: session_data } = useSession({});
+  // syncs with user metrics, only fires query when user is defined -> controlled query
+  const { status, data, error, isError, isSuccess } = useMetadata(user);
+
+  // updates user for authenticated components
+  useEffect(() => {
+    if (session_status === 'authenticated') {
+      setUser(session_data.user.name); // value used for controlled queries
+    }
+  }, [session_status, session_data]);
+
+  if (isError) {
+    console.debug(error);
+  }
 
   return (
     <>

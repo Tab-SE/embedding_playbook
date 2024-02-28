@@ -1,6 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "components/ui";
 
 import { TableauViz } from 'components';
 
