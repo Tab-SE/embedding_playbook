@@ -1,5 +1,3 @@
-import { gql } from 'graphql-tag';
-
 import { httpPost } from "utils";
 
 const tableau_domain = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
@@ -7,13 +5,13 @@ const tableau_domain = process.env.TABLEAU_DOMAIN; // URL for Tableau environmen
 // makes request to Metadata API
 export const queryMetadata = async (apiKey) => {
   const endpoint = `${tableau_domain}/api/metadata/graphql`;
-  const body = queryMetadataBody;
+  const body = { query: queryMetadataBody, variables: null};
 
   const config = {
     headers: {
       'X-Tableau-Auth': apiKey,
-      Accept: 'application/json',
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
     },
   };
 
@@ -22,7 +20,7 @@ export const queryMetadata = async (apiKey) => {
 }
 
 // comprehensive GraphQL query obtains user specific assets on a Tableau environment
-export const queryMetadataBody = gql`
+export const queryMetadataBody = `
 query GetMetadata {
   workbooks {
     id

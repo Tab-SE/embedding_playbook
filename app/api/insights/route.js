@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'; // static by default, unless reading the
 
 import { NextResponse } from "next/server";
 import { getToken } from 'next-auth/jwt';
+
 import { makePayload } from './methods';
 
 // responds with generated Pulse Insights for the provided metric
