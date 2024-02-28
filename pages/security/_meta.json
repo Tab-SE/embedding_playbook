@@ -1,4 +1,5 @@
 {
+  "index": "Security",
   "auth": "Authenticate Users",
   "files": "Secure Files",
   "rls": "Secure Data",
