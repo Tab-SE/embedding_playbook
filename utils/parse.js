@@ -190,51 +190,95 @@ export const parseInsights = (bundle) => {
 // returns a content map used for dynamic display
 export const parseMetadata = (rawMetadata) => {
   const contentMap = {};
-  const workbookProjects = parseWorkbooks(rawMetadata);
-  const dashboardWorkbooks = parseDashboards(rawMetadata);
-  const sheetDashboards = parseSheets(rawMetadata);
-  const dataSourceProjects = parseDataSources(rawMetadata);
+  const projectWorkbooks = parseWorkbooks(rawMetadata);
+  const workbookDashboards = parseDashboards(rawMetadata, projectWorkbooks);
+  const dashboardSheets = parseSheets(rawMetadata, workbookDashboards);
+  const projectDataSources = parseDataSources(rawMetadata);
 
+  contentMap.projects = workbookDashboards;
 
-
-  return rawMetadata;
+  return workbookDashboards;
 }
 
 // creates a tree of workbooks using projects as their root
 const parseWorkbooks = (rawMetadata) => {
-  const workbookProjects = [];
+  const projectWorkbooks = [];
 
-  // Retrieve properties using JSONPath
-  const projects = JSONPath({ path: '$.data.workbooks.*.projectName', json: rawMetadata }); // indexing array
+  // extract all projects using JSONPath
+  const projectIds = JSONPath({ path: '$.data.workbooks.*.projectVizportalUrlId', json: rawMetadata }); // indexing array
+  const workbooks = JSONPath({ path: '$.data.workbooks.*.', json: rawMetadata });
+  const projectNames = JSONPath({ path: '$.data.workbooks.*.projectName', json: rawMetadata });
+  const projectLuids = JSONPath({ path: '$.data.workbooks.*.projectLuid', json: rawMetadata });
 
-  if (Array.isArray(projects)) {
-    projects.forEach(project => {
-
+  // first form a tree of projects to contain everything else
+  if (Array.isArray(projectIds)) {
+    const projects = [];
+    // loop through ids to create a project definition from jsonpath arrays
+    projectIds.forEach((projectId, index) => {
+      projects.splice(index, 0, {
+        id: projectId,
+        name: projectNames[index], // Add the corresponding properties by index
+        luid: projectLuids[index],
+      });
     });
-  }
 
-  return workbookProjects;
+    // convert array to Set removes duplicates, then convert back to array
+    const distinctProjects = [...new Set(projects)];
+
+    // loop through all unique projects and find their child workbooks
+    for (const project of distinctProjects) {
+      // keep all workbooks whose ids match the project
+      const matchingWorkbooks = workbooks.filter(workbook => workbook.projectVizportalUrlId === project.id);
+      // new object with current project's properties
+      const newProject = project;
+      // adds matching workbooks to the new object
+      newProject.workbooks = matchingWorkbooks;
+      // Push the new object to return array
+      projectWorkbooks.push(newProject);
+    }
+
+    return projectWorkbooks;
+  }
 }
 
 // creates a tree of dashboards using workbooks as their root
-const parseDashboards = (rawMetadata) => {
-  const dashboardsWorkbooks = [];
+const parseDashboards = (rawMetadata, projects) => {
+  const workbookDashboards = [];
 
-  // Retrieve properties using JSONPath
-  const workbooks = JSONPath({ path: '$.data.workbooks.*.projectName', json: rawMetadata }); // indexing array
+  // extract all dashboards using JSONPath
+  const dashboardsData = JSONPath({ path: '$.data.dashboards.*', json: rawMetadata }); // indexing array
 
-  if (Array.isArray(workbooks)) {
-    workbooks.forEach(workbook => {
+  if (Array.isArray(dashboardsData)) {
+    // loop through projects
+    projects.forEach((project, index) => {
+      // console.log('projects', project.name, index, project.workbooks);
+      // loop through workbooks in project
+      project.workbooks.forEach(workbook => {
+        // console.log('workbook', workbook);
+        const projectDashboards = [];
+        // loop through dashboards in workbook
+        workbook.dashboards.forEach(dashboard => {
+          dashboardsData.forEach(dashboardFull => {
+            if (dashboard.id === dashboardFull.id && dashboard.luid === dashboardFull.luid) {
+              console.log('match', dashboard, dashboardFull);
+              projectDashboards.push(dashboardFull);
+            }
+          })
+        });
 
+        const newWorkbook = workbook;
+        newWorkbook.dashboards = projectDashboards;
+        workbookDashboards.push(newWorkbook);
+      })
     });
   }
 
-  return dashboardsWorkbooks;
+  return workbookDashboards;
 }
 
 // creates a tree of sheets using dashboards as their root
-const parseSheets = (rawMetadata) => {
-  const sheetDashboards = [];
+const parseSheets = (rawMetadata, workbookDashboards) => {
+  const dashboardSheets = [];
 
   // Retrieve properties using JSONPath
   const dashboards = JSONPath({ path: '$.data.workbooks.*.projectName', json: rawMetadata }); // indexing array
@@ -245,7 +289,7 @@ const parseSheets = (rawMetadata) => {
     });
   }
 
-  return sheetDashboards;
+  return dashboardSheets;
 }
 
 // creates a tree of data sources using projects as their root
