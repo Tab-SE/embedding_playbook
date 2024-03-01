@@ -5,8 +5,8 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../ui";
-import { Button } from "../ui";
+} from "components/ui";
+import { Button } from "components/ui";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "../ui";
+} from "components/ui";
 
 
 export function UserMenu(props) {
