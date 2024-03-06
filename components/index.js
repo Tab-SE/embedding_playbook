@@ -1,5 +1,6 @@
 export { Analytics } from './Analytics';
 export { Insights, InsightsModal, VegaLiteViz } from './Insights';
+export { Chat } from './Chat';
 export { Head } from './Head';
 export { Hero } from './Hero';
 export { Logo } from './Logo';
