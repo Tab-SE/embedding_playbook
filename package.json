@@ -51,6 +51,7 @@
     "embla-carousel-react": "^8.0.0-rc22",
     "jsonpath-plus": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
+    "llamaindex": "^0.1.21",
     "next": "^13.5.4",
     "next-auth": "^4.24.5",
     "nextra": "^2.13.2",
