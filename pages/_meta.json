@@ -27,6 +27,7 @@
     "type": "page",
     "display": "hidden",
     "theme": {
+      "timestamp": false
     }
   },
   "start": {
