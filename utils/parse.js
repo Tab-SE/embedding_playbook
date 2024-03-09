@@ -251,16 +251,13 @@ const parseDashboards = (rawMetadata, projects) => {
   if (Array.isArray(dashboardsData)) {
     // loop through projects
     projects.forEach((project, index) => {
-      // console.log('projects', project.name, index, project.workbooks);
       // loop through workbooks in project
       project.workbooks.forEach(workbook => {
-        // console.log('workbook', workbook);
         const projectDashboards = [];
         // loop through dashboards in workbook
         workbook.dashboards.forEach(dashboard => {
           dashboardsData.forEach(dashboardFull => {
             if (dashboard.id === dashboardFull.id && dashboard.luid === dashboardFull.luid) {
-              console.log('match', dashboard, dashboardFull);
               projectDashboards.push(dashboardFull);
             }
           })
