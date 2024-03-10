@@ -2,12 +2,7 @@ import OpenAI from 'openai';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from "next-auth/jwt";
- 
-// Create an OpenAI API client (that's edge friendly!)
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY : undefined,
-});
- 
+  
 // Set the runtime to edge for best performance
 export const runtime = 'edge';
  
@@ -22,8 +17,13 @@ export async function POST(req: NextRequest) {
   // Check if token is defined
   if (token?.tableau) {
     const { messages } = await req.json();
-    
-    if (openai.apiKey !== undefined || (openai.apiKey as string).length > 0) {
+
+    if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.length > 0) { 
+      // Create an OpenAI API client (that's edge friendly!)
+      const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+
       // Ask OpenAI for a streaming chat completion given the prompt
       const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
