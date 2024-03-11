@@ -1,4 +1,11 @@
-/* eslint-disable turbo/no-undeclared-env-vars */
+/**
+ * Loads data from a directory, converts it into LlamaIndex Document objects,
+ * creates embeddings (vector representations) for these documents, and then indexes them using Pinecone.
+ * @async
+ * @function loadAndIndex
+ * @returns {Promise<void>} A Promise that resolves when the loading, conversion, embedding creation, and indexing process is complete.
+ */
+
 import * as dotenv from "dotenv";
 import {
   PineconeVectorStore,
