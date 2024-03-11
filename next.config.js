@@ -43,6 +43,11 @@ module.exports = withNextra({
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
     });
+    // See https://webpack.js.org/configuration/resolve/#resolvealias
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "onnxruntime-node$": false,
+    };
     return config
   },
 });
