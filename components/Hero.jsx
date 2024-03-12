@@ -71,7 +71,7 @@ const Lg = (props) => {
 
 const Intro = () => {
   return (
-    <div>
+    <div className='my-6'>
       <h1 className='text-5xl font-bold mb-9'>Embed Tableau</h1>
         <div className='leading-loose space-y-6'>
           <p>Tableau is the world's leading end-to-end data and analytics platform.</p>
@@ -94,7 +94,7 @@ const Intro = () => {
 const EmbedCode = (props) => {
   const { snippet } = props;
   return (
-    <div>
+    <div className='my-6'>
       { snippet }
     </div>
   )
