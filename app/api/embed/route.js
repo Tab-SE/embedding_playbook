@@ -1,7 +1,8 @@
-export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+
+export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 
 // local connected app
 export async function POST(req) {

@@ -7,7 +7,6 @@ import { useMetadata } from 'hooks';
 import { MainNav, MobilePreview, Sheets } from './index';
 
 
-
 export const Analytics = (props) => {
   const { hideMetrics, hideSheets } = props;
   const [theme, setTheme] = useState(null);

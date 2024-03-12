@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import { Button } from "components/ui/";
 
-import { DisplayContext } from '../context/DisplayContext';
+import { DisplayContext } from 'components/context';
 import { ThemeSelect, UserMenu } from './index';
 
 

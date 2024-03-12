@@ -22,6 +22,14 @@
       "timestamp": false
     }
   },
+  "chat": {
+    "title": "Ask AI",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "timestamp": false
+    }
+  },
   "start": {
     "title": "Getting Started",
     "type": "page"

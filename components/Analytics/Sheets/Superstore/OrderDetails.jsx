@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
 export const OrderDetails = () => {
   return (
