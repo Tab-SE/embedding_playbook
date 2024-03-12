@@ -12,7 +12,8 @@ export const Pulse = (props) => {
     console.debug(error);
   }
 
-  <div className='rounded'>
+  return (
+    <div className='flex justify-center rounded'>
       {isError ? <p>Authentication Error!</p> : null}
       {isLoading ? <p>Authenticating the User...</p> : null}
       {isSuccess ? 
@@ -25,4 +26,5 @@ export const Pulse = (props) => {
           disableExploreFilter={disableExploreFilter}
         /> : null}
     </div>
+  )
 }
