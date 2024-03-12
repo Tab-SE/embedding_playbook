@@ -55,9 +55,6 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
     console.debug(sessionError);
   }
 
-  if (isSessionSuccess) {
-  }
-
   return (
     <div className='rounded'>
       {isSessionError ? <p>Authentication Error!</p> : null}
