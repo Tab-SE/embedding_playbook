@@ -13,6 +13,7 @@ import {
   VectorStoreIndex,
   storageContextFromDefaults,
 } from "llamaindex";
+
 import { STORAGE_DIR, checkRequiredEnvVars } from "./shared.mjs";
 
 // uses local development environment to generate data
