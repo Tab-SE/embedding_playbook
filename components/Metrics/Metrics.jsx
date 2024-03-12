@@ -35,7 +35,12 @@ export const Metrics = (props) => {
   return (
     <div className="min-h-[111px] px-16">
       {Array.isArray(data) ?
-        <Carousel>
+        <Carousel
+          opts={{
+            loop: false,
+            dragFree: true
+          }}
+        >
           <CarouselContent>
             {Array.isArray(data) ? data.map((metric) => (
               <CarouselItem 
