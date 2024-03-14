@@ -72,6 +72,7 @@ export const authOptions = {
             "tableau:projects:read",
             "tableau:insight_definitions_metrics:read", 
             "tableau:insight_metrics:read",
+            "tableau:insights:read",
             "tableau:metric_subscriptions:read",
           ];
           const rest_options = { 
@@ -80,8 +81,8 @@ export const authOptions = {
             jwt_client_id 
           };
           const rest_session = new Session(user.name);
-          // await rest_session.jwt(user.email, rest_options, rest_scopes);
-          await rest_session.pat(pat_name, pat_secret);
+          await rest_session.jwt(user.email, rest_options, rest_scopes);
+        //   await rest_session.pat(pat_name, pat_secret);
 
           if (embed_session.authorized && rest_session.authorized) {
             // frontend: user_id & embed_token
