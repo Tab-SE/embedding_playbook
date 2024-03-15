@@ -1,4 +1,4 @@
-const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
+const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 
 // returns stringified payload to form responses

@@ -1,12 +1,12 @@
 import { httpGet, httpPost, queryMetadata } from "utils";
 
-const tableau_domain = process.env.PULSE_DOMAIN; // URL for Tableau environment
-const tableau_domain2 = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
+const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
+const tableau_domain2 = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
-const api = process.env.PULSE_API; // Tableau API version (classic resources)
+const api = process.env.TABLEAU_API; // Tableau API version (classic resources)
 const api2 = process.env.TABLEAU_API; // Tableau API version (classic resources)
-const contentUrl = process.env.PULSE_SITE; // Tableau site name
-const contentUrl2 = process.env.TABLEAU_SITE; // Tableau site name
+const contentUrl = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
+const contentUrl2 = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
 
 
 // authenticate to Tableau with JSON Web Tokens

@@ -1,6 +1,6 @@
 import { httpPost } from "utils";
 
-const tableau_domain = process.env.TABLEAU_DOMAIN; // URL for Tableau environment
+const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
 
 // makes request to Metadata API
 export const queryMetadata = async (apiKey) => {

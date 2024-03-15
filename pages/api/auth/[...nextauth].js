@@ -43,8 +43,6 @@ export const authOptions = {
         }
         if (user) {
           // server-side env vars
-          const pat_name = process.env.PULSE_PAT_NAME;
-          const pat_secret = process.env.PULSE_PAT_SECRET;
           const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
           const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET; 
           const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID; 
@@ -82,14 +80,12 @@ export const authOptions = {
           };
           const rest_session = new Session(user.name);
           await rest_session.jwt(user.email, rest_options, rest_scopes);
-        //   await rest_session.pat(pat_name, pat_secret);
-
           if (embed_session.authorized && rest_session.authorized) {
-            // frontend: user_id & embed_token
+            // frontend requires user_id & embed_token
              const { 
               username, user_id, embed_token, site_id, site, created, expires,
             } = embed_session;
-            // backend: rest_id & rest_key
+            // backend requires rest_id & rest_key
             const { user_id: rest_id, rest_key } = rest_session;
             // add members to a new tableau object in user
             user.tableau = {
