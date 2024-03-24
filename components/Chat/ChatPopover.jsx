@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Avatar,
   AvatarFallback,
@@ -24,19 +26,25 @@ const AIAvatar = () => {
 }
 
 export const ChatPopover = () => {
+  const [showChat, setShowChat] = useState(false);
+
   return (
-    <Popover modal>
-      <PopoverTrigger>
-        <AIAvatar />
-      </PopoverTrigger>
-      <PopoverContent
-        className='w-[51vw] mb-9'
-        side='left'
-        align='start'
-        sideOffset={33}
-      >
-        <Chat/>
-      </PopoverContent>
-    </Popover>
+    <div>
+     {showChat && (
+      <Popover modal>
+        <PopoverTrigger>
+          <AIAvatar />
+        </PopoverTrigger>
+        <PopoverContent
+          className='w-[51vw] mb-9'
+          side='left'
+          align='start'
+          sideOffset={33}
+        >
+          <Chat/>
+        </PopoverContent>
+      </Popover>
+     )}
+    </div>
   )
 }
