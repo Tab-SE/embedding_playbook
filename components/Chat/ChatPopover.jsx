@@ -4,13 +4,13 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "components/ui"
+} from "components/ui";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
   PopoverAnchor,
-} from "components/ui"
+} from "components/ui";
 
 import { Chat } from 'components';
 
@@ -26,11 +26,11 @@ const AIAvatar = () => {
 }
 
 export const ChatPopover = () => {
-  const [showChat, setShowChat] = useState(false);
+  const [showChat, setShowChat] = useState(true);
 
   return (
     <div>
-     {showChat && (
+    {showChat && (
       <Popover modal>
         <PopoverTrigger>
           <AIAvatar />
@@ -44,7 +44,7 @@ export const ChatPopover = () => {
           <Chat/>
         </PopoverContent>
       </Popover>
-     )}
+    )}
     </div>
   )
 }
