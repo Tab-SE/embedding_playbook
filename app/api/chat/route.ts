@@ -5,7 +5,8 @@ import { getToken } from 'next-auth/jwt';
 
 import { createChatEngine } from './engine';
 import { LlamaIndexStream } from './llamaindex-stream';
-  
+import { newContextSystemPrompt } from './engine';
+
 // vercel AI SDK sets the runtime to edge but llamaindex requires nodejs
 // https://ts.llamaindex.ai/getting_started/environments#nextjs-app-router
 export const runtime = 'nodejs';
@@ -30,11 +31,11 @@ const convertMessageContent = (
     },
   ];
 };
- 
+
 export async function POST(req: NextRequest) {
   // session token specific to each user
   const token = await getToken({ req });
-  
+
   // Check if req is defined
   if (!req) {
     return NextResponse.json({ error: '400: Bad Request' }, { status: 400 });
@@ -61,6 +62,14 @@ export async function POST(req: NextRequest) {
       });
 
       const chatEngine = await createChatEngine(llm);
+
+      // list of prompts for the query engine
+      // const prompts = chatEngine.getPrompts();
+
+      // override the default prompt so the AI does not perform undesired tasks
+      chatEngine.updatePrompts({
+        "contextGenerator:contextSystemPrompt": newContextSystemPrompt,
+      });
 
       // Convert message content from Vercel/AI format to LlamaIndex/OpenAI format
       const userMessageContent = convertMessageContent(
