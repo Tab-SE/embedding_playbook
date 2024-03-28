@@ -14,7 +14,7 @@ export const Overview = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
-          <TableauViz 
+          <TableauViz
             src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore/overview'
             width={800}
             height={800}

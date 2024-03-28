@@ -33,3 +33,5 @@ export async function createChatEngine(llm: LLM) {
     retriever,
   });
 }
+
+export { newContextSystemPrompt } from './prompts';

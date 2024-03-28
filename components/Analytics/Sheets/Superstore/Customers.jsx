@@ -16,7 +16,7 @@ export const Customers = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
-            <TableauViz 
+            <TableauViz
               src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore/customer_scatter_plot'
               width={450}
               height={450}
@@ -46,7 +46,7 @@ export const Customers = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <TableauViz 
+          <TableauViz
             src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore/customer_region'
             width={800}
             height={218}
@@ -56,7 +56,6 @@ export const Customers = () => {
           />
         </CardContent>
       </Card>
-      
     </TabsContent>
   )
 }

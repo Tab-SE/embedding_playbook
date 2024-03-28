@@ -40,7 +40,7 @@ export const Metric = (props) => {
         // uses the ban insight to generate stats
         if (insight.type === 'ban') {
           // BAN responses only have 1 insight_groups and 1 insights
-          result = data?.bundle_response?.result.insight_groups[0].insights[0].result; 
+          result = data?.bundle_response?.result.insight_groups[0].insights[0].result;
           facts = result?.facts;
           // formatted current value
           stats.value = facts?.target_period_value.formatted;
@@ -75,7 +75,7 @@ export const Metric = (props) => {
     }
   }
 
-  // fully loaded state 
+  // fully loaded state
   return (
     <Card className="min-h-[111px] dark:bg-stone-900">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
@@ -84,9 +84,9 @@ export const Metric = (props) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-3 pt-0">
-        <Stats 
-          isSuccess={isSuccess} 
-          stats={stats} 
+        <Stats
+          isSuccess={isSuccess}
+          stats={stats}
           bundleCount={bundleCount}
           metric={metric}
         />
