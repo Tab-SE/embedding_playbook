@@ -10,11 +10,11 @@ export const Superstore = () => {
         <TabsTrigger value="overview">
           Overview
         </TabsTrigger>
-        <TabsTrigger value="customers" >
-          Customers
-        </TabsTrigger>
         <TabsTrigger value="product" >
           Product
+        </TabsTrigger>
+        <TabsTrigger value="customers" >
+          Customers
         </TabsTrigger>
         <TabsTrigger value="shipping" >
           Shipping

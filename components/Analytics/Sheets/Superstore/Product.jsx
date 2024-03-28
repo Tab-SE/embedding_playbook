@@ -1,33 +1,47 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
+import { TableauViz } from 'components';
+
 export const Product = () => {
   return (
     <TabsContent value="product" className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
-        <Card className="col-span-7 dark:bg-stone-900">
-          <CardHeader>
-            <CardTitle>Product</CardTitle>
-            <CardDescription>
-              description
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pl-2">
-            {/* <Overview /> */}
-          </CardContent>
-        </Card>
-        <Card className="col-span-5 dark:bg-stone-900">
-          <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
-            <CardDescription>
-              You made 265 sales this month.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {/* <RecentSales /> */}
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="dark:bg-stone-900">
+        <CardHeader>
+          <CardTitle>Product Details</CardTitle>
+          <CardDescription>
+            A comparison of performance by product segment, category and subcategory
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pl-2">
+          <TableauViz
+            src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore/ProductDetails'
+            width={800}
+            height={400}
+            hideTabs={true}
+            device='default'
+            toolbar='hidden'
+          />
+        </CardContent>
+      </Card>
+      <Card className="dark:bg-stone-900">
+        <CardHeader>
+          <CardTitle>Product Details</CardTitle>
+          <CardDescription>
+            Segment sales by month and year
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pl-2">
+          <TableauViz
+            src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore/ProductView'
+            width={800}
+            height={300}
+            hideTabs={true}
+            device='default'
+            toolbar='hidden'
+          />
+        </CardContent>
+      </Card>
     </TabsContent>
   )
 }
