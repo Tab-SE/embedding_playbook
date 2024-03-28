@@ -44,11 +44,16 @@ export default function Markdown({ content }: { content: string }) {
 
           const match = /language-(\w+)/.exec(className || "");
 
+          // remove leading and trailing newline characters
+          const codeValue = String(children).replace(/^\n+|\n+$/g, "");
+
           if (inline) {
             return (
-              <code className={className} {...props}>
-                {children}
-              </code>
+              <div className="block">
+                <code className={className} {...props}>
+                  {codeValue}
+                </code>
+              </div>
             );
           }
 
@@ -56,7 +61,7 @@ export default function Markdown({ content }: { content: string }) {
             <CodeBlock
               key={Math.random()}
               language={(match && match[1]) || ""}
-              value={String(children).replace(/\n$/, "")}
+              value={codeValue}
               {...props}
             />
           );
