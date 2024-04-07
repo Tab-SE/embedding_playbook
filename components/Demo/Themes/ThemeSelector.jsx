@@ -26,7 +26,7 @@ import {
 } from "components/ui";
 
 import { cn } from "utils";
-import settings from "settings.json";
+import { settings }  from "../index";
 
 export const ThemeSelector = (props) => {
   const { className, setTheme } = props;
@@ -74,10 +74,10 @@ export const ThemeSelector = (props) => {
             <CommandInput placeholder="Search team..." />
             <CommandEmpty>No Theme found.</CommandEmpty>
             {orderedThemes.map((theme) => (
-              <CommandGroup key={theme.name} heading={theme.label}>
+              <CommandGroup key={theme.label} heading={theme.label}>
                 {theme.themes.map((theme) => (
                   <CommandItem
-                    key={theme.name}
+                    key={theme.label}
                     onSelect={() => {
                       setSelectedTeam(theme)
                       setOpen(false)
@@ -95,7 +95,7 @@ export const ThemeSelector = (props) => {
                     <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4",
-                        selectedTeam.name === theme.name
+                        selectedTeam.label === theme.label
                           ? "opacity-100"
                           : "opacity-0"
                       )}

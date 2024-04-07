@@ -3,22 +3,19 @@ import { NTO } from './NTO';
 
 export const Themes = (props) => {
   const { theme } = props;
-  console.log('theme props', theme);
+  const SheetComponent = theme?.component;
 
-  // declare selectable
-  const sheetMap = {
-    superstore: Superstore,
-    nto: NTO,
-  };
-
-  if (theme && sheetMap[theme.name]) {
-    const SheetComponent = sheetMap[theme.name];
-    return <SheetComponent />;
+  if (SheetComponent) {
+    return (
+      <SheetComponent />
+    )
   }
 
+  // if above check fails, load Superstore by default
   return (
     <Superstore />
   )
 }
 
-export { ThemeSelector } from './ThemeSelector'
+export { Superstore, NTO };
+export { ThemeSelector } from './ThemeSelector';
