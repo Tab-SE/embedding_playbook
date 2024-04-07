@@ -1,0 +1,46 @@
+{
+  "ai_chat": true,
+  "custom_metrics": true,
+  "themes": [
+    {
+      "name": "Superstore",
+      "logo": "",
+      "styles": "",
+      "project": {
+        "name": "superstore_embedded",
+        "workbooks": [],
+        "data_sources": []
+      }
+    },
+    {
+      "name": "Northern Trail Outfitters",
+      "logo": "",
+      "styles": "",
+      "project": {
+        "name": "nto",
+        "workbooks": [],
+        "data_sources": []
+      }
+    },
+    {
+      "name": "Makana Health",
+      "logo": "",
+      "styles": "",
+      "project": {
+        "name": "",
+        "workbooks": [],
+        "data_sources": []
+      }
+    },
+    {
+      "name": "Cumulus Bank",
+      "logo": "",
+      "styles": "",
+      "project": {
+        "name": "",
+        "workbooks": [],
+        "data_sources": []
+      }
+    }
+  ]
+}
