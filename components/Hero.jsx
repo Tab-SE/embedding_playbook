@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { cn } from 'utils';
 
 import { DisplayContextProvider, DisplayContext } from 'components/context';
-import { Analytics } from 'components';
+import { Demo } from 'components';
 
 export const Hero = (props) => {
   const { children } = props;
@@ -26,7 +26,7 @@ const Md = (props) => {
           <Intro />
         </div>
         <div className='my-12'>
-          <Analytics
+          <Demo
             src={src}
             width={width}
             height={height}
@@ -56,7 +56,7 @@ const Lg = (props) => {
         <EmbedCode snippet={snippet} />
       </div>
       <div className={cn(display === 'minimized' ? 'col-span-8' : 'col-span-12')}>
-        <Analytics
+        <Demo
           src={src}
           width={width}
           height={height}

@@ -1,15 +1,14 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import {
   CaretSortIcon,
   CheckIcon,
 } from "@radix-ui/react-icons";
 
-import { cn } from "utils";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../ui";
+} from "components/ui";
 import { Button } from "components/ui";
 import {
   Command,
@@ -25,6 +24,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "components/ui";
+
+import { cn } from "utils";
+import settings from "settings.json";
 
 const groups = [
   {
@@ -48,17 +50,24 @@ const groups = [
 ];
 
 
-export const ThemeSelect = (props) => {
+export const Themes = (props) => {
   const { className, setTheme } = props;
-  const [open, setOpen] = React.useState(false);
-  const [selectedTeam, setSelectedTeam] = React.useState(
-    groups[0].teams[0]
+  const [open, setOpen] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(
+    () => {
+      try {
+        return findDefaultTheme(settings);
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
   );
 
-  React.useEffect(() => {
+  const orderedThemes = orderThemes(settings);
+
+  useEffect(() => {
     setTheme(selectedTeam);
   }, [selectedTeam, setTheme]);
-
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -72,7 +81,7 @@ export const ThemeSelect = (props) => {
         >
           <Avatar className="mr-2 h-5 w-5">
             <AvatarImage
-              src={`img/themes/${selectedTeam.value}.png`}
+              src={`img/themes/${selectedTeam.logo}`}
               alt={selectedTeam.label}
             />
             <AvatarFallback>&nbsp;</AvatarFallback>
@@ -85,12 +94,12 @@ export const ThemeSelect = (props) => {
         <Command>
           <CommandList className="dark:bg-stone-700">
             <CommandInput placeholder="Search team..." />
-            <CommandEmpty>No team found.</CommandEmpty>
-            {groups.map((group) => (
-              <CommandGroup key={group.label} heading={group.label}>
-                {group.teams.map((team) => (
+            <CommandEmpty>No Theme found.</CommandEmpty>
+            {groups.map((theme) => (
+              <CommandGroup key={theme.name} heading={theme.label}>
+                {theme.teams.map((team) => (
                   <CommandItem
-                    key={team.value}
+                    key={team.name}
                     onSelect={() => {
                       setSelectedTeam(team)
                       setOpen(false)
@@ -108,7 +117,7 @@ export const ThemeSelect = (props) => {
                     <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4",
-                        selectedTeam.value === team.value
+                        selectedTeam.name === team.value
                           ? "opacity-100"
                           : "opacity-0"
                       )}
@@ -123,4 +132,40 @@ export const ThemeSelect = (props) => {
       </PopoverContent>
     </Popover>
   )
+}
+
+const findDefaultTheme = settings => {
+  if (!settings.themes || !Array.isArray(settings.themes)) {
+    throw new Error('Themes array not found or not an array: provided settings.json is missing a themes array');
+  }
+  // only a single default theme is accepted
+  let defaultTheme = null;
+  for (const theme of settings.themes) {
+    if (theme.type === 'default') {
+      // if default theme already found, throw error
+      if (defaultTheme !== null) {
+        throw new Error('Multiple default themes found: only one default theme allowed in settings.json');
+      }
+      defaultTheme = theme;
+    }
+  }
+  if (!defaultTheme) {
+    throw new Error('Default theme not found: declare a default theme in settings.json');
+  }
+  return defaultTheme;
+}
+
+// creates an object with arrays listing themes by type
+function orderThemes(settings) {
+  const organizedThemes = {};
+
+  settings.themes.forEach(theme => {
+    if (!organizedThemes[theme.type]) {
+      organizedThemes[theme.type] = [];
+    }
+    organizedThemes[theme.type].push(theme);
+  });
+
+  console.log('organizedThemes', organizedThemes)
+  return organizedThemes;
 }

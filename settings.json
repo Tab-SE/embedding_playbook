@@ -3,8 +3,10 @@
   "custom_metrics": true,
   "themes": [
     {
-      "name": "Superstore",
-      "logo": "",
+      "label": "Superstore Analytics",
+      "name": "superstore",
+      "type": "default",
+      "logo": "superstore.png",
       "styles": "",
       "project": {
         "name": "superstore_embedded",
@@ -13,8 +15,10 @@
       }
     },
     {
-      "name": "Northern Trail Outfitters",
-      "logo": "",
+      "label": "Northern Trail Outfitters",
+      "name": "nto",
+      "type": "retail",
+      "logo": "nto.png",
       "styles": "",
       "project": {
         "name": "nto",
@@ -23,17 +27,9 @@
       }
     },
     {
-      "name": "Makana Health",
-      "logo": "",
-      "styles": "",
-      "project": {
-        "name": "",
-        "workbooks": [],
-        "data_sources": []
-      }
-    },
-    {
-      "name": "Cumulus Bank",
+      "label": "Makana Health",
+      "name": "makana",
+      "type": "healthcare",
       "logo": "",
       "styles": "",
       "project": {
