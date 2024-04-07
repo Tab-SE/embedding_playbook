@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { Metrics } from 'components';
 import { useMetadata } from 'hooks';
 
-import { MainNav, MobilePreview, Sheets } from './index';
+import { MainNav, MobilePreview, Themes } from './index';
 
 
 export const Demo = (props) => {
@@ -35,7 +35,7 @@ export const Demo = (props) => {
           <div className='bg-stone-300 dark:bg-stone-700 pt-6 h-[1170px]'>
             {hideMetrics ? null : <Metrics theme={theme} />}
             <div className="p-6">
-              {hideSheets ? null : <Sheets theme={theme} />}
+              {hideSheets ? null : <Themes theme={theme} />}
             </div>
           </div>
         </div>

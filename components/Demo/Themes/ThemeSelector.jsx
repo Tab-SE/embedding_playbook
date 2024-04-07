@@ -28,29 +28,7 @@ import {
 import { cn } from "utils";
 import settings from "settings.json";
 
-const groups = [
-  {
-    label: "Default",
-    teams: [
-      {
-        label: "Superstore Analytics",
-        value: "superstore",
-      },
-    ],
-  },
-  {
-    label: "Retail",
-    teams: [
-      {
-        label: "Northern Trail Outfitters",
-        value: "nto",
-      },
-    ],
-  },
-];
-
-
-export const Themes = (props) => {
+export const ThemeSelector = (props) => {
   const { className, setTheme } = props;
   const [open, setOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(
@@ -63,7 +41,7 @@ export const Themes = (props) => {
     }
   );
 
-  const orderedThemes = orderThemes(settings);
+  const orderedThemes = organizeThemes(settings);
 
   useEffect(() => {
     setTheme(selectedTeam);
@@ -95,29 +73,29 @@ export const Themes = (props) => {
           <CommandList className="dark:bg-stone-700">
             <CommandInput placeholder="Search team..." />
             <CommandEmpty>No Theme found.</CommandEmpty>
-            {groups.map((theme) => (
+            {orderedThemes.map((theme) => (
               <CommandGroup key={theme.name} heading={theme.label}>
-                {theme.teams.map((team) => (
+                {theme.themes.map((theme) => (
                   <CommandItem
-                    key={team.name}
+                    key={theme.name}
                     onSelect={() => {
-                      setSelectedTeam(team)
+                      setSelectedTeam(theme)
                       setOpen(false)
                     }}
                     className="text-sm"
                   >
                     <Avatar className="mr-2 h-5 w-5">
                       <AvatarImage
-                        src={`img/themes/${team.value}.png`}
-                        alt={team.label}
+                        src={`img/themes/${theme.logo}`}
+                        alt={theme.label}
                       />
                       <AvatarFallback>&nbsp;</AvatarFallback>
                     </Avatar>
-                    {team.label}
+                    {theme.label}
                     <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4",
-                        selectedTeam.name === team.value
+                        selectedTeam.name === theme.name
                           ? "opacity-100"
                           : "opacity-0"
                       )}
@@ -156,16 +134,19 @@ const findDefaultTheme = settings => {
 }
 
 // creates an object with arrays listing themes by type
-function orderThemes(settings) {
-  const organizedThemes = {};
+function organizeThemes(settings) {
+  const organizedThemes = [];
 
   settings.themes.forEach(theme => {
-    if (!organizedThemes[theme.type]) {
-      organizedThemes[theme.type] = [];
+    const existingGroup = organizedThemes.find(group => group.label === theme.type);
+    if (existingGroup) {
+      existingGroup.themes.push(theme);
+    } else {
+      // capitalize first letter in type
+      const label = theme.type.replace(/\b\w/g, char => char.toUpperCase());
+      organizedThemes.push({ label: label, name: theme.type, themes: [theme] });
     }
-    organizedThemes[theme.type].push(theme);
   });
 
-  console.log('organizedThemes', organizedThemes)
   return organizedThemes;
 }
