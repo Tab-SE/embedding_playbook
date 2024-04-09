@@ -1,68 +1,40 @@
-import { useContext } from 'react';
-import { cn } from 'utils';
-
-import { DisplayContextProvider, DisplayContext } from 'components/context';
+import { DisplayContextProvider } from 'components/context';
 import { Demo } from 'components';
 
 export const Hero = (props) => {
-  const { children } = props;
+  const { children, hideMetrics, hideSheets } = props;
 
   return (
     <DisplayContextProvider>
-      <Md props={props} snippet={children} />
-      <Lg props={props} snippet={children} />
+      <HeroContent
+        hideMetrics={hideMetrics}
+        hideSheets={hideSheets}
+        snippet={children}
+      />
     </DisplayContextProvider>
   );
 }
 
-const Md = (props) => {
-  const { snippet, src, width, height, hideTabs, device } = props;
-  const { display } = useContext(DisplayContext);
+const HeroContent = (props) => {
+  const { hideMetrics, hideSheets, snippet } = props;
 
   return (
-    <div className='lg:hidden space-y-6'>
-      <div className='my-12'>
-        <div className={cn(display === 'minimized' ? '' : 'hidden')}>
-          <Intro />
-        </div>
-        <div className='my-12'>
-          <Demo
-            src={src}
-            width={width}
-            height={height}
-            hideTabs={hideTabs}
-            device={device}
-            toolbar={"hidden"}
-          />
-        </div>
-        <div className={cn(display === 'minimized' ? '' : 'hidden')}>
-          <EmbedCode
-            snippet={snippet}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const Lg = (props) => {
-  const { snippet, src, width, height, hideTabs, device } = props;
-  const { display } = useContext(DisplayContext);
-
-  return (
-    <div className='hidden lg:grid mt-9 grid-cols-1 md:grid-cols-12 md:gap-9'>
-      <div className={cn(display === 'minimized' ? 'col-span-4' : 'hidden')}>
+    <div className='grid grid-rows lg:grid-cols-12 space-y-6'>
+      <div className='lg:col-span-4 space-y-6 mr-6 mt-16'>
         <Intro />
-        <EmbedCode snippet={snippet} />
+        <div className='hidden lg:grid'>
+          <Outro snippet={snippet} />
+        </div>
       </div>
-      <div className={cn(display === 'minimized' ? 'col-span-8' : 'col-span-12')}>
+      <div className='lg:col-span-8'>
         <Demo
-          src={src}
-          width={width}
-          height={height}
-          hideTabs={hideTabs}
-          device={device}
-          toolbar={"hidden"}
+          hideMetrics={hideMetrics}
+          hideSheets={hideSheets}
+        />
+      </div>
+      <div className='grid lg:hidden'>
+        <Outro
+          snippet={snippet}
         />
       </div>
     </div>
@@ -71,7 +43,7 @@ const Lg = (props) => {
 
 const Intro = () => {
   return (
-    <div>
+    <div className=''>
       <h1 className='text-5xl font-bold mb-9'>Embed Tableau</h1>
         <div className='leading-loose space-y-6'>
           <p>Tableau is the world's leading end-to-end data and analytics platform.</p>
@@ -91,10 +63,10 @@ const Intro = () => {
   )
 }
 
-const EmbedCode = (props) => {
+const Outro = (props) => {
   const { snippet } = props;
   return (
-    <div className='my-9'>
+    <div className='overflow-hidden'>
       { snippet }
     </div>
   )
