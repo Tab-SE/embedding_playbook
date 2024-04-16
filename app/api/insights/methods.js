@@ -39,9 +39,14 @@ const getInsightBundle = async (apiKey, metric, resource) => {
   });
 
   const res = await fetch(request);
+  const jsonData = await res.json();
   // handles errors found in response to determine if a serverless timeout occurred
   const timeout = isServerlessTimeout(res);
-  return timeout ? null : res.json();
+
+  if (!jsonData.bundle_response) {
+    // console.log('what', jsonData)
+  }
+  return jsonData;
 }
 
 // generetes the complex request body required to generate an insights bundle
