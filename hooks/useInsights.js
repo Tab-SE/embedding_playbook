@@ -19,7 +19,7 @@ export const useInsights = (metric) => {
     },
     enabled: !!metric,
     retry: true,
-    retryDelay: (attemptIndex) => Math.min(300 * 1.5 ** attemptIndex, 6000),
+    retryDelay: (attemptIndex) => Math.min(30 * 1.5 ** attemptIndex, 3000),
     staleTime: 30 * 60 * 1000, // 30 minutes
     cacheTime: 30 * 60 * 1000, // 30 minutes
   });
