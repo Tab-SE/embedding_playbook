@@ -55,20 +55,61 @@ export const Metric = (props) => {
               stats.relative = '+' + stats.relative;
             }
           }
-          // direction of the arrow icon
+          // direction of the arrow icon -- old numerical version SPrice
+          //const dir = facts?.difference.direction;
+          // if (dir === 'up') {
+          //   stats.direction = '↗︎';
+          //   stats.color = 'text-sky-600';
+          //   stats.badge = 'bg-sky-600 dark:bg-sky-600';
+          // } else if (dir === 'down') {
+          //   stats.direction = '↘︎';
+          //   stats.color = 'text-orange-600';
+          //   stats.badge = 'bg-orange-600 dark:bg-orange-600';
+          // } else if (dir === 'flat') {
+          //   stats.direction = '→';
+          //   stats.color = 'text-stone-500 dark:text-stone-400';
+          //   stats.badge = 'bg-stone-500 dark:bg-stone-400';
+          // }
+
+          // direction of the arrow icon -- new Logical/sentimental version dschober
           const dir = facts?.difference.direction;
+          const sent= facts?.sentiment;
           if (dir === 'up') {
             stats.direction = '↗︎';
-            stats.color = 'text-sky-600';
-            stats.badge = 'bg-sky-600 dark:bg-sky-600';
+            if (sent === 'positive') {
+              stats.color = 'text-sky-600';
+              stats.badge = 'bg-sky-600 dark:bg-sky-600';
+            } else if (sent === 'negative') {
+              stats.color = 'text-orange-600';
+              stats.badge = 'bg-orange-600 dark:bg-orange-600';
+            } else if (sent === 'neutral') {  
+              stats.color = 'text-stone-500 dark:text-stone-400';
+              stats.badge = 'bg-stone-500 dark:bg-stone-400';
+            }
           } else if (dir === 'down') {
             stats.direction = '↘︎';
-            stats.color = 'text-orange-600';
-            stats.badge = 'bg-orange-600 dark:bg-orange-600';
+            if (sent === 'positive') {
+              stats.color = 'text-sky-600';
+              stats.badge = 'bg-sky-600 dark:bg-sky-600';
+            } else if (sent === 'negative') {
+              stats.color = 'text-orange-600';
+              stats.badge = 'bg-orange-600 dark:bg-orange-600';
+            } else if (sent === 'neutral') {  
+              stats.color = 'text-stone-500 dark:text-stone-400';
+              stats.badge = 'bg-stone-500 dark:bg-stone-400';
+            }
           } else if (dir === 'flat') {
             stats.direction = '→';
-            stats.color = 'text-stone-500 dark:text-stone-400';
-            stats.badge = 'bg-stone-500 dark:bg-stone-400';
+            if (sent === 'positive') {
+              stats.color = 'text-sky-600';
+              stats.badge = 'bg-sky-600 dark:bg-sky-600';
+            } else if (sent === 'negative') {
+              stats.color = 'text-orange-600';
+              stats.badge = 'bg-orange-600 dark:bg-orange-600';
+            } else if (sent === 'neutral') {  
+              stats.color = 'text-stone-500 dark:text-stone-400';
+              stats.badge = 'bg-stone-500 dark:bg-stone-400';
+            }
           }
         }
       });
@@ -77,7 +118,7 @@ export const Metric = (props) => {
 
   // fully loaded state
   return (
-    <Card className="min-h-[111px] dark:bg-stone-900">
+    <Card className="min-h-[111px] max-w-[240px] dark:bg-stone-900">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
         <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden">
           {metric.name}
