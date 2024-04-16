@@ -13,7 +13,7 @@ export const Demo = (props) => {
   const [user, setUser] = useState(null);
   const { status: session_status, data: session_data } = useSession({});
   // syncs with user metrics, only fires query when user is defined -> controlled query
-  const { status, data, error, isError, isSuccess } = useMetadata(user);
+  // const { status, data, error, isError, isSuccess } = useMetadata(user);
 
   // updates user for authenticated components
   useEffect(() => {
@@ -22,9 +22,9 @@ export const Demo = (props) => {
     }
   }, [session_status, session_data]);
 
-  if (isError) {
-    console.debug(error);
-  }
+  // if (isError) {
+  //   console.debug(error);
+  // }
 
   return (
     <>
