@@ -43,11 +43,14 @@ const Insight = (props) => {
   const { insight } = props;
   const { id, type, markup, viz, fact, characterization, question, score } = insight;
 
+  // Function to format score as percentage
+  const formattedScore = `${(score * 100).toFixed(1)}`;
+
   return type !== 'ban' ? (
     <Card>
       <CardHeader>
         <CardTitle>{question}</CardTitle>
-        <CardDescription>Score: {score}</CardDescription>
+        <CardDescription style={{ fontSize: '10px', color: '#999' }}>Score: {formattedScore}</CardDescription>
       </CardHeader>
       <CardContent>
         {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={204} width={900} spec={viz}></VegaLiteViz>}
