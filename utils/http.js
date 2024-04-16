@@ -1,6 +1,6 @@
 import axios from "axios";
 
-/* 
+/*
 defines utilities for HTTP requests used throughout the project
 HTTP request functions are designed for reuse
 */
@@ -33,7 +33,7 @@ export const httpPost = async (endpoint, body, config) => {
     // call pattern: axios.post(url[, data[, config]])
     const response = await axios.post(endpoint, payload, config);
     const status = response.status;
-    if (status === 200 || status === 201) { 
+    if (status === 200 || status === 201) {
       return response.data;
     } else if (status === 504) {
       // gateway timeout response from serverless / edge functions
