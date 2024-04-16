@@ -170,7 +170,7 @@ export const getMetrics = async () => {
 export const getEmbed = async (userId) => {
   const endpoint = '/api/embed';
   const body = { userId };
-  
+
   const config = {
     headers: {
       Accept: 'application/json',
@@ -187,7 +187,7 @@ export const getEmbed = async (userId) => {
 export const getInsights = async (metric) => {
   const endpoint = '/api/insights';
   const body = { metric };
-  
+
   const config = {
     headers: {
       Accept: 'application/json',
@@ -202,11 +202,17 @@ export const getInsights = async (metric) => {
     throw new Error('504: Serverless Timeout');
   }
   if (!res) {
-    throw new Error('Unexpected response');
+    throw new Error('500: Unexpected response');
   }
   if (res.length <= 0) {
-    throw new Error('Empty array');
+    throw new Error('500: Empty array');
   }
+  if (!res.bundle_response && !res.errors) {
+    throw new Error('500: No bundle response or errors')
+  }
+
+
+  console.log('getInsights res', res);
 
   return res;
 }
