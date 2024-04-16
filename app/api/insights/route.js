@@ -35,5 +35,5 @@ export async function POST(req) {
     const msg = '401: Unauthorized';
     console.debug(msg);
     return NextResponse.json({ error: msg }, { status: 401 });
-  }  
+  }
 };

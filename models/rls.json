@@ -10,9 +10,9 @@
       }
     },
     "B": {
-      "id": "b@mail.com",
+      "id": "jchen@mail.com",
       "name": "User B",
-      "email": "b@mail.com",
+      "email": "jchen@mail.com",
       "picture": "img/stock/mackenzie_day.png",
       "uaf": {
         "Superstore": []
@@ -44,6 +44,6 @@
       "uaf": {
         "Superstore": []
       }
-    } 
+    }
   }
 }

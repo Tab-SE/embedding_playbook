@@ -5,7 +5,7 @@ import { useTableauSession } from 'hooks';
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauViz = forwardRef(function TableauViz(props, ref) {
-  const { src, height, width, device, hideTabs, toolbar, isPublic } = props; 
+  const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
 
   // size of parent div placeholder
   let containerHeight = height;
@@ -20,10 +20,10 @@ export const TableauViz = forwardRef(function TableauViz(props, ref) {
 
   return (
     <div
-      className='rounded' 
+      className='rounded'
       style={containerStyle}
     >
-      <AuthLayer 
+      <AuthLayer
         src={src}
         ref={ref}
         height={height}
@@ -42,14 +42,14 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
 
   // tanstack query hook to manage embed sessions
-  const { 
-    status, 
-    data: jwt, 
-    error: sessionError, 
-    isSuccess: isSessionSuccess, 
-    isError: isSessionError, 
-    isLoading: isSessionLoading 
-  } = useTableauSession('a');
+  const {
+    status,
+    data: jwt,
+    error: sessionError,
+    isSuccess: isSessionSuccess,
+    isError: isSessionError,
+    isLoading: isSessionLoading
+  } = useTableauSession('b');
 
   if (isSessionError) {
     console.debug(sessionError);
@@ -62,8 +62,8 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
     <div className='rounded'>
       {isSessionError ? <p>Authentication Error!</p> : null}
       {isSessionLoading ? <p>Authenticating the User...</p> : null}
-      {isSessionSuccess ? 
-        <Viz  
+      {isSessionSuccess ?
+        <Viz
           src={src}
           ref={ref}
           jwt={jwt}
@@ -119,9 +119,9 @@ const Viz = forwardRef(function Viz(props, ref) {
 
 
   return (
-    <tableau-viz 
+    <tableau-viz
       ref={innerRef}
-      id="tableauViz"       
+      id="tableauViz"
       src={src}
       token={!isPublic ? jwt : null}
       height={`${height}px`}
