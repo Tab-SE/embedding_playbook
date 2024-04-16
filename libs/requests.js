@@ -211,9 +211,6 @@ export const getInsights = async (metric) => {
     throw new Error('500: No bundle response or errors')
   }
 
-
-  console.log('getInsights res', res);
-
   return res;
 }
 
