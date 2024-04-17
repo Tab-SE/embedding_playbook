@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 
-import { Metrics } from 'components';
 import { useMetadata } from 'hooks';
+import { Metrics } from 'components';
+import { Themes } from 'components';
 
-import { MainNav, MobilePreview, Themes } from './index';
+import { MainNav, MobilePreview } from './index';
 
 
 export const Demo = (props) => {

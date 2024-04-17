@@ -3,7 +3,8 @@ import { useContext } from 'react';
 import { Button } from "components/ui/";
 
 import { DisplayContext } from 'components/context';
-import { ThemeSelector, UserMenu } from './index';
+import { ThemeSelector } from 'components';
+import { UserMenu } from './index';
 
 
 export const MainNav = (props) => {

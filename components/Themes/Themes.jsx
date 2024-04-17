@@ -1,5 +1,4 @@
 import { Superstore } from './Superstore';
-import { NTO } from './NTO';
 
 export const Themes = (props) => {
   const { theme } = props;
@@ -16,6 +15,3 @@ export const Themes = (props) => {
     <Superstore />
   )
 }
-
-export { Superstore, NTO };
-export { ThemeSelector } from './ThemeSelector';

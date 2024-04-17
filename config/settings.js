@@ -1,4 +1,4 @@
-import { Superstore, NTO } from "./Themes"
+import { Superstore, NTO } from "../components/Themes";
 
 export const settings = {
   ai_chat: true,
@@ -30,5 +30,6 @@ export const settings = {
         data_sources: []
       }
     },
-  ]
+  ],
+  users: []
 }
