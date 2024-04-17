@@ -1,4 +1,4 @@
-import { Superstore } from './Superstore';
+import { Superstore } from 'components';
 
 export const Themes = (props) => {
   const { theme } = props;

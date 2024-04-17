@@ -26,7 +26,7 @@ import {
 } from "components/ui";
 
 import { cn } from "utils";
-import { settings }  from "config";
+import { settings }  from "settings";
 
 export const ThemeSelector = (props) => {
   const { className, setTheme } = props;
