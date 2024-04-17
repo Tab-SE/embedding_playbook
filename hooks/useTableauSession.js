@@ -1,6 +1,6 @@
 import { useSession, signIn } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
-import { getEmbed } from "../libs/requests";
+import { getEmbed } from "libs";
 // implements custom hooks with tanstack query for asynchronous state management
 // concepts described here: https://tkdodo.eu/blog/react-query-as-a-state-manager
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
@@ -22,10 +22,10 @@ export const useTableauSession = (userName) => {
 
   // controls dependent query
   const signedIn = session_status === 'authenticated';
-  
+
   // tanstack query hook
   return useQuery({
-    queryKey: queryKey, 
+    queryKey: queryKey,
     queryFn: () => {
       return getEmbed(session_data.user.email);
     },

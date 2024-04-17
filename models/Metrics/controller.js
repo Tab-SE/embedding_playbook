@@ -1,7 +1,7 @@
-import { getSubscriptions, getSpecifications, getDefinitions } from "../../libs"
-import { parseSubscriptions, parseSpecifications, parseDefinitions } from "../../utils"
+import { getSubscriptions, getSpecifications, getDefinitions } from "libs"
+import { parseSubscriptions, parseSpecifications, parseDefinitions } from "utils"
 
-/* 
+/*
 Request and process data for metrics. The "sync" prefix indicates that these methods
 should eventually support Tanstack client-side or SWR server-side for state management
 */

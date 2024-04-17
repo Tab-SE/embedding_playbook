@@ -19,7 +19,7 @@ export const Metric = (props) => {
   let facts; // contains values, absolute and relative changes
   let stats = { sentiment: undefined }; // prop storing key facts
   // tanstack query hook
-  const { data, error, isError, isSuccess } = useInsights(metric);
+  const { data, error, isError, isSuccess, failureCount, failureReason } = useInsights(metric);
 
   useEffect(() => {
     if (isSuccess) {
@@ -32,6 +32,10 @@ export const Metric = (props) => {
   if (isError) {
     console.debug(error);
   }
+
+  console.log(`failureCount ${metric.name}`, failureCount);
+  console.log(`failureReason ${metric.name}`, failureReason);
+
 
   if (isSuccess) {
     const insight_groups = data?.bundle_response?.result.insight_groups;

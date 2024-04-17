@@ -1,4 +1,4 @@
-export { Analytics } from './Analytics';
+export { Demo } from './Demo';
 export { Insights, InsightsModal, VegaLiteViz } from './Insights';
 export { Chat, ChatPopover } from './Chat';
 export { Head } from './Head';

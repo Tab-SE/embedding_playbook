@@ -10,7 +10,7 @@ export const makePayload = async (rest_key, metric) => {
       bundle = await getInsightBundle(rest_key, metric, '/detail');
     } catch (err) {
       console.debug(err);
-      return err;
+      return null;
     }
     return bundle;
   } else {
@@ -39,34 +39,41 @@ const getInsightBundle = async (apiKey, metric, resource) => {
   });
 
   const res = await fetch(request);
-  // handles errors found in response to determine if a serverless timeout occurred
-  const timeout = isServerlessTimeout(res);
-  return timeout ? null : res.json();
+
+  isServerlessTimeout(res);
+
+  const contentType = res.headers.get('content-type');
+
+  if (contentType === 'text/html') {
+    const txt = await res.text();
+    throw new Error(txt);
+  } else if (contentType === 'application/json') {
+    const jsonData = await res.json();
+    return jsonData;
+  }
 }
 
 // generetes the complex request body required to generate an insights bundle
 const makeBundleBody = (metric) => {
   // calculate time for "now" value in required format
   const currentTime = new Date();
-  // Get the date components
-  const year = currentTime.getFullYear();
-  const month = (currentTime.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
-  const day = currentTime.getDate().toString().padStart(2, '0');
-  const hour = currentTime.getHours().toString().padStart(2, '0');
-  const minute = currentTime.getMinutes().toString().padStart(2, '0');
-  const second = currentTime.getSeconds().toString().padStart(2, '0');
-  // Format the date as "YYYY-MM-DD HH:mm:ss"
-  const formattedDate = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+
+  // Format the date and time to 'YYYY-MM-DD HH:MM:SS'
+  const formattedDate = currentTime.getFullYear() +
+    "-" + ("0" + (currentTime.getMonth() + 1)).slice(-2) +
+    "-" + ("0" + currentTime.getDate()).slice(-2) +
+    " " + ("0" + currentTime.getHours()).slice(-2) +
+    ":" + ("0" + currentTime.getMinutes()).slice(-2) +
+    ":" + ("0" + currentTime.getSeconds()).slice(-2);
 
   // Get the time zone
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // all other object members
-  const { 
-    name, id, specification_id, definition, specification, 
+  const {
+    name, id, specification_id, definition, specification,
     extension_options, representation_options, insights_options,
-   } = metric;
-
+  } = metric;
 
   const body = {
     bundle_request: {

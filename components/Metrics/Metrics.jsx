@@ -38,20 +38,20 @@ export const Metrics = (props) => {
         <Carousel>
           <CarouselContent>
             {Array.isArray(data) ? data.map((metric) => (
-              <CarouselItem 
-                key={metric.id} 
+              <CarouselItem
+                key={metric.id}
                 className="basis-1/3"
               >
-                <Metric 
+                <Metric
                   key={metric.id}
-                  metric={metric} 
+                  metric={metric}
                 />
               </CarouselItem>
             )) : null}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />
-        </Carousel> 
+        </Carousel>
       : null }
     </div>
   )

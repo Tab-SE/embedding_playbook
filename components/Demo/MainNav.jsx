@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Button } from "components/ui/";
 
 import { DisplayContext } from 'components/context';
-import { ThemeSelect, UserMenu } from './index';
+import { ThemeSelector, UserMenu } from './index';
 
 
 export const MainNav = (props) => {
@@ -40,7 +40,7 @@ export const MainNav = (props) => {
       </div>
       <div className="h-18 px-4 mb-2">
         <div className="flex items-center justify-between space-x-4 pt-3">
-          <ThemeSelect setTheme={setTheme} />
+          <ThemeSelector setTheme={setTheme} />
           <UserMenu />
         </div>
       </div>

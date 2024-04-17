@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const MobilePreview = () => {
   return (
-    <div className="md:hidden">
+    <div className="sm:hidden">
       <Image
         src="img/mobile_previews/hero_superstore.png"
         width={1280}
