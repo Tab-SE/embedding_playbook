@@ -33,6 +33,7 @@ export const httpPost = async (endpoint, body, config) => {
     // call pattern: axios.post(url[, data[, config]])
     const response = await axios.post(endpoint, payload, config);
     const status = response.status;
+
     if (status === 200 || status === 201) {
       return response.data;
     } else if (status === 504) {
