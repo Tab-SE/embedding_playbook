@@ -1,9 +1,9 @@
 {
   "users": {
     "A": {
-      "id": "mday@mail.com",
+      "id": "jmorris@mail.com",
       "name": "Mackenzie Day",
-      "email": "mday@mail.com",
+      "email": "jmorris@mail.com",
       "picture": "img/stock/mackenzie_day.png",
       "uaf": {
         "Superstore": []
