@@ -135,3 +135,6 @@ dist
 
 # shadcn config file (conflicts with components/)
 components.json
+
+# ignore temporarily
+config/assets
