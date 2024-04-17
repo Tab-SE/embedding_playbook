@@ -10,7 +10,7 @@ export const makePayload = async (rest_key, metric) => {
       bundle = await getInsightBundle(rest_key, metric, '/detail');
     } catch (err) {
       console.debug(err);
-      return err;
+      return null;
     }
     return bundle;
   } else {
@@ -39,14 +39,18 @@ const getInsightBundle = async (apiKey, metric, resource) => {
   });
 
   const res = await fetch(request);
-  const jsonData = await res.json();
-  // handles errors found in response to determine if a serverless timeout occurred
-  const timeout = isServerlessTimeout(res);
 
-  if (!jsonData.bundle_response) {
-    // console.log('what', jsonData)
+  isServerlessTimeout(res);
+
+  const contentType = res.headers.get('content-type');
+
+  if (contentType === 'text/html') {
+    const txt = await res.text();
+    throw new Error(txt);
+  } else if (contentType === 'application/json') {
+    const jsonData = await res.json();
+    return jsonData;
   }
-  return jsonData;
 }
 
 // generetes the complex request body required to generate an insights bundle
