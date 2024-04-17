@@ -49,7 +49,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession('b');
+  } = useTableauSession('a');
 
   if (isSessionError) {
     console.debug(sessionError);
