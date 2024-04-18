@@ -3,7 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { Session } from "models";
-import rls from "models/rls.json";
+import users from "settings";
 
 
 export const authOptions = {
@@ -33,21 +33,21 @@ export const authOptions = {
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
         let user = null;
-        // check all keys in rls.json user store
-        for (const [key, value] of Object.entries(rls.users)) { 
+        // check all keys in user store
+        for (const [key, value] of Object.entries(users)) {
           // find keys that match credential
-          if (key.toUpperCase() === credentials.ID.toUpperCase()) { 
+          if (key.toUpperCase() === credentials.ID.toUpperCase()) {
             // if a match is found store value as user
-            user = value; 
+            user = value;
           }
         }
         if (user) {
           // server-side env vars
           const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
-          const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET; 
-          const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID; 
-          const rest_secret = process.env.TABLEAU_REST_JWT_SECRET; 
-          const rest_secret_id = process.env.TABLEAU_REST_JWT_SECRET_ID; 
+          const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
+          const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID;
+          const rest_secret = process.env.TABLEAU_REST_JWT_SECRET;
+          const rest_secret_id = process.env.TABLEAU_REST_JWT_SECRET_ID;
 
           // used for frontend embeds
           const embed_scopes = [
@@ -55,12 +55,12 @@ export const authOptions = {
             "tableau:views:embed_authoring",
             "tableau:insights:embed",
           ];
-          const embed_options = { 
-            jwt_secret: embed_secret, 
-            jwt_secret_id: embed_secret_id, 
-            jwt_client_id 
+          const embed_options = {
+            jwt_secret: embed_secret,
+            jwt_secret_id: embed_secret_id,
+            jwt_client_id
           };
-          const embed_session = new Session(user.name); 
+          const embed_session = new Session(user.name);
           await embed_session.jwt(user.email, embed_options, embed_scopes);
 
           // used for backend HTTP calls
@@ -68,21 +68,21 @@ export const authOptions = {
             "tableau:datasources:read",
             "tableau:workbooks:read",
             "tableau:projects:read",
-            "tableau:insight_definitions_metrics:read", 
+            "tableau:insight_definitions_metrics:read",
             "tableau:insight_metrics:read",
             "tableau:insights:read",
             "tableau:metric_subscriptions:read",
           ];
-          const rest_options = { 
-            jwt_secret: rest_secret, 
-            jwt_secret_id: rest_secret_id, 
-            jwt_client_id 
+          const rest_options = {
+            jwt_secret: rest_secret,
+            jwt_secret_id: rest_secret_id,
+            jwt_client_id
           };
           const rest_session = new Session(user.name);
           await rest_session.jwt(user.email, rest_options, rest_scopes);
           if (embed_session.authorized && rest_session.authorized) {
             // frontend requires user_id & embed_token
-             const { 
+             const {
               username, user_id, embed_token, site_id, site, created, expires,
             } = embed_session;
             // backend requires rest_id & rest_key
@@ -93,7 +93,7 @@ export const authOptions = {
             };
           }
           // Return false to display a default error message
-          return user.tableau ? user : false; 
+          return user.tableau ? user : false;
         } else {
           return false;
         }
