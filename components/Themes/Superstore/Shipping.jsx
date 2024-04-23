@@ -15,7 +15,7 @@ export const Shipping = () => {
         </CardHeader>
         <CardContent className="pl-2">
           <TableauViz
-            src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/DaystoShip'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip'
             width={800}
             height={400}
             hideTabs={true}
@@ -33,7 +33,7 @@ export const Shipping = () => {
         </CardHeader>
         <CardContent className="pl-2">
           <TableauViz
-            src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/ShippingTrend'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'
             width={800}
             height={300}
             hideTabs={true}
