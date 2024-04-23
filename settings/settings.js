@@ -1,3 +1,4 @@
+import { users } from './users';
 import { Superstore } from "components/Themes/Superstore";
 import { NTO } from "components/Themes/NTO";
 
@@ -33,5 +34,5 @@ export const settings = {
       }
     },
   ],
-  users: []
+  demo_users: users
 }

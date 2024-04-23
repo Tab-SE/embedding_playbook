@@ -3,7 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { Session } from "models";
-import users from "settings";
+import { settings } from "settings";
 
 
 export const authOptions = {
@@ -34,7 +34,7 @@ export const authOptions = {
         // (i.e., the request IP address)
         let user = null;
         // check all keys in user store
-        for (const [key, value] of Object.entries(users)) {
+        for (const [key, value] of Object.entries(settings.demo_users)) {
           // find keys that match credential
           if (key.toUpperCase() === credentials.ID.toUpperCase()) {
             // if a match is found store value as user
