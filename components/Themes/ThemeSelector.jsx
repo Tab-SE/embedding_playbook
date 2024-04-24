@@ -71,7 +71,7 @@ export const ThemeSelector = (props) => {
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandList className="dark:bg-stone-700">
-            <CommandInput placeholder="Search team..." />
+            <CommandInput placeholder="Search Theme..." />
             <CommandEmpty>No Theme found.</CommandEmpty>
             {orderedThemes.map((theme) => (
               <CommandGroup key={theme.label} heading={theme.label}>

@@ -16,8 +16,8 @@ export const Sales = () => {
         <CardContent className="flex justify-center pl-2">
           <TableauViz
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/ebikes/SalesAnalysis'
-            width={800}
-            height={800}
+            width={1300}
+            height={1000}
             hideTabs={true}
             device='default'
             toolbar='hidden'
