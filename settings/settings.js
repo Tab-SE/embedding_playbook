@@ -12,7 +12,7 @@ export const settings = {
       label: "Superstore Analytics",
       name: "superstore",
       component: Superstore,
-      type: "default",
+      type: "retail",
       logo: "superstore.png",
       styles: "",
       project: {
@@ -25,7 +25,7 @@ export const settings = {
       label: "E-Bikes",
       name: "ebikes",
       component: Ebikes,
-      type: "retail",
+      type: "default",
       logo: "ebikes.png",
       styles: "",
       project: {
