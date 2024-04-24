@@ -1,6 +1,8 @@
 import { users } from './users';
 import { Superstore } from "components/Themes/Superstore";
 import { NTO } from "components/Themes/NTO";
+import { Ebikes } from "components/Themes/NTO";
+
 
 
 export const settings = {
@@ -11,7 +13,7 @@ export const settings = {
       label: "Superstore Analytics",
       name: "superstore",
       component: Superstore,
-      type: "default",
+      type: "retail",
       logo: "superstore.png",
       styles: "",
       project: {
@@ -21,14 +23,14 @@ export const settings = {
       }
     },
     {
-      label: "Northern Trail Outfitters",
-      name: "nto",
-      component: NTO,
-      type: "retail",
-      logo: "nto.png",
+      label: "E-Bikes",
+      name: "ebikes",
+      component: Ebikes,
+      type: "default",
+      logo: "ebikes.png",
       styles: "",
       project: {
-        name: "nto",
+        name: "ebikes",
         workbooks: [],
         data_sources: []
       }

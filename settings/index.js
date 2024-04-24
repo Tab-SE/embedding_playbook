@@ -1,3 +1,3 @@
-export { settings } from './settings'
-export { users } from './users'
+export { settings } from './settings';
+export { users } from './users';
 

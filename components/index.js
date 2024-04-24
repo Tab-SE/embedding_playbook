@@ -7,4 +7,4 @@ export { Logo } from './Logo';
 export { Metrics, Metric } from './Metrics';
 export { TableauAuth } from './TableauAuth';
 export { TableauViz } from './TableauViz';
-export { ThemeSelector, Themes, Superstore, NTO } from './Themes';
+export { ThemeSelector, Themes, Superstore, NTO, Ebikes } from './Themes';
