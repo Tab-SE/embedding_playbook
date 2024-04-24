@@ -10,7 +10,8 @@ export const Sales = () => {
         <CardHeader>
           <CardTitle>Sales</CardTitle>
           <CardDescription>
-            A comprehensive overview of sales numbers at Northern Trail Outfitters
+          The E-Bike Sales Analysis dashboard provides a real-time overview of transactional activities and
+          sales performance, integrating orders, sales, returns and more.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">

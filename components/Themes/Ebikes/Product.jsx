@@ -10,7 +10,7 @@ export const Product = () => {
         <CardHeader>
           <CardTitle>Product</CardTitle>
           <CardDescription>
-            How are product sales performing at Northern Trail Outfitters?
+            How are product sales performing at E-Bikes?
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
