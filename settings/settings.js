@@ -1,8 +1,7 @@
 import { users } from './users';
 import { Superstore } from "components/Themes/Superstore";
+import { Ebikes } from "components/Themes/Ebikes";
 import { NTO } from "components/Themes/NTO";
-import { Ebikes } from "components/Themes/NTO";
-
 
 
 export const settings = {
@@ -13,7 +12,7 @@ export const settings = {
       label: "Superstore Analytics",
       name: "superstore",
       component: Superstore,
-      type: "retail",
+      type: "default",
       logo: "superstore.png",
       styles: "",
       project: {
@@ -26,7 +25,7 @@ export const settings = {
       label: "E-Bikes",
       name: "ebikes",
       component: Ebikes,
-      type: "default",
+      type: "retail",
       logo: "ebikes.png",
       styles: "",
       project: {
