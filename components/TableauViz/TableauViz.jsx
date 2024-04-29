@@ -43,20 +43,19 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
 
 
   return (
-    // <tableau-viz
-    //   ref={innerRef}
-    //   id="tableauViz"
-    //   src={src}
-    //   token={!isPublic ? jwt : null}
-    //   height={`${height}px`}
-    //   width={`${width}px`}
-    //   device={device}
-    //   hide-tabs={hideTabs ? true : false}
-    //   toolbar={toolbar}
-    //   class='rounded'
-    //   data-viz={id}
-    // />
-    <></>
+    <tableau-viz
+      ref={innerRef}
+      id="tableauViz"
+      src={src}
+      token={!isPublic ? jwt : null}
+      height={`${height}px`}
+      width={`${width}px`}
+      device={device}
+      hide-tabs={hideTabs ? true : false}
+      toolbar={toolbar}
+      class='rounded'
+      data-viz={id}
+    />
   )
 })
 
