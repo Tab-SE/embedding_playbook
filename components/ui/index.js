@@ -71,4 +71,21 @@ export {
   SelectScrollDownButton,
 } from './Select';
 export { Skeleton } from './Skeleton';
-export { Tabs, TabsList, TabsTrigger, TabsContent } from './Tabs'
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './Tabs';
+export {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuGroup,
+  ContextMenuPortal,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuRadioGroup,
+} from './Context-Menu';
