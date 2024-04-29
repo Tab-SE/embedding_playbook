@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
-import { TableauViz } from 'components';
+import { TableauEmbed } from 'components';
 
 export const Shipping = () => {
   return (
@@ -14,7 +14,11 @@ export const Shipping = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
+<<<<<<< HEAD:components/Demo/Themes/Superstore/Shipping.jsx
           <TableauViz
+=======
+          <TableauEmbed
+>>>>>>> a0de14a2cf6d51a455e8594e55d1274641094c3a:components/Themes/Superstore/Shipping.jsx
             src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/DaystoShip'
             width={800}
             height={400}
@@ -32,7 +36,11 @@ export const Shipping = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
+<<<<<<< HEAD:components/Demo/Themes/Superstore/Shipping.jsx
           <TableauViz
+=======
+          <TableauEmbed
+>>>>>>> a0de14a2cf6d51a455e8594e55d1274641094c3a:components/Themes/Superstore/Shipping.jsx
             src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/ShippingTrend'
             width={800}
             height={300}

@@ -15,7 +15,7 @@ export const Product = () => {
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
           <TableauEmbed
-            src='https://10ax.online.tableau.com/t/rcgsepulse/views/NorthernTrailOutfitters-SalesAnalysis-Embed800x800/Product'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/ebikes/Product'
             width={800}
             height={800}
             hideTabs={true}

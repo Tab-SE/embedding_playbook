@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components';
 
-import { TableauViz } from 'components';
+import { TableauEmbed } from 'components';
 
 
 <Callout type="warning" emoji="⚠️">
@@ -9,16 +9,16 @@ import { TableauViz } from 'components';
 
 # Embedding Tableau Views
 
-Embedding Tableau refers to the process of integrating Tableau visualizations, dashboards, 
-or reports into external applications, websites, or portals. This capability allows organizations 
-to enhance their data-driven decision-making by seamlessly incorporating Tableau's powerful 
-analytics and visualization features directly within their existing systems. Embedding Tableau 
-is achieved through the use of Tableau's JavaScript API or the Tableau Embedding SDK, enabling 
-developers to customize and control the appearance and behavior of Tableau content within their 
+Embedding Tableau refers to the process of integrating Tableau visualizations, dashboards,
+or reports into external applications, websites, or portals. This capability allows organizations
+to enhance their data-driven decision-making by seamlessly incorporating Tableau's powerful
+analytics and visualization features directly within their existing systems. Embedding Tableau
+is achieved through the use of Tableau's JavaScript API or the Tableau Embedding SDK, enabling
+developers to customize and control the appearance and behavior of Tableau content within their
 applications.
 
-<TableauViz
-  src='https://10ax.online.tableau.com/t/rcgsepulse/views/superstore_embed/Profitability'
+<TableauEmbed
+  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip'
   width={800}
   height={830}
   hideTabs={true}
@@ -26,15 +26,15 @@ applications.
 />
 
 
-One key advantage of embedding Tableau is the ability to maintain a cohesive user experience. 
-Users can access and interact with Tableau visualizations without leaving the context of the parent 
-application. This seamless integration fosters a more intuitive and efficient workflow, as users can 
-analyze and explore data within the familiar environment of the host application. Additionally, 
-embedding Tableau facilitates real-time data updates and interactivity, ensuring that users always 
+One key advantage of embedding Tableau is the ability to maintain a cohesive user experience.
+Users can access and interact with Tableau visualizations without leaving the context of the parent
+application. This seamless integration fosters a more intuitive and efficient workflow, as users can
+analyze and explore data within the familiar environment of the host application. Additionally,
+embedding Tableau facilitates real-time data updates and interactivity, ensuring that users always
 have access to the most current insights.
 
-Furthermore, embedding Tableau supports a broader reach for data-driven insights. Organizations can 
-share their Tableau visualizations with a wider audience by integrating them directly into external 
-portals or websites. This not only enhances accessibility but also enables businesses to communicate 
-data-driven narratives effectively, making it easier for stakeholders and decision-makers to grasp 
+Furthermore, embedding Tableau supports a broader reach for data-driven insights. Organizations can
+share their Tableau visualizations with a wider audience by integrating them directly into external
+portals or websites. This not only enhances accessibility but also enables businesses to communicate
+data-driven narratives effectively, making it easier for stakeholders and decision-makers to grasp
 insights and make informed choices based on the embedded visualizations.

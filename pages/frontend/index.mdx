@@ -1,7 +1,7 @@
 import { Callout } from 'nextra/components';
 import Image from 'next/image';
 
-import { TableauViz } from 'components/TableauViz';
+import { TableauEmbed } from 'components';
 
 
 # Frontend
@@ -16,7 +16,7 @@ The easiest method for embedding a Tableau view (dashboard or visualization) is 
 
 ## Profitability Overview
 
-<TableauViz
+<TableauEmbed
   src='https://public.tableau.com/views/superstore_embed/Profitability'
   width={800}
   height={830}
@@ -28,8 +28,8 @@ The easiest method for embedding a Tableau view (dashboard or visualization) is 
 -------------------
 
 <Image
-  alt='sample embed' 
-  src='/img/embed_code.png' 
+  alt='sample embed'
+  src='/img/embed_code.png'
   width={700}
   height={800}
 />
@@ -45,14 +45,14 @@ The basic embed code using the Embedding API v3 and the `<tableau-viz>` web comp
 
 
 ```html
-<!-- 
-This <script> tag links to the Embedding API library as a JavaScript ES6 module. 
-To use the library in your web application, you need to set the type attribute to 
-module in the <script> tag. 
+<!--
+This <script> tag links to the Embedding API library as a JavaScript ES6 module.
+To use the library in your web application, you need to set the type attribute to
+module in the <script> tag.
 -->
 
-<!-- 
-Initialize the API as part of your HTML code by using the <tableau-viz> web component. 
+<!--
+Initialize the API as part of your HTML code by using the <tableau-viz> web component.
 After linking to the API library, the following code is all you need to embed a Tableau view into your HTML pages.
 -->
 
@@ -106,8 +106,8 @@ Note: Filtering with the JavaScript API v2 or Embedding API v3 is **not** a secu
 In the image below, an HR-focused dashboard allows the user to select employees for an audit. When the user is ready, he or she can click "Run Audit" to generate a non-Tableau audit based on the selections made inside the Tableau viz.
 
 <Image
-  alt='HR dashboard' 
-  src='/img/run_audit.png' 
+  alt='HR dashboard'
+  src='/img/run_audit.png'
   width={700}
   height={800}
 />

@@ -3,19 +3,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
 import { TableauEmbed } from 'components';
 
-export const Product = () => {
+export const Sales = () => {
   return (
-    <TabsContent value="product" className="space-y-4">
+    <TabsContent value="sales" className="space-y-4">
       <Card className='dark:bg-stone-900'>
         <CardHeader>
-          <CardTitle>Product</CardTitle>
+          <CardTitle>Sales</CardTitle>
           <CardDescription>
-            How are product sales performing at Northern Trail Outfitters?
+            A comprehensive overview of sales numbers at Northern Trail Outfitters
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
           <TableauEmbed
-            src='https://10ax.online.tableau.com/t/rcgsepulse/views/NorthernTrailOutfitters-SalesAnalysis-Embed800x800/Product'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/ebikes/SalesAnalysis'
             width={800}
             height={800}
             hideTabs={true}

@@ -1,86 +1,28 @@
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
 import { useEffect, useState, useRef, forwardRef, useId } from 'react';
-import { useTableauSession } from 'hooks';
 
-// forwardRef HOC receives ref from parent and sets placeholder
-export const TableauViz = forwardRef(function TableauViz(props, ref) {
-  const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
+import {
+  ContextMenu,
+  ContextMenuCheckboxItem,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from "components/ui";
 
-  // size of parent div placeholder
-  let containerHeight = height;
-  let containerWidth = width;
-  if (toolbar === 'hidden') {
-    containerHeight = height;
-  }
-  const containerStyle = {
-    height: containerHeight + 'px',
-    width: containerWidth + 'px',
-  };
+import { RightClick } from 'components';
 
-  return (
-    <div
-      className='rounded'
-      style={containerStyle}
-    >
-      <AuthLayer
-        src={src}
-        ref={ref}
-        height={height}
-        width={width}
-        device={device}
-        hide-tabs={hideTabs ? true : false}
-        toolbar={toolbar}
-        isPublic={isPublic}
-      />
-    </div>
-  )
-});
-
-// handles rendering logic during authentication
-const AuthLayer = forwardRef(function AuthLayer(props, ref) {
-  const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
-
-  // tanstack query hook to manage embed sessions
-  const {
-    status,
-    data: jwt,
-    error: sessionError,
-    isSuccess: isSessionSuccess,
-    isError: isSessionError,
-    isLoading: isSessionLoading
-  } = useTableauSession('a');
-
-  if (isSessionError) {
-    console.debug(sessionError);
-  }
-
-  if (isSessionSuccess) {
-  }
-
-  return (
-    <div className='rounded'>
-      {isSessionError ? <p>Authentication Error!</p> : null}
-      {isSessionLoading ? <p>Authenticating the User...</p> : null}
-      {isSessionSuccess ?
-        <Viz
-          src={src}
-          ref={ref}
-          jwt={jwt}
-          height={height}
-          width={width}
-          device={device}
-          hide-tabs={hideTabs ? true : false}
-          toolbar={toolbar}
-          isPublic={isPublic}
-          class=''
-        /> : null}
-    </div>
-  )
-})
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
-const Viz = forwardRef(function Viz(props, ref) {
+export const TableauViz = forwardRef(function Viz(props, ref) {
   const { src, jwt, height, width, device, hideTabs, toolbar, isPublic } = props;
   // creates a unique identifier for the embed
   const id = `id-${useId()}`;
@@ -119,19 +61,65 @@ const Viz = forwardRef(function Viz(props, ref) {
 
 
   return (
-    <tableau-viz
-      ref={innerRef}
-      id="tableauViz"
-      src={src}
-      token={!isPublic ? jwt : null}
-      height={`${height}px`}
-      width={`${width}px`}
-      device={device}
-      hide-tabs={hideTabs ? true : false}
-      toolbar={toolbar}
-      class='rounded'
-      data-viz={id}
-    />
+    <ContextMenu>
+      <ContextMenuTrigger >
+        <tableau-viz
+          ref={innerRef}
+          id="tableauViz"
+          src={src}
+          token={!isPublic ? jwt : null}
+          height={`${height}px`}
+          width={`${width}px`}
+          device={device}
+          hide-tabs={hideTabs ? true : false}
+          toolbar={toolbar}
+          class='rounded'
+          data-viz={id}
+        />
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-64">
+        <ContextMenuItem inset>
+          Back
+          <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem inset disabled>
+          Forward
+          <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem inset>
+          Reload
+          <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>
+          <ContextMenuSubContent className="w-48">
+            <ContextMenuItem>
+              Save Page As...
+              <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+            <ContextMenuItem>Name Window...</ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem>Developer Tools</ContextMenuItem>
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+        <ContextMenuSeparator />
+        <ContextMenuCheckboxItem checked>
+          Show Bookmarks Bar
+          <ContextMenuShortcut>⌘⇧B</ContextMenuShortcut>
+        </ContextMenuCheckboxItem>
+        <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
+        <ContextMenuSeparator />
+        <ContextMenuRadioGroup value="pedro">
+          <ContextMenuLabel inset>People</ContextMenuLabel>
+          <ContextMenuSeparator />
+          <ContextMenuRadioItem value="pedro">
+            Pedro Duarte
+          </ContextMenuRadioItem>
+          <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+        </ContextMenuRadioGroup>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 })
 
