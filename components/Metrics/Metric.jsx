@@ -33,8 +33,8 @@ export const Metric = (props) => {
     console.debug(error);
   }
 
-  // console.log(`failureCount ${metric.name}`, failureCount);
-  // console.log(`failureReason ${metric.name}`, failureReason);
+  console.log(`failureCount ${metric.name}`, failureCount);
+  console.log(`failureReason ${metric.name}`, failureReason);
 
 
   if (isSuccess) {
@@ -86,7 +86,7 @@ export const Metric = (props) => {
             } else if (sent === 'negative') {
               stats.color = 'text-orange-600';
               stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
+            } else if (sent === 'neutral') {  
               stats.color = 'text-stone-500 dark:text-stone-400';
               stats.badge = 'bg-stone-500 dark:bg-stone-400';
             }
@@ -98,7 +98,7 @@ export const Metric = (props) => {
             } else if (sent === 'negative') {
               stats.color = 'text-orange-600';
               stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
+            } else if (sent === 'neutral') {  
               stats.color = 'text-stone-500 dark:text-stone-400';
               stats.badge = 'bg-stone-500 dark:bg-stone-400';
             }
@@ -110,7 +110,7 @@ export const Metric = (props) => {
             } else if (sent === 'negative') {
               stats.color = 'text-orange-600';
               stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
+            } else if (sent === 'neutral') {  
               stats.color = 'text-stone-500 dark:text-stone-400';
               stats.badge = 'bg-stone-500 dark:bg-stone-400';
             }

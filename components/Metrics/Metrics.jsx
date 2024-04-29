@@ -40,7 +40,7 @@ export const Metrics = (props) => {
             {Array.isArray(data) ? data.map((metric) => (
               <CarouselItem
                 key={metric.id}
-                className="basis-1/4"
+                className="basis-1/3"
               >
                 <Metric
                   key={metric.id}
