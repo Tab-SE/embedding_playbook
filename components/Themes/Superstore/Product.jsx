@@ -15,7 +15,7 @@ export const Product = () => {
         </CardHeader>
         <CardContent className="pl-2">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
+            src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/ProductDetails'
             width={800}
             height={400}
             hideTabs={true}
@@ -33,7 +33,7 @@ export const Product = () => {
         </CardHeader>
         <CardContent className="pl-2">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
+            src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/ProductView'
             width={800}
             height={300}
             hideTabs={true}

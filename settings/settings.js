@@ -20,20 +20,7 @@ export const settings = {
         workbooks: [],
         data_sources: []
       }
-    },
-    {
-      label: "E-Bikes",
-      name: "ebikes",
-      component: Ebikes,
-      type: "retail",
-      logo: "ebikes.png",
-      styles: "",
-      project: {
-        name: "ebikes",
-        workbooks: [],
-        data_sources: []
-      }
-    },
+    }
   ],
   demo_users: users
 }

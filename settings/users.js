@@ -1,9 +1,9 @@
 
 export const users = {
   A: {
-    id: "jchen@mail.com",
+    id: "jmorris@mail.com",
     name: "Mackenzie Day",
-    email: "jchen@mail.com",
+    email: "jmorris@mail.com",
     picture: "img/stock/julie_morris.png",
     uaf: {
       Superstore: []
