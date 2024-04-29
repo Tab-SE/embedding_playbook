@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
-import { TableauViz } from 'components';
+import { TableauEmbed } from 'components';
 
 export const Product = () => {
   return (
@@ -14,7 +14,7 @@ export const Product = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
-          <TableauViz 
+          <TableauEmbed
             src='https://10ax.online.tableau.com/t/rcgsepulse/views/NorthernTrailOutfitters-SalesAnalysis-Embed800x800/Product'
             width={800}
             height={800}

@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "compo
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 import { Avatar, AvatarFallback, AvatarImage } from "components/ui";
 
-import { TableauViz } from 'components';
+import { TableauEmbed } from 'components';
 
 export const Customers = () => {
   return (
@@ -16,7 +16,7 @@ export const Customers = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
-            <TableauViz
+            <TableauEmbed
               src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/customer_scatter_plot'
               width={450}
               height={450}
@@ -46,7 +46,7 @@ export const Customers = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <TableauViz
+          <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/customer_region'
             width={800}
             height={218}

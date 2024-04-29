@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
-import { TableauViz } from 'components';
+import { TableauEmbed } from 'components';
 
 export const Shipping = () => {
   return (
@@ -14,7 +14,7 @@ export const Shipping = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <TableauViz
+          <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip'
             width={800}
             height={400}
@@ -32,7 +32,7 @@ export const Shipping = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <TableauViz
+          <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'
             width={800}
             height={300}
