@@ -19,25 +19,10 @@ const HeroContent = (props) => {
   const { hideMetrics, hideSheets, snippet } = props;
 
   return (
-    <div className='grid grid-rows lg:grid-cols-12 space-y-6'>
-      <div className='lg:col-span-4 space-y-6 mr-6 mt-16'>
-        <Intro />
-        <div className='hidden lg:grid'>
-          <Outro snippet={snippet} />
-        </div>
-      </div>
-      <div className='lg:col-span-8'>
-        <Demo
-          hideMetrics={hideMetrics}
-          hideSheets={hideSheets}
-        />
-      </div>
-      <div className='grid lg:hidden'>
-        <Outro
-          snippet={snippet}
-        />
-      </div>
-    </div>
+    <Demo
+      hideMetrics={hideMetrics}
+      hideSheets={hideSheets}
+    />
   )
 }
 
