@@ -2,6 +2,24 @@
 import { tab_embed } from 'libs';
 import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 
+import {
+  ContextMenu,
+  ContextMenuCheckboxItem,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from "components/ui";
+
+import { RightClick } from 'components';
+
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
 export const TableauViz = forwardRef(function Viz(props, ref) {
@@ -43,19 +61,65 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
 
 
   return (
-    <tableau-viz
-      ref={innerRef}
-      id="tableauViz"
-      src={src}
-      token={!isPublic ? jwt : null}
-      height={`${height}px`}
-      width={`${width}px`}
-      device={device}
-      hide-tabs={hideTabs ? true : false}
-      toolbar={toolbar}
-      class='rounded'
-      data-viz={id}
-    />
+    <ContextMenu>
+      <ContextMenuTrigger >
+        <tableau-viz
+          ref={innerRef}
+          id="tableauViz"
+          src={src}
+          token={!isPublic ? jwt : null}
+          height={`${height}px`}
+          width={`${width}px`}
+          device={device}
+          hide-tabs={hideTabs ? true : false}
+          toolbar={toolbar}
+          class='rounded'
+          data-viz={id}
+        />
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-64">
+        <ContextMenuItem inset>
+          Back
+          <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem inset disabled>
+          Forward
+          <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem inset>
+          Reload
+          <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>
+          <ContextMenuSubContent className="w-48">
+            <ContextMenuItem>
+              Save Page As...
+              <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+            <ContextMenuItem>Name Window...</ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem>Developer Tools</ContextMenuItem>
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+        <ContextMenuSeparator />
+        <ContextMenuCheckboxItem checked>
+          Show Bookmarks Bar
+          <ContextMenuShortcut>⌘⇧B</ContextMenuShortcut>
+        </ContextMenuCheckboxItem>
+        <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
+        <ContextMenuSeparator />
+        <ContextMenuRadioGroup value="pedro">
+          <ContextMenuLabel inset>People</ContextMenuLabel>
+          <ContextMenuSeparator />
+          <ContextMenuRadioItem value="pedro">
+            Pedro Duarte
+          </ContextMenuRadioItem>
+          <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+        </ContextMenuRadioGroup>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 })
 

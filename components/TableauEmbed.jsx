@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
-import { useEffect, useState, useRef, forwardRef, useId } from 'react';
+import { forwardRef } from 'react';
 
 import { useTableauSession } from 'hooks';
 import { TableauViz, TableauWebAuthor } from 'components';
