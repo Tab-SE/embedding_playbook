@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 
-import { Metrics } from 'components';
 import { useMetadata } from 'hooks';
+import { Metrics } from 'components';
+import { Themes } from 'components';
 
-import { MainNav, MobilePreview, Themes } from './index';
+import { MainNav, MobilePreview } from './index';
 
 
 export const Demo = (props) => {
@@ -32,7 +33,7 @@ export const Demo = (props) => {
       <div className="hidden sm:grid grid-col  my-6">
         <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-xl h-min-screen">
           <MainNav setTheme={setTheme} />
-          <div className='bg-stone-300 dark:bg-stone-700 pt-6 h-[1170px]'>
+          <div className='bg-stone-300 dark:bg-stone-700 pt-6 min-h-[1170px]'>
             {hideMetrics ? null : <Metrics theme={theme} />}
             <div className="p-6">
               {hideSheets ? null : <Themes theme={theme} />}

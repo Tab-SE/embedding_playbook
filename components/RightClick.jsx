@@ -16,6 +16,7 @@ import {
 
 export const RightClick = (props) => {
   const { } = props;
+  console.log('')
 
   return (
     <ContextMenu>

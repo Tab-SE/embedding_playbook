@@ -6,8 +6,6 @@ import { getInsights } from "libs";
 // more on dependent queries: https://tanstack.com/query/v5/docs/framework/react/guides/dependent-queries
 // more on retries (default 3): https://tanstack.com/query/v5/docs/framework/react/guides/query-retries
 
-// retries were increased as it solved intermittant errors
-
 export const useInsights = (metric) => {
   // set to an empty array if enumerated function parameters are not available in array
   const queryKey = [metric].every(param => param != null) ? ["tableau", "insights", metric.name, metric.id] : [];
