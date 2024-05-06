@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { DisplayContextProvider } from 'components/context';
 import { Demo, Logo } from 'components';
 
@@ -69,6 +71,12 @@ const Outro = (props) => {
   return (
     <div className='overflow-hidden'>
       <div className='leading-loose space-y-6 mt-6'>
+        <Image
+          src='img/demos/pacifica_tech.png'
+          width='750'
+          height='500'
+          alt='stock pacifica photo'
+        />
         <p>
         With a focus on utilizing data, analytics, and AI, Pacifica stands out as a forward-thinking
         partner for businesses seeking to optimize their HR processes. By delving deep into the data
