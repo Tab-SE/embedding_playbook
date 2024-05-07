@@ -59,61 +59,28 @@ export const Metric = (props) => {
               stats.relative = '+' + stats.relative;
             }
           }
-          // direction of the arrow icon -- old numerical version SPrice
-          //const dir = facts?.difference.direction;
-          // if (dir === 'up') {
-          //   stats.direction = '↗︎';
-          //   stats.color = 'text-sky-600';
-          //   stats.badge = 'bg-sky-600 dark:bg-sky-600';
-          // } else if (dir === 'down') {
-          //   stats.direction = '↘︎';
-          //   stats.color = 'text-orange-600';
-          //   stats.badge = 'bg-orange-600 dark:bg-orange-600';
-          // } else if (dir === 'flat') {
-          //   stats.direction = '→';
-          //   stats.color = 'text-stone-500 dark:text-stone-400';
-          //   stats.badge = 'bg-stone-500 dark:bg-stone-400';
-          // }
 
           // direction of the arrow icon -- new Logical/sentimental version dschober
           const dir = facts?.difference.direction;
-          const sent= facts?.sentiment;
+          const sent = facts?.sentiment;
+
           if (dir === 'up') {
             stats.direction = '↗︎';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
           } else if (dir === 'down') {
             stats.direction = '↘︎';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
           } else if (dir === 'flat') {
             stats.direction = '→';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
+          }
+
+          if (sent === 'positive') {
+            stats.color = 'text-[#E14462]';
+            stats.badge = 'bg-[#E14462] dark:bg-[#E14462]';
+          } else if (sent === 'negative') {
+            stats.color = 'text-[#9B0D38]';
+            stats.badge = 'bg-[#9B0D38] dark:bg-[#9B0D38]';
+          } else if (sent === 'neutral') {
+            stats.color = 'text-[#35363B]';
+            stats.badge = 'bg-[#35363B] dark:bg-[#35363B]';
           }
         }
       });

@@ -51,7 +51,7 @@ const Intro = () => {
         width='420'
         height='100'
       />
-        <h3 className='italic text-2xl font-semibold mb-9 mt-6 text-[#E14462]'>Helping Organizations find their Spirit.</h3>
+        <h3 className='italic text-2xl font-semibold mb-9 mt-6 text-[#E14462]'>Where Organizations find their Spirit.</h3>
         <div className='leading-loose space-y-6 mt-6'>
           <p>
           Welcome to Pacifica, where innovation meets human resources excellence. As a premier consulting firm,
