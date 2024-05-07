@@ -15,9 +15,9 @@ export const DEI = () => {
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
           <TableauEmbed
-            src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/overview_800x800'
+            src='https://us-west-2a.online.tableau.com/t/embedtableau/views/PacificaDiversityandEquityPayrollReport/AustinDiversityEquityReport'
             width={800}
-            height={800}
+            height={1500}
             hideTabs={true}
             device='default'
             toolbar='hidden'

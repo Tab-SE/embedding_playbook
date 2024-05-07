@@ -15,7 +15,7 @@ export const settings = {
       name: "pacifica",
       component: Pacifica,
       type: "default",
-      logo: "pacifica_icon.png",
+      logo: "pacifica/pacifica_icon.png",
       styles: "",
       project: {
         name: "superstore_embedded",
