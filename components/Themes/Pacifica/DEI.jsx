@@ -10,7 +10,10 @@ export const DEI = () => {
         <CardHeader>
           <CardTitle>Diversity & Equity</CardTitle>
           <CardDescription>
-            DEI text here
+          Pacifica Consulting's Diversity and Equity Report for the city of Austin offers
+          actionable insights to enhance inclusivity citywide. With a focus on progress and
+          opportunities, our strategic recommendations pave the way for a more inclusive
+          community. Let's drive positive change together.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
