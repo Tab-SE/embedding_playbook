@@ -21,7 +21,7 @@
       "sidebar": false,
       "toc": false,
       "pagination": false,
-      "navbar": false,
+      "navbar": true,
       "timestamp": false
     }
   }
