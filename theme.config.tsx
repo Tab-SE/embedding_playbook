@@ -8,14 +8,14 @@ const description = "This playbook teaches you how to compose Tableau's varied p
 const config: DocsThemeConfig = {
   logo:
   <Logo
-    src='img/themes/pacifica/pacifica_main.png'
+    src='/img/themes/pacifica/pacifica_main.png'
     width='100'
   />,
   footer: {
     text:
     <>
     <Logo
-      src='img/themes/pacifica/pacifica_main.png'
+      src='/img/themes/pacifica/pacifica_main.png'
       width='100'
     />
     </>,

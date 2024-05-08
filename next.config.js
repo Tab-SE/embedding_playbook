@@ -34,6 +34,20 @@ const withNextra = require('nextra')({
 module.exports = withNextra({
   images: {
     unoptimized: !staticOptimized,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
   assetPrefix: assetPrefix,
   webpack(config) {

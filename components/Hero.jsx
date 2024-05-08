@@ -47,7 +47,7 @@ const Intro = () => {
   return (
     <div className=''>
       <Logo
-        src='img/themes/pacifica/pacifica_main.png'
+        src='/img/themes/pacifica/pacifica_main.png'
         width='420'
         height='100'
       />

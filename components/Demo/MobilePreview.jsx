@@ -4,14 +4,14 @@ export const MobilePreview = () => {
   return (
     <div className="sm:hidden">
       <Image
-        src="img/mobile_previews/hero_superstore.png"
+        src="/img/mobile_previews/hero_superstore.png"
         width={1280}
         height={866}
         alt="Dashboard"
         className="block dark:hidden"
       />
       <Image
-        src="img/mobile_previews/hero_superstore_dark.png"
+        src="/img/mobile_previews/hero_superstore_dark.png"
         width={1280}
         height={866}
         alt="Dashboard"
