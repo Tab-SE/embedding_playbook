@@ -11,12 +11,14 @@ const config: DocsThemeConfig = {
     src='img/themes/pacifica/pacifica_main.png'
     width='100'
   />,
-  project: {
-    link: 'https://github.com/Tab-SE/embedding_playbook',
-  },
-  docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook/tree/main/',
   footer: {
-    text: 'Pacifica Consulting',
+    text:
+    <>
+    <Logo
+      src='img/themes/pacifica/pacifica_main.png'
+      width='100'
+    />
+    </>,
   },
   toc: {
     backToTop: true

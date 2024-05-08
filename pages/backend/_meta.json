@@ -1,8 +1,0 @@
-{
-  "index": "Backend",
-  "rest": "REST API",
-  "metadata": "Metadata API (GraphQL)",
-  "webhooks": "Webhooks",
-  "devops": "DevOps",
-  "analytics": "Advanced Analytics"
-}
