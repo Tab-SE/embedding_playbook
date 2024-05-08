@@ -1,16 +1,17 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
-import { DEI } from './DEI';
+import { Summary } from './Summary';
 import { Diversity } from './Diversity';
 import { Equity } from './Equity';
+import { Retention } from './Retention';
 
 
 
 export const Pacifica = () => {
   return (
-    <Tabs defaultValue="dei" className="space-y-3">
+    <Tabs defaultValue="summary" className="space-y-3">
       <TabsList>
-        <TabsTrigger value="dei">
+        <TabsTrigger value="summary">
           Summary
         </TabsTrigger>
         <TabsTrigger value="diversity">
@@ -24,9 +25,10 @@ export const Pacifica = () => {
         </TabsTrigger>
       </TabsList>
       <section className="min-h-[892px]">
-        <DEI />
+        <Summary />
         <Diversity />
         <Equity />
+        <Retention />
       </section>
     </Tabs>
   )

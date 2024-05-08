@@ -3,9 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
 import { TableauEmbed } from 'components';
 
-export const DEI = () => {
+export const Summary = () => {
   return (
-    <TabsContent value="dei" className="space-y-4">
+    <TabsContent value="summary" className="space-y-4">
       <Card className='dark:bg-stone-900'>
         <CardHeader>
           <CardTitle>Diversity & Equity</CardTitle>
