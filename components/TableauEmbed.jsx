@@ -80,6 +80,8 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
         /> :
         <TableauWebAuthor
           src={src}
+          height={height}
+          width={width}
           ref={ref}
           jwt={jwt}
           isPublic={isPublic}

@@ -57,10 +57,7 @@ const Intro = () => {
           Welcome to Pacifica, where innovation meets human resources excellence. As a premier consulting firm,
           we specialize in revolutionizing HR practices through the seamless integration of data, analytics, and AI.
           Our mission is simple yet transformative: to empower organizations with actionable insights across key HR
-          functions, including recruitment, payroll, retention, and DEI initiatives. With a keen focus on leveraging
-          advanced technologies, we guide our clients towards informed decisions that enhance efficiency, productivity,
-          and employee satisfaction. From unraveling recruitment challenges to optimizing payroll processes, Pacifica
-          is your trusted partner in navigating the dynamic landscape of the modern workplace.
+          functions, including recruitment, payroll, retention, and DEI initiatives.
           </p>
           <Image
             src='https://plus.unsplash.com/premium_photo-1661901829247-0358bd917858?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -68,6 +65,12 @@ const Intro = () => {
             height='500'
             alt='stock pacifica photo'
           />
+          <p>
+          With a keen focus on leveraging
+          advanced technologies, we guide our clients towards informed decisions that enhance efficiency, productivity,
+          and employee satisfaction. From unraveling recruitment challenges to optimizing payroll processes, Pacifica
+          is your trusted partner in navigating the dynamic landscape of the modern workplace.
+          </p>
         </div>
     </div>
   )
@@ -94,12 +97,8 @@ const Outro = (props) => {
         />
         <p>
         At Pacifica, we redefine the HR landscape through a blend of cutting-edge technology and expert
-        human resources acumen. Our approach is rooted in precision and innovation, as we delve deep into
-        data landscapes to uncover invaluable insights. With a commitment to excellence, we equip organizations
-        with the tools and strategies needed to thrive in today's competitive business environment. Whether you're
-        seeking to elevate recruitment strategies, streamline payroll operations, or enhance employee retention rates,
-        Pacifica is here to guide you towards sustainable success. Join us on a journey of transformation, where
-        data-driven methodologies pave the way for a future of unparalleled HR excellence.
+        human resources acumen. Join us on a journey of transformation, where
+        data-driven methodologies pave the way for a future of unparalleled organizational excellence.
         </p>
       </div>
     </div>

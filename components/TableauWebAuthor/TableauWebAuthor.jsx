@@ -5,7 +5,7 @@ import { useState, useRef, forwardRef, useId } from 'react';
 
 // handles post authentication logic requiring an initialized <tableau-authoring-viz> object to operate
 export const TableauWebAuthor = forwardRef(function Viz(props, ref) {
-  const { src, jwt, height, width, device, hideTabs, toolbar, isPublic } = props;
+  const { src, jwt, height, width, isPublic } = props;
   // creates a unique identifier for the embed
   const id = `id-${useId()}`;
   // to be used if parent did not forward a ref
@@ -19,12 +19,13 @@ export const TableauWebAuthor = forwardRef(function Viz(props, ref) {
     <tableau-authoring-viz
       ref={innerRef}
       id="tableauViz"
-      width="100%"
-      height="100vh"
+      width={width}
+      height={height}
       src={src}
       token={!isPublic ? jwt : null}
       class='rounded'
       data-viz={id}
+      hide-edit-in-desktop-button={true}
     />
   )
 })

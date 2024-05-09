@@ -1,8 +1,26 @@
+import Link from 'next/link'
+
+import { Button } from 'components/ui';
+
 import { TableauEmbed } from 'components';
 
 <br/>
 
-<TableauEmbed
-  src='https://us-west-2a.online.tableau.com/t/embedtableau/views/PacificaPayForecaster/PayForecaster'
-  WebEdit
-/>
+<div className='h-[810px] w-[1440px]'>
+  <TableauEmbed
+    src='https://us-west-2a.online.tableau.com/t/embedtableau/views/PacificaPayForecaster/PayForecaster'
+    height='800px'
+    width='1400px'
+    WebEdit
+  />
+</div>
+
+<br/>
+
+<Button className="bg-[#E14462] ml-12">
+  <Link
+    href="/pay"
+  >
+  ↩ Return to Dashboard
+  </Link>
+</Button>
