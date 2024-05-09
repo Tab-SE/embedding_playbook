@@ -1,4 +1,9 @@
+import Link from 'next/link'
+
+import { Button } from 'components/ui';
+
 import { TableauEmbed } from 'components';
+
 
 <br/>
 
@@ -10,3 +15,11 @@ import { TableauEmbed } from 'components';
   toolbar={'hidden'}
   device='default'
 />
+
+<Button className="bg-[#E14462] ml-12">
+  <Link
+    href="/edit"
+  >
+  🔍 Explore Data
+  </Link>
+</Button>

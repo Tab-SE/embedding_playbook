@@ -10,7 +10,7 @@ export const Logo = (props) => {
       height={height ? height : "45"}
       alt={alt ? alt : "application logo"}
       placeholder="blur"
-      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mPUNDKqBwACJwEOqAQeegAAAABJRU5ErkJggg=="
+      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
     />
   );
 }

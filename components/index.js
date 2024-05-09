@@ -8,5 +8,6 @@ export { Metrics, Metric } from './Metrics';
 export { TableauAuth } from './TableauAuth';
 export { TableauViz } from './TableauViz';
 export { TableauEmbed } from './TableauEmbed';
+export { TableauWebAuthor, AuthoringModal } from './TableauWebAuthor';
 export { ThemeSelector, Themes, Superstore, NTO, Ebikes } from './Themes';
 export { RightClick } from './RightClick';

@@ -7,6 +7,17 @@
       "layout": "full"
     }
   },
+  "edit": {
+    "title": "Edit this Report",
+    "type": "hidden",
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "sidebar": false,
+      "toc": false,
+      "timestamp": false
+    }
+  },
   "consulting": {
     "title": "Organizational Consulting",
     "type": "page"
