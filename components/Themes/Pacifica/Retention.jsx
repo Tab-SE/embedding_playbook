@@ -66,7 +66,7 @@ export const Retention = () => {
         </CardHeader>
         <CardContent className="flex justify-center pl-2">
           <Image
-            src='img/themes/pacifica/pacifica_staffing.png'
+            src='/img/themes/pacifica/pacifica_staffing.png'
             width='500'
             height='500'
             alt='stock pacifica photo'
