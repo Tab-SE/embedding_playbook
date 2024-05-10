@@ -9,7 +9,7 @@
   },
   "edit": {
     "title": "Edit this Report",
-    "type": "hidden",
+    "display": "hidden",
     "theme": {
       "layout": "full",
       "breadcrumb": false,

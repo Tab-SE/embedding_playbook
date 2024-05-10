@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "info": "next info",
-    "demo": "next build && next start",
+    "demo": "next lint && next build && next start",
     "save": "git add pages public && git commit -m 'saving content (/public & /pages)'",
     "revert": "git reset HEAD -- .",
     "upload": "git push",
