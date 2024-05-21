@@ -11,11 +11,11 @@ export const settings = {
   custom_metrics: true,
   themes: [
     {
-      label: "Pacifica Consulting",
-      name: "pacifica",
+      label: "Zilliant",
+      name: "zilliant",
       component: Pacifica,
       type: "default",
-      logo: "pacifica/pacifica_icon.png",
+      logo: "zilliant/zilliant_icon_dark.png",
       styles: "",
       project: {
         name: "superstore_embedded",

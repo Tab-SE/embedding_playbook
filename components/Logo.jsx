@@ -5,7 +5,7 @@ export const Logo = (props) => {
 
   return (
     <Image
-      src={src ? src : "img/themes/superstore.png"}
+      src={src ? src : "/img/themes/zilliant/zilliant_light.svg"}
       width={width ? width : "45"}
       height={height ? height : "45"}
       alt={alt ? alt : "application logo"}

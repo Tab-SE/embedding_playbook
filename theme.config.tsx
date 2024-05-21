@@ -3,22 +3,22 @@ import { useConfig, DocsThemeConfig } from 'nextra-theme-docs';
 import { Logo, Head } from './components';
 
 const vercel = 'https://embedding-playbook.vercel.app';
-const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
+const description = "Let Us Help You Unlock the Power of Pricing";
 
 const config: DocsThemeConfig = {
-  primaryHue: 330,
-  primarySaturation: 75,
+  primaryHue: 21,
+  primarySaturation: 100,
   logo:
   <Logo
-    src='/img/themes/pacifica/pacifica_main.png'
-    width='100'
+    src='/img/themes/zilliant/zilliant_icon_dark.png'
+    width='50'
   />,
   footer: {
     text:
     <>
     <Logo
-      src='/img/themes/pacifica/pacifica_main.png'
-      width='100'
+      src='/img/themes/zilliant/zilliant_light.svg'
+      width='200'
     />
     </>,
   },
@@ -30,11 +30,11 @@ const config: DocsThemeConfig = {
     // changes title on home '/' route
     if (route !== '/') {
       return {
-        titleTemplate: 'Pacifica Consulting'
+        titleTemplate: 'Zilliant'
       };
     } else {
       return {
-        titleTemplate: 'Pacifica Consulting | Home'
+        titleTemplate: 'Zilliant | Home'
       };
     }
   },
