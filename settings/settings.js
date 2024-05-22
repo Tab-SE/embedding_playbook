@@ -3,7 +3,7 @@ import { Superstore } from "components/Themes/Superstore";
 import { Ebikes } from "components/Themes/Ebikes";
 import { NTO } from "components/Themes/NTO";
 import { Pacifica } from "components/Themes/Pacifica";
-
+import { Zilliant } from "components/Themes/Zilliant";
 
 
 export const settings = {
@@ -11,9 +11,9 @@ export const settings = {
   custom_metrics: true,
   themes: [
     {
-      label: "Zilliant",
+      label: "Zilliant Analytics",
       name: "zilliant",
-      component: Pacifica,
+      component: Zilliant,
       type: "default",
       logo: "zilliant/zilliant_icon_dark.png",
       styles: "",

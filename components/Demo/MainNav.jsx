@@ -24,7 +24,7 @@ export const MainNav = (props) => {
   }
 
   return (
-    <div className="border-b dark:border-stone-600 bg-stone-600 dark:bg-red-900 shadow-xl px-3">
+    <div className="border-b dark:border-stone-600 bg-stone-900 dark:bg-red-900 shadow-xl px-3">
       <div className="h-3 mb-2">
         <Button
           className="h-3 w-3 text-[6px] bg-red-500 dark:bg-red-500 p-1 mx-1 border-white border rounded-full shadow-xl"
