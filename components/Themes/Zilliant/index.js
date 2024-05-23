@@ -12,16 +12,16 @@ export const Zilliant = () => {
     <Tabs defaultValue="optimization" className="space-y-3">
       <TabsList>
         <TabsTrigger value="optimization">
-        Optimization
+         Optimization
         </TabsTrigger>
         <TabsTrigger value="diversity">
-          Diversity
+          Pricing
         </TabsTrigger>
         <TabsTrigger value="equity">
-          Equity
+          Discounts
         </TabsTrigger>
         <TabsTrigger value="retention">
-          Retention
+          Benchmarks
         </TabsTrigger>
       </TabsList>
       <section className="min-h-[892px]">
