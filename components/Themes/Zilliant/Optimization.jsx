@@ -10,13 +10,13 @@ export const Optimization = () => {
         <CardHeader>
           <CardTitle>Pricing Optimization</CardTitle>
           <CardDescription>
-          Pacifica Consulting's Diversity and Equity Report for the city of Austin offers
-          actionable insights to enhance inclusivity citywide. With a focus on progress and
-          opportunities, our strategic recommendations pave the way for a more inclusive
-          community. Let's drive positive change together.
+          Zilliant's new CPQ pricing optimization dashboard streamlines pricing by tracking
+          real-time changes in pricing, discounts, and product performance. Its intuitive interface
+          and advanced analytics enable data-driven adjustments to optimize revenue and profitability,
+          enhancing business efficiency and competitive advantage.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex justify-center pl-2">
+        <CardContent className="flex justify-center items-center">
           <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Zilliant/Hero'
             width={900}
