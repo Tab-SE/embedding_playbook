@@ -14,20 +14,7 @@ export const settings = {
       name: "Cumulus Wealth",
       component: CumulusWealth,
       type: "default",
-      logo: "superstore.png",
-      styles: "",
-      project: {
-        name: "superstore_embedded",
-        workbooks: [],
-        data_sources: []
-      }
-    },
-    {
-      label: "Superstore Analytics",
-      name: "superstore",
-      component: Superstore,
-      type: "sample",
-      logo: "superstore.png",
+      logo: "cumulus-core-icon-wealth-blue.png",
       styles: "",
       project: {
         name: "superstore_embedded",

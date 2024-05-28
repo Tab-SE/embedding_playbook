@@ -19,7 +19,7 @@ export default function ChatAvatar({ role }) {
   return (
     <div className="flex h-9 w-9 shrink-0 select-none items-center justify-center rounded-full bg-background shadow-xl">
       <Avatar className='h-9 w-9'>
-        <AvatarImage src="svg/logo_color.svg" alt="AI User" />
+        <AvatarImage src="img/themes/cumulus-core-icon-wealth-blue.png" alt="AI User" />
         <AvatarFallback>AI</AvatarFallback>
       </Avatar>
     </div>

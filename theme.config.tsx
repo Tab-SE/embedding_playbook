@@ -7,13 +7,20 @@ const vercel = 'https://embedding-playbook.vercel.app';
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
 
 const config: DocsThemeConfig = {
-  logo: <Logo/>,
-  project: {
-    link: 'https://github.com/Tab-SE/embedding_playbook',
-  },
+  logo: 
+  <Logo 
+    src="/img/themes/cumulus-core-icon-wealth-blue.png"
+    width="50"
+  />,
   docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook/tree/main/',
   footer: {
-    text: '✨ Embed Tableau',
+    text:
+    <>
+    <Logo
+      src='/img/themes/cumulus-core-primary-logo-wealth-blue.png'
+      width='200'
+    />
+    </>,
   },
   toc: {
     backToTop: true
