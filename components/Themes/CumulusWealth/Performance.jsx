@@ -15,11 +15,11 @@ export const Performance = () => {
               Compares Client Value growth or decline over time
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex items-center justify-center">
+          <CardContent className="grid justify-items-center align-items-center">
             <TableauEmbed
-              src='https://prod-useast-b.online.tableau.com/t/acortezembedv2/views/PortfolioPerformance/ClientPerformance'
-              width={480}
-              height={525}
+              src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/ClientPerformance'
+              width={460}
+              height={425}
               hideTabs={true}
               device='default'
               toolbar='hidden'
@@ -45,11 +45,11 @@ export const Performance = () => {
           Compares Asset Value Performance over time
           </CardDescription>
         </CardHeader>
-        <CardContent className="pl-2">
+        <CardContent className="grid justify-items-center align-items-center">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/acortezembedv2/views/PortfolioPerformance/AssetPerformance'
-            width={900}
-            height={350}
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/AssetPerformance'
+            width={800}
+            height={280}
             hideTabs={true}
             device='default'
             toolbar='hidden'
@@ -120,7 +120,7 @@ const SampleList = () => {
           <p className="text-sm font-medium leading-none">Sofia Davis</p>
           <p className="text-sm text-muted-foreground">sofia.davis@email.com</p>
         </div>
-        <div className="ml-auto font-medium">+$39.00</div>
+        <div className="ml-auto font-medium">+$549.00</div>
       </div>
       <div className="flex items-center">
         <Avatar className="h-9 w-9">
@@ -130,28 +130,6 @@ const SampleList = () => {
         <div className="ml-4 space-y-1">
           <p className="text-sm font-medium leading-none">Sofia Davis</p>
           <p className="text-sm text-muted-foreground">sofia.davis@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$89.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage src="/avatars/02.png" alt="Avatar" />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Jackson Lee</p>
-          <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$350.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage src="/avatars/02.png" alt="Avatar" />
-          <AvatarFallback>SG</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Spencer Greene</p>
-          <p className="text-sm text-muted-foreground">s.greene@email.com</p>
         </div>
         <div className="ml-auto font-medium">+$1250.00</div>
       </div>

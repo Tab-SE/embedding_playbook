@@ -19,7 +19,7 @@ export const Overview = () => {
         </CardHeader>
         <CardContent className="flex justify-center items-center">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/acortezembedv2/views/PortfolioPerformance/PortfolioOverview'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/PortfolioOverview'
             width={800}
             height={800}
             hideTabs={true}

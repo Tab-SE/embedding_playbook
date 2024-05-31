@@ -51,12 +51,13 @@ const Intro = () => {
         width='420'
         height='100'
       />
-        <h3 className='italic text-2xl font-semibold mb-9 mt-6 text-[#2a94d6]'>Where Organizations find their Spirit.</h3>
+        <h3 className='italic text-2xl font-semibold mb-9 mt-6 text-[#2a94d6]'>Elevate Your Wealth with Data Insights</h3>
         <div className='leading-loose space-y-6 mt-6'>
           <p>
-          Welcome to Pacifica, where innovation meets human resources excellence. As a premier consulting firm,
-          we specialize in revolutionizing HR practices through the seamless integration of data, analytics, and AI.
-          Our mission is simple yet transformative.
+          At Cumulus Wealth, our mission is to empower individuals, families, and institutions to achieve lasting financial prosperity through personalized wealth management solutions and unwavering commitment to excellence. We are dedicated to:
+          </p>
+          <p>
+          Serving as a trusted partner, providing expert guidance and tailored strategies that align with our clients' unique goals, values, and risk tolerance, enabling them to make informed decisions about their financial future.
           </p>
           <Image
             src='https://plus.unsplash.com/premium_photo-1661634003229-975f2828c45a?q=80&w=3570&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -64,11 +65,6 @@ const Intro = () => {
             height='500'
             alt='stock pacifica photo'
           />
-          <p>
-          With a keen focus on leveraging
-          advanced technologies, we guide our clients towards informed decisions that enhance efficiency, productivity,
-          and employee satisfaction. From unraveling recruitment challenges.
-          </p>
         </div>
     </div>
   )
@@ -80,13 +76,10 @@ const Outro = (props) => {
     <div className='overflow-hidden'>
       <div className='leading-loose space-y-6 mt-6'>
         <p>
-        With a focus on data, analytics, and AI, Pacifica stands out as a forward-thinking
-        partner for businesses seeking to optimize their HR processes. By delving deep into the data
-        landscape, Pacifica uncovers valuable insights that enable clients.
+          Offering a comprehensive suite of wealth management services, including investment management, financial planning, estate planning, and philanthropic advisory, delivered with a holistic approach that addresses every aspect of our clients' financial well-being.
         </p>
         <p>
-        At Pacifica, we redefine the HR landscape through a blend of cutting-edge technology and expert
-        human resources acumen. Join us on a journey of transformation.
+          Upholding the highest standards of integrity, ethics, and transparency in all our dealings, fostering an environment of trust and accountability that puts our clients' interests first.
         </p>
       </div>
     </div>

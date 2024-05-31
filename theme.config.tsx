@@ -22,6 +22,9 @@ const config: DocsThemeConfig = {
     />
     </>,
   },
+  search: {
+    placeholder: "Search Cumulus"
+  },
   toc: {
     backToTop: true
   },

@@ -31,19 +31,7 @@
     }
   },
   "start": {
-    "title": "Getting Started",
-    "type": "page"
-  },
-  "security": {
-    "title": "Security",
-    "type": "page"
-  },
-  "frontend": {
-    "title": "Frontend",
-    "type": "page"
-  },
-  "backend": {
-    "title": "Backend",
+    "title": "Reports",
     "type": "page"
   }
 }
