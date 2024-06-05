@@ -62,7 +62,8 @@ export function LlamaIndexStream(
   return {
     stream: createParser(res, data, opts?.parserOptions)
       .pipeThrough(createCallbacksTransformer(opts?.callbacks))
-      .pipeThrough(createStreamDataTransformer()),
+      // @ts-ignore
+      .pipeThrough(createStreamDataTransformer(true)),
     data,
   };
 }
