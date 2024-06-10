@@ -1,34 +1,23 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
 import { Optimization } from './Optimization';
-import { Diversity } from './Diversity';
-import { Equity } from './Equity';
-import { Retention } from './Retention';
-
+import { Weekly } from './Weekly';
 
 
 export const Zilliant = () => {
   return (
-    <Tabs defaultValue="optimization" className="space-y-3">
+    <Tabs defaultValue="weekly" className="space-y-3">
       <TabsList>
+        <TabsTrigger value="weekly">
+         Weekly Highlights
+        </TabsTrigger>
         <TabsTrigger value="optimization">
-         Optimization
-        </TabsTrigger>
-        <TabsTrigger value="diversity">
-          Pricing
-        </TabsTrigger>
-        <TabsTrigger value="equity">
-          Discounts
-        </TabsTrigger>
-        <TabsTrigger value="retention">
-          Benchmarks
+          Optimization
         </TabsTrigger>
       </TabsList>
       <section className="min-h-[892px]">
         <Optimization />
-        <Diversity />
-        <Equity />
-        <Retention />
+        <Weekly />
       </section>
     </Tabs>
   )

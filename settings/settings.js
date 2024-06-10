@@ -11,7 +11,7 @@ export const settings = {
   custom_metrics: true,
   themes: [
     {
-      label: "Zilliant Analytics",
+      label: "CPQ Analytics",
       name: "zilliant",
       component: Zilliant,
       type: "default",

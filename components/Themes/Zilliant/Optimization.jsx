@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
 import { TableauEmbed } from 'components';
 
+
 export const Optimization = () => {
   return (
     <TabsContent value="optimization" className="space-y-4">
