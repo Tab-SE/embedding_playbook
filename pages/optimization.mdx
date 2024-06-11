@@ -1,0 +1,28 @@
+import Link from 'next/link'
+
+import { Button } from 'components/ui';
+
+import { TableauEmbed } from 'components';
+
+<br/>
+
+<div className='flex justify-center items-center'>
+  <TableauEmbed
+    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Zilliant/Fullscreen'
+    width={1300}
+    height={1100}
+    hideTabs={true}
+    toolbar={'hidden'}
+    device='default'
+  />
+</div>
+
+<br/>
+
+<Button className="bg-[#FD4926] ml-12">
+  <Link
+    href="/edit"
+  >
+  🔍 Explore Data
+  </Link>
+</Button>

@@ -4,18 +4,21 @@ import { Button } from 'components/ui';
 
 import { TableauEmbed } from 'components';
 
+<br/>
 
-<Button className="bg-[#E14462] ml-12 mt-6">
+<TableauEmbed
+  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Zilliant/Fullscreen'
+  height='1100px'
+  width='1300px'
+  WebEdit
+/>
+
+<br/>
+
+<Button className="bg-[#FD4926] ml-12 mt-6">
   <Link
     href="/pay"
   >
   ↩ Return to Dashboard
   </Link>
 </Button>
-
-<TableauEmbed
-  src='https://us-west-2a.online.tableau.com/t/embedtableau/views/PacificaPayForecaster/PayForecaster'
-  height='720px'
-  width='1366px'
-  WebEdit
-/>

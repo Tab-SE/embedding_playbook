@@ -76,7 +76,6 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           isPublic={isPublic}
-          class=''
         /> :
         <TableauWebAuthor
           src={src}
@@ -85,7 +84,6 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
           ref={ref}
           jwt={jwt}
           isPublic={isPublic}
-          class=''
         />
         : null}
     </div>

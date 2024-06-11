@@ -19,11 +19,11 @@
     }
   },
   "consulting": {
-    "title": "Organizational Consulting",
+    "title": "Strategic Consulting",
     "type": "page"
   },
-  "pay": {
-    "title": "Pay Forecaster",
+  "optimization": {
+    "title": "Pricing Optimization",
     "type": "page",
     "theme": {
       "layout": "full",

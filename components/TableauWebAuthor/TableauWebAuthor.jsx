@@ -23,7 +23,7 @@ export const TableauWebAuthor = forwardRef(function Viz(props, ref) {
       height={height}
       src={src}
       token={!isPublic ? jwt : null}
-      class='rounded flex items-center justify-center h-screen'
+      class='rounded flex items-center justify-center'
       data-viz={id}
       hide-edit-in-desktop-button={true}
     />
