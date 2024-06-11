@@ -2,13 +2,16 @@
   "index": {
     "title": "Summary"
   },
-  "diversity": {
-    "title": "Diversity"
+  "consumer": {
+    "title": "Consumer"
   },
-  "equity": {
-    "title": "Equity"
+  "corporate": {
+    "title": "Corporate"
   },
-  "retention": {
-    "title": "Retention"
+  "home_office": {
+    "title": "Home Office"
+  },
+  "conclusion": {
+    "title": "Conclusion"
   }
 }
