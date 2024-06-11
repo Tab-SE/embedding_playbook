@@ -291,7 +291,7 @@ const PriceLists = () => {
   )
 }
 
-const NewPriceList = (props) => {
+const NewPriceList = () => {
 
   return (
     <Card className="w-[350px]">

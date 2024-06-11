@@ -73,14 +73,14 @@ export const Metric = (props) => {
           }
 
           if (sent === 'positive') {
-            stats.color = 'text-[#FD4926]';
-            stats.badge = 'bg-[#FD4926] dark:bg-[#FD4926]';
+            stats.color = 'text-emerald-500';
+            stats.badge = 'bg-emerald-500 dark:bg-emerald-500';
           } else if (sent === 'negative') {
-            stats.color = 'text-[#35363B]';
-            stats.badge = 'bg-[#35363B] dark:bg-[#35363B]';
+            stats.color = 'text-red-500';
+            stats.badge = 'bg-red-500 dark:bg-red-500';
           } else if (sent === 'neutral') {
-            stats.color = 'text-[#FD4926]/75';
-            stats.badge = 'bg-[#FD4926]/75 dark:bg-[#FD4926]/75';
+            stats.color = 'text-[#35363B]/75';
+            stats.badge = 'bg-[#35363B]/75 dark:bg-[#35363B]/75';
           }
         }
       });
