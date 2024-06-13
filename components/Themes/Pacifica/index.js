@@ -1,34 +1,23 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
-import { Summary } from './Summary';
-import { Diversity } from './Diversity';
-import { Equity } from './Equity';
-import { Retention } from './Retention';
-
+import { Optimization } from './Optimization';
+import { Weekly } from './Weekly';
 
 
 export const Pacifica = () => {
   return (
-    <Tabs defaultValue="summary" className="space-y-3">
+    <Tabs defaultValue="weekly" className="space-y-3">
       <TabsList>
-        <TabsTrigger value="summary">
-          Summary
+        <TabsTrigger value="weekly">
+         Weekly Highlights
         </TabsTrigger>
-        <TabsTrigger value="diversity">
-          Diversity
-        </TabsTrigger>
-        <TabsTrigger value="equity">
-          Equity
-        </TabsTrigger>
-        <TabsTrigger value="retention">
-          Retention
+        <TabsTrigger value="optimization">
+          Optimization
         </TabsTrigger>
       </TabsList>
       <section className="min-h-[892px]">
-        <Summary />
-        <Diversity />
-        <Equity />
-        <Retention />
+        <Optimization />
+        <Weekly />
       </section>
     </Tabs>
   )

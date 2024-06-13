@@ -3,7 +3,6 @@ import { Superstore } from "components/Themes/Superstore";
 import { Ebikes } from "components/Themes/Ebikes";
 import { NTO } from "components/Themes/NTO";
 import { Pacifica } from "components/Themes/Pacifica";
-import { Zilliant } from "components/Themes/Zilliant";
 
 
 export const settings = {
@@ -12,10 +11,10 @@ export const settings = {
   themes: [
     {
       label: "CPQ Analytics",
-      name: "zilliant",
-      component: Zilliant,
+      name: "pacifica",
+      component: Pacifica,
       type: "default",
-      logo: "zilliant/zilliant_icon_dark.png",
+      logo: "pacifica/pacifica_icon.png",
       styles: "",
       project: {
         name: "superstore_embedded",

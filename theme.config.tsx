@@ -6,24 +6,24 @@ const vercel = 'https://embedding-playbook.vercel.app';
 const description = "Let Us Help You Unlock the Power of Pricing";
 
 const config: DocsThemeConfig = {
-  primaryHue: 21,
-  primarySaturation: 100,
+  primaryHue: 330,
+  primarySaturation: 75,
   logo:
   <Logo
-    src='/img/themes/zilliant/zilliant_icon_dark.png'
-    width='50'
+    src='/img/themes/pacifica/pacifica_main.png'
+    width='100'
   />,
   footer: {
     text:
     <>
     <Logo
-      src='/img/themes/zilliant/zilliant_light.svg'
-      width='200'
+      src='/img/themes/pacifica/pacifica_main.png'
+      width='100'
     />
     </>,
   },
   search: {
-    placeholder: "Search Zilliant"
+    placeholder: "Search Pacifica"
   },
   toc: {
     backToTop: true
@@ -33,11 +33,11 @@ const config: DocsThemeConfig = {
     // changes title on home '/' route
     if (route !== '/') {
       return {
-        titleTemplate: 'Zilliant'
+        titleTemplate: 'Pacifica Consulting'
       };
     } else {
       return {
-        titleTemplate: 'Zilliant | Home'
+        titleTemplate: 'Pacifica Consulting | Home'
       };
     }
   },
