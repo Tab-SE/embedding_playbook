@@ -3,7 +3,7 @@ import { useConfig, DocsThemeConfig } from 'nextra-theme-docs';
 import { Logo, Head } from './components';
 
 const vercel = 'https://embedding-playbook.vercel.app';
-const description = "Let Us Help You Unlock the Power of Pricing";
+const description = "The Power of Pricing with Data";
 
 const config: DocsThemeConfig = {
   primaryHue: 330,

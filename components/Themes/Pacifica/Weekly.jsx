@@ -30,8 +30,8 @@ export const Weekly = () => {
               </CardHeader>
               <CardContent className="pl-2">
                 <TableauEmbed
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/CPQ_misc/customer_scatter_plot'
-                  width={475}
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/CPQ_misc_17182505736430/customer_scatter_plot'
+                  width={720}
                   height={300}
                   hideTabs={true}
                   device='default'
@@ -49,8 +49,8 @@ export const Weekly = () => {
               </CardHeader>
               <CardContent className="pl-2">
                 <TableauEmbed
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/CPQ_misc/sales_map'
-                  width={475}
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/CPQ_misc_17182505736430/sales_map'
+                  width={720}
                   height={300}
                   hideTabs={true}
                   device='default'
@@ -67,9 +67,9 @@ export const Weekly = () => {
               </CardHeader>
               <CardContent className="pl-2">
                 <TableauEmbed
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/CPQ_misc/sales_performance'
-                  width={475}
-                  height={300}
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/CPQ_misc_17182505736430/sales_performance'
+                  width={720}
+                  height={310}
                   hideTabs={true}
                   device='default'
                   toolbar='hidden'
@@ -294,7 +294,7 @@ const PriceLists = () => {
 const NewPriceList = () => {
 
   return (
-    <Card className="w-[350px]">
+    <Card>
       <CardHeader>
         <CardTitle>Create a new Price List</CardTitle>
       </CardHeader>
@@ -321,9 +321,9 @@ const NewPriceList = () => {
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between pb-11">
+      <CardFooter className="flex justify-between pb-9">
         <Button >Cancel</Button>
-        <Button className='bg-[#FD4926]'>Deploy</Button>
+        <Button className='bg-[#e14462]'>Deploy</Button>
       </CardFooter>
     </Card>
   )

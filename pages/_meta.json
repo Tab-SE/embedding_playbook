@@ -22,8 +22,8 @@
     "title": "Strategic Consulting",
     "type": "page"
   },
-  "optimization": {
-    "title": "Pricing Optimization",
+  "full": {
+    "title": "Pay Forecaster",
     "type": "page",
     "theme": {
       "layout": "full",

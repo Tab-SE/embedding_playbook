@@ -19,8 +19,8 @@ export const Optimization = () => {
         </CardHeader>
         <CardContent className="flex justify-center items-center">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Zilliant/Hero'
-            width={900}
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/cpq_optimization/Fullscreen'
+            width={1200}
             height={1100}
             hideTabs={true}
             device='default'
