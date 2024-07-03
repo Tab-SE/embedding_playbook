@@ -17,7 +17,7 @@ export const Customers = () => {
           </CardHeader>
           <CardContent className="pl-2">
             <TableauEmbed
-              src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/customer_scatter_plot'
+              src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/customer_scatter_plot'
               width={450}
               height={450}
               hideTabs={true}
@@ -47,7 +47,7 @@ export const Customers = () => {
         </CardHeader>
         <CardContent className="pl-2">
           <TableauEmbed
-            src='https://us-west-2a.online.tableau.com/t/embedtableau/views/superstore/customer_region'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/customer_region'
             width={800}
             height={218}
             hideTabs={true}
