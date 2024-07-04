@@ -14,7 +14,7 @@ export const settings = {
       name: "superstore",
       component: Superstore,
       type: "default",
-      logo: "superstore/superstore.png",
+      logo: "/img/tableau/tableau_logo.png",
       styles: "",
       project: {
         name: "superstore",
