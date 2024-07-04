@@ -1,10 +1,7 @@
 import Image from 'next/image';
-import Link from 'next/link';
-
-import { Button } from 'components/ui';
 
 import { DisplayContextProvider } from 'components/context';
-import { Demo, Logo } from 'components';
+import { Demo } from 'components';
 
 const Intro = () => {
   return (
@@ -12,17 +9,17 @@ const Intro = () => {
       <h1 className='text-5xl font-bold mb-9'>Embed Tableau</h1>
         <div className='leading-loose space-y-6'>
           <p>Tableau is the world's leading end-to-end data and analytics platform.</p>
-          <p>
-            Leverage the analytical powerhouse of Tableau to analyze and visualize data.
-            The Embedding Playbook teaches you how to compose Tableau's varied product capabilities
-            into applications that thrill customers, coworkers, and friends!
-          </p>
           <Image
             src='/img/tableau/datadev.png'
             width='750'
             height='500'
             alt='stock photo'
           />
+          <p>
+            Leverage the analytical powerhouse of Tableau to analyze and visualize data.
+            The Embedding Playbook teaches you how to compose Tableau's varied product capabilities
+            into applications that thrill customers, coworkers, and friends!
+          </p>
         </div>
     </div>
   )
