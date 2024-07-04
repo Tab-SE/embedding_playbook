@@ -22,5 +22,13 @@
   "backend": {
     "title": "Backend",
     "type": "page"
+  },
+  "blog": {
+    "title": "Blog",
+    "type": "page"
+  },
+  "demos": {
+    "title": "Demos",
+    "type": "page"
   }
 }
