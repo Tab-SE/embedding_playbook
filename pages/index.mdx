@@ -1,3 +1,27 @@
 import { Hero } from 'components';
 
-<Hero/>
+<Hero>
+```js {1,4-5}
+import { TableauEventType } from 'https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.js';
+
+// Get the viz object from the HTML web component
+const viz = document.querySelector('tableau-viz');
+
+// Wait for the viz to become interactive
+await new Promise((resolve, reject) => {
+  // Add an event listener to verify the viz becomes interactive
+  viz.addEventListener(TableauEventType.FirstInteractive, () => {
+    resolve();
+  });
+});
+
+// Make the Overview dashboard the active sheet
+const dashboard = await viz.workbook.activateSheetAsync('Overview');
+
+// Get the worksheet we want to use
+const worksheet = dashboard.worksheets.find((ws) => ws.name === 'SaleMap');
+
+// *** Insert your code below! ***
+```
+</Hero>
+
