@@ -7,6 +7,22 @@
       "layout": "full"
     }
   },
+  "start": {
+    "title": "Getting Started",
+    "type": "page"
+  },
+  "security": {
+    "title": "Security",
+    "type": "page"
+  },
+  "frontend": {
+    "title": "Frontend",
+    "type": "page"
+  },
+  "backend": {
+    "title": "Backend",
+    "type": "page"
+  },
   "edit": {
     "title": "Edit this Report",
     "display": "hidden",
@@ -17,10 +33,6 @@
       "toc": false,
       "timestamp": false
     }
-  },
-  "consulting": {
-    "title": "Strategic Consulting",
-    "type": "page"
   },
   "full": {
     "title": "Pay Forecaster",
