@@ -4,6 +4,7 @@ import {
   AvatarImage,
 } from "components/ui";
 
+
 export default function ChatAvatar({ role }) {
   if (role === "user") {
     return (
@@ -19,7 +20,7 @@ export default function ChatAvatar({ role }) {
   return (
     <div className="flex h-9 w-9 shrink-0 select-none items-center justify-center rounded-full bg-background shadow-xl">
       <Avatar className='h-9 w-9'>
-        <AvatarImage src="svg/logo_color.svg" alt="AI User" />
+        <AvatarImage src="img/tableau/tableau_logo.png" alt="AI User" />
         <AvatarFallback>AI</AvatarFallback>
       </Avatar>
     </div>

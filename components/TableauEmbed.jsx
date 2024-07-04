@@ -3,11 +3,11 @@ import { tab_embed } from 'libs';
 import { forwardRef } from 'react';
 
 import { useTableauSession } from 'hooks';
-import { TableauViz, TableauWebAuthor } from 'components';
+import { TableauViz, TableauWebAuthor, AuthoringModal } from 'components';
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauEmbed = forwardRef(function TableauViz(props, ref) {
-  const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
+  const { src, height, width, device, hideTabs, toolbar, isPublic, WebEdit } = props;
 
   // size of parent div placeholder
   let containerHeight = height;
@@ -34,6 +34,7 @@ export const TableauEmbed = forwardRef(function TableauViz(props, ref) {
         hide-tabs={hideTabs ? true : false}
         toolbar={toolbar}
         isPublic={isPublic}
+        WebEdit={WebEdit}
       />
     </div>
   )
@@ -41,7 +42,7 @@ export const TableauEmbed = forwardRef(function TableauViz(props, ref) {
 
 // handles rendering logic during authentication
 const AuthLayer = forwardRef(function AuthLayer(props, ref) {
-  const { src, height, width, device, hideTabs, toolbar, isPublic } = props;
+  const { src, height, width, device, hideTabs, toolbar, isPublic, WebEdit } = props;
 
   // tanstack query hook to manage embed sessions
   const {
@@ -64,7 +65,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
     <div className='rounded'>
       {isSessionError ? <p>Authentication Error!</p> : null}
       {isSessionLoading ? <p>Authenticating the User...</p> : null}
-      {isSessionSuccess ?
+      {isSessionSuccess ? !WebEdit ?
         <TableauViz
           src={src}
           ref={ref}
@@ -75,8 +76,16 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           isPublic={isPublic}
-          class=''
-        /> : null}
+        /> :
+        <TableauWebAuthor
+          src={src}
+          height={height}
+          width={width}
+          ref={ref}
+          jwt={jwt}
+          isPublic={isPublic}
+        />
+        : null}
     </div>
   )
 })

@@ -2,6 +2,7 @@ import { users } from './users';
 import { Superstore } from "components/Themes/Superstore";
 import { Ebikes } from "components/Themes/Ebikes";
 import { NTO } from "components/Themes/NTO";
+import { Pacifica } from "components/Themes/Pacifica";
 
 
 export const settings = {
@@ -13,14 +14,14 @@ export const settings = {
       name: "superstore",
       component: Superstore,
       type: "default",
-      logo: "superstore.png",
+      logo: "superstore/superstore.png",
       styles: "",
       project: {
-        name: "superstore_embedded",
+        name: "superstore",
         workbooks: [],
         data_sources: []
       }
-    }
+    },
   ],
   demo_users: users
 }

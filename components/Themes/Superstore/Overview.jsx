@@ -17,7 +17,7 @@ export const Overview = () => {
           <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
             width={800}
-            height={800}
+            height={1000}
             hideTabs={true}
             device='default'
             toolbar='hidden'

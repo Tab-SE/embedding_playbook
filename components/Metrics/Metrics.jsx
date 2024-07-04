@@ -31,7 +31,6 @@ export const Metrics = (props) => {
     console.debug(error);
   }
 
-  // placeholder
   return (
     <div className="min-h-[111px] px-16">
       {Array.isArray(data) ?

@@ -73,7 +73,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           device={device}
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
-          class='rounded'
+          class='flex justify-center items-center rounded'
           data-viz={id}
         />
       </ContextMenuTrigger>

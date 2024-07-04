@@ -1,23 +1,36 @@
 import { useRouter } from 'next/router';
 import { useConfig, DocsThemeConfig } from 'nextra-theme-docs';
-import { Logo } from './components/Logo';
-import { Head } from './components/Head';
+import { Logo, Head } from './components';
 
 const vercel = 'https://embedding-playbook.vercel.app';
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
 
 const config: DocsThemeConfig = {
-  logo: <Logo/>,
-  project: {
-    link: 'https://github.com/Tab-SE/embedding_playbook',
-  },
-  docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook/tree/main/',
+  primaryHue: 201,
+  primarySaturation: 100,
+  logo:
+  <Logo
+    src="/img/tableau/tableau_logo.png"
+    width='33'
+    text='Embed Tableau'
+  />,
   footer: {
-    text: '✨ Embed Tableau',
+    text:
+    <Logo
+      src="/img/tableau/logo_text.png"
+      width='300'
+    />
+  },
+  search: {
+    placeholder: "Search Documentation"
   },
   toc: {
     backToTop: true
   },
+  project: {
+    link: 'https://github.com/Tab-SE/embedding_playbook',
+  },
+  docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook/tree/main/',
   useNextSeoProps() {
     const { route } = useRouter();
     // changes title on home '/' route

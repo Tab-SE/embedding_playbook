@@ -54,8 +54,8 @@ export const ThemeSelector = (props) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          aria-label="Select a team"
-          className={cn("justify-between text-lg md:text-xl font-bold tracking-tight p-6 dark:bg-stone-900", className)}
+          aria-label="Select an app"
+          className={cn("justify-between text-lg md:text-2xl font-bold tracking-tight p-6 text-black dark:text-white border-none bg-white dark:bg-stone-900", className)}
         >
           <Avatar className="mr-2 h-5 w-5">
             <AvatarImage
@@ -71,8 +71,8 @@ export const ThemeSelector = (props) => {
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandList className="dark:bg-stone-700">
-            <CommandInput placeholder="Search team..." />
-            <CommandEmpty>No Theme found.</CommandEmpty>
+            <CommandInput placeholder="Search apps..." />
+            <CommandEmpty>No App found.</CommandEmpty>
             {orderedThemes.map((theme) => (
               <CommandGroup key={theme.label} heading={theme.label}>
                 {theme.themes.map((theme) => (
