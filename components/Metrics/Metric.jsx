@@ -73,14 +73,14 @@ export const Metric = (props) => {
           }
 
           if (sent === 'positive') {
-            stats.color = 'text-emerald-500';
-            stats.badge = 'bg-emerald-500 dark:bg-emerald-500';
+            stats.color = 'text-sky-600';
+            stats.badge = 'bg-sky-600 dark:bg-sky-600';
           } else if (sent === 'negative') {
-            stats.color = 'text-[#e14462]';
-            stats.badge = 'bg-[#e14462] dark:bg-[#e14462]';
+            stats.color = 'text-orange-600';
+            stats.badge = 'bg-orange-600 dark:bg-orange-600';
           } else if (sent === 'neutral') {
-            stats.color = 'text-stone-600 dark:text-stone-300';
-            stats.badge = 'bg-stone-600 dark:bg-stone-300';
+            stats.color = 'text-stone-500 dark:text-stone-400';
+            stats.badge = 'bg-stone-500 dark:bg-stone-400';
           }
         }
       });
