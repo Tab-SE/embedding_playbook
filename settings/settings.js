@@ -10,14 +10,14 @@ export const settings = {
   custom_metrics: true,
   themes: [
     {
-      label: "CPQ Analytics",
-      name: "pacifica",
-      component: Pacifica,
+      label: "Superstore Analytics",
+      name: "superstore",
+      component: Superstore,
       type: "default",
-      logo: "pacifica/pacifica_icon.png",
+      logo: "superstore/superstore.png",
       styles: "",
       project: {
-        name: "superstore_embedded",
+        name: "superstore",
         workbooks: [],
         data_sources: []
       }
