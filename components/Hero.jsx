@@ -7,7 +7,7 @@ const Intro = () => {
   return (
     <div>
       <h1 className='text-5xl font-bold mb-9'>Embed Tableau</h1>
-        <div className='leading-loose space-y-6'>
+        <div className='leading-loose space-y-9'>
           <p>Tableau is the world's leading end-to-end data and analytics platform.</p>
           <Image
             src='/img/tableau/datadev.png'
@@ -25,17 +25,21 @@ const Intro = () => {
   )
 }
 
-const Outro = (props) => {
-  const { snippet } = props;
+const Outro = () => {
   return (
-    <div className='overflow-hidden'>
+    <div className='overflow-hidden leading-loose space-y-9'>
       <p>
         Beyond creating visual representations of data, Tableau provides
         the greatest benefits as it helps people discover what information is valuable to others.
         It enables users to analyze data and build the interfaces that represent them with unmatched speed
         and flexibility resulting in a springboarding of ideas into value.
       </p>
-      { snippet }
+      <Image
+        src='/img/tableau/community.png'
+        width='750'
+        height='500'
+        alt='stock photo'
+      />
     </div>
   )
 }
