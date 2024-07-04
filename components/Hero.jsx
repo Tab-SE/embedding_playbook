@@ -17,7 +17,7 @@ const Intro = () => {
           />
           <p>
             Leverage the analytical powerhouse of Tableau to analyze and visualize data.
-            The Embedding Playbook teaches you how to compose Tableau's varied product capabilities
+            This site teaches you how to compose Tableau's varied product capabilities
             into applications that thrill customers, coworkers, and friends!
           </p>
         </div>
@@ -28,6 +28,12 @@ const Intro = () => {
 const Outro = () => {
   return (
     <div className='overflow-hidden leading-loose space-y-9'>
+      <Image
+        src='/img/tableau/stock/embed_samples.png'
+        width='750'
+        height='500'
+        alt='stock photo'
+      />
       <p>
         Beyond creating visual representations of data, Tableau provides
         the greatest benefits as it helps people discover what information is valuable to others.
