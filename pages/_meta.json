@@ -7,6 +7,10 @@
       "layout": "full"
     }
   },
+  "demos": {
+    "title": "Demos",
+    "type": "page"
+  },
   "start": {
     "title": "Getting Started",
     "type": "page"
@@ -25,10 +29,6 @@
   },
   "blog": {
     "title": "Blog",
-    "type": "page"
-  },
-  "demos": {
-    "title": "Demos",
     "type": "page"
   }
 }
