@@ -79,8 +79,8 @@ export const Metric = (props) => {
             stats.color = 'text-[#e14462]';
             stats.badge = 'bg-[#e14462] dark:bg-[#e14462]';
           } else if (sent === 'neutral') {
-            stats.color = 'text-[#35363B]/75';
-            stats.badge = 'bg-[#35363B]/75 dark:bg-[#35363B]/75';
+            stats.color = 'text-stone-600 dark:text-stone-300';
+            stats.badge = 'bg-stone-600 dark:bg-stone-300';
           }
         }
       });

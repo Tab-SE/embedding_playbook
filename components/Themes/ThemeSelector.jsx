@@ -55,7 +55,7 @@ export const ThemeSelector = (props) => {
           role="combobox"
           aria-expanded={open}
           aria-label="Select an app"
-          className={cn("justify-between text-lg md:text-2xl font-bold tracking-tight p-6 text-black border-none bg-white dark:bg-stone-900", className)}
+          className={cn("justify-between text-lg md:text-2xl font-bold tracking-tight p-6 text-black dark:text-white border-none bg-white dark:bg-stone-900", className)}
         >
           <Avatar className="mr-2 h-5 w-5">
             <AvatarImage
