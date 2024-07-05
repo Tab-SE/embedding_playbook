@@ -1,0 +1,37 @@
+import Link from 'next/link'
+import { Callout } from 'nextra/components';
+
+import { Button } from 'components/ui';
+
+import { TableauEmbed } from 'components';
+
+
+# Demos
+
+<Callout type="warning" emoji="⚠️">
+  This website is under construction. Content on this page is a placeholder.
+</Callout>
+
+
+<br/>
+
+<div className='flex justify-center items-center'>
+  <TableauEmbed
+    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Pacifica_Pay_Forecaster/PayForecaster'
+    width={1366}
+    height={768}
+    hideTabs={true}
+    toolbar={'hidden'}
+    device='default'
+  />
+</div>
+
+<br/>
+
+<Button className="bg-[#e14462] ml-12">
+  <Link
+    href="/demos/edit"
+  >
+  🔍 Explore Data
+  </Link>
+</Button>

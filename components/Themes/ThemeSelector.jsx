@@ -59,7 +59,7 @@ export const ThemeSelector = (props) => {
         >
           <Avatar className="mr-2 h-5 w-5">
             <AvatarImage
-              src={`img/themes/${selectedTeam.logo}`}
+              src={selectedTeam.logo}
               alt={selectedTeam.label}
             />
             <AvatarFallback>&nbsp;</AvatarFallback>
@@ -86,7 +86,7 @@ export const ThemeSelector = (props) => {
                   >
                     <Avatar className="mr-2 h-5 w-5">
                       <AvatarImage
-                        src={`img/themes/${theme.logo}`}
+                        src={theme.logo}
                         alt={theme.label}
                       />
                       <AvatarFallback>&nbsp;</AvatarFallback>

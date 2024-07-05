@@ -1,7 +1,0 @@
-{
-  "index": "Security",
-  "auth": "Authenticate Users",
-  "files": "Secure Files",
-  "data": "Secure Data",
-  "infra": "Infrastructure"
-}

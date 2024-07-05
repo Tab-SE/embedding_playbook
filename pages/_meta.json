@@ -7,20 +7,20 @@
       "layout": "full"
     }
   },
+  "demos": {
+    "title": "Demos",
+    "type": "page"
+  },
   "start": {
     "title": "Getting Started",
     "type": "page"
   },
-  "security": {
-    "title": "Security",
+  "architecture": {
+    "title": "Architecture",
     "type": "page"
   },
-  "frontend": {
-    "title": "Frontend",
-    "type": "page"
-  },
-  "backend": {
-    "title": "Backend",
+  "blog": {
+    "title": "Blog",
     "type": "page"
   }
 }
