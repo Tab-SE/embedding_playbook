@@ -2,11 +2,17 @@
   "index": {
     "title": "Getting Started"
   },
-  "tableau": {
-    "title": "Tableau Platform"
+  "why": {
+    "title": "Why Tableau?"
   },
-  "architecture": {
-    "title": "Architecture"
+  "what": {
+    "title": "What Is Tableau?"
+  },
+  "how": {
+    "title": "How Does It Work?"
+  },
+  "datadev": {
+    "title": "Who Is This For?"
   },
   "next": {
     "title": "Next Steps"

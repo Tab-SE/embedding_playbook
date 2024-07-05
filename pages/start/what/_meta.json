@@ -1,0 +1,17 @@
+{
+  "index": {
+    "title": "Tableau Platform"
+  },
+  "hosting": {
+    "title": "Hosting Environments"
+  },
+  "visual": {
+    "title": "Visual Analytics"
+  },
+  "ai": {
+    "title": "Artificial Intelligence"
+  },
+  "wrangling": {
+    "title": "Data Wrangling"
+  }
+}
