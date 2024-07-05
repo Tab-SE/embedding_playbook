@@ -2,16 +2,19 @@
   "index": {
     "title": "Getting Started"
   },
-  "why": {
-    "title": "Why Tableau?"
+  "how": {
+    "title": "How Does It Work?"
   },
   "what": {
     "title": "What Is Tableau?"
   },
-  "how": {
-    "title": "How Does It Work?"
+  "where": {
+    "title": "Where Does My Data Go?"
   },
-  "datadev": {
+  "why": {
+    "title": "Why Tableau?"
+  },
+  "who": {
     "title": "Who Is This For?"
   },
   "next": {
