@@ -11,7 +11,7 @@ export const Optimization = () => {
         <CardHeader>
           <CardTitle>Pricing Optimization</CardTitle>
           <CardDescription>
-          Zilliant's new CPQ pricing optimization dashboard streamlines pricing by tracking
+          Pacifica's new CPQ pricing optimization dashboard streamlines pricing by tracking
           real-time changes in pricing, discounts, and product performance. Its intuitive interface
           and advanced analytics enable data-driven adjustments to optimize revenue and profitability,
           enhancing business efficiency and competitive advantage.

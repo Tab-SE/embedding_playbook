@@ -49,12 +49,6 @@ module.exports = withNextra({
       },
       {
         protocol: 'https',
-        hostname: 'zilliant.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
         hostname: 'embed-ssl.wistia.com',
         port: '',
         pathname: '/**',

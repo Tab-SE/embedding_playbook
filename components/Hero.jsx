@@ -35,7 +35,7 @@ const Intro = () => {
   return (
     <div className=''>
       <Logo
-        src='/img/themes/zilliant/zilliant_light.svg'
+        src='/img/themes/pacifica/pacifica.png'
         width='420'
         height='100'
       />
@@ -44,7 +44,7 @@ const Intro = () => {
         </h3>
         <div className='leading-loose space-y-6 mt-6'>
           <p>
-          Zilliant puts pricing at the heart of your business, transforming how you use data to price and sell.
+          Pacifica puts pricing at the heart of your business, transforming how you use data to price and sell.
           See what the industry's leading cloud-native pricing, CPQ, and revenue optimization software can do for
           your business.
           </p>
@@ -56,15 +56,15 @@ const Intro = () => {
             </Link>
           </Button>
           <Image
-            src='https://zilliant.com/images/page-home/z-homepage-header-1365x800.webp'
+            src='/img/themes/pacifica/pacifica.png'
             width='750'
             height='500'
             alt='stock photo'
           />
           <p>
-          Zilliant helps businesses put pricing at the heart of their business by managing the entire pricing
+          Pacifica helps businesses put pricing at the heart of their business by managing the entire pricing
           lifecycle with leading CPQ, price management & optimzation, and Revenue Intelligence applications.
-          Zilliant's data science, cloud-native software and passion for customer success deliver the highest ROI,
+          Pacifica's data science, cloud-native software and passion for customer success deliver the highest ROI,
           fastest time to value and highest customer satisfaction.
           </p>
         </div>
@@ -79,10 +79,10 @@ const Outro = (props) => {
       <div className='leading-loose space-y-6 mt-6'>
         <h4 className='font-semibold'>Upcoming Event</h4>
         <h3 className='italic text-2xl font-semibold mb-9 mt-6'>
-          Zilliant <span className='text-[#FD4926]'>MindShare</span> 2024
+          Pacifica <span className='text-[#FD4926]'>Convention</span> 2024
         </h3>
         <Image
-          src='https://embed-ssl.wistia.com/deliveries/38ded08dd2ef59a38fb9ee9e74bb450c.webp?image_crop_resized=1920x1080'
+          src='/img/pacifica/pacifica.png'
           width='750'
           height='500'
           alt='stock photo'
