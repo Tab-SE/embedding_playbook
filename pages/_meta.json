@@ -7,17 +7,6 @@
       "layout": "full"
     }
   },
-  "edit": {
-    "title": "Edit this Report",
-    "display": "hidden",
-    "theme": {
-      "layout": "full",
-      "breadcrumb": false,
-      "sidebar": false,
-      "toc": false,
-      "timestamp": false
-    }
-  },
   "consulting": {
     "title": "Strategic Consulting",
     "type": "page"
@@ -33,6 +22,17 @@
       "toc": false,
       "pagination": false,
       "navbar": true,
+      "timestamp": false
+    }
+  },
+  "edit": {
+    "title": "Edit this Report",
+    "display": "hidden",
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "sidebar": false,
+      "toc": false,
       "timestamp": false
     }
   }
