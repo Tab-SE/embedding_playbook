@@ -72,8 +72,7 @@ const Intro = () => {
   )
 }
 
-const Outro = (props) => {
-  const { snippet } = props;
+const Outro = () => {
   return (
     <div className='overflow-hidden'>
       <div className='leading-loose space-y-6 mt-6'>
