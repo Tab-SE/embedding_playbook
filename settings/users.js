@@ -2,7 +2,7 @@
 export const users = {
   A: {
     id: "jmorris@mail.com",
-    name: "Mackenzie Day",
+    name: "Julie Morris",
     email: "jmorris@mail.com",
     picture: "/img/users/julie_morris.png",
     uaf: {
