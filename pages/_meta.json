@@ -9,7 +9,8 @@
   },
   "demos": {
     "title": "Demos",
-    "type": "page"
+    "type": "page",
+    "display": "hidden"
   },
   "start": {
     "title": "Getting Started",
