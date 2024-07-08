@@ -1,42 +1,116 @@
+import { Callout } from 'nextra/components';
+import { TableauEmbed } from 'components';
+
 # How Does It Work?
 
-Tableau can power the analytics used by your apps, from analysis to visualization and insight generation.
-This article focuses on the high-level details of the integration to help you get started.
+Use Tableau to power the analytics in by your apps, from analysis to visualization,
+insight generation and beyond. This article focuses on the high-level details of the
+integration to help you get started.
 
-Common use cases for embedded analytics include:
+Common use cases for adding Tableau to an app (AKA *embedded analytics*) include:
 
 - Tableau dashboards and charts as components of line-of-business or vertical applications
 - Reporting to customers, shareholders, partners and regulatory entities
-- Embedding analytics into internal systems such as CRMs, ERPs and knowledge bases
-- Scaling consulting services integrating private, third-party and public data sources
-- Automated reporting that stays up to date with quality user experience
+- Adding analytics to internal systems such as CRMs, ERPs and knowledge bases to support decision making
+- Scaling consulting services able to work with private, third-party and public data sources
+- Automated reporting with data that stays up to date and a quality user experience
 
----------------------------------
+![embedded analytics](/img/tableau/stock/embedded_analytics.png)
 
-The act of embedding a single dashboard or visualization into a single webpage is quite simple, but a well-engineered integration requires handling other things such as authentication, authorization, content management, and performance. Depending on your integration goals, you may require the use of a variety of features and techniques.
+Many of these scenarios result in <span className='text-emerald-600 font-bold italic'>data monetization</span>
+and a brand that stands out amongst the competition, communicating expertise and technological know-how.
 
-The following list provides a summary of the key APIs and features that are used in embedded deployments. The rest of the playbook will then dive into the key embedding requirements, explain how to accomplish those requirements, and supply you with resources necessary to get up and running.
+## 1. Analyze Your Data
 
-## Key features and APIs
+To add analytics to your app, you start with [Tableau Desktop](https://www.tableau.com/products/desktop) to
+connect to your data sources. This application empowers you to explore data like you've never experienced before!
+Analyzing data visually is at the core of Tableau's claim to fame.
 
-**[Embedding API v3](https://help.tableau.com/current/api/embedding_api/en-us/index.html)** - The Embedding API v3 provides an updated developer experience and enhancements over the JavaScript API v2. The Embedding API v3 provides [web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) for embedding Tableau visualizations and is available starting with Tableau version 2021.4.
+![embedded analytics](/img/tableau/stock/desktop_scatter.png)
 
-**[REST API](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api.htm)** - Allows for integration between an embedding application and Tableau Server or Tableau Online by way of RESTful endpoints that manage users, content, and permissions amongst many other capabilities provided by the Tableau platform. Common use-cases include integrating user management in Tableau with user management in the embedding application, managing content and permissions according to the state of the embedding application, querying Tableau metadata so the correct information is displayed to end-users, and automating the management of Tableau Server.
+To see Desktop in action there is no better place than [Tableau Public](https://public.tableau.com/app/discover)
+where you will find a community of data enthusiasts and professionals share amazingly creative content made
+possible by visual analysis.
 
-**[Connected Apps](https://help.tableau.com/current/online/en-us/connected_apps.htm)** - Enables a seamless and secure authentication experience by facilitating an explicit trust relationship between Tableau Online or Tableau Server and external applications where Tableau content is embedded. The trust relationship is established and verified through an authentication token in the [JSON Web Token (JWT) standard](https://datatracker.ietf.org/doc/html/rfc7519), which uses a shared secret provided by the Tableau connected app and signed by your external application.
+To learn more, visit the article on [Visual Analytics](/start/what/visual).
 
-***NOTE:** Connected Apps is available for both Tableau Server and Tableau Online using the [Embedding API v3](https://help.tableau.com/current/api/embedding_api/en-us/index.html).*
+Some problems require additional tooling such as wrangling data into usable models with
+[Tableau Prep Builder](/start/what/wrangling) and leveraging the power of [Tableau AI](/start/what/ai) to track
+metrics, write calculations and create charts!
 
-**[External Authorization Servers (EAS)](https://help.tableau.com/current/server/en-us/connected_apps_eas.htm)** - Establishes a trust relationship between Tableau Server and the EAS. By establishing a trust relationship, you’re able to provide your users a single sign-on (SSO) experience to Tableau content embedded in your external applications through the identity provider (IdP) you’ve already configured for Tableau Server. When embedded Tableau content is loaded in your custom application, a standard OAuth flow is used. After users successfully sign in to the IdP, they are then automatically signed in to Tableau Server. To register an EAS with Tableau Server, you must have an EAS already configured. In addition, the EAS must send a valid [JSON web token (JWT)](https://datatracker.ietf.org/doc/html/rfc7519).
+## 2. Publish Your Work
 
-***NOTE:** EAS is only available for Tableau Server and the [Embedding API v3](https://help.tableau.com/current/api/embedding_api/en-us/index.html).*
+To share your work with others you need an environment to host the content and secure it so it is only accessible
+to the viewers you intend to share insights with. You have the choice between a SaaS environment managed by
+[Tableau Cloud](https://www.tableau.com/products/cloud-bi) or you can self-host an environment with
+[Tableau Server](https://www.tableau.com/trial/tableau-server).
 
-**[SAML, OpenID, Active Directory, Kerberos](https://help.tableau.com/current/server/en-us/security_auth.htm)** - For environments that already use one of these systems, they can be leveraged to achieve Single Sign-On (and to leverage database security in the case of Kerberos).
+Tableau Cloud is the easiest option as it does not require that your deploy a Server environment to get started.
+A Tableau Cloud site also provides all of the resources you would need to scale your analytics without requiring
+active management of the underlying hardware. In other words you can sign up and go!
 
-**[Tableau Viz Lightning web component](https://www.tableau.com/products/viz-lightning-web-component-salesforce)** - Makes it easy to [Embed Tableau views into Salesforce Lightning pages](https://help.tableau.com/current/pro/desktop/en-us/embed_ex_lwc.htm). The Tableau Viz Lightning web component is available from the Salesforce AppExchange. To embed a view, you simply drag and drop the Tableau Viz Lightning web component onto the page and then provide the URL for the Tableau view. You can embed Tableau views from Tableau Server, Tableau Online, or Tableau Public.
+![embedded analytics](/img/tableau/stock/content.png)
 
-**Mobile App Bootstrap** - Samples/Templates for embedding in mobile apps. A great way to get up and running if you have mobile apps and want to include Tableau content or if you want a customized mobile experience for Tableau.
+<Callout type="info" emoji="ℹ️">
+Every usecase is unique, if you need help determining an architecture that fits your needs we recommend contacting
+a [Tableau representative](https://www.tableau.com/about/contact#contact_sales) and reading the article on
+[hosting environments](/start/where).
+</Callout>
 
-**[Document API](http://tableau.github.io/document-api-python/)** - API for updating data source connection information. Allows you to build content once (i.e. templates) in the scenario that you have many, structurally similar, databases for multi-tenancy or dev/test/prod scenarios.
+## 3. Add Analytics to Your App
 
-**User Filtering** - Functionality for securely filtering a workbook based on the Tableau Server or Online login information. In multi-tenant scenarios, if you have a single database for multiple users or clients, you can use user filters to have the same content apply to the different clients, ensuring each user can only see the rows that he or she has access to.
+Now that your analytics is securely hosted on a Tableau environment, you can generate embed code or a share link
+from the content page to add it to your app. This relies on web technology such as JavaScript and HTML. If these
+languages are not your thing, don't worry! The "embed code" is what is a technology called
+"[web component](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)" which means that you can copy
+and paste it unto your website or app as it is:
+
+```html
+<script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+
+<tableau-viz id="tableauViz"
+  src='https://public.tableau.com/views/superstore_embed/Profitability'
+  toolbar="bottom"
+  hide-tabs
+  width="800"
+  height="830"
+>
+</tableau-viz>
+```
+
+Notice how it imports the Tableau library via the `<script>` tag and adds a `<tableau-viz>` element configurable
+with attributes such as a URL for analytics as well as options for controlling the toolbar, tabs and sizing.
+
+As a result, your website or app would have an embed that looks like this:
+
+<br/>
+
+<TableauEmbed
+  src='https://public.tableau.com/views/superstore_embed/Profitability'
+  width={800}
+  height={830}
+  hideTabs={true}
+  device='default'
+  isPublic
+/>
+
+To learn more about embedding Tableau, see the article on architecture for the [frontend](/architecture/frontend).
+
+For more technical guidance, checkout the documentation on the [Embedding API](https://help.tableau.com/current/api/embedding_api/en-us/index.html)
+and the [API reference](https://help.tableau.com/current/api/embedding_api/en-us/reference/).
+
+## 4. Additional Integrations
+
+The act of embedding a dashboard or visualization into a webpage is quite simple. A well-engineered integration
+requires handling additional areas such as authentication, authorization, content management, and data security.
+Depending on your integration goals, you may require the use of a variety of features and techniques. Thankfully,
+Tableau provides a robust set of APIs to meet a variety of needs and adapts to the requirements of your project.
+
+To learn about these subjects and more visit the [Architecture](/architecture) section of this website.
+
+Tableau's developer community or <span className='text-orange-600 font-bold italic'>DataDev</span> are found
+on the [Developer Program](https://www.tableau.com/developer). This program will give you access to a Slack group,
+tutorials and resources to learn about the wide-ranging developer offering.
+
+![embedded analytics](/img/tableau/stock/data_dev.png)
+
