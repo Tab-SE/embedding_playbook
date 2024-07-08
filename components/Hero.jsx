@@ -10,7 +10,7 @@ const Intro = () => {
         <div className='leading-loose space-y-9'>
           <p>Tableau is the world's leading end-to-end data and analytics platform.</p>
           <Image
-            src='/img/tableau/datadev.png'
+            src='/img/tableau/stock/showcase.png'
             width='750'
             height='500'
             alt='stock photo'
@@ -40,12 +40,6 @@ const Outro = () => {
         It enables users to analyze data and build the interfaces that represent them with unmatched speed
         and flexibility resulting in a springboarding of ideas into value.
       </p>
-      <Image
-        src='/img/tableau/community.png'
-        width='750'
-        height='500'
-        alt='stock photo'
-      />
     </div>
   )
 }
