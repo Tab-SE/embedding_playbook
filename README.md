@@ -1,15 +1,15 @@
-# Embed Tableau 
+# Embed Tableau
 
-[Tableau](https://www.tableau.com) is the world's leading end-to-end data and analytics platform. 
+[Tableau](https://www.tableau.com) is the world's leading end-to-end data and analytics platform.
 
 ![tableau logo](public/img/tableau/logo_text.png)
 
 Leverage the analytical powerhouse of Tableau to analyze and visualize data. This guide teaches you how to compose Tableau's varied [product capabilities](https://www.tableau.com/products/our-platform) into applications that thrill customers, coworkers and friends!
 
-Beyond creating visual representations of data, Tableau provides the greatest benefits as it helps people discover what information is valuable to others. It enables users to analyze data and build the interfaces that represent 
+Beyond creating visual representations of data, Tableau provides the greatest benefits as it helps people discover what information is valuable to others. It enables users to analyze data and build the interfaces that represent
 them with unmatched speed and flexibility resulting in a springboarding of ideas into value.
 
-![tableau running on a laptop](public/img/opengraph/embed_tableau.png)
+![application screenshot](public/img/opengraph/embed_tableau.png)
 
 To see the live app go to [Embed Tableau](https://embedding-playbook.vercel.app/).
 
@@ -42,7 +42,7 @@ cp ./.env.development ./.env.development.local
 npm run dev
 ```
 
-1. From this point forward, any changes made to files in the codebase will be previewed live in development mode, noticeable in particular will be changes to React components (`.jsx` files) or Markdown articles (`.mdx` or `.md` files). 
+1. From this point forward, any changes made to files in the codebase will be previewed live in development mode, noticeable in particular will be changes to React components (`.jsx` files) or Markdown articles (`.mdx` or `.md` files).
 
 Visit `localhost:3000` to see the app. Enjoy!
 
@@ -52,7 +52,7 @@ To learn more about developer scripts that run this application go to [USAGE.md]
 
 >NOTE: Development on GitHub codespaces may differ from this process. Please refer to their documentation for further guidance.
 
-![up and down area chart](public/img/stock/up_down_area.png)
+![up and down area chart](/public/img/tableau/stock/up_down_area.png)
 
 ## Adding Content
 
@@ -68,7 +68,7 @@ import { TableauViz } from 'components';
 # Embedding Tableau Visualizations
 
 This is *generic* markdown content preceding the **Tableau** component of interest.
-[Link Text](URL) 
+[Link Text](URL)
 
 Notice the following attributes provided for a visualization
 hosted for free on Tableau Public:
@@ -90,7 +90,7 @@ For more information on writing articles, adding images and displaying interacti
 
 ## About
 
-This application follows a "[docs-as-code](https://www.writethedocs.org/guide/docs-as-code/)" model of development  incorporating a powerful UI framework which interfaces with Markdown as the language of content, this helps developers 
+This application follows a "[docs-as-code](https://www.writethedocs.org/guide/docs-as-code/)" model of development  incorporating a powerful UI framework which interfaces with Markdown as the language of content, this helps developers
 and analysts collaborate with the community at-large and more importantly to keep up with the pace of change.
 
 For more information describing the overall architecture of this application as well as it's purpose and inspiration refer to [ABOUT.md](/docs/ABOUT.md).
@@ -105,4 +105,4 @@ For more information please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 This project is licensed under the [MIT License](LICENSE).
 
-![narrow area chart](public/img/stock/area_chart_banner.png)
+![narrow area chart](public/img/tableau/stock/area_chart_banner.png)

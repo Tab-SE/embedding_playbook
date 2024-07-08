@@ -11,11 +11,11 @@
   "where": {
     "title": "Where Does My Data Go?"
   },
-  "why": {
-    "title": "Why Tableau?"
-  },
   "who": {
     "title": "Who Is This For?"
+  },
+  "why": {
+    "title": "Why Tableau?"
   },
   "next": {
     "title": "Next Steps"
