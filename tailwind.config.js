@@ -15,7 +15,13 @@ module.exports = {
         "2xl": "1400px",
       },
     },
-    extend: {
+    extend: {colors: {
+      'makana-primary': '#3F4760',
+      'makana-light': '#EAEAEA',
+      'makana-pink': '#AA94C6',
+      'makana-dark': '#615586',
+      'makana-gray': '#555555',
+    },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

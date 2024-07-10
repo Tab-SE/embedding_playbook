@@ -27,7 +27,7 @@ export const Chat = () => {
   }, [messages, data]);
 
   return (
-    <div className="space-y-4 max-w-5xl w-full">
+    <div style={{ display: "none" }} className="space-y-4 max-w-5xl w-full">
       <ChatMessages
         messages={transformedMessages}
         isLoading={isLoading}

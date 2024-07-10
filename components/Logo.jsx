@@ -1,21 +1,20 @@
-import LogoColor from '../public/svg/logo_color.svg';
+import Image from 'next/image';
 
 export const Logo = (props) => {
+  const { src, width, height, alt, text } = props;
 
   return (
-  <>
-  <span className='mr-2'>
-    <LogoColor 
-      src={props.src ? props.src : '/svg/logo_color.svg?w=40&h=40'}
-      alt={props.alt ? props.alt : 'Tableau Software (logo)'}
-      width={props.width ? props.width : 40}
-      height={props.width ? props.width : 40}
-      full={props.full ? props.full : 'false'} 
-    />
-  </span>
-  <p className='invisible md:visible'>
-    {props.name ? props.name : 'Embed Tableau'}
-  </p>
-  </>
+    <>
+      <Image
+        src={src ? src : "/img/tableau/tableau_logo.png"}
+        width={width ? width : "45"}
+        height={height ? height : "45"}
+        alt={alt ? alt : "application logo"}
+        placeholder="blur"
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+      />
+      {text ? <p className='pl-3 items-center justify-center'>{text}</p> : null}
+    </>
+
   );
 }

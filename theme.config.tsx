@@ -3,17 +3,21 @@ import { useConfig, DocsThemeConfig } from 'nextra-theme-docs';
 import { Logo } from './components/Logo';
 import { Head } from './components/Head';
 
+
 const vercel = 'https://embedding-playbook.vercel.app';
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
 
 const config: DocsThemeConfig = {
-  logo: <Logo/>,
+  logo: <Logo src="/svg/makanaHealth/makanaHealthLogo.svg" />,
+  search: {
+    placeholder: "Search Makana..."
+  },
   project: {
     link: 'https://github.com/Tab-SE/embedding_playbook',
   },
   docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook/tree/main/',
   footer: {
-    text: '✨ Embed Tableau',
+    text: '✨ Powered by Tableau',
   },
   toc: {
     backToTop: true
@@ -27,7 +31,7 @@ const config: DocsThemeConfig = {
       };
     } else {
       return {
-        titleTemplate: 'Embed Tableau ✨ Home'
+        titleTemplate: 'Makana Payer Portal ✨ Home'
       };
     }
   },

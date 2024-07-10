@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { DisplayContextProvider } from 'components/context';
 import { Demo } from 'components';
 
@@ -44,20 +46,29 @@ const HeroContent = (props) => {
 const Intro = () => {
   return (
     <div className=''>
-      <h1 className='text-5xl font-bold mb-9'>Embed Tableau</h1>
+      <h1 className='text-5xl font-bold mb-9'>Makana Health Payer Portal</h1>
         <div className='leading-loose space-y-6'>
-          <p>Tableau is the world's leading end-to-end data and analytics platform.</p>
-          <p>
-            Leverage the analytical powerhouse of Tableau to analyze and visualize data.
-            The Embedding Playbook teaches you how to compose Tableau's varied product capabilities
-            into applications that thrill customers, coworkers, and friends!
-          </p>
-          <p>
-            Beyond creating visual representations of data, Tableau provides
-            the greatest benefits as it helps people discover what information is valuable to others.
-            It enables users to analyze data and build the interfaces that represent them with unmatched speed
-            and flexibility resulting in a springboarding of ideas into value.
-          </p>
+          <p>Welcome to the Makana Health Insurance Claims Optimization Portal!</p>
+          <p>This platform is designed to empower Claims Processing Directors with the insights needed to streamline the claims process and enhance efficiency. By utilizing our advanced visualizations, you can quickly identify trends, uncover areas for improvement, and take proactive steps to reduce denial rates and processing times.</p>
+
+          <Image
+        src='/img/makanaHealth/makana_xray.png'
+        width='750'
+        height='500'
+        alt='xray photo'
+      />
+
+<p>Here’s what you can explore:</p>
+  <li><b>Denial Rate by Processing Time by Hospital</b>: Gain a clear understanding of which hospitals have the highest denial rates and how processing times impact these rates.</li>
+
+  <li><b>Denied Claims by Cause</b>: Identify the most common reasons for denied claims and develop strategies to address these issues.</li>
+
+  <li><b>Denial Rate by Processing Time by Diagnostic</b>: Analyze how different diagnoses affect denial rates and processing times.</li>
+
+  <li><b>Processing Time and Denial Rate by Day</b>: Monitor daily trends in processing times and denial rates to spot patterns and make timely adjustments.</li>
+
+<p>We are committed to helping you optimize your claims processing, reduce costs, and improve patient satisfaction. Dive into the data and discover new ways to enhance your operations today!</p>
+
         </div>
     </div>
   )
@@ -67,7 +78,7 @@ const Outro = (props) => {
   const { snippet } = props;
   return (
     <div className='overflow-hidden'>
-      { snippet }
+      {/* { snippet } */}
     </div>
   )
 }

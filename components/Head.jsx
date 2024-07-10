@@ -4,7 +4,7 @@ export const Head = (props) => {
   const previewImage = imgHost + "/img/opengraph/embed_tableau.png";
   let formattedTitle = title + ' ✨ Embed Tableau';
   if (title === 'Index') {
-    formattedTitle = 'Embed Tableau ✨';
+    formattedTitle = 'Makana Health ✨';
   }
 
   return (

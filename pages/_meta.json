@@ -32,18 +32,22 @@
   },
   "start": {
     "title": "Getting Started",
-    "type": "page"
+    "type": "page",
+    "display": "hidden"
   },
   "security": {
     "title": "Security",
-    "type": "page"
+    "type": "page",
+    "display": "hidden"
   },
   "frontend": {
     "title": "Frontend",
-    "type": "page"
+    "type": "page",
+    "display": "hidden"
   },
   "backend": {
     "title": "Backend",
-    "type": "page"
+    "type": "page",
+    "display": "hidden"
   }
 }

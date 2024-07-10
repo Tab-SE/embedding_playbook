@@ -1,21 +1,44 @@
 
 export const users = {
   A: {
-    id: "jmorris@mail.com",
+    id: "mario@payer.com",
     name: "Mackenzie Day",
-    email: "jmorris@mail.com",
-    picture: "img/stock/julie_morris.png",
+    email: "mario@payer.com",
+    picture: "img/stock/justin_chen.png",
     uaf: {
-      Superstore: []
+      Superstore: [],
+      Payer: []
     }
   },
   B: {
-    id: "jchen@mail.com",
-    name: "Justin Chen",
-    email: "jchen@mail.com",
-    picture: "img/stock/justin_chen.png",
+    id: "mackenzie@payer.com",
+    name: "Mackenzie Day",
+    email: "mackenzie@payer.com",
+    picture: "img/stock/julie_morris.png",
     uaf: {
       Superstore: []
     }
   }
 }
+
+
+// export const users = {
+//   A: {
+//     id: "jmorris@mail.com",
+//     name: "Mackenzie Day",
+//     email: "jmorris@mail.com",
+//     picture: "img/stock/julie_morris.png",
+//     uaf: {
+//       Superstore: []
+//     }
+//   },
+//   B: {
+//     id: "jchen@mail.com",
+//     name: "Justin Chen",
+//     email: "jchen@mail.com",
+//     picture: "img/stock/justin_chen.png",
+//     uaf: {
+//       Superstore: []
+//     }
+//   }
+// }
