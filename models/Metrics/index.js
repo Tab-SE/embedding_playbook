@@ -9,25 +9,32 @@ designed to run isomorphically server-side and client-side (once Custom Domains 
 */
 
 export class MetricsModel {
-  constructor(userId) {
+  constructor(userId, tableauUrl) {
     this.user_id = userId;
     this.metrics = [];
     this.subscriptions = null;
     this.specifications = null;
     this.definitions = null;
+    this.tableauUrl = tableauUrl;
   }
 
   // async methods defined in controller/
   async syncMetrics(apiKey) {
     // HTTP requests
-    this.subscriptions = await handleSubscriptions(apiKey, this.user_id);
-    this.specifications = await handleSpecifications(apiKey, this.subscriptions);
-    this.definitions = await handleDefinitions(apiKey, this.specifications);
+    this.subscriptions = await handleSubscriptions(apiKey, this.user_id, this.tableauUrl);
+    this.specifications = await handleSpecifications(apiKey, this.subscriptions, this.tableauUrl);
+    this.definitions = await handleDefinitions(apiKey, this.specifications, this.tableauUrl);
 
     // make a metrics object
     this.makeMetrics();  
     
     return this.metrics;
+  }
+
+  clearMetrics(){
+    this.subscriptions = null;
+    this.specifications = null;
+    this.definitions = null;
   }
 
   makeMetrics = () => {

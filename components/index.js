@@ -11,3 +11,7 @@ export { TableauEmbed } from './TableauEmbed';
 export { TableauWebAuthor, AuthoringModal } from './TableauWebAuthor';
 export { ThemeSelector, Themes, Superstore, NTO, Ebikes } from './Themes';
 export { RightClick } from './RightClick';
+export { PulseExtension } from 'components/PulseExtension';
+export { PulseExtensionDialog } from 'components/PulseExtension';
+export { TableauExtension } from './TableauExtension';
+export { InsightsOnly } from './Insights';

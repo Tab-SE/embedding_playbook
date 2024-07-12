@@ -23,5 +23,35 @@
   "blog": {
     "title": "Blog",
     "type": "page"
+  },
+  "pulseExtension": {
+    "title": "Pulse Dashboard Extension",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "footer": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false,
+      "navbar": false,
+      "timestamp": false
+    }
+  },
+  "pulseExtensionDialog": {
+    "title": "Pulse Dashboard Extension Dialog",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "footer": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false,
+      "navbar": false,
+      "timestamp": false
+    }
   }
 }
