@@ -37,7 +37,7 @@ const ConnectionTab = ({
       <div className="inputDiv mb-1">
         <label htmlFor="userName">User Name</label>
         <Input
-          type="text"
+          type="string"
           id="userName"
           value={userName}
           onChange={handleUserName}

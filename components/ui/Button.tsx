@@ -35,6 +35,7 @@ const buttonVariants = cva(
 )
 
 type ButtonProps = {
+  id?: string;
   variant?: string;
   size?: string;
   className?: string;
