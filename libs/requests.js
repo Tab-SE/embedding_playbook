@@ -1,25 +1,31 @@
 import { httpGet, httpPost } from "utils";
-
+// TODO - Param me
 const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
+const contentUrl = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
+// const tableau_domain = 'https://10az.online.tableau.com'; // URL for Tableau environment
+// const contentUrl = 'rgdemosite'; // Tableau site name
 const pulse_path = '/api/-/pulse'; // path to resource
 const api = process.env.TABLEAU_API; // Tableau API version (classic resources)
-const contentUrl = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
 
 // authenticate to Tableau with JSON Web Tokens
-export const tabAuthJWT = async (jwt) => {
-  const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
+export const tabAuthJWT = async (jwt, tableauUrl, siteName) => {
 
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = `${_domain}/api/${api}/auth/signin`;
+  let _contentUrl = contentUrl;
+  if (typeof siteName !== 'undefined') _contentUrl = siteName;
   const body = {
     credentials: {
       jwt: jwt,
       site: {
-        contentUrl: contentUrl,
+        contentUrl: _contentUrl,
       }
     }
   };
 
   const config = {
-    tableau_domain,
+    tableau_domain: _domain,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -27,7 +33,46 @@ export const tabAuthJWT = async (jwt) => {
   };
 
   const response = await httpPost(endpoint, body, config);
-
+  /*
+    //original code 
+    const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
+  
+    const body = {
+      credentials: {
+        jwt: jwt,
+        site: {
+          contentUrl: contentUrl,
+        }
+      }
+    }; 
+  
+    const config = {
+      tableau_domain,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+  
+    const response = await httpPost(endpoint, body, config);
+    */
+    if (!response.credentials) {
+      console.log(`RESPONSE NOT OK!`);
+      console.log(response);
+      console.log(JSON.stringify(response.response.data.error,null,2));
+      if (response?.response.status === 401) {
+        throw new Error('Unauthorized: Invalid JWT token.');
+      } else if (response?.response?.status === 404) {
+        throw new Error('Not Found: The specified endpoint does not exist.');
+      } else if (response?.response?.status >= 400 && response.response.status < 500) {
+        throw new Error(`Client Error: ${response.response.statusText}`);
+      } else if (response?.response?.status >= 500) {
+        throw new Error(`Server Error: ${response.response.statusText}`);
+      }
+      else {
+        throw new Error(`Something went wrong: ${JSON.stringify(response)}`);
+      }
+    }
   const site_id = response.credentials.site.id;
   const site = response.credentials.site.contentUrl;
   const user_id = response.credentials.user.id;
@@ -67,11 +112,13 @@ export const tabAuthPAT = async (pat_name, pat_secret) => {
   return { site_id, site, user_id, rest_key, expiration };
 }
 
-export const tabSignOut = async () => {
-  const endpoint = tableau_domain + '/auth/signout';
+export const tabSignOut = async (tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = _domain + '/auth/signout';
 
   const config = {
-    tableau_domain,
+    _domain,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -82,8 +129,10 @@ export const tabSignOut = async () => {
 }
 
 // get subscription IDs for the provided user
-export const getSubscriptions = async (apiKey, userId, pageSize) => {
-  const endpoint = tableau_domain + pulse_path + '/subscriptions';
+export const getSubscriptions = async (apiKey, userId, pageSize, tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = _domain + pulse_path + '/subscriptions';
 
   const config = {
     tableau_domain,
@@ -102,8 +151,10 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
 }
 
 // get specifications for the provided metric IDs
-export const getSpecifications = async (apiKey, metric_ids) => {
-  const endpoint = tableau_domain + pulse_path + '/metrics:batchGet';
+export const getSpecifications = async (apiKey, metric_ids, tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = _domain + pulse_path + '/metrics:batchGet';
 
   const config = {
     tableau_domain,
@@ -121,8 +172,10 @@ export const getSpecifications = async (apiKey, metric_ids) => {
 }
 
 // get definitions for the provided metric IDs
-export const getDefinitions = async (apiKey, definition_ids) => {
-  const endpoint = tableau_domain + pulse_path + '/definitions:batchGet';
+export const getDefinitions = async (apiKey, definition_ids, tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = _domain + pulse_path + '/definitions:batchGet';
 
   const config = {
     tableau_domain,

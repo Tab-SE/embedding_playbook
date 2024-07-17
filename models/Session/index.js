@@ -1,18 +1,19 @@
-import { lifespan, handlePAT, handleJWT } from "./controller";
+import { lifespan, handlePAT, handleEmbedJWT, handleRestJWT, handleJWT } from "./controller";
 import { tabSignOut } from "../../libs";
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
-  constructor(username) {
+  constructor(user) {
     this.authorized = false; // flag controlling access to authenticated operations
-    this.username = username;
+    this.username = user.name || user.userName;
     this.user_id = null;
     this.embed_token = null; // only JWT authentication supports embed keys
     this.rest_key = null; // some authentication methods only support REST API keys (PAT)
     this.site_id = null;
-    this.site = null; // site name
+    this.site = user.siteName || user.site; // site name
     this.created = null; // Get the current time in seconds since the epoch
     this.expires = null; // estimated future expiry date
+    this.tableauUrl = user.tableauUrl;
   }
 
   // securely return session data
@@ -26,6 +27,7 @@ export class Session {
        site: this.site, 
        created: this.created, 
        expires: this.expires,
+       tableauUrl: this.tableauUrl
      };
    } else {
     return null;
@@ -41,6 +43,9 @@ export class Session {
     // API key from the REST API credentials response
     credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
     // JWT token used for embedding on the frontend
+    // if embedding in credentials object
+    credentials?.embed_token ? this.embed_token = credentials.embed_token : null;
+    // if passing the value
     embed_token ? this.embed_token = embed_token : null;
     // Authentication methods differ on availability of session life
     if (credentials?.created && credentials?.expiration) {
@@ -77,8 +82,19 @@ export class Session {
   }
 
   // JSON Web Token authentication
+  restjwt = async (jwt_options, scopes) => {
+    const { credentials } = await handleRestJWT(this, jwt_options, scopes);
+    this._authorize(credentials);
+  }
+  // JSON Web Token authentication
+  embedjwt = async (jwt_options, scopes) => {
+    const { credentials } = await handleEmbedJWT(this, jwt_options, scopes);
+    this._authorize(credentials);
+  }
+  
+  // JSON Web Token authentication
   jwt = async (sub, jwt_options, scopes) => {
-    const { credentials, embed_token } = await handleJWT(sub, jwt_options, scopes);
+    const { credentials, embed_token } = await handleJWT(sub, jwt_options, scopes, this);
     this._authorize(credentials, embed_token);
   }
   

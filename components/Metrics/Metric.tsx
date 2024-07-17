@@ -1,23 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from 'react';
 import { IconSparkles } from '@tabler/icons-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from "components/ui";
-import { Skeleton } from "components/ui";
-import { Badge } from "components/ui";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "components/ui";
+import { Card, CardContent, CardHeader, CardTitle } from '../ui';
+import { Skeleton } from '../ui';
+import { Badge } from '../ui';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui';
 
-import { useInsights } from "hooks";
-import { parseInsights } from "utils";
-import { InsightsModal } from "components";
+import { useInsights } from '../../hooks';
+import { parseInsights } from '../../utils';
+import { InsightsModal } from '..';
+import { ExtensionDataContext } from '../ExtensionDataProvider';
+import React from 'react';
 
-
-export const Metric = (props) => {
+export const Metric: React.FC<MetricProps> = (props) => {
   const { metric } = props;
   // distinct count of insights
-  const [bundleCount, setBundleCount] = useState(null);
+  const [bundleCount, setBundleCount] = useState<number | null>(null);
   let result; // contains question, markup and facts
   let facts; // contains values, absolute and relative changes
-  let stats = { sentiment: undefined }; // prop storing key facts
+  let stats: any = { sentiment: undefined }; // prop storing key facts
   // tanstack query hook
   const { data, error, isError, isSuccess, failureCount, failureReason } = useInsights(metric);
 
@@ -35,7 +43,6 @@ export const Metric = (props) => {
 
   // console.log(`failureCount ${metric.name}`, failureCount);
   // console.log(`failureReason ${metric.name}`, failureReason);
-
 
   if (isSuccess) {
     const insight_groups = data?.bundle_response?.result.insight_groups;
@@ -89,26 +96,23 @@ export const Metric = (props) => {
 
   // fully loaded state
   return (
-    <Card className="min-h-[111px] max-w-[240px] dark:bg-stone-900">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
-        <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden">
-          {metric.name}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-3 pt-0">
-        <Stats
-          isSuccess={isSuccess}
-          stats={stats}
-          bundleCount={bundleCount}
-          metric={metric}
-        />
-      </CardContent>
-    </Card>
-  )
-}
+    // tslint: disable-next-line
+      <Card className="min-h-[111px] max-w-[240px] dark:bg-stone-900">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
+          <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden">
+            {metric.name}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-3 pt-0">
+          <Stats isSuccess={isSuccess} stats={stats} bundleCount={bundleCount} metric={metric} />
+        </CardContent>
+      </Card>
+  );
+};
 
-const Stats = (props) => {
+const Stats: React.FC<StatsProps> = (props) => {
   const { isSuccess, stats, bundleCount, metric } = props;
+  const { contextData, updateContextData } = useContext(ExtensionDataContext);
 
   if (isSuccess) {
     return (
@@ -123,9 +127,7 @@ const Stats = (props) => {
             </div>
           </div>
           <div className="col-span-5">
-            <p className={`text-xs text-muted-foreground ${stats.color}`}>
-              {stats.absolute}
-            </p>
+            <p className={`text-xs text-muted-foreground ${stats.color}`}>{stats.absolute}</p>
             <p className={`text-xs text-muted-foreground ${stats.color}`}>
               {stats.relative ? `${stats.relative}` : null} △
             </p>
@@ -133,17 +135,28 @@ const Stats = (props) => {
         </div>
         <div className="flex flex-row">
           <Dialog>
-            <DialogTrigger>
-              <Badge className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}>
-                <IconSparkles width={15} height={15} className="mr-1"/>
+            <DialogTrigger
+              onClick={() => {
+                console.log(`calling handleSetVal with ${metric.id}`);
+                // handleSetVal(metric.id);
+                contextData.companionMode === 'source' ? contextData.handleSetVal(metric.id) : null;
+              }}
+            >
+              <Badge
+                className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}
+                variant="undefined"
+              >
+                <IconSparkles width={15} height={15} className="mr-1" />
                 Insights: {bundleCount}
               </Badge>
             </DialogTrigger>
-            <InsightsModal metric={metric} stats={stats} />
+            {contextData.companionMode === 'none' || contextData.companionMode === 'target' ? (
+              <InsightsModal metric={metric} stats={stats} />
+            ) : null}
           </Dialog>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -153,6 +166,29 @@ const Stats = (props) => {
         <Skeleton className="h-4 w-1/2" />
       </div>
     </>
-  )
+  );
+};
+
+interface MetricProps {
+  metric: {
+    name: string;
+    id: string;
+  };
 }
 
+interface StatsProps {
+  isSuccess: boolean;
+  stats: {
+    value?: string;
+    absolute?: string;
+    relative?: string;
+    direction?: string;
+    color?: string;
+    badge?: string;
+  };
+  bundleCount: number | null;
+  metric: {
+    name: string;
+    id: string;
+  };
+}

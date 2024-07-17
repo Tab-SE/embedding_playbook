@@ -2,7 +2,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
 
-import { cn } from "utils/"
+import { cn } from "../../utils"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-stone-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-stone-300",
@@ -34,15 +34,34 @@ const buttonVariants = cva(
   }
 )
 
-const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : "button"
-  return (
-    (<Comp
-      className={cn(buttonVariants({ variant, size, className }))}
-      ref={ref}
-      {...props} />)
-  );
-})
+type ButtonProps = {
+  id?: string;
+  variant?: string;
+  size?: string;
+  className?: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  children?: React.ReactNode;
+};
+
+const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<unknown>> = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ variant, size, className, disabled, onClick, children, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={cn(className, {
+          'btn-variant-outline': variant === 'outline',
+          'btn-size-icon': size === 'icon',
+        })}
+        disabled={disabled}
+        onClick={onClick}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
