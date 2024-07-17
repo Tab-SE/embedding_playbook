@@ -6,7 +6,6 @@ import { Demo } from '..';
 
 import { ExtensionDataContext } from '../ExtensionDataProvider';
 import { TableauExtension } from '../TableauExtension';
-import { ExpireSessionButton } from '../ExpireSession';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 
@@ -204,7 +203,10 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         tableau.extensions.settings.removeEventListener(tableau.TableauEventType.SettingsChanged);
       };
     });
-  }, []);
+  }, 
+  // tslint:disable-next-line
+  // eslint-disable-next-line
+    []);
 
 /*   useEffect(() => {
     if ((innerRef as any).current) {
