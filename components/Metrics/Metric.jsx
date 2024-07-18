@@ -102,10 +102,7 @@ export const Metric = (props) => {
   // fully loaded state
   return (
     <Card className="h-[111px] max-w-[240px] dark:bg-stone-900">
-      <CardContent className="p-3 pt-0">
-        <p className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
-          {metric.name}
-        </p>
+      <CardContent className="p-3 pt-1">
         <Stats
           isSuccess={isSuccess}
           stats={stats}
@@ -122,8 +119,11 @@ const Stats = (props) => {
 
   if (isSuccess) {
     return (
-      <div className="h-[66px] grid grid-cols-12">
+      <div className="grid grid-cols-12">
         <div className="col-span-8 grid grid-rows-2">
+          <p className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
+            {metric.name}
+          </p>
           <div className="flex items-center justify-end col-span-7 text-2xl font-bold text-right mr-1">
             {stats.value ? stats.value : null}
           </div>
@@ -137,11 +137,11 @@ const Stats = (props) => {
             <InsightsModal metric={metric} stats={stats} />
           </Dialog>
         </div>
-        <div className={`col-span-4 grid justify-evenly text-xs text-muted-foreground ${stats.color}`}>
-          <p>{stats.units}</p>
+        <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground ${stats.color} pt-4`}>
+          <p>{stats.units}&nbsp;</p>
           <p>{stats.direction}</p>
-          <p>{stats.absolute}</p>
-          <p>{stats.relative ? `${stats.relative}` : null} △</p>
+          <p>{stats.absolute}&nbsp;</p>
+          <p>{`${stats.relative} △`}&nbsp;</p>
         </div>
       </div>
     )
