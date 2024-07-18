@@ -32,7 +32,7 @@ export const Metrics = (props) => {
   }
 
   return (
-    <div className="min-h-[111px] px-16">
+    <div className="h-[111px] px-16">
       {Array.isArray(data) ?
         <Carousel>
           <CarouselContent>
