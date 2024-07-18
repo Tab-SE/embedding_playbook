@@ -120,7 +120,7 @@ const Stats = (props) => {
   if (isSuccess) {
     return (
       <div className="grid grid-cols-12">
-        <div className="col-span-8 grid grid-rows-2">
+        <div className="col-span-8 grid grid-rows-3">
           <p className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
             {metric.name}
           </p>
@@ -137,7 +137,7 @@ const Stats = (props) => {
             <InsightsModal metric={metric} stats={stats} />
           </Dialog>
         </div>
-        <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground ${stats.color} pt-4`}>
+        <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground ${stats.color} py-2`}>
           <p>{stats.units}&nbsp;</p>
           <p>{stats.direction}</p>
           <p>{stats.absolute}&nbsp;</p>
@@ -148,9 +148,29 @@ const Stats = (props) => {
   }
 
   return (
+    <div className="grid grid-cols-12">
+      <div className="col-span-8 grid grid-rows-3">
+        <p className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
+          <Skeleton className="h-5 w-28" />
+        </p>
+        <div className="flex items-center justify-end col-span-7 text-2xl font-bold text-right mr-1">
+          <Skeleton className="h-7 w-20" />
+        </div>
+        <Skeleton className="h-5 w-24 my-auto ml-6" />
+      </div>
+      <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground ${stats.color} py-2`}>
+        <p><Skeleton className="h-4 w-7" /></p>
+        <p><Skeleton className="h-4 w-7" /></p>
+        <p><Skeleton className="h-4 w-7" /></p>
+        <p><Skeleton className="h-4 w-9" /></p>
+      </div>
+    </div>
+  )
+
+  return (
     <>
       <div className="space-y-2">
-        <Skeleton className="h-6 w-1/3" />
+        <Skeleton className="h-6 w-24" />
         <Skeleton className="h-4 w-1/2" />
       </div>
     </>
