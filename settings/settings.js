@@ -10,14 +10,14 @@ export const settings = {
   custom_metrics: true,
   themes: [
     {
-      label: "Superstore Analytics",
-      name: "superstore",
+      label: "HVS Demo",
+      name: "HVS",
       component: Superstore,
       type: "default",
       logo: "/img/tableau/tableau_logo.png",
       styles: "",
       project: {
-        name: "superstore",
+        name: "Sales",
         workbooks: [],
         data_sources: []
       }
