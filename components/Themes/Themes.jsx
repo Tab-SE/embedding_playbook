@@ -1,4 +1,5 @@
 import { Superstore } from 'components';
+import { HVS_Pacifica } from 'components';
 
 export const Themes = (props) => {
   const { theme } = props;
@@ -10,8 +11,8 @@ export const Themes = (props) => {
     )
   }
 
-  // if above check fails, load Superstore by default
+  // if above check fails, load HVS_Pacifica by default
   return (
-    <Superstore />
+    <HVS_Pacifica />
   )
 }

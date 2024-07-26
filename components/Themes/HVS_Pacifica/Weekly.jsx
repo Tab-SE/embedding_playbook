@@ -68,7 +68,7 @@ export const Weekly = () => {
                 <TableauEmbed
                   src='https://10ay.online.tableau.com/#/site/hvsdemo/views/SalesProfitAnalysis_17217553675830/OrdersMetric'
                   width={720}
-                  height={300}
+                  height={310}
                   hideTabs={true}
                   device='default'
                   toolbar='hidden'
