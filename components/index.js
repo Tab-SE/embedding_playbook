@@ -9,5 +9,5 @@ export { TableauAuth } from './TableauAuth';
 export { TableauViz } from './TableauViz';
 export { TableauEmbed } from './TableauEmbed';
 export { TableauWebAuthor, AuthoringModal } from './TableauWebAuthor';
-export { ThemeSelector, Themes, Superstore, NTO, Ebikes, HVS } from './Themes';
+export { ThemeSelector, Themes, Superstore, NTO, Ebikes, HVS, HVS_Pacifica } from './Themes';
 export { RightClick } from './RightClick';
