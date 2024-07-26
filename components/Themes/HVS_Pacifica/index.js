@@ -12,7 +12,7 @@ export const HVS_Pacifica = () => {
          Weekly Highlights
         </TabsTrigger>
         <TabsTrigger value="optimization">
-          Optimization
+          Executive Summary
         </TabsTrigger>
       </TabsList>
       <section className="min-h-[892px]">

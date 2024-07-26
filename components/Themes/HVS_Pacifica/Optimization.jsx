@@ -12,16 +12,14 @@ export const Optimization = () => {
           <CardTitle>Executive Summary</CardTitle>
           <CardDescription>
           HVS's new executive summary dashboard streamlines pricing by tracking
-          real-time changes in pricing, discounts, and product performance. Its intuitive interface
-          and advanced analytics enable data-driven adjustments to optimize revenue and profitability,
-          enhancing business efficiency and competitive advantage.
+          real-time metrics in sales, profit, orders and customers.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center items-center">
           <TableauEmbed
             src='https://10ay.online.tableau.com/#/site/hvsdemo/views/SalesProfitAnalysis/ExecutiveOverview'
             width={1200}
-            height={1100}
+            height={800}
             hideTabs={true}
             device='default'
             toolbar='hidden'
