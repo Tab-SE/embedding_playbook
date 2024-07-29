@@ -25,9 +25,31 @@ export class MetricsModel {
     this.specifications = await handleSpecifications(apiKey, this.subscriptions, this.tableauUrl);
     this.definitions = await handleDefinitions(apiKey, this.specifications, this.tableauUrl);
 
+/*     console.log(`--------this.subscriptions--------`);
+    console.log(this.subscriptions);  
+    console.log(`--------this.specifications--------`); 
+    console.log(this.specifications);
+    console.log(`--------this.definitions--------`);
+    console.log(this.definitions); */
+
     // make a metrics object
     this.makeMetrics();  
-    
+/*     console.log(`--------this.metrics--------`);
+    let m = JSON.parse(JSON.stringify(this.metrics));
+    console.log(JSON.stringify(m, null, 2)); */
+
+/*     try {
+      const filteredMetrics = Object.keys(this.metrics).reduce((acc, key) => {
+        if (typeof obj[key] !== 'function') {
+          acc[key] = obj[key];
+        }
+        return acc;
+      }, {}); 
+      console.log(JSON.stringify(filteredMetrics, null, 2));
+      
+    } catch (error) {
+      console.log(error);
+    } */
     return this.metrics;
   }
 

@@ -13,21 +13,27 @@ import {
   DialogTrigger,
 } from '../ui';
 
-import { useInsights } from '../../hooks';
+import { useInsights, useDatasource, useDatasourceFields } from '../../hooks';
 import { parseInsights } from '../../utils';
 import { InsightsModal } from '..';
 import { ExtensionDataContext } from '../ExtensionDataProvider';
 import React from 'react';
+import { all } from 'axios';
 
 export const Metric: React.FC<MetricProps> = (props) => {
   const { metric } = props;
+  const datasourceId = metric.definition.datasource.id;
+  const extension_options: ExtensionOptions = metric.extension_options;
   // distinct count of insights
   const [bundleCount, setBundleCount] = useState<number | null>(null);
+  const [datasourceIds, setDatasourceIds] = useState<string[]>([]);
   let result; // contains question, markup and facts
   let facts; // contains values, absolute and relative changes
   let stats: any = { sentiment: undefined }; // prop storing key facts
   // tanstack query hook
   const { data, error, isError, isSuccess, failureCount, failureReason } = useInsights(metric);
+  const { status: datasource_status, data: datasource_data } = useDatasource(datasourceId);
+  const fieldData = useDatasourceFields(datasourceId, extension_options.allowed_dimensions);
 
   useEffect(() => {
     if (isSuccess) {
@@ -37,10 +43,20 @@ export const Metric: React.FC<MetricProps> = (props) => {
     }
   }, [isSuccess, data]);
 
+/*   useEffect(() => {
+    if (datasource_status === 'success') {
+      if (datasource_data) {
+        console.log(`datasource data: ${JSON.stringify(datasource_data, null, 2)}`);
+      }
+    }
+  }, [datasource_status, datasource_data]); */
+
   if (isError) {
     console.debug(error);
   }
 
+    console.log(`-------field data-------`);
+    console.log(fieldData);
   // console.log(`failureCount ${metric.name}`, failureCount);
   // console.log(`failureReason ${metric.name}`, failureReason);
 
@@ -104,14 +120,14 @@ export const Metric: React.FC<MetricProps> = (props) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-3 pt-0">
-          <Stats isSuccess={isSuccess} stats={stats} bundleCount={bundleCount} metric={metric} />
+          <Stats isSuccess={isSuccess} stats={stats} bundleCount={bundleCount} metric={metric} datasource={datasource_data}/>
         </CardContent>
       </Card>
   );
 };
 
 const Stats: React.FC<StatsProps> = (props) => {
-  const { isSuccess, stats, bundleCount, metric } = props;
+  const { isSuccess, stats, bundleCount, metric, datasource } = props;
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
 
   if (isSuccess) {
@@ -142,6 +158,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                 contextData.companionMode === 'source' ? contextData.handleSetVal(metric.id) : null;
               }}
             >
+            
               <Badge
                 className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}
                 variant="undefined"
@@ -173,7 +190,19 @@ interface MetricProps {
   metric: {
     name: string;
     id: string;
-  };
+    definition: {
+      datasource: {
+        id: string;
+      }
+    },
+    extension_options: ExtensionOptions;
+  }
+}
+
+interface ExtensionOptions {
+  allowed_dimensions: string[],
+  allowed_granularities: string[],
+  offset_from_today: number
 }
 
 interface StatsProps {
@@ -191,4 +220,5 @@ interface StatsProps {
     name: string;
     id: string;
   };
+  datasource: any;
 }

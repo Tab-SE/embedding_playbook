@@ -34,16 +34,16 @@ const getInsightBundle = async (apiKey, metric, resource, tableauUrl) => {
 
   const endpoint = _domain + pulse_path + '/insights' + resource;
 
-  const request = new Request(endpoint, {
-    method: 'POST',
-    headers: {
-      'X-Tableau-Auth': apiKey,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'redirect': 'follow'
-    },
-    body: JSON.stringify(body),
-  });
+  // const request = new Request(endpoint, {
+  //   method: 'POST',
+  //   headers: {
+  //     'X-Tableau-Auth': apiKey,
+  //     'Accept': 'application/json',
+  //     'Content-Type': 'application/json',
+  //     'redirect': 'follow'
+  //   },
+  //   body: JSON.stringify(body),
+  // });
   
   // const res = await fetch(request);
   // isServerlessTimeout(res);

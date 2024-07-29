@@ -8,7 +8,7 @@ export const tab_extension = typeof window !== 'undefined' ? require("./tableau.
 
 export { 
   tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications, 
-  getDefinitions, getMetrics, getEmbed, getInsights, getMetadata
+  getDefinitions, getMetrics, getEmbed, getInsights, getMetadata, getDatasourcePrivate, getDatasourceFieldsPrivate
 } from './requests';
 
 export { serverJWT, serverPAT } from './responses.js';

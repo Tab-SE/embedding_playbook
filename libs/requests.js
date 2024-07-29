@@ -56,23 +56,23 @@ export const tabAuthJWT = async (jwt, tableauUrl, siteName) => {
   
     const response = await httpPost(endpoint, body, config);
     */
-    if (!response.credentials) {
-      console.log(`RESPONSE NOT OK!`);
-      console.log(response);
-      console.log(JSON.stringify(response.response.data.error,null,2));
-      if (response?.response.status === 401) {
-        throw new Error('Unauthorized: Invalid JWT token.');
-      } else if (response?.response?.status === 404) {
-        throw new Error('Not Found: The specified endpoint does not exist.');
-      } else if (response?.response?.status >= 400 && response.response.status < 500) {
-        throw new Error(`Client Error: ${response.response.statusText}`);
-      } else if (response?.response?.status >= 500) {
-        throw new Error(`Server Error: ${response.response.statusText}`);
-      }
-      else {
-        throw new Error(`Something went wrong: ${JSON.stringify(response)}`);
-      }
+  if (!response.credentials) {
+    console.log(`RESPONSE NOT OK!`);
+    console.log(response);
+    console.log(JSON.stringify(response.response.data.error, null, 2));
+    if (response?.response.status === 401) {
+      throw new Error('Unauthorized: Invalid JWT token.');
+    } else if (response?.response?.status === 404) {
+      throw new Error('Not Found: The specified endpoint does not exist.');
+    } else if (response?.response?.status >= 400 && response.response.status < 500) {
+      throw new Error(`Client Error: ${response.response.statusText}`);
+    } else if (response?.response?.status >= 500) {
+      throw new Error(`Server Error: ${response.response.statusText}`);
     }
+    else {
+      throw new Error(`Something went wrong: ${JSON.stringify(response)}`);
+    }
+  }
   const site_id = response.credentials.site.id;
   const site = response.credentials.site.contentUrl;
   const user_id = response.credentials.user.id;
@@ -150,6 +150,7 @@ export const getSubscriptions = async (apiKey, userId, pageSize, tableauUrl) => 
   return await httpGet(endpoint, config);
 }
 
+
 // get specifications for the provided metric IDs
 export const getSpecifications = async (apiKey, metric_ids, tableauUrl) => {
   let _domain = tableau_domain;
@@ -216,6 +217,61 @@ export const getMetrics = async () => {
     throw new Error('Empty array');
   }
 
+  return res;
+}
+// requests a datasource from private API
+export const getDatasourceFieldsPrivate = async (datasourceId, fieldName) => {
+  const endpoint = `/api/pulse/datasources/fields`;
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    params: {
+      datasourceId: datasourceId,
+      fieldName: fieldName
+    }
+  }
+
+  const res = await httpGet(endpoint, config);
+  const timeout = isServerlessTimeout(res);
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  return res;
+}
+// requests a datasource from private API
+export const getDatasourcePrivate = async (datasourceId, extension_options) => {
+  const endpoint = `/api/pulse/datasources`;
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    params: {
+      datasourceId: datasourceId,
+    }
+  }
+
+  const body = {
+    extension_options: extension_options,
+  }
+
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
   return res;
 }
 

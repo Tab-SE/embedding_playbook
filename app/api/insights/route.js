@@ -22,8 +22,8 @@ export async function POST(req) {
   if (token?.tableau) {
     const requestBody = await req.json();
     // only responds with data to authorized users
-    console.log(`token: ${JSON.stringify(token)}`);
-    console.log(requestBody);
+    // console.log(`token: ${JSON.stringify(token)}`);
+    // console.log(requestBody);
     const payload = await makePayload(token.tableau.rest_key, requestBody.metric, token.tableau.tableauUrl);
     if (payload) {
       return NextResponse.json(payload, { status: 200 });

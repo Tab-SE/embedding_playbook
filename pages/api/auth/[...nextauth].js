@@ -131,6 +131,7 @@ async function initializeSession(user, type = 'rest', method = 'new') {
     "tableau:insight_metrics:read",
     "tableau:insights:read",
     "tableau:metric_subscriptions:read",
+    "tableau:content:read"
   ] : [
     "tableau:views:embed",
     "tableau:views:embed_authoring",
