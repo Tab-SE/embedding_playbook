@@ -423,6 +423,7 @@ export const PulseExtensionDialog = (props: any) => {
         closeButton.removeEventListener('click', handleDialogClose);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
