@@ -101,7 +101,7 @@ export const Metric = (props) => {
 
   // fully loaded state
   return (
-    <Card className="h-[111px] max-w-[240px] dark:bg-stone-900">
+    <Card className="h-[120px] max-w-[240px] dark:bg-stone-900">
       <CardContent className="p-3 pt-1">
         <Stats
           isSuccess={isSuccess}
@@ -119,29 +119,31 @@ const Stats = (props) => {
 
   if (isSuccess) {
     return (
-      <div className="grid grid-cols-12">
-        <div className="col-span-8 grid grid-rows-3">
-          <p className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
-            {metric.name}
-          </p>
-          <div className="flex items-center justify-end col-span-7 text-2xl font-bold text-right mr-1">
-            {stats.value ? stats.value : null}
+      <div>
+        <p className="text-stone-500 dark:text-stone-300 leading-5 font-bold whitespace-nowrap overflow-hidden p-3 pb-0">
+          {metric.name}
+        </p>
+        <div className="grid grid-cols-12">
+          <div className="col-span-8 grid grid-rows-2">
+            <div className="flex items-center justify-end col-span-7 text-2xl font-bold text-right mr-1">
+              {stats.value ? stats.value : null}
+            </div>
+            <Dialog>
+              <DialogTrigger>
+                <Badge className={`${stats.badge} text-stone-50 h-6 ml-6`}>
+                  <IconSparkles width={15} height={15} className="mr-1"/>
+                  Insights: {bundleCount}
+                </Badge>
+              </DialogTrigger>
+              <InsightsModal metric={metric} stats={stats} />
+            </Dialog>
           </div>
-          <Dialog>
-            <DialogTrigger>
-              <Badge className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}>
-                <IconSparkles width={15} height={15} className="mr-1"/>
-                Insights: {bundleCount}
-              </Badge>
-            </DialogTrigger>
-            <InsightsModal metric={metric} stats={stats} />
-          </Dialog>
-        </div>
-        <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground ${stats.color} py-2`}>
-          <p>{stats.units}&nbsp;</p>
-          <p>{stats.direction}</p>
-          <p>{stats.absolute}&nbsp;</p>
-          <p>{`${stats.relative} △`}&nbsp;</p>
+          <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground ${stats.color}`}>
+            <p>{stats.units}&nbsp;</p>
+            <p>{stats.direction}</p>
+            <p>{stats.absolute}&nbsp;</p>
+            <p>{stats.relative ? `${stats.relative} △` : null}&nbsp;</p>
+          </div>
         </div>
       </div>
     )
@@ -166,13 +168,5 @@ const Stats = (props) => {
       </div>
     </div>
   )
-
-  return (
-    <>
-      <div className="space-y-2">
-        <Skeleton className="h-6 w-24" />
-        <Skeleton className="h-4 w-1/2" />
-      </div>
-    </>
-  )
 }
+
