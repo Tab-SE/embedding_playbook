@@ -50,11 +50,13 @@ const Logout = (props) => {
 
   if (status === 'authenticated') {
     return (
-      <DropdownMenuItem>
+      <DropdownMenuItem
+        className='hover:cursor-pointer'
+        onClick={async () => await signOut('credentials', { redirect: false })}
+      >
         <Button
           variant="ghost"
           className="h-min p-1"
-          onClick={async () => await signOut('credentials', { redirect: false })}
         >
         Log out
         </Button>
@@ -64,11 +66,13 @@ const Logout = (props) => {
   }
 
   return (
-    <DropdownMenuItem>
+    <DropdownMenuItem
+      className='hover:cursor-pointer'
+      onClick={async () => await signIn()}
+    >
       <Button
         variant="ghost"
         className="h-min p-1"
-        onClick={async () => await signIn()}
       >
       Log in
       </Button>
