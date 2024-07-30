@@ -36,11 +36,11 @@ const config: DocsThemeConfig = {
     // changes title on home '/' route
     if (route !== '/') {
       return {
-        titleTemplate: '%s ✨ Embed Tableau'
+        titleTemplate: '%s ✨ HVS Embedded'
       };
     } else {
       return {
-        titleTemplate: 'Embed Tableau ✨ Home'
+        titleTemplate: 'HVS Embedded ✨ Home'
       };
     }
   },
