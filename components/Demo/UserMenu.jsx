@@ -35,7 +35,7 @@ export function UserMenu(props) {
   return (
     <DropdownMenu>
       <Trigger src={avatar} />
-      <DropdownMenuContent className="w-56 dark:bg-stone-700" align="end" forceMount>
+      <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
         <Label />
         <Group />
         <Logout status={status} />
@@ -51,9 +51,9 @@ const Logout = (props) => {
   if (status === 'authenticated') {
     return (
       <DropdownMenuItem>
-        <Button 
-          variant="ghost" 
-          className="h-min p-1" 
+        <Button
+          variant="ghost"
+          className="h-min p-1"
           onClick={async () => await signOut('credentials', { redirect: false })}
         >
         Log out
@@ -65,9 +65,9 @@ const Logout = (props) => {
 
   return (
     <DropdownMenuItem>
-      <Button 
-        variant="ghost" 
-        className="h-min p-1" 
+      <Button
+        variant="ghost"
+        className="h-min p-1"
         onClick={async () => await signIn()}
       >
       Log in
@@ -82,7 +82,7 @@ const Trigger = (props) => {
   const { src } = props;
   return (
     <DropdownMenuTrigger asChild>
-      <Button variant="ghost" className="relative h-12 w-12 rounded-full">
+      <Button variant="ghost" className="relative h-12 w-12 rounded-full shadow-xl">
         <Avatar className="h-12 w-12">
           <AvatarImage src={src} alt="user profile picture" />
           <AvatarFallback>MD</AvatarFallback>
