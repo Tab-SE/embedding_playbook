@@ -40,7 +40,7 @@ export const MainNav = (props) => {
         >☐</Button>
       </div>
       <div className="h-18 px-4 mb-2">
-        <div className="flex items-center justify-between space-x-4 pt-3 shadow-xl">
+        <div className="flex items-center justify-between space-x-4 pt-3">
           <ThemeSelector setTheme={setTheme} />
           <UserMenu />
         </div>

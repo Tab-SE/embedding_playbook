@@ -55,7 +55,7 @@ export const ThemeSelector = (props) => {
           role="combobox"
           aria-expanded={open}
           aria-label="Select an app"
-          className={cn("justify-between text-lg md:text-2xl font-bold tracking-tight p-6 text-black dark:text-white border-none bg-white dark:bg-stone-900", className)}
+          className={cn("justify-between text-lg md:text-2xl font-bold tracking-tight p-6 text-black dark:text-white border-none bg-white dark:bg-stone-900 shadow-xl", className)}
         >
           <Avatar className="mr-2 h-5 w-5">
             <AvatarImage
@@ -68,7 +68,7 @@ export const ThemeSelector = (props) => {
           <CaretSortIcon className="ml-3 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[200px] p-0 shadow-xl">
         <Command>
           <CommandList className="dark:bg-stone-700">
             <CommandInput placeholder="Search apps..." />

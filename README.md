@@ -29,13 +29,14 @@ cd embedding_playbook
 npm install
 ```
 
-4. Create a local environment file by copying the provided template.
+4. Create local environment files to store your credentials by copying the provided template.
 ```sh
 # copy the development template
 cp ./.env.development ./.env.development.local
+cp ./.env.production ./.env.production.local
 ```
 
-5. Provide values for all environment variables listed in `.env.development.local`.
+5. Provide values for all environment variables listed in `.env.development.local` & `.env.production.local`.
 
 6. Finally, start the development server (see [USAGE.md](docs/USAGE.md) for more shell scripts).
 ```sh
@@ -87,6 +88,12 @@ Another block of text and an *image* can go after the embed.
 ```
 
 For more information on writing articles, adding images and displaying interactive components such as a Tableau visualization refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
+
+## Demos
+
+You are welcome customize this app and use it to conduct demonstrations of embedded analytics using Tableau. In other words, you can modify the styles and content of the app so it matches your own brand standard and portrays the analytics use case you have in mind.
+
+To learn more about building custom demos using this application please visit [DEMOS.md](/docs/DEMOS.md) for instructions on working with configuration files.
 
 ## About
 

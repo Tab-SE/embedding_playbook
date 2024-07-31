@@ -38,18 +38,21 @@ npm run dev
 - `start` runs the local production build which is useful for demos
 - `lint` runs the Javascript code through [eslint](https://eslint.org/)
 - other scripts are not as useful to describe
-  
+
 ### Writing Scripts
 - `save` saves changes made to the `public/` and `pages/` folder containing markdown and images
 - `revert` removes the last change that was saved
 - `upload` pushes your changes to your remote branch on Github or similar
-  
+
+
+![area chart](../public/img/tableau/stock/up_down_area.png)
+
 
 ## Importing UI Components from shadcn
 
 This is what the `components.json` file should contain when interacting with [shadcn](https://ui.shadcn.com/) via CLI such as when installing new UI components or updating existing ones.
 
-> NOTE: Placed in the project root only when running CLI operations, delete once done. 
+> NOTE: Placed in the project root only when running CLI operations, delete once done.
 > Otherwise it will interfere with imports from components/ folder:
 
 `components.json`
