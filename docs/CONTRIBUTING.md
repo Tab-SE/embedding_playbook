@@ -1,10 +1,4 @@
-# Embed Tableau 
-
-[Tableau](https://www.tableau.com) is the world's leading end-to-end data and analytics platform. 
-
-![tableau logo](../public/img/tableau/logo_text.png)
-
-## Contributing
+# Contributing
 
 Contributions to this project are more than welcome and may come in the form of enhancements to the codebase, writing articles, correcting or identifying bugs or even suggesting improvements.
 
@@ -12,13 +6,13 @@ This project has two separate contribution models, one designed for writing arti
 
 Most contributions will come in the form of articles. Writing high-quality guidance for embedding Tableau is the main purpose of this project.
 
-![area chart](../public/img/stock/area_chart.png)
+![tableau logo](../public/img/tableau/logo_text.png)
 
 ## Writing Content
 
 For detailed instructions on how to write content, how to add images and how to display interactive UI components in this app, refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
 
-## Developers 
+## Developers
 
 Thank you for considering contributing to our project! To ensure smooth collaboration, we ask contributors to follow these best practices:
 
@@ -34,15 +28,18 @@ For more information on how to create feature branches and submit pull requests,
 If you have access to push new branches to this repository (i.e. a direct contributer), you can contribute to this codebase
 by cloning the repository and pushing individual feature branches.
 
-### External Contributers 
+### External Contributers
 
 To contribute to the codebase of this application you start by forking
 
+
+![area chart](../public/img/tableau/stock/area_chart.png)
+
 # Bugs and Defects
 
-Please report any issues such as bugs or defects that you encounter while using this application. This application is 
+Please report any issues such as bugs or defects that you encounter while using this application. This application is
 maintained as an opensource project, which means that maintainers will try their best to help you however they cannot
-provide direct support or guarantee any fixes. 
+provide direct support or guarantee any fixes.
 
 On the plus side this is a community driven project so identifying new issues is considered a valuable contribution.
 Eventually someone will be able to address the problem you have described. Thank you!
