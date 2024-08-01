@@ -8,7 +8,7 @@ export const Product = () => {
     <TabsContent value="product" className="space-y-4">
       <Card className="dark:bg-stone-900">
         <CardHeader>
-          <CardTitle>Product Details</CardTitle>
+          <CardTitle>Sales and Profit by Product Names</CardTitle>
           <CardDescription>
             A comparison of performance by product segment, category and subcategory
           </CardDescription>
@@ -26,9 +26,9 @@ export const Product = () => {
       </Card>
       <Card className="dark:bg-stone-900">
         <CardHeader>
-          <CardTitle>Product Details</CardTitle>
+          <CardTitle>Sales by Product Category</CardTitle>
           <CardDescription>
-            Segment sales by month and year
+            Category sales by month and year
           </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
