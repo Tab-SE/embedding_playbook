@@ -47,7 +47,7 @@ export default function App({
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
-          <ThemeProvider attribute="class">
+          <ThemeProvider attribute="class" forcedTheme='light'>
             <Component {...pageProps} />
             {showDevtools && (
               <Suspense fallback={null}>
