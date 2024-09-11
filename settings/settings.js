@@ -3,6 +3,8 @@ import { Superstore } from "components/Themes/Superstore";
 import { Ebikes } from "components/Themes/Ebikes";
 import { NTO } from "components/Themes/NTO";
 import { Pacifica } from "components/Themes/Pacifica";
+import { Commonwealth } from "components/Themes/Commonwealth";
+import { BranchManager } from "components/Themes/BranchManager";
 
 
 export const settings = {
@@ -10,14 +12,27 @@ export const settings = {
   custom_metrics: true,
   themes: [
     {
-      label: "Superstore Analytics",
+      label: "Matthew - Financial Advisor",
       name: "superstore",
-      component: Superstore,
+      component: Commonwealth,
       type: "default",
-      logo: "/img/tableau/tableau_logo.png",
+      logo: "/img/users/matthew_wells.png",
       styles: "",
       project: {
-        name: "superstore",
+        name: "Matthew - Financial Advisor",
+        workbooks: [],
+        data_sources: []
+      }
+    },
+    {
+      label: "Mackenzie - Branch Manager",
+      name: "superstore",
+      component: BranchManager,
+      type: "internal",
+      logo: "/img/users/mackenzie_day.png",
+      styles: "",
+      project: {
+        name: "Mackenzie - Branch Manager",
         workbooks: [],
         data_sources: []
       }

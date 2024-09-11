@@ -21,7 +21,7 @@ import {
 
 export function UserMenu(props) {
   const { src } = props;
-  const avatar = src ? src : 'img/users/mackenzie_day.png';
+  const avatar = src ? src : 'img/tableau/tableau_logo.png';
   const [user, setUser] = useState(undefined);
   // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
   const { status, data } = useSession({ required: false });
@@ -87,7 +87,7 @@ const Trigger = (props) => {
   return (
     <DropdownMenuTrigger asChild>
       <Button variant="ghost" className="relative h-12 w-12 rounded-full shadow-xl">
-        <Avatar className="h-12 w-12">
+        <Avatar className="h-9 w-9">
           <AvatarImage src={src} alt="user profile picture" />
           <AvatarFallback>MD</AvatarFallback>
         </Avatar>

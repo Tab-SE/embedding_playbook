@@ -4,24 +4,14 @@
     "type": "page",
     "display": "hidden",
     "theme": {
-      "layout": "full"
+      "layout": "full",
+      "breadcrumb": false,
+      "footer": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false,
+      "navbar": false,
+      "timestamp": false
     }
-  },
-  "demos": {
-    "title": "Demos",
-    "type": "page",
-    "display": "hidden"
-  },
-  "start": {
-    "title": "Getting Started",
-    "type": "page"
-  },
-  "architecture": {
-    "title": "Architecture",
-    "type": "page"
-  },
-  "blog": {
-    "title": "Blog",
-    "type": "page"
   }
 }
