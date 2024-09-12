@@ -1,5 +1,7 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from 'components/ui';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
+
 
 import { useInsights } from 'hooks';
 import { parseDetail } from 'utils';
@@ -21,8 +23,7 @@ export const Insights = (props) => {
   }
 
   return (
-    <div>
-      <Carousel className="max-w-5xl mx-16">
+      <Carousel className="max-w-6xl mx-16 shadow-2xl">
         <CarouselContent>
           {!details ? null : details.map((insight, index) => {
             return (
@@ -35,7 +36,6 @@ export const Insights = (props) => {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-    </div>
   )
 }
 
@@ -47,19 +47,17 @@ const Insight = (props) => {
   const formattedScore = `${(score * 100).toFixed(1)}`;
 
   return type !== 'ban' ? (
-    <Card>
+    <Card className='rounded'>
       <CardHeader>
         <CardTitle>{question}</CardTitle>
         <CardDescription style={{ fontSize: '10px', color: '#999' }}>Score: {formattedScore}</CardDescription>
       </CardHeader>
       <CardContent>
-        {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={204} width={900} spec={viz}></VegaLiteViz>}
+        {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={360} width={560} spec={viz}></VegaLiteViz>}
       </CardContent>
       <CardFooter>
-        <p>{markup}</p>
+        <div>{markup}</div>
       </CardFooter>
     </Card>
   ) : null;
 }
-
-
