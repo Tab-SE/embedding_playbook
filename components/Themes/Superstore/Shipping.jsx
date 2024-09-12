@@ -13,7 +13,7 @@ export const Shipping = () => {
             Displays how many days are consumed during shipping for each product
           </CardDescription>
         </CardHeader>
-        <CardContent className="pl-2">
+        <CardContent className="flex items-center justify-center">
           <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip'
             width={800}
@@ -31,7 +31,7 @@ export const Shipping = () => {
             Shows trends on three shipping categories: Shipped Late, Shipped on Time and Shipped Early
           </CardDescription>
         </CardHeader>
-        <CardContent className="pl-2">
+        <CardContent className="flex items-center justify-center">
           <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'
             width={800}

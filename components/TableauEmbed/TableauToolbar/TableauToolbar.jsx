@@ -98,7 +98,7 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   }
 
   return (
-    <Menubar className='mb-3 mt-6 inline-flex' >
+    <Menubar className='mb-3 inline-flex' >
       <MenubarMenu >
         <MenubarTrigger >
           <IconFile stroke={1} size={18} className='mr-1'/> File
