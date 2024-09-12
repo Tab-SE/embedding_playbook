@@ -7,5 +7,8 @@
   },
   "products": {
     "title": "Products"
+  },
+  "customers": {
+    "title": "Customers"
   }
 }
