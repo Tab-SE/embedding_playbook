@@ -15,4 +15,4 @@ export {
 export { ThemeSelector, Themes, Superstore, NTO, Ebikes } from './Themes';
 export { RightClick } from './RightClick';
 export { Explore } from './Explore';
-export { Orders, Products, Customers, Navigation } from './Demo';
+export { Orders, Products, Customers, NavigationMd, NavigationSm, Breadcrumbs, UserMenu } from './Demo';

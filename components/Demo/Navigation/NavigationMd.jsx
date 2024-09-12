@@ -17,7 +17,7 @@ import {
 } from "components/ui";
 
 
-export const Navigation = (props) => {
+export const NavigationMd = (props) => {
   const { } = props;
 
   return (
