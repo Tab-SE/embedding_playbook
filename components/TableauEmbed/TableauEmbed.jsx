@@ -1,33 +1,36 @@
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 
 import { useTableauSession } from 'hooks';
-import { TableauViz, TableauWebAuthor, AuthoringModal } from 'components';
+import { TableauViz, TableauWebAuthor, TableauToolbar } from 'components';
 
 // forwardRef HOC receives ref from parent and sets placeholder
-export const TableauEmbed = forwardRef(function TableauViz(props, ref) {
-  const { src, height, width, device, hideTabs, toolbar, isPublic, WebEdit } = props;
+export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
+  const { src, height, width, device, hideTabs, toolbar, isPublic, WebEdit = false, customToolbar = true } = props;
+  // to be used if parent did not forward a ref
+  const localRef = useRef(null);
+  // Use the forwarded ref if provided, otherwise use the local ref
+  const innerRef = ref || localRef;
 
   // size of parent div placeholder
   let containerHeight = height;
-  let containerWidth = width;
-  if (toolbar === 'hidden') {
-    containerHeight = height;
+  if (!WebEdit) {
+    containerHeight = containerHeight + 50;
   }
+  let containerWidth = width;
   const containerStyle = {
-    height: containerHeight + 'px',
-    width: containerWidth + 'px',
+    height: containerHeight,
+    width: containerWidth,
   };
 
   return (
     <div
-      className='rounded'
       style={containerStyle}
     >
       <AuthLayer
         src={src}
-        ref={ref}
+        ref={innerRef}
         height={height}
         width={width}
         device={device}
@@ -35,6 +38,8 @@ export const TableauEmbed = forwardRef(function TableauViz(props, ref) {
         toolbar={toolbar}
         isPublic={isPublic}
         WebEdit={WebEdit}
+        customToolbar={customToolbar}
+        containerStyle={containerStyle}
       />
     </div>
   )
@@ -42,7 +47,7 @@ export const TableauEmbed = forwardRef(function TableauViz(props, ref) {
 
 // handles rendering logic during authentication
 const AuthLayer = forwardRef(function AuthLayer(props, ref) {
-  const { src, height, width, device, hideTabs, toolbar, isPublic, WebEdit } = props;
+  const { src, height, width, device, hideTabs, toolbar, isPublic, WebEdit, customToolbar, containerStyle } = props;
 
   // tanstack query hook to manage embed sessions
   const {
@@ -62,9 +67,10 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   }
 
   return (
-    <div className='rounded'>
+    <div className='rounded' style={containerStyle} >
       {isSessionError ? <p>Authentication Error!</p> : null}
       {isSessionLoading ? <p>Authenticating the User...</p> : null}
+      {isSessionSuccess ? customToolbar ? <TableauToolbar src={src} ref={ref} /> : null : null}
       {isSessionSuccess ? !WebEdit ?
         <TableauViz
           src={src}
@@ -79,10 +85,10 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
         /> :
         <TableauWebAuthor
           src={src}
-          height={height}
-          width={width}
           ref={ref}
           jwt={jwt}
+          height={height}
+          width={width}
           isPublic={isPublic}
         />
         : null}
