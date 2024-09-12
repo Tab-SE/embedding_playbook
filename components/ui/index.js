@@ -174,3 +174,9 @@ export {
   TableCell,
   TableCaption,
 } from './Table';
+
+export { Textarea } from './Textarea';
+
+export { Toggle, toggleVariants } from './Toggle';
+
+export { ToggleGroup, ToggleGroupItem } from './ToggleGroup';
