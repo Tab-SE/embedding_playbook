@@ -7,11 +7,6 @@
       "layout": "full"
     }
   },
-  "demos": {
-    "title": "Demos",
-    "type": "page",
-    "display": "hidden"
-  },
   "start": {
     "title": "Getting Started",
     "type": "page"
@@ -20,8 +15,18 @@
     "title": "Architecture",
     "type": "page"
   },
-  "blog": {
-    "title": "Blog",
-    "type": "page"
+  "demos": {
+    "title": "Demos",
+    "type": "page",
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "footer": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false,
+      "navbar": false,
+      "timestamp": false
+    }
   }
 }
