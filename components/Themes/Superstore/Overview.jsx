@@ -13,7 +13,7 @@ export const Overview = () => {
             Your personal digest of Superstore sales in North America
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex justify-center pl-2">
+        <CardContent className="flex items-center justify-center">
           <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
             width={800}

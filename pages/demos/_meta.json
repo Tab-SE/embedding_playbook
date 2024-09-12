@@ -2,11 +2,13 @@
   "index": {
     "title": "Demos"
   },
-  "edit": {
-    "title": "Edit this Report",
-    "display": "hidden",
-    "theme": {
-      "layout": "full"
-    }
+  "orders": {
+    "title": "Orders"
+  },
+  "products": {
+    "title": "Products"
+  },
+  "customers": {
+    "title": "Customers"
   }
 }

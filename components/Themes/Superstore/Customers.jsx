@@ -15,7 +15,7 @@ export const Customers = () => {
               Compares profit vs sales where each mark is an individual customer
             </CardDescription>
           </CardHeader>
-          <CardContent className="pl-2">
+          <CardContent className="flex items-center justify-center">
             <TableauEmbed
               src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/customer_scatter_plot'
               width={450}
@@ -45,7 +45,7 @@ export const Customers = () => {
             A comparison of performance across North America
           </CardDescription>
         </CardHeader>
-        <CardContent className="pl-2">
+        <CardContent className="flex items-center justify-center">
           <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/customer_region'
             width={800}

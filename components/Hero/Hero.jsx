@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import { DisplayContextProvider } from 'components/context';
-import { Demo } from 'components';
+import { HeroDemo } from 'components';
 
 const Intro = () => {
   return (
@@ -56,7 +56,7 @@ const HeroContent = (props) => {
         </div>
       </div>
       <div className='lg:col-span-8'>
-        <Demo
+        <HeroDemo
           hideMetrics={hideMetrics}
           hideSheets={hideSheets}
         />
