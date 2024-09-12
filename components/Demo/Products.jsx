@@ -4,7 +4,6 @@ import {
   ListFilter,
   MoreHorizontal,
   PlusCircle,
-  Search,
 } from "lucide-react";
 
 import { Badge } from "components/ui";
@@ -26,7 +25,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "components/ui";
-import { Input } from "components/ui";
 import {
   Table,
   TableBody,

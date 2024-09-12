@@ -2,7 +2,6 @@ import Image from "next/image";
 import {
   ChevronLeft,
   PlusCircle,
-  Search,
   Upload,
 } from "lucide-react";
 
@@ -15,14 +14,6 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "components/ui";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "components/ui";
 import { Input } from "components/ui";
 import { Label } from "components/ui";
