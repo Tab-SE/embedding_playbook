@@ -2,7 +2,7 @@ export { Demo } from './Demo';
 export { Insights, InsightsModal, VegaLiteViz } from './Insights';
 export { Chat, ChatPopover } from './Chat';
 export { Head } from './Head';
-export { Hero } from './Hero';
+export { Hero, HeroDemo } from './Hero';
 export { Logo } from './Logo';
 export { Metrics, Metric } from './Metrics';
 export {
