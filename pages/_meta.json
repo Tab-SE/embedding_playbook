@@ -17,16 +17,6 @@
   },
   "demos": {
     "title": "Demos",
-    "type": "page",
-    "theme": {
-      "layout": "full",
-      "breadcrumb": false,
-      "footer": false,
-      "sidebar": false,
-      "toc": false,
-      "pagination": false,
-      "navbar": false,
-      "timestamp": false
-    }
+    "type": "page"
   }
 }

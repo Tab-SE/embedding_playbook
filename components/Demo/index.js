@@ -1,5 +1,7 @@
 export { Demo } from './Demo';
+export { Home } from './Home';
 export { Orders } from './Orders';
 export { Products } from './Products';
 export { Customers } from './Customers';
-export { NavigationMd, NavigationSm, Breadcrumbs, UserMenu } from './Navigation';
+export { NavigationMd, NavigationSm, Breadcrumbs, UserMenu, Navigation } from './Navigation';
+export { Gallery } from './Gallery';

@@ -1,0 +1,23 @@
+---
+title: "Products"
+description: "A demonstration of embedded analytics using Tableau's Superstore dataset"
+---
+
+import { Demo, Products } from 'components';
+
+<Demo
+  basePath='/demos'
+  crumbs={{
+    'Superstore Analytics': {
+      path: '/superstore',
+      child: {
+        'Products': {
+          path: '/products',
+          child: null
+        }
+      }
+    }
+  }}
+>
+  <Products />
+</Demo>

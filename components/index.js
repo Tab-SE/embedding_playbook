@@ -1,4 +1,3 @@
-export { Demo } from './Demo';
 export { Insights, InsightsModal, VegaLiteViz } from './Insights';
 export { Chat, ChatPopover } from './Chat';
 export { Head } from './Head';
@@ -15,4 +14,16 @@ export {
 export { ThemeSelector, Themes, Superstore, NTO, Ebikes } from './Themes';
 export { RightClick } from './RightClick';
 export { Explore } from './Explore';
-export { Orders, Products, Customers, NavigationMd, NavigationSm, Breadcrumbs, UserMenu } from './Demo';
+export {
+  Demo,
+  Home,
+  Orders,
+  Products,
+  Customers,
+  NavigationMd,
+  NavigationSm,
+  Breadcrumbs,
+  UserMenu,
+  Navigation,
+  Gallery
+} from './Demo';
