@@ -16,6 +16,7 @@ export { RightClick } from './RightClick';
 export { Explore } from './Explore';
 export {
   Demo,
+  Home,
   Orders,
   Products,
   Customers,

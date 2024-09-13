@@ -1,0 +1,26 @@
+{
+  "*": {
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "footer": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false,
+      "navbar": false,
+      "timestamp": false
+    }
+  },
+  "index": {
+    "title": "Demos"
+  },
+  "orders": {
+    "title": "Orders"
+  },
+  "products": {
+    "title": "Products"
+  },
+  "customers": {
+    "title": "Customers"
+  }
+}

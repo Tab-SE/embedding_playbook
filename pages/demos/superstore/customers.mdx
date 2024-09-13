@@ -1,0 +1,18 @@
+import { Demo, Customers } from 'components';
+
+<Demo
+  basePath='/demos'
+  crumbs={{
+    'Superstore': {
+      path: '/superstore',
+      child: {
+        'Customers': {
+          path: '/customers',
+          child: null
+        }
+      }
+    }
+  }}
+>
+  <Customers />
+</Demo>
