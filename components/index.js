@@ -24,5 +24,6 @@ export {
   NavigationSm,
   Breadcrumbs,
   UserMenu,
-  Navigation
+  Navigation,
+  Gallery
 } from './Demo';
