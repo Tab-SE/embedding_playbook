@@ -19,10 +19,11 @@ export const Breadcrumbs = (props) => {
     <Breadcrumb className="hidden md:flex">
       <BreadcrumbList>
         {breadcrumbItems.map((item, index) => (
+          console.log('item', item),
           <React.Fragment key={index}>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="#">{item}</Link>
+                <Link href={`${item.toLowerCase()}`}>{item}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
