@@ -17,6 +17,13 @@
   },
   "demos": {
     "title": "Demos",
-    "type": "page"
+    "type": "page",
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false
+    }
   }
 }

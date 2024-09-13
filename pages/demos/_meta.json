@@ -10,14 +10,5 @@
       "navbar": false,
       "timestamp": false
     }
-  },
-  "orders": {
-    "title": "Orders"
-  },
-  "products": {
-    "title": "Products"
-  },
-  "customers": {
-    "title": "Customers"
   }
 }
