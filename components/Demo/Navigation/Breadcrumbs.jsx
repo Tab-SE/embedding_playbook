@@ -11,19 +11,20 @@ import Link from 'next/link';
 import { generateBreadcrumbs } from '../utils';
 
 export const Breadcrumbs = (props) => {
-  const { crumbs } = props;
+  const { basePath, crumbs } = props;
 
-  const breadcrumbItems = generateBreadcrumbs(crumbs);
+  const breadcrumbItems = generateBreadcrumbs(basePath, crumbs);
 
   return (
     <Breadcrumb className="hidden md:flex">
       <BreadcrumbList>
         {breadcrumbItems.map((item, index) => (
-          console.log('item', item),
           <React.Fragment key={index}>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href={`${item.toLowerCase()}`}>{item}</Link>
+                <Link href={item.href}>
+                  {item.title}
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
