@@ -3,12 +3,15 @@
     "theme": {
       "layout": "full",
       "breadcrumb": false,
-      "footer": false,
+      "footer": true,
       "sidebar": false,
       "toc": false,
       "pagination": false,
-      "navbar": false,
-      "timestamp": false
+      "navbar": true,
+      "timestamp": true
     }
+  },
+  "index": {
+    "title": "Demos"
   }
 }

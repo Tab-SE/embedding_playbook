@@ -11,6 +11,9 @@
       "timestamp": false
     }
   },
+  "index": {
+    "title": "Superstore Analytics"
+  },
   "orders": {
     "title": "Orders"
   },
