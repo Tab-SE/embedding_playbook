@@ -23,7 +23,7 @@ export const Home = () => {
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>Your personal digest of Superstore sales in North America</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex items-center justify-center">
                 <TableauEmbed
                   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
                   width={800}
@@ -35,8 +35,9 @@ export const Home = () => {
               </CardContent>
             </Card>
           </div>
-          <div>
+          <div className="space-y-6">
             <RecentSales />
+            <Transactions />
           </div>
         </div>
       </main>

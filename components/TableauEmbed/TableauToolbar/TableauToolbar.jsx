@@ -68,7 +68,6 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   const { src } = props;
   const [user, setUser] = useState(null);
   const [viz, setViz] = useState(null);
-  const shareMenubarTriggerRef = useRef(null);
   // writing target src values
   const newVizId = uuidv4();
   const domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN;
@@ -98,7 +97,7 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   }
 
   return (
-    <Menubar className='my-3 inline-flex' >
+    <Menubar className='mt-1 mb-3 inline-flex' >
       <MenubarMenu >
         <MenubarTrigger className='cursor-pointer'>
           <IconFile stroke={1} size={18} className='mr-1'/> File
