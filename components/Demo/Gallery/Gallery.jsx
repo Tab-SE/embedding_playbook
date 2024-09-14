@@ -13,8 +13,11 @@ import { galleryItems } from './galleryItems';
 export const Gallery = (props) => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-3">Embedded Analytics Demo Library</h1>
-      <p className="mb-9">Hover over each card to see details. Select an industry demo to see Tableau in action!</p>
+      <header className="mb-12 text-sm">
+        <h1 className="text-4xl text-slate-900 font-bold mb-6">Embedded Analytics Demo Library</h1>
+        <p>Hover over each card to see more details.</p>
+        <p>Select an application to see Tableau in action!</p>
+      </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
         {galleryItems.map((item) => (
             <HoverCard key={item.id}>

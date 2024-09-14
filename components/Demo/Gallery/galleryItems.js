@@ -8,7 +8,7 @@ import {
 export const galleryItems = [
   {
     id: 1,
-    link: "/superstore",
+    link: "/demos/superstore",
     src: "/img/demos/superstore.png",
     alt: "Superstore Analytics",
     vertical: "Consumer Goods",

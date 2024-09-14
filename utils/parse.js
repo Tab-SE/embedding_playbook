@@ -1,6 +1,6 @@
 import { JSONPath } from 'jsonpath-plus';
 
-/* 
+/*
 defines utilities for parsing JSON objects used throughout the project
 parsing functions are designed for reuse
 */
@@ -19,10 +19,10 @@ export const parseSubscriptions = (subscriptionsResponse) => {
   // Iterate through indexing array and create leaves in the return object
   subscription_ids.forEach((subscription, index) => {
     subscriptions[index] = {
-      subscription_id: subscription, 
+      subscription_id: subscription,
       metric_id: metric_ids[index], // Add the corresponding properties by index
       create_time: create_times[index],
-      update_time: update_times[index], 
+      update_time: update_times[index],
     };
   });
   return subscriptions;
@@ -70,7 +70,7 @@ export const parseDefinitions = (definitionsResponse) => {
       name: name,
       description: descriptions[index], // Add the corresponding properties by index
       id: id[index],
-      definition: definition[index], 
+      definition: definition[index],
       extension_options: extension_options[index],
       representation_options: representation_options[index],
       insights_options: insights_options[index],
@@ -83,7 +83,7 @@ export const parseDefinitions = (definitionsResponse) => {
 export const matchSpecification = (specificationsObj, definitionObj) => {
   for (const [key, specificationObj] of Object.entries(specificationsObj)) {
     if (specificationObj.definition_id === definitionObj.id) {
-      return { 
+      return {
         specification_id: specificationObj.specification_id,
         specification: specificationObj.specification,
       };
@@ -102,7 +102,7 @@ export const matchSubscription = (subscriptionsObj, specification_id) => {
       }
     }
   }
-} 
+}
 
 // return an minimal representation of Detail insight bundles
 export const parseDetail = (bundle) => {
@@ -124,14 +124,14 @@ export const parseDetail = (bundle) => {
     ids.forEach((id, index) => {
       // Using splice to insert the element at the specified index
       details.splice(index, 0, {
-        id: id, 
+        id: id,
         type: types[index], // Add the corresponding properties by index
         markup: markups[index],
-        viz: vizzes[index], 
+        viz: vizzes[index],
         fact: facts[index],
         characterization: characterizations[index],
-        question: questions[index], 
-        score: scores[index], 
+        question: questions[index],
+        score: scores[index],
       });
     });
 
@@ -184,7 +184,7 @@ export const parseInsights = (bundle) => {
     return sortedInsights;
   } else {
     throw new Error(`Error parsing insights bundle, could not form an array: ${bundle}`);
-  } 
+  }
 }
 
 // returns a content map used for dynamic display
@@ -223,7 +223,7 @@ const parseWorkbooks = (rawMetadata) => {
     });
 
     // convert array to Set removes duplicates, then convert back to array
-    const distinctProjects = [...new Set(projects)];
+    const distinctProjects = Array.from(new Set(projects));
 
     // loop through all unique projects and find their child workbooks
     for (const project of distinctProjects) {
