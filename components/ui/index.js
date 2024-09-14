@@ -180,3 +180,5 @@ export { Textarea } from './Textarea';
 export { Toggle, toggleVariants } from './Toggle';
 
 export { ToggleGroup, ToggleGroupItem } from './ToggleGroup';
+
+export { HoverCard, HoverCardTrigger, HoverCardContent } from './HoverCard';

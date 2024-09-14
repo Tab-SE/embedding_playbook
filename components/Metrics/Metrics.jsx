@@ -14,7 +14,7 @@ import { Metric } from "components";
 
 
 export const Metrics = (props) => {
-  const { theme } = props;
+  const { basis } = props;
   const [user, setUser] = useState(null);
   const { status: session_status, data: session_data } = useSession({});
   // syncs with user metrics, only fires query when user is defined -> controlled query
@@ -39,7 +39,7 @@ export const Metrics = (props) => {
             {Array.isArray(data) ? data.map((metric) => (
               <CarouselItem
                 key={metric.id}
-                className="basis-1/3"
+                className={basis}
               >
                 <Metric
                   key={metric.id}
