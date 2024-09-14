@@ -1,4 +1,5 @@
-import { Button } from "components/ui";
+import { useContext } from 'react';
+
 import {
   Card,
   CardContent,
@@ -9,12 +10,18 @@ import {
 } from "components/ui";
 import { Progress } from "components/ui";
 
+import { useMetrics } from 'hooks';
+import { UserContext } from 'components/context';
 import { OrdersTable, OrderDetail, ActionCard } from 'components';
 
 export const description = "An orders dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. The main area has a list of recent orders with a filter and export button. The main area also has a detailed view of a single order with order details, shipping information, billing information, customer information, and payment information."
 
 export const Orders = (props) => {
-  const { } = props;
+  const { metricId } = props;
+  const user = useContext(UserContext);
+  // syncs with user metrics, only fires query when user is defined -> controlled query
+  const { status, data, error, isError, isSuccess } = useMetrics(user);
+
   return (
   <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
     <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">

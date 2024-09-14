@@ -23,13 +23,11 @@ export const Metrics = (props) => {
   // updates user for authenticated components
   useEffect(() => {
     if (session_status === 'authenticated') {
-      setUser(session_data.user.name); // value used for controlled queries
+      setUser(session_data.user.name);
+    } else if (session_status === 'unauthenticated') {
+      setUser(null); // Reset the user state if not authenticated
     }
   }, [session_status, session_data]);
-
-  if (isError) {
-    console.debug(error);
-  }
 
   return (
     <div className="h-[111px] px-16">
