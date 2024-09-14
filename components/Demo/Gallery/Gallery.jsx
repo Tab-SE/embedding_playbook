@@ -14,7 +14,7 @@ export const Gallery = (props) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-12 text-sm">
-        <h1 className="text-4xl text-slate-900 font-bold mb-6">Embedded Analytics Demo Library</h1>
+        <h1 className="text-4xl text-slate-900 dark:text-slate-100 font-bold mb-6">Embedded Analytics Demo Library</h1>
         <p>Hover over each card to see more details.</p>
         <p>Select an application to see Tableau in action!</p>
       </header>
