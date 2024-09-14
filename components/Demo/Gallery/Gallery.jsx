@@ -26,7 +26,7 @@ export const Gallery = (props) => {
                   tabIndex={0}
                   onKeyUp={(e) => e.key === 'Enter' && window.open(item.link, "_blank")}
                 >
-                  <Card className="overflow-hidden shadow-2xl h-60">
+                  <Card className="overflow-hidden shadow-2xl h-60 transform transition-transform duration-300 hover:scale-110">
                     <CardContent className="p-0">
                       <Image
                         src={item.src}
@@ -39,7 +39,7 @@ export const Gallery = (props) => {
                   </Card>
                 </span>
               </HoverCardTrigger>
-              <HoverCardContent className="w-96 shadow-2xl">
+              <HoverCardContent className="w-96 shadow-2xl" sideOffset={15}>
                 <div className="flex justify-between space-x-3">
                   <div className="space-y-1">
                     <h4 className="text-sm font-semibold">{item.alt}</h4>
