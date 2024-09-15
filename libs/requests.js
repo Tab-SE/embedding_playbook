@@ -167,8 +167,8 @@ export const getMetrics = async () => {
 }
 
 // obtains a public token for the frontend
-export const getEmbed = async (userId) => {
-  const endpoint = '/api/embed';
+export const getUser = async (userId) => {
+  const endpoint = '/api/user';
   const body = { userId };
 
   const config = {
