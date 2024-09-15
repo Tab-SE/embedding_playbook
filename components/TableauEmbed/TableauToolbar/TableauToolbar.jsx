@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useRef } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useSession } from "next-auth/react";
 
@@ -48,7 +48,6 @@ import {
 } from "components/ui";
 
 import { Explore } from 'components';
-import { useMetadata } from "hooks";
 import {
   exportImage,
   exportPDF,
@@ -66,7 +65,6 @@ import {
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   const { src } = props;
-  const [user, setUser] = useState(null);
   const [viz, setViz] = useState(null);
   // writing target src values
   const newVizId = uuidv4();
@@ -75,15 +73,6 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   const newVizDatasourceSrc = `${domain}/t/${site}/newWorkbook/${newVizId}`;
 
   const { status: session_status, data: session_data } = useSession({});
-  // syncs with user's site metadata, only fires query when user is defined -> controlled query
-  const { status, data, error, isError, isSuccess } = useMetadata(user);
-
-  // updates user for authenticated components
-  useEffect(() => {
-    if (session_status === 'authenticated') {
-      setUser(session_data.user.name); // value used for controlled queries
-    }
-  }, [session_status, session_data]);
 
   // handles the forwarded ref
   useEffect(() => {
@@ -91,10 +80,6 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
       setViz(ref.current);
     }
   }, [ref]);
-
-  if (isError) {
-    console.debug(error);
-  }
 
   return (
     <Menubar className='mt-1 mb-3 inline-flex' >
