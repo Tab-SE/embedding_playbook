@@ -11,7 +11,7 @@ import { getUser } from "libs";
 // secures UI components via these methods: https://next-auth.js.org/getting-started/client#require-session
 export const useTableauSession = (userName) => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [userName].every(param => param != null) ? ["tableau", "embed", userName] : [];
+  const queryKey = [userName].every(param => param != null) ? ["tableau", "user session", userName] : [];
 
   const { status: session_status, data: session_data } = useSession({
     required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session

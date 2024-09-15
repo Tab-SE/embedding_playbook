@@ -8,10 +8,10 @@ import { getMetadata } from "libs";
 
 export const useMetadata = (user) => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [user].every(param => param != null) ? ["tableau", "metadata", user] : []; 
+  const queryKey = [user].every(param => param != null) ? ["tableau", user, "metadata"] : [];
 
   return useQuery({
-    queryKey: queryKey, 
+    queryKey: queryKey,
     queryFn: () => {
       return getMetadata();
     },
