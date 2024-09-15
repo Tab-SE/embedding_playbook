@@ -29,7 +29,7 @@ import {
   TabsTrigger,
 } from "components/ui";
 
-import { ProductsTable } from "components";
+import { ProductsTable, TableauEmbed } from "components";
 
 export const description = "An products dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. It displays a list of products in a table with actions."
 
@@ -38,15 +38,12 @@ export const Products = (props) => {
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-      <Tabs defaultValue="all">
+      <Tabs defaultValue="products">
         <div className="flex items-center">
           <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="active">Active</TabsTrigger>
-            <TabsTrigger value="draft">Draft</TabsTrigger>
-            <TabsTrigger value="archived" className="hidden sm:flex">
-              Archived
-            </TabsTrigger>
+            <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="segment">Segment</TabsTrigger>
+            <TabsTrigger value="category">Category</TabsTrigger>
           </TabsList>
           <div className="ml-auto flex items-center gap-2">
             <DropdownMenu>
@@ -84,8 +81,48 @@ export const Products = (props) => {
             </Button>
           </div>
         </div>
-        <TabsContent value="all">
+        <TabsContent value="products">
           <ProductsTable />
+        </TabsContent>
+        <TabsContent value="segment">
+          <Card className="dark:bg-stone-900">
+            <CardHeader>
+              <CardTitle>Segment Analysis</CardTitle>
+              <CardDescription>
+                A comparison of product sales and profitability by segment and category
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex items-center justify-center">
+              <TableauEmbed
+                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
+                width={1260}
+                height={510}
+                hideTabs={true}
+                device='default'
+                toolbar='hidden'
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="category">
+          <Card className="dark:bg-stone-900">
+            <CardHeader>
+              <CardTitle>Category Performance</CardTitle>
+              <CardDescription>
+                Product category sales by month and year. Darker cells indicate higher relative sales while lighter cells signal the opposite.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex items-center justify-center">
+              <TableauEmbed
+                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
+                width={1260}
+                height={510}
+                hideTabs={true}
+                device='default'
+                toolbar='hidden'
+              />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </main>
