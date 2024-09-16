@@ -37,6 +37,8 @@ import {
   TabsTrigger,
 } from "components/ui";
 
+import { TableauEmbed } from "components";
+
 
 export const OrdersTable = () => {
   return (
@@ -46,6 +48,7 @@ export const OrdersTable = () => {
             <TabsTrigger value="week">Week</TabsTrigger>
             <TabsTrigger value="month">Month</TabsTrigger>
             <TabsTrigger value="year">Year</TabsTrigger>
+            <TabsTrigger value="shipping">Shipping</TabsTrigger>
           </TabsList>
           <div className="ml-auto flex items-center gap-2">
             <DropdownMenu>
@@ -86,7 +89,39 @@ export const OrdersTable = () => {
         <TabsContent value="week">
           <TableTemplate />
         </TabsContent>
+        <TabsContent value="month">
+          <TableTemplate />
+        </TabsContent>
+        <TabsContent value="year">
+          <TableTemplate />
+        </TabsContent>
+        <TabsContent value="shipping">
+          <Shipping />
+        </TabsContent>
       </Tabs>
+  )
+}
+
+const Shipping = () => {
+  return (
+    <Card className="dark:bg-stone-900">
+      <CardHeader>
+        <CardTitle>Days to Ship by Order</CardTitle>
+        <CardDescription>
+          Displays shipping performance for recent orders to identify products causing shipping delays
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex items-center justify-center">
+        <TableauEmbed
+          src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip'
+          width={790}
+          height={445}
+          hideTabs={true}
+          device='default'
+          toolbar='hidden'
+        />
+      </CardContent>
+    </Card>
   )
 }
 
