@@ -42,8 +42,8 @@ export const Products = (props) => {
         <div className="flex items-center">
           <TabsList>
             <TabsTrigger value="products">Products</TabsTrigger>
-            <TabsTrigger value="segment">Segment</TabsTrigger>
-            <TabsTrigger value="category">Category</TabsTrigger>
+            <TabsTrigger value="segment">Segments</TabsTrigger>
+            <TabsTrigger value="category">Categories</TabsTrigger>
           </TabsList>
           <div className="ml-auto flex items-center gap-2">
             <DropdownMenu>

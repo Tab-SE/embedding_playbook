@@ -22,5 +22,8 @@
   },
   "customers": {
     "title": "Customers"
+  },
+  "settings": {
+    "title": "Settings"
   }
 }

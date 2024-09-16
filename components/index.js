@@ -35,7 +35,8 @@ export {
   Breadcrumbs,
   UserMenu,
   Navigation,
-  Gallery
+  Gallery,
+  Settings
 } from './Demo';
 
 export {
