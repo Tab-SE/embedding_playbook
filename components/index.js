@@ -20,8 +20,6 @@ export {
 
 export { ThemeSelector, Themes, Superstore, NTO, Ebikes } from './Themes';
 
-export { RightClick } from './RightClick';
-
 export { Explore } from './Explore';
 
 export {
@@ -48,3 +46,5 @@ export {
 } from './Mockups';
 
 export { ActionCard } from './ActionCard';
+
+export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './ResponsiveLayouts';

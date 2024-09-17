@@ -1,33 +1,21 @@
 "use client";
 
 import { useEffect, useState, useRef, forwardRef, useId } from 'react';
-import MediaQuery from 'react-responsive';
 
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
 
 import {
   ContextMenu,
-  ContextMenuCheckboxItem,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuLabel,
-  ContextMenuRadioGroup,
-  ContextMenuRadioItem,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
-  ContextMenuSub,
-  ContextMenuSubContent,
-  ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "components/ui";
 
-import { RightClick } from 'components';
+import { VizContextMenu } from './VizContextMenu';
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
 export const TableauViz = forwardRef(function Viz(props, ref) {
-  const { src, jwt, height, width, device, hideTabs, toolbar, isPublic } = props;
+  const { src, jwt, height, width, device, hideTabs, toolbar, isPublic, layouts } = props;
   // creates a unique identifier for the embed
   const id = `id-${useId()}`;
   // to be used if parent did not forward a ref
@@ -81,48 +69,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           data-viz={id}
         />
       </ContextMenuTrigger>
-      <ContextMenuContent className="w-64">
-        <ContextMenuItem inset>
-          Back
-          <ContextMenuShortcut>⌘[</ContextMenuShortcut>
-        </ContextMenuItem>
-        <ContextMenuItem inset disabled>
-          Forward
-          <ContextMenuShortcut>⌘]</ContextMenuShortcut>
-        </ContextMenuItem>
-        <ContextMenuItem inset>
-          Reload
-          <ContextMenuShortcut>⌘R</ContextMenuShortcut>
-        </ContextMenuItem>
-        <ContextMenuSub>
-          <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>
-          <ContextMenuSubContent className="w-48">
-            <ContextMenuItem>
-              Save Page As...
-              <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut>
-            </ContextMenuItem>
-            <ContextMenuItem>Create Shortcut...</ContextMenuItem>
-            <ContextMenuItem>Name Window...</ContextMenuItem>
-            <ContextMenuSeparator />
-            <ContextMenuItem>Developer Tools</ContextMenuItem>
-          </ContextMenuSubContent>
-        </ContextMenuSub>
-        <ContextMenuSeparator />
-        <ContextMenuCheckboxItem checked>
-          Show Bookmarks Bar
-          <ContextMenuShortcut>⌘⇧B</ContextMenuShortcut>
-        </ContextMenuCheckboxItem>
-        <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
-        <ContextMenuSeparator />
-        <ContextMenuRadioGroup value="pedro">
-          <ContextMenuLabel inset>People</ContextMenuLabel>
-          <ContextMenuSeparator />
-          <ContextMenuRadioItem value="pedro">
-            Pedro Duarte
-          </ContextMenuRadioItem>
-          <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
-        </ContextMenuRadioGroup>
-      </ContextMenuContent>
+      <VizContextMenu/>
     </ContextMenu>
   )
 })
@@ -147,3 +94,27 @@ const handleVizEventListeners = (viz, setInteractive) => {
     viz.removeEventListener('vizloaderror', handleVizLoadError);
   }
 }
+
+// tailwind CSS breakpoints used by the app
+// https://tailwindcss.com/docs/responsive-design#using-custom-breakpoints
+// const breakpoints = {
+//   'xs': '< 640px',
+//   'sm': '640px',
+//   'md': '768px',
+//   'lg': '1204px',
+//   'xl': '1280px',
+//   '2xl': '> 1536px',
+// }
+
+// sample layouts prop
+// const breakpoints = {
+//   'xs': { 'device': 'phone', 'width': 360, 'height': 420 },
+//   'sm': { 'device': 'tablet', 'width': 640, 'height': 420 },
+//   'md': { 'device': 'tablet', 'width': 768, 'height': 540 },
+//   'lg': { 'device': 'tablet', 'width': 1200, 'height': 700 },
+//   'xl': { 'device': 'desktop', 'width': 1260, 'height': 700 },
+//   '2xl': { 'device': 'desktop', 'width': 1530, 'height': 800},
+// }
+
+// DRY example of react-responsive hooks was the chosen pattern
+// https://github.com/yocontra/react-responsive?tab=readme-ov-file#easy-mode
