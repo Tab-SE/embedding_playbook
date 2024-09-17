@@ -6,6 +6,7 @@ const vercel = 'https://embedding-playbook.vercel.app';
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
 
 const config: DocsThemeConfig = {
+  darkMode: false,
   primaryHue: 201,
   primarySaturation: 100,
   logo:
