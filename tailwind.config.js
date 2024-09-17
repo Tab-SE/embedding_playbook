@@ -16,6 +16,13 @@ module.exports = {
       },
     },
     extend: {
+      colors: {
+        demoBackground: '#f5f5f4',
+        navigationBackground: '#fafaf9',
+        metricsPositive: '#0284c7',
+        metricsNeutral: '#78716c',
+        metricsNegative: '#ea580c',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
