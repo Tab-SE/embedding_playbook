@@ -1,4 +1,4 @@
-import { useXSQuery, useSMQuery, useMDQuery, useLGQuery, useXLQuery, use2XLQuery } from './hooks'
+import { useXSQuery, useSMQuery, useMDQuery, useLGQuery, useXLQuery, use2XLQuery } from 'hooks';
 
 // tailwind CSS breakpoints used by the app
 // const breakpoints = {
@@ -32,19 +32,19 @@ export const MDLayout = ({ children }) => {
 }
 
 export const LGLayout = ({ children }) => {
-  const isLGLayout = useLGQuery()
+  const isLGLayout = useLGQuery();
 
-  return isLGLayout ? children : null
+  return isLGLayout ? children : null;
 }
 
 export const XLLayout = ({ children }) => {
-  const isXLLayout = useXLQuery()
+  const isXLLayout = useXLQuery();
 
-  return isXLLayout ? children : null
+  return isXLLayout ? children : null;
 }
 
 export const XL2Layout = ({ children }) => {
-  const isXL2Layout = use2XLQuery()
+  const isXL2Layout = use2XLQuery();
 
-  return isXL2Layout ? children : null
+  return isXL2Layout ? children : null;
 }
