@@ -1,3 +1,5 @@
+"use client";
+
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
 import { forwardRef, useRef } from 'react';

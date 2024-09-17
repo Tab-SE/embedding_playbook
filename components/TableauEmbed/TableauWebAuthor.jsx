@@ -1,6 +1,9 @@
+"use client";
+
+import { useState, useRef, forwardRef, useId } from 'react';
+
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
-import { useState, useRef, forwardRef, useId } from 'react';
 
 
 // handles post authentication logic requiring an initialized <tableau-authoring-viz> object to operate

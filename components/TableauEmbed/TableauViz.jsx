@@ -1,6 +1,10 @@
+"use client";
+
+import { useEffect, useState, useRef, forwardRef, useId } from 'react';
+import MediaQuery from 'react-responsive';
+
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
-import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 
 import {
   ContextMenu,
