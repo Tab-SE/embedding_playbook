@@ -48,11 +48,12 @@ export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
 // handles rendering logic during authentication
 const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   const { src, height, width, device, hideTabs, toolbar, isPublic, WebEdit, customToolbar, containerStyle } = props;
+  let embed_token;
 
   // tanstack query hook to manage embed sessions
   const {
     status,
-    data: jwt,
+    data: user,
     error: sessionError,
     isSuccess: isSessionSuccess,
     isError: isSessionError,
@@ -64,6 +65,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   }
 
   if (isSessionSuccess) {
+    embed_token = user.embed_token;
   }
 
   return (
@@ -75,7 +77,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
         <TableauViz
           src={src}
           ref={ref}
-          jwt={jwt}
+          jwt={embed_token}
           height={height}
           width={width}
           device={device}
@@ -86,7 +88,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
         <TableauWebAuthor
           src={src}
           ref={ref}
-          jwt={jwt}
+          jwt={embed_token}
           height={height}
           width={width}
           isPublic={isPublic}

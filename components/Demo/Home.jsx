@@ -7,7 +7,7 @@ import {
 } from "components/ui";
 
 import { Metrics, TableauEmbed } from 'components';
-import { Transactions, RecentSales } from './Mockups';
+import { Transactions, RecentSales } from 'components';
 
 export const description = "An application shell with a header and main content area. The header has a navbar, a search input and and a user nav dropdown. The user nav is toggled by a button with an avatar image. The main content area is divided into two rows. The first row has a grid of cards with statistics. The second row has a grid of cards with a table of recent transactions and a list of recent sales.";
 
@@ -23,7 +23,7 @@ export const Home = () => {
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>Your personal digest of Superstore sales in North America</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex items-center justify-center">
                 <TableauEmbed
                   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
                   width={800}
@@ -35,8 +35,9 @@ export const Home = () => {
               </CardContent>
             </Card>
           </div>
-          <div>
+          <div className="space-y-6">
             <RecentSales />
+            <Transactions />
           </div>
         </div>
       </main>

@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogFooter, DialogTitle, DialogTrigger, DialogClose } from "components/ui";
 
 import { TableauEmbed } from 'components';
-import { useMetadata } from "hooks";
 
 export const Explore = (props) => {
   const { title, description, src } = props;

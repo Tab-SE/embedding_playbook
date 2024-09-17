@@ -1,6 +1,3 @@
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-
 import {
   Carousel,
   CarouselContent,
@@ -12,24 +9,10 @@ import {
 import { useMetrics } from 'hooks';
 import { Metric } from "components";
 
-
 export const Metrics = (props) => {
   const { basis } = props;
-  const [user, setUser] = useState(null);
-  const { status: session_status, data: session_data } = useSession({});
   // syncs with user metrics, only fires query when user is defined -> controlled query
-  const { status, data, error, isError, isSuccess } = useMetrics(user);
-
-  // updates user for authenticated components
-  useEffect(() => {
-    if (session_status === 'authenticated') {
-      setUser(session_data.user.name); // value used for controlled queries
-    }
-  }, [session_status, session_data]);
-
-  if (isError) {
-    console.debug(error);
-  }
+  const { status, data, error, isError, isSuccess } = useMetrics();
 
   return (
     <div className="h-[111px] px-16">

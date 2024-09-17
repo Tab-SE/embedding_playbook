@@ -1,11 +1,11 @@
 import Link from "next/link";
 import {
   Home,
-  LineChart,
   Package,
   PanelLeft,
   ShoppingCart,
   Users2,
+  Settings
 } from "lucide-react";
 
 import { Button } from "components/ui";
@@ -74,7 +74,7 @@ export const NavigationSm = (props) => {
             href="#"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
-            <LineChart className="h-5 w-5" />
+            <Settings className="h-5 w-5" />
             Settings
           </Link>
         </nav>

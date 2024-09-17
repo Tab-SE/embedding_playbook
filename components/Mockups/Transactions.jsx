@@ -21,6 +21,8 @@ import {
   TableRow,
 } from "components/ui";
 
+// get demo users via this request: https://randomuser.me/api/?results=15&nat=us&inc=name,id,picture,email
+
 export const Transactions = () => {
   return (
     <Card x-chunk="dashboard-01-chunk-4">

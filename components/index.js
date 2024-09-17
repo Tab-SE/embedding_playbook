@@ -1,9 +1,15 @@
 export { Insights, InsightsModal, VegaLiteViz } from './Insights';
+
 export { Chat, ChatPopover } from './Chat';
+
 export { Head } from './Head';
+
 export { Hero, HeroDemo } from './Hero';
+
 export { Logo } from './Logo';
+
 export { Metrics, Metric } from './Metrics';
+
 export {
   TableauEmbed,
   TableauViz,
@@ -11,9 +17,13 @@ export {
   TableauAuth,
   TableauToolbar
 } from './TableauEmbed';
+
 export { ThemeSelector, Themes, Superstore, NTO, Ebikes } from './Themes';
+
 export { RightClick } from './RightClick';
+
 export { Explore } from './Explore';
+
 export {
   Demo,
   Home,
@@ -25,5 +35,16 @@ export {
   Breadcrumbs,
   UserMenu,
   Navigation,
-  Gallery
+  Gallery,
+  Settings
 } from './Demo';
+
+export {
+  Transactions,
+  RecentSales,
+  ProductsTable,
+  OrdersTable,
+  OrderDetail
+} from './Mockups';
+
+export { ActionCard } from './ActionCard';
