@@ -129,9 +129,9 @@ const Stats = (props) => {
             </div>
             <Dialog>
               <DialogTrigger>
-                <Badge className={`${stats.badge} text-stone-50 h-6 ml-6`}>
+                <Badge className={`${stats.badge} text-stone-50 h-6 w-full ml-6 flex items-center justify-center`}>
                   <IconSparkles width={15} height={15} className="mr-1"/>
-                  Insights: {bundleCount}
+                  {bundleCount}
                 </Badge>
               </DialogTrigger>
               <InsightsModal metric={metric} stats={stats} />
