@@ -99,7 +99,7 @@ export const Metric = (props) => {
 
   // fully loaded state
   return (
-    <Card className="h-[120px] max-w-[240px] dark:bg-stone-900 cursor-grab">
+    <Card className="h-[120px] max-w-[240px] dark:bg-stone-900 cursor-grab shadow-xl">
       <CardContent className="p-3 pt-1">
         <Stats
           isSuccess={isSuccess}
