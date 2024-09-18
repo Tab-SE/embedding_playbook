@@ -104,7 +104,7 @@ export const OrdersTable = () => {
 
 const Shipping = () => {
   return (
-    <Card className="dark:bg-stone-900">
+    <Card className="shadow-xl">
       <CardHeader>
         <CardTitle>Days to Ship by Order</CardTitle>
         <CardDescription>
@@ -127,7 +127,7 @@ const Shipping = () => {
 
 const TableTemplate = () => {
   return (
-    <Card x-chunk="dashboard-05-chunk-3">
+    <Card className='shadow-xl' x-chunk="dashboard-05-chunk-3">
       <CardHeader className="px-7">
         <CardTitle>Orders</CardTitle>
         <CardDescription>

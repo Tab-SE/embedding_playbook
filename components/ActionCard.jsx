@@ -15,7 +15,7 @@ export const ActionCard = (props) => {
 
   return (
     <Card
-      className={cn("", className)}
+      className={cn("shadow-xl", className)}
       x-chunk="dashboard-05-chunk-0"
     >
       <CardHeader className="pb-3">

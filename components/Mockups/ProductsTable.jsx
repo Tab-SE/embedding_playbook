@@ -33,7 +33,7 @@ import {
 
 export const ProductsTable = () => {
   return (
-    <Card x-chunk="dashboard-06-chunk-0">
+    <Card className='shadow-xl' x-chunk="dashboard-06-chunk-0">
       <CardHeader>
         <CardTitle>Products</CardTitle>
         <CardDescription>

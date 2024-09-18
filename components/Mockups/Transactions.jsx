@@ -25,7 +25,7 @@ import {
 
 export const Transactions = () => {
   return (
-    <Card x-chunk="dashboard-01-chunk-4">
+    <Card className='shadow-xl' x-chunk="dashboard-01-chunk-4">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <CardTitle>Transactions</CardTitle>

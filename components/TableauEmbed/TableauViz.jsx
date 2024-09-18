@@ -11,6 +11,7 @@ import {
 } from "components/ui";
 
 import { VizContextMenu } from './VizContextMenu';
+import { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
