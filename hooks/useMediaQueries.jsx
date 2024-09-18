@@ -1,7 +1,7 @@
 import { useMediaQuery } from 'react-responsive';
 
 // tailwind CSS breakpoints used by the app
-// https://tailwindcss.com/docs/responsive-design#using-custom-breakpoints
+// https://tailwindcss.com/docs/responsive-design
 // const breakpoints = {
 //   'xs': '< 640px',
 //   'sm': '640px',

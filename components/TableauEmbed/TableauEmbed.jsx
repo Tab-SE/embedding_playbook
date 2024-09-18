@@ -5,7 +5,7 @@ import { tab_embed } from 'libs';
 import { forwardRef, useRef } from 'react';
 
 import { useTableauSession } from 'hooks';
-import { TableauViz, TableauWebAuthor, TableauToolbar } from 'components';
+import { TableauViz, TableauWebAuthor } from 'components';
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
@@ -26,17 +26,6 @@ export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
   // Use the forwarded ref if provided, otherwise use the local ref
   const innerRef = ref || localRef;
 
-  // size of parent div placeholder
-  let containerHeight = height;
-  if (!WebEdit) {
-    containerHeight = containerHeight + 50;
-  }
-  let containerWidth = width;
-  const containerStyle = {
-    height: containerHeight,
-    width: containerWidth,
-  };
-
   return (
     <div>
       <AuthLayer
@@ -49,7 +38,6 @@ export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
         isPublic={isPublic}
         WebEdit={WebEdit}
         customToolbar={customToolbar}
-        containerStyle={containerStyle}
         layouts={layouts}
       />
     </div>
@@ -62,13 +50,11 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
     src,
     height,
     width,
-    device,
     hideTabs,
     toolbar,
     isPublic,
     WebEdit,
     customToolbar,
-    containerStyle,
     layouts
   } = props;
 
