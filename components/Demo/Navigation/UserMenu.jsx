@@ -87,7 +87,7 @@ const Trigger = (props) => {
   return (
     <DropdownMenuTrigger asChild>
       <Button variant="ghost" className="relative h-12 w-12 rounded-full shadow-xl">
-        <Avatar className="h-12 w-12">
+        <Avatar className="h-12 w-12 shadow-xl">
           <AvatarImage src={src} alt="user profile picture" />
           <AvatarFallback>MD</AvatarFallback>
         </Avatar>
