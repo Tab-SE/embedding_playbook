@@ -85,7 +85,7 @@ export const Products = (props) => {
           <ProductsTable />
         </TabsContent>
         <TabsContent value="segment">
-          <Card className="dark:bg-stone-900">
+          <Card className="dark:bg-stone-900 shadow-xl">
             <CardHeader>
               <CardTitle>Segment Analysis</CardTitle>
               <CardDescription>
@@ -96,7 +96,7 @@ export const Products = (props) => {
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
                 width={1260}
-                height={510}
+                height={516}
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
@@ -105,7 +105,7 @@ export const Products = (props) => {
           </Card>
         </TabsContent>
         <TabsContent value="category">
-          <Card className="dark:bg-stone-900">
+          <Card className="dark:bg-stone-900 shadow-xl">
             <CardHeader>
               <CardTitle>Category Performance</CardTitle>
               <CardDescription>
@@ -116,7 +116,7 @@ export const Products = (props) => {
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
                 width={1260}
-                height={510}
+                height={516}
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
