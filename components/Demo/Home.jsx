@@ -23,7 +23,7 @@ export const Home = () => {
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>Your personal digest of Superstore sales in North America</CardDescription>
               </CardHeader>
-              <CardContent className="flex items-center justify-center">
+              <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
                 <TableauEmbed
                   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
                   width={800}
@@ -31,6 +31,14 @@ export const Home = () => {
                   hideTabs={true}
                   device='default'
                   toolbar='hidden'
+                  layouts = {{
+                    'xs': { 'device': 'phone', 'width': 300, 'height': 1350 },
+                    'sm': { 'device': 'phone', 'width': 510, 'height': 1350 },
+                    'md': { 'device': 'default', 'width': 600, 'height': 1000 },
+                    'lg': { 'device': 'phone', 'width': 400, 'height': 1100 },
+                    'xl': { 'device': 'tablet', 'width': 720, 'height': 1100 },
+                    'xl2': { 'device': 'desktop', 'width': 860, 'height': 1100 },
+                  }}
                 />
               </CardContent>
             </Card>

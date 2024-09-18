@@ -10,13 +10,21 @@ import {
   ContextMenuTrigger,
 } from "components/ui";
 
+import { TableauToolbar, XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
 import { VizContextMenu } from './VizContextMenu';
-import { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
 export const TableauViz = forwardRef(function Viz(props, ref) {
-  const { src, jwt, height, width, device, hideTabs, toolbar, isPublic, layouts } = props;
+  const {
+    src,
+    jwt,
+    hideTabs,
+    toolbar,
+    isPublic,
+    customToolbar,
+    layouts
+  } = props;
   // creates a unique identifier for the embed
   const id = `id-${useId()}`;
   // to be used if parent did not forward a ref
@@ -52,26 +60,153 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     }
   }, [interactive, innerRef, setActiveSheet])
 
-
   return (
-    <ContextMenu>
-      <ContextMenuTrigger >
-        <tableau-viz
-          ref={innerRef}
-          id="tableauViz"
-          src={src}
-          token={!isPublic ? jwt : null}
-          height={`${height}px`}
-          width={`${width}px`}
-          device={device}
-          hide-tabs={hideTabs ? true : false}
-          toolbar={toolbar}
-          class='flex justify-center items-center rounded'
-          data-viz={id}
-        />
-      </ContextMenuTrigger>
-      <VizContextMenu/>
-    </ContextMenu>
+    <div>
+      <XSLayout>
+        <div
+          style={{
+            height: layouts.xs.height + 60,
+            width: layouts.xs.width,
+          }}
+        >
+          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+          <tableau-viz
+            ref={innerRef}
+            id="tableauViz"
+            src={src}
+            token={!isPublic ? jwt : null}
+            height={`${layouts.xs.height}px`}
+            width={`${layouts.xs.width}px`}
+            device={layouts.xs.device}
+            hide-tabs={hideTabs ? true : false}
+            toolbar={toolbar}
+            class='flex justify-center items-center rounded'
+            data-viz={id}
+          />
+        </div>
+      </XSLayout>
+
+      <SMLayout>
+        <div
+          style={{
+            height: layouts.sm.height + 60,
+            width: layouts.sm.width,
+          }}
+        >
+          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+          <tableau-viz
+            ref={innerRef}
+            id="tableauViz"
+            src={src}
+            token={!isPublic ? jwt : null}
+            height={`${layouts.sm.height}px`}
+            width={`${layouts.sm.width}px`}
+            device={layouts.sm.device}
+            hide-tabs={hideTabs ? true : false}
+            toolbar={toolbar}
+            class='flex justify-center items-center rounded'
+            data-viz={id}
+          />
+        </div>
+      </SMLayout>
+
+      <MDLayout>
+        <div
+          style={{
+            height: layouts.md.height + 60,
+            width: layouts.md.width,
+          }}
+        >
+          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+          <tableau-viz
+            ref={innerRef}
+            id="tableauViz"
+            src={src}
+            token={!isPublic ? jwt : null}
+            height={`${layouts.md.height}px`}
+            width={`${layouts.md.width}px`}
+            device={layouts.md.device}
+            hide-tabs={hideTabs ? true : false}
+            toolbar={toolbar}
+            class='flex justify-center items-center rounded'
+            data-viz={id}
+          />
+        </div>
+      </MDLayout>
+
+      <LGLayout>
+        <div
+          style={{
+            height: layouts.lg.height + 60,
+            width: layouts.lg.width,
+          }}
+        >
+          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+          <tableau-viz
+            ref={innerRef}
+            id="tableauViz"
+            src={src}
+            token={!isPublic ? jwt : null}
+            height={`${layouts.lg.height}px`}
+            width={`${layouts.lg.width}px`}
+            device={layouts.lg.device}
+            hide-tabs={hideTabs ? true : false}
+            toolbar={toolbar}
+            class='flex justify-center items-center rounded'
+            data-viz={id}
+          />
+        </div>
+      </LGLayout>
+
+      <XLLayout>
+        <div
+          style={{
+            height: layouts.xl.height + 60,
+            width: layouts.xl.width,
+          }}
+        >
+          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+          <tableau-viz
+            ref={innerRef}
+            id="tableauViz"
+            src={src}
+            token={!isPublic ? jwt : null}
+            height={`${layouts.xl.height}px`}
+            width={`${layouts.xl.width}px`}
+            device={layouts.xl.device}
+            hide-tabs={hideTabs ? true : false}
+            toolbar={toolbar}
+            class='flex justify-center items-center rounded'
+            data-viz={id}
+          />
+        </div>
+      </XLLayout>
+
+      <XL2Layout>
+        <div
+          style={{
+            height: layouts.xl2.height + 60,
+            width: layouts.xl2.width,
+          }}
+        >
+          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+          <tableau-viz
+            ref={innerRef}
+            id="tableauViz"
+            src={src}
+            token={!isPublic ? jwt : null}
+            height={`${layouts.xl2.height}px`}
+            width={`${layouts.xl2.width}px`}
+            device={layouts.xl2.device}
+            hide-tabs={hideTabs ? true : false}
+            toolbar={toolbar}
+            class='flex justify-center items-center rounded'
+            data-viz={id}
+          />
+        </div>
+      </XL2Layout>
+
+    </div>
   )
 })
 

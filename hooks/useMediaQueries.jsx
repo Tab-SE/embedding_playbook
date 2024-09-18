@@ -21,13 +21,13 @@ export const useSMQuery = () =>
   useMediaQuery({ query: '(min-width: 640px) and (max-width: 767px)' });
 
 export const useMDQuery = () =>
-  useMediaQuery({ query: '(min-width: 768px) and (max-width: 1203px)' });
+  useMediaQuery({ query: '(min-width: 768px) and (max-width: 1023px)' });
 
 export const useLGQuery = () =>
-  useMediaQuery({ query: '(min-width: 1204px) and (max-width: 1279px)' });
+  useMediaQuery({ query: '(min-width: 1024px) and (max-width: 1279px)' });
 
 export const useXLQuery = () =>
   useMediaQuery({ query: '(min-width: 1280px) and (max-width: 1535px)' });
 
 export const use2XLQuery = () =>
-  useMediaQuery({ query: '(min-width: 1536px) and (max-width: Infinity)' });
+  useMediaQuery({ query: '(min-width: 1536px)' });
