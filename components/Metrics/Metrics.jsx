@@ -15,7 +15,7 @@ export const Metrics = (props) => {
   const { status, data, error, isError, isSuccess } = useMetrics();
 
   return (
-    <div className="h-[132px] px-16 flex justify-center items-center">
+    <div className="h-[132px] px-12 flex justify-center items-center">
       {Array.isArray(data) ?
         <Carousel className='flex-grow max-w-full'>
           <CarouselContent className='pt-6 pb-9 px-3'>
