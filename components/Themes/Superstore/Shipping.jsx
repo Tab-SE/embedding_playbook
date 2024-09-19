@@ -21,6 +21,9 @@ export const Shipping = () => {
             hideTabs={true}
             device='default'
             toolbar='hidden'
+            layouts = {{
+              '*': { 'device': 'default', 'width': 800, 'height': 400 }
+            }}
           />
         </CardContent>
       </Card>
@@ -39,6 +42,9 @@ export const Shipping = () => {
             hideTabs={true}
             device='default'
             toolbar='hidden'
+            layouts = {{
+              '*': { 'device': 'default', 'width': 800, 'height': 300 }
+            }}
           />
         </CardContent>
       </Card>

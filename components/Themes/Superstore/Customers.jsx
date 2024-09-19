@@ -23,6 +23,9 @@ export const Customers = () => {
               hideTabs={true}
               device='default'
               toolbar='hidden'
+              layouts = {{
+              '*': { 'device': 'default', 'width': 450, 'height': 450 }
+            }}
             />
           </CardContent>
         </Card>
@@ -53,6 +56,9 @@ export const Customers = () => {
             hideTabs={true}
             device='default'
             toolbar='hidden'
+            layouts = {{
+              '*': { 'device': 'default', 'width': 800, 'height': 218 }
+            }}
           />
         </CardContent>
       </Card>

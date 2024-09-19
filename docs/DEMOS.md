@@ -114,6 +114,9 @@ export const Overview = () => {
             hideTabs={true}
             device='default'
             toolbar='hidden'
+            layouts = {{
+              '*': { 'device': 'default', 'width': 800, 'height': 1000 }
+            }}
           />
         </CardContent>
       </Card>
