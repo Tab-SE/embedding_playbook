@@ -1,5 +1,6 @@
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Link from 'next/link';
 
 import {
   Avatar,
@@ -117,18 +118,15 @@ const Group = (props) => {
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
         <DropdownMenuItem>
-          Profile
-          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
           Billing
-          <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+          <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          Settings
-          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem>New Team</DropdownMenuItem>
+        <Link href="/demos/superstore/settings">
+          <DropdownMenuItem className='hover:cursor-pointer'>
+            Settings
+            <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </Link>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
     </div>
