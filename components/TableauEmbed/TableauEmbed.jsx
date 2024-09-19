@@ -27,20 +27,18 @@ export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
   const innerRef = ref || localRef;
 
   return (
-    <div>
-      <AuthLayer
-        src={src}
-        ref={innerRef}
-        height={height}
-        width={width}
-        hide-tabs={hideTabs ? true : false}
-        toolbar={toolbar}
-        isPublic={isPublic}
-        WebEdit={WebEdit}
-        customToolbar={customToolbar}
-        layouts={layouts}
-      />
-    </div>
+    <AuthLayer
+      src={src}
+      ref={innerRef}
+      height={height}
+      width={width}
+      hide-tabs={hideTabs ? true : false}
+      toolbar={toolbar}
+      isPublic={isPublic}
+      WebEdit={WebEdit}
+      customToolbar={customToolbar}
+      layouts={layouts}
+    />
   )
 });
 
@@ -79,7 +77,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
   }
 
   return (
-    <div className='rounded' >
+    <div>
       {isSessionError ? <p>Authentication Error!</p> : null}
       {isSessionLoading ? <p>Authenticating the User...</p> : null}
       {isSessionSuccess ? !WebEdit ?

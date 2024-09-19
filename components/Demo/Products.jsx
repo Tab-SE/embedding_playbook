@@ -39,48 +39,11 @@ export const Products = (props) => {
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <Tabs defaultValue="products">
-        <div className="flex items-center">
-          <TabsList>
-            <TabsTrigger value="products">Products</TabsTrigger>
-            <TabsTrigger value="segment">Segments</TabsTrigger>
-            <TabsTrigger value="category">Categories</TabsTrigger>
-          </TabsList>
-          <div className="ml-auto flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8 gap-1">
-                  <ListFilter className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Filter
-                  </span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuCheckboxItem checked>
-                  Active
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem>
-                  Archived
-                </DropdownMenuCheckboxItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button size="sm" variant="outline" className="h-8 gap-1">
-              <File className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Export
-              </span>
-            </Button>
-            <Button size="sm" className="h-8 gap-1">
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add Product
-              </span>
-            </Button>
-          </div>
-        </div>
+        <TabsList className="mb-2 sm:mb-0">
+          <TabsTrigger value="products">Products</TabsTrigger>
+          <TabsTrigger value="segment">Segments</TabsTrigger>
+          <TabsTrigger value="category">Categories</TabsTrigger>
+        </TabsList>
         <TabsContent value="products">
           <ProductsTable />
         </TabsContent>
@@ -92,7 +55,7 @@ export const Products = (props) => {
                 A comparison of product sales and profitability by segment and category
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center justify-center">
+            <CardContent className="flex items-center justify-center px-1">
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
                 width={1260}
@@ -100,6 +63,14 @@ export const Products = (props) => {
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
+                layouts = {{
+                  'xs': { 'device': 'default', 'width': 300, 'height': 500 },
+                  'sm': { 'device': 'default', 'width': 520, 'height': 600 },
+                  'md': { 'device': 'default', 'width': 650, 'height': 700 },
+                  'lg': { 'device': 'phone', 'width': 900, 'height': 800 },
+                  'xl': { 'device': 'tablet', 'width': 1150, 'height': 800 },
+                  'xl2': { 'device': 'desktop', 'width': 1400, 'height': 800 },
+                }}
               />
             </CardContent>
           </Card>
@@ -120,6 +91,14 @@ export const Products = (props) => {
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
+                layouts = {{
+                  'xs': { 'device': 'default', 'width': 300, 'height': 500 },
+                  'sm': { 'device': 'default', 'width': 520, 'height': 600 },
+                  'md': { 'device': 'default', 'width': 650, 'height': 700 },
+                  'lg': { 'device': 'phone', 'width': 900, 'height': 800 },
+                  'xl': { 'device': 'tablet', 'width': 1150, 'height': 800 },
+                  'xl2': { 'device': 'desktop', 'width': 1400, 'height': 800 },
+                }}
               />
             </CardContent>
           </Card>

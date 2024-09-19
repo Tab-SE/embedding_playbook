@@ -56,7 +56,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   }, [interactive, innerRef, setActiveSheet])
 
   return (
-    <div>
+    <div className='rounded'>
       <XSLayout>
         <div
           style={{

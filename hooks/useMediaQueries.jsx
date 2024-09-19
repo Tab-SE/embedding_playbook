@@ -1,14 +1,13 @@
 import { useMediaQuery } from 'react-responsive';
 
 // tailwind CSS breakpoints used by the app
-// https://tailwindcss.com/docs/responsive-design
 // const breakpoints = {
-//   'xs': '< 640px',
-//   'sm': '640px',
-//   'md': '768px',
-//   'lg': '1204px',
-//   'xl': '1280px',
-//   '2xl': '> 1536px',
+//   'xs': '< 640px', // Common screen height: 480px
+//   'sm': '640px', // Common screen height: 640px
+//   'md': '768px', // Common screen height: 800px
+//   'lg': '1204px', // Common screen height: 900px
+//   'xl': '1280px', // Common screen height: 1024px
+//   '2xl': '> 1536px', // Common screen height: 1440px
 // }
 
 // DRY example of react-responsive hooks was the chosen pattern
