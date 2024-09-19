@@ -6,6 +6,7 @@ import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 import { tab_embed } from 'libs';
 
 import { TableauToolbar, XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
+import { getLayoutProps } from './utils';
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
@@ -59,8 +60,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <XSLayout>
         <div
           style={{
-            height: layouts.xs.height + 60,
-            width: layouts.xs.width,
+            height: getLayoutProps(layouts, 'xs').height + 60,
+            width: getLayoutProps(layouts, 'xs').width,
           }}
         >
           {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
@@ -69,9 +70,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
             id="tableauViz"
             src={src}
             token={!isPublic ? jwt : null}
-            height={`${layouts.xs.height}px`}
-            width={`${layouts.xs.width}px`}
-            device={layouts.xs.device}
+            height={`${getLayoutProps(layouts, 'xs').height}px`}
+            width={`${getLayoutProps(layouts, 'xs').width}px`}
+            device={getLayoutProps(layouts, 'xs').device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
             class='flex justify-center items-center rounded'
@@ -83,8 +84,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <SMLayout>
         <div
           style={{
-            height: layouts.sm.height + 60,
-            width: layouts.sm.width,
+            height: getLayoutProps(layouts, 'sm').height + 60,
+            width: getLayoutProps(layouts, 'sm').width,
           }}
         >
           {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
@@ -93,9 +94,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
             id="tableauViz"
             src={src}
             token={!isPublic ? jwt : null}
-            height={`${layouts.sm.height}px`}
-            width={`${layouts.sm.width}px`}
-            device={layouts.sm.device}
+            height={`${getLayoutProps(layouts, 'sm').height}px`}
+            width={`${getLayoutProps(layouts, 'sm').width}px`}
+            device={getLayoutProps(layouts, 'sm').device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
             class='flex justify-center items-center rounded'
@@ -107,8 +108,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <MDLayout>
         <div
           style={{
-            height: layouts.md.height + 60,
-            width: layouts.md.width,
+            height: getLayoutProps(layouts, 'md').height + 60,
+            width: getLayoutProps(layouts, 'md').width,
           }}
         >
           {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
@@ -117,9 +118,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
             id="tableauViz"
             src={src}
             token={!isPublic ? jwt : null}
-            height={`${layouts.md.height}px`}
-            width={`${layouts.md.width}px`}
-            device={layouts.md.device}
+            height={`${getLayoutProps(layouts, 'md').height}px`}
+            width={`${getLayoutProps(layouts, 'md').width}px`}
+            device={getLayoutProps(layouts, 'md').device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
             class='flex justify-center items-center rounded'
@@ -131,8 +132,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <LGLayout>
         <div
           style={{
-            height: layouts.lg.height + 60,
-            width: layouts.lg.width,
+            height: getLayoutProps(layouts, 'lg').height + 60,
+            width: getLayoutProps(layouts, 'lg').width,
           }}
         >
           {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
@@ -141,9 +142,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
             id="tableauViz"
             src={src}
             token={!isPublic ? jwt : null}
-            height={`${layouts.lg.height}px`}
-            width={`${layouts.lg.width}px`}
-            device={layouts.lg.device}
+            height={`${getLayoutProps(layouts, 'lg').height}px`}
+            width={`${getLayoutProps(layouts, 'lg').width}px`}
+            device={getLayoutProps(layouts, 'lg').device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
             class='flex justify-center items-center rounded'
@@ -155,8 +156,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <XLLayout>
         <div
           style={{
-            height: layouts.xl.height + 60,
-            width: layouts.xl.width,
+            height: getLayoutProps(layouts, 'xl').height + 60,
+            width: getLayoutProps(layouts, 'xl').width,
           }}
         >
           {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
@@ -165,9 +166,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
             id="tableauViz"
             src={src}
             token={!isPublic ? jwt : null}
-            height={`${layouts.xl.height}px`}
-            width={`${layouts.xl.width}px`}
-            device={layouts.xl.device}
+            height={`${getLayoutProps(layouts, 'xl').height}px`}
+            width={`${getLayoutProps(layouts, 'xl').width}px`}
+            device={getLayoutProps(layouts, 'xl').device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
             class='flex justify-center items-center rounded'
@@ -179,27 +180,26 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <XL2Layout>
         <div
           style={{
-            height: layouts.xl2.height + 60,
-            width: layouts.xl2.width,
+              height: getLayoutProps(layouts, 'xl2').height + 60,
+              width: getLayoutProps(layouts, 'xl2').width,
           }}
         >
           {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
           <tableau-viz
-            ref={innerRef}
-            id="tableauViz"
-            src={src}
-            token={!isPublic ? jwt : null}
-            height={`${layouts.xl2.height}px`}
-            width={`${layouts.xl2.width}px`}
-            device={layouts.xl2.device}
-            hide-tabs={hideTabs ? true : false}
-            toolbar={toolbar}
-            class='flex justify-center items-center rounded'
-            data-viz={id}
+              ref={innerRef}
+              id="tableauViz"
+              src={src}
+              token={!isPublic ? jwt : null}
+              height={`${getLayoutProps(layouts, 'xl2').height}px`}
+              width={`${getLayoutProps(layouts, 'xl2').width}px`}
+              device={getLayoutProps(layouts, 'xl2').device}
+              hide-tabs={hideTabs ? true : false}
+              toolbar={toolbar}
+              class='flex justify-center items-center rounded'
+              data-viz={id}
           />
         </div>
       </XL2Layout>
-
     </div>
   )
 })

@@ -8,7 +8,7 @@ export { Hero, HeroDemo } from './Hero';
 
 export { Logo } from './Logo';
 
-export { Metrics, Metric } from './Metrics';
+export { Metrics, Metric, extractMetrics } from './Metrics';
 
 export {
   TableauEmbed,

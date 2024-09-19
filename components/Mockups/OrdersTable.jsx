@@ -43,7 +43,7 @@ import { TableauEmbed } from "components";
 export const OrdersTable = () => {
   return (
     <Tabs defaultValue="week">
-        <div className="flex items-center">
+        <div className="flex items-center mt-3">
           <TabsList>
             <TabsTrigger value="week">Week</TabsTrigger>
             <TabsTrigger value="month">Month</TabsTrigger>
@@ -119,6 +119,14 @@ const Shipping = () => {
           hideTabs={true}
           device='default'
           toolbar='hidden'
+          layouts = {{
+            'xs': { 'device': 'phone', 'width': 309, 'height': 600 },
+            'sm': { 'device': 'phone', 'width': 486, 'height': 1350 },
+            'md': { 'device': 'default', 'width': 600, 'height': 1000 },
+            'lg': { 'device': 'phone', 'width': 540, 'height': 416 },
+            'xl': { 'device': 'tablet', 'width': 720, 'height': 435 },
+            'xl2': { 'device': 'desktop', 'width': 860, 'height': 436 },
+          }}
         />
       </CardContent>
     </Card>
