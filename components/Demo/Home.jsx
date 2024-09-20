@@ -35,7 +35,7 @@ export const Home = () => {
                     'xs': { 'device': 'phone', 'width': 300, 'height': 1350 },
                     'sm': { 'device': 'phone', 'width': 510, 'height': 1350 },
                     'md': { 'device': 'default', 'width': 600, 'height': 1000 },
-                    'lg': { 'device': 'phone', 'width': 400, 'height': 1100 },
+                    'lg': { 'device': 'phone', 'width': 400, 'height': 1360 },
                     'xl': { 'device': 'tablet', 'width': 720, 'height': 1100 },
                     'xl2': { 'device': 'desktop', 'width': 860, 'height': 1100 },
                   }}

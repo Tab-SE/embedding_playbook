@@ -1,11 +1,11 @@
-"use client";
-
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
 import { forwardRef, useRef } from 'react';
 
+import { cn } from 'utils';
 import { useTableauSession } from 'hooks';
 import { TableauViz, TableauWebAuthor } from 'components';
+
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
@@ -76,8 +76,19 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
     embed_token = user.embed_token;
   }
 
+  // uses CSS on the parent <div> to ensure enough space is occupied for the child viz
+  // this reduces CLS (cumulative layout shift) as the viz loads since HTML+CSS renders first
   return (
-    <div>
+    <div
+      className={cn(
+        `min-w-[${layouts.xs.width}px] min-h-[${layouts.xs.height + 60}px]`,
+        `sm:min-w-[${layouts.sm.width}px] sm:min-h-[${layouts.sm.height + 60}px]`,
+        `md:min-w-[${layouts.md.width}px] md:min-h-[${layouts.md.height + 60}px]`,
+        `lg:min-w-[${layouts.lg.width}px] lg:min-h-[${layouts.lg.height + 60}px]`,
+        `xl:min-w-[${layouts.xl.width}px] xl:min-h-[${layouts.xl.height + 60}px]`,
+        `xl2:min-w-[${layouts.xl2.width}px] xl2:min-h-[${layouts.xl2.height + 60}px]`,
+      )}
+    >
       {isSessionError ? <p>Authentication Error!</p> : null}
       {isSessionLoading ? <p>Authenticating the User...</p> : null}
       {isSessionSuccess ? !WebEdit ?

@@ -6,7 +6,7 @@ import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 import { tab_embed } from 'libs';
 
 import { TableauToolbar, XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
-import { getLayoutProps } from './utils';
+import { getLayoutProps } from './vizUtils';
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
@@ -56,149 +56,107 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   }, [interactive, innerRef, setActiveSheet])
 
   return (
-    <div className='rounded'>
+    <div>
       <XSLayout>
-        <div
-          style={{
-            height: getLayoutProps(layouts, 'xs').height + 60,
-            width: getLayoutProps(layouts, 'xs').width,
-          }}
-        >
-          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-          <tableau-viz
-            ref={innerRef}
-            id="tableauViz"
-            src={src}
-            token={!isPublic ? jwt : null}
-            height={`${getLayoutProps(layouts, 'xs').height}px`}
-            width={`${getLayoutProps(layouts, 'xs').width}px`}
-            device={getLayoutProps(layouts, 'xs').device}
-            hide-tabs={hideTabs ? true : false}
-            toolbar={toolbar}
-            class='flex justify-center items-center rounded'
-            data-viz={id}
-          />
-        </div>
+        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        <tableau-viz
+          ref={innerRef}
+          id="tableauViz"
+          src={src}
+          token={!isPublic ? jwt : null}
+          height={`${getLayoutProps(layouts, 'xs').height}px`}
+          width={`${getLayoutProps(layouts, 'xs').width}px`}
+          device={getLayoutProps(layouts, 'xs').device}
+          hide-tabs={hideTabs ? true : false}
+          toolbar={toolbar}
+          class='flex justify-center items-center rounded'
+          data-viz={id}
+        />
       </XSLayout>
 
       <SMLayout>
-        <div
-          style={{
-            height: getLayoutProps(layouts, 'sm').height + 60,
-            width: getLayoutProps(layouts, 'sm').width,
-          }}
-        >
-          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-          <tableau-viz
-            ref={innerRef}
-            id="tableauViz"
-            src={src}
-            token={!isPublic ? jwt : null}
-            height={`${getLayoutProps(layouts, 'sm').height}px`}
-            width={`${getLayoutProps(layouts, 'sm').width}px`}
-            device={getLayoutProps(layouts, 'sm').device}
-            hide-tabs={hideTabs ? true : false}
-            toolbar={toolbar}
-            class='flex justify-center items-center rounded'
-            data-viz={id}
-          />
-        </div>
+        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        <tableau-viz
+          ref={innerRef}
+          id="tableauViz"
+          src={src}
+          token={!isPublic ? jwt : null}
+          height={`${getLayoutProps(layouts, 'sm').height}px`}
+          width={`${getLayoutProps(layouts, 'sm').width}px`}
+          device={getLayoutProps(layouts, 'sm').device}
+          hide-tabs={hideTabs ? true : false}
+          toolbar={toolbar}
+          class='flex justify-center items-center rounded'
+          data-viz={id}
+        />
       </SMLayout>
 
       <MDLayout>
-        <div
-          style={{
-            height: getLayoutProps(layouts, 'md').height + 60,
-            width: getLayoutProps(layouts, 'md').width,
-          }}
-        >
-          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-          <tableau-viz
-            ref={innerRef}
-            id="tableauViz"
-            src={src}
-            token={!isPublic ? jwt : null}
-            height={`${getLayoutProps(layouts, 'md').height}px`}
-            width={`${getLayoutProps(layouts, 'md').width}px`}
-            device={getLayoutProps(layouts, 'md').device}
-            hide-tabs={hideTabs ? true : false}
-            toolbar={toolbar}
-            class='flex justify-center items-center rounded'
-            data-viz={id}
-          />
-        </div>
+        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        <tableau-viz
+          ref={innerRef}
+          id="tableauViz"
+          src={src}
+          token={!isPublic ? jwt : null}
+          height={`${getLayoutProps(layouts, 'md').height}px`}
+          width={`${getLayoutProps(layouts, 'md').width}px`}
+          device={getLayoutProps(layouts, 'md').device}
+          hide-tabs={hideTabs ? true : false}
+          toolbar={toolbar}
+          class='flex justify-center items-center rounded'
+          data-viz={id}
+        />
       </MDLayout>
 
       <LGLayout>
-        <div
-          style={{
-            height: getLayoutProps(layouts, 'lg').height + 60,
-            width: getLayoutProps(layouts, 'lg').width,
-          }}
-        >
-          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-          <tableau-viz
-            ref={innerRef}
-            id="tableauViz"
-            src={src}
-            token={!isPublic ? jwt : null}
-            height={`${getLayoutProps(layouts, 'lg').height}px`}
-            width={`${getLayoutProps(layouts, 'lg').width}px`}
-            device={getLayoutProps(layouts, 'lg').device}
-            hide-tabs={hideTabs ? true : false}
-            toolbar={toolbar}
-            class='flex justify-center items-center rounded'
-            data-viz={id}
-          />
-        </div>
+        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        <tableau-viz
+          ref={innerRef}
+          id="tableauViz"
+          src={src}
+          token={!isPublic ? jwt : null}
+          height={`${getLayoutProps(layouts, 'lg').height}px`}
+          width={`${getLayoutProps(layouts, 'lg').width}px`}
+          device={getLayoutProps(layouts, 'lg').device}
+          hide-tabs={hideTabs ? true : false}
+          toolbar={toolbar}
+          class='flex justify-center items-center rounded'
+          data-viz={id}
+        />
       </LGLayout>
 
       <XLLayout>
-        <div
-          style={{
-            height: getLayoutProps(layouts, 'xl').height + 60,
-            width: getLayoutProps(layouts, 'xl').width,
-          }}
-        >
-          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-          <tableau-viz
+        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        <tableau-viz
+          ref={innerRef}
+          id="tableauViz"
+          src={src}
+          token={!isPublic ? jwt : null}
+          height={`${getLayoutProps(layouts, 'xl').height}px`}
+          width={`${getLayoutProps(layouts, 'xl').width}px`}
+          device={getLayoutProps(layouts, 'xl').device}
+          hide-tabs={hideTabs ? true : false}
+          toolbar={toolbar}
+          class='flex justify-center items-center rounded'
+          data-viz={id}
+        />
+      </XLLayout>
+
+      <XL2Layout>
+        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        <tableau-viz
             ref={innerRef}
             id="tableauViz"
             src={src}
             token={!isPublic ? jwt : null}
-            height={`${getLayoutProps(layouts, 'xl').height}px`}
-            width={`${getLayoutProps(layouts, 'xl').width}px`}
-            device={getLayoutProps(layouts, 'xl').device}
+            height={`${getLayoutProps(layouts, 'xl2').height}px`}
+            width={`${getLayoutProps(layouts, 'xl2').width}px`}
+            device={getLayoutProps(layouts, 'xl2').device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
             class='flex justify-center items-center rounded'
             data-viz={id}
-          />
-        </div>
-      </XLLayout>
-
-      <XL2Layout>
-        <div
-          style={{
-              height: getLayoutProps(layouts, 'xl2').height + 60,
-              width: getLayoutProps(layouts, 'xl2').width,
-          }}
-        >
-          {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-          <tableau-viz
-              ref={innerRef}
-              id="tableauViz"
-              src={src}
-              token={!isPublic ? jwt : null}
-              height={`${getLayoutProps(layouts, 'xl2').height}px`}
-              width={`${getLayoutProps(layouts, 'xl2').width}px`}
-              device={getLayoutProps(layouts, 'xl2').device}
-              hide-tabs={hideTabs ? true : false}
-              toolbar={toolbar}
-              class='flex justify-center items-center rounded'
-              data-viz={id}
-          />
-        </div>
+        />
       </XL2Layout>
     </div>
   )
