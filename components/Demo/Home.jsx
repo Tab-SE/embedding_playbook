@@ -31,6 +31,14 @@ export const Home = () => {
                   hideTabs={true}
                   device='default'
                   toolbar='hidden'
+                  className='
+                  min-w-[300px] min-h-[1430px]
+                  sm:min-w-[510px] sm:min-h-[1430px]
+                  md:min-w-[600px] md:min-h-[1080px]
+                  lg:min-w-[400px] lg:min-h-[1440px]
+                  xl:min-w-[720px] xl:min-h-[1180px]
+                  2xl:min-w-[860px] 2xl:min-h-[1180px]
+                  '
                   layouts = {{
                     'xs': { 'device': 'phone', 'width': 300, 'height': 1350 },
                     'sm': { 'device': 'phone', 'width': 510, 'height': 1350 },

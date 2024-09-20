@@ -1,31 +1,68 @@
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useState, useEffect } from "react";
+"use client";
 
-export const TableauAuth = (props) => {
-  const [user, setUser] = useState(undefined);
-  // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
-  const { status, data } = useSession({ required: false })
+import { forwardRef } from 'react';
 
-  useEffect(() => {
-    if (status === 'authenticated') {
-      setUser(data.user.name);
-    }
-  }, [status, data]);
+import { useTableauSession } from 'hooks';
+import { TableauViz, TableauWebAuthor } from 'components';
 
-  if (status === 'authenticated') {
-    return (
-      <>
-        <p className="nx-font-bold m-4">{data.user.name} is {status}</p> 
-        <button className="btn glass" onClick={() => signOut()}>Sign out</button>
-      </>
-    );
+// handles rendering logic during authentication
+export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
+  const {
+    src,
+    height,
+    width,
+    hideTabs,
+    toolbar,
+    isPublic,
+    WebEdit,
+    customToolbar,
+    layouts
+  } = props;
+
+  let embed_token;
+
+  // tanstack query hook to manage embed sessions
+  const {
+    status,
+    data: user,
+    error: sessionError,
+    isSuccess: isSessionSuccess,
+    isError: isSessionError,
+    isLoading: isSessionLoading
+  } = useTableauSession('a');
+
+  if (isSessionError) {
+    console.debug(sessionError);
   }
 
-  // 'loading' state is the default because session.required === true: https://next-auth.js.org/getting-started/client#require-session
+  if (isSessionSuccess) {
+    embed_token = user.embed_token;
+  }
+
   return (
-    <>
-      <p className="nx-font-bold m-4">automatic authentication: (disabled)</p> 
-      <button className="btn glass" onClick={() => signIn()}>Sign in</button>
-    </>
-  );
-}
+    <div>
+      {isSessionError ? <p>Authentication Error!</p> : null}
+      {isSessionLoading ? <p>Authenticating the User...</p> : null}
+      {isSessionSuccess ? !WebEdit ?
+      <TableauViz
+        src={src}
+        ref={ref}
+        jwt={embed_token}
+        hide-tabs={hideTabs ? true : false}
+        toolbar={toolbar}
+        isPublic={isPublic}
+        customToolbar={customToolbar}
+        layouts={layouts}
+      /> :
+      <TableauWebAuthor
+        src={src}
+        ref={ref}
+        jwt={embed_token}
+        height={height}
+        width={width}
+        isPublic={isPublic}
+      />
+      : null}
+    </div>
+  )
+})

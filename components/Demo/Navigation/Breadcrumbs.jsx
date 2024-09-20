@@ -8,7 +8,7 @@ import {
 } from 'components/ui';
 import Link from 'next/link';
 
-import { generateBreadcrumbs } from '../utils';
+import { generateBreadcrumbs } from '../demoUtils';
 
 export const Breadcrumbs = (props) => {
   const { basePath, crumbs } = props;
