@@ -51,13 +51,21 @@ export const Orders = (props) => {
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShipSummary'
             hideTabs={true}
             toolbar='hidden'
+            className='
+            min-w-[309px] min-h-[240px]
+            sm:min-w-[486px] sm:min-h-[300px]
+            md:min-w-[600px] md:min-h-[400px]
+            lg:min-w-[240px] lg:min-h-[248px]
+            xl:min-w-[309px] xl:min-h-[226px]
+            2xl:min-w-[400px] 2xl:min-h-[236px]
+            '
             layouts = {{
-              'xs': { 'device': 'default', 'width': 309, 'height': 240 },
-              'sm': { 'device': 'phone', 'width': 486, 'height': 300 },
-              'md': { 'device': 'default', 'width': 600, 'height': 400 },
-              'lg': { 'device': 'default', 'width': 240, 'height': 248 },
-              'xl': { 'device': 'tablet', 'width': 309, 'height': 226 },
-              'xl2': { 'device': 'desktop', 'width': 400, 'height': 236 }
+              'xs': { 'device': 'default' },
+              'sm': { 'device': 'phone' },
+              'md': { 'device': 'default' },
+              'lg': { 'device': 'default' },
+              'xl': { 'device': 'tablet' },
+              'xl2': { 'device': 'desktop' }
             }}
           />
         </CardContent>
@@ -74,13 +82,21 @@ export const Orders = (props) => {
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'
             hideTabs={true}
             toolbar='hidden'
+            className='
+            min-w-[309px] min-h-[240px]
+            sm:min-w-[486px] sm:min-h-[300px]
+            md:min-w-[600px] md:min-h-[400px]
+            lg:min-w-[240px] lg:min-h-[248px]
+            xl:min-w-[309px] xl:min-h-[226px]
+            2xl:min-w-[400px] 2xl:min-h-[236px]
+            '
             layouts = {{
-              'xs': { 'device': 'default', 'width': 309, 'height': 240 },
-              'sm': { 'device': 'default', 'width': 486, 'height': 300 },
-              'md': { 'device': 'default', 'width': 600, 'height': 400 },
-              'lg': { 'device': 'default', 'width': 240, 'height': 248 },
-              'xl': { 'device': 'tablet', 'width': 309, 'height': 226 },
-              'xl2': { 'device': 'desktop', 'width': 400, 'height': 236 }
+              'xs': { 'device': 'default' },
+              'sm': { 'device': 'phone' },
+              'md': { 'device': 'default' },
+              'lg': { 'device': 'default' },
+              'xl': { 'device': 'tablet' },
+              'xl2': { 'device': 'desktop' }
             }}
           />
         </CardContent>

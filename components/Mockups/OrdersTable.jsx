@@ -116,16 +116,22 @@ const Shipping = () => {
           src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip'
           width={790}
           height={445}
+          className='min-w-[309px] min-h-[600px]
+          sm:min-w-[486px] sm:min-h-[1350px]
+          md:min-w-[600px] md:min-h-[1000px]
+          lg:min-w-[540px] lg:min-h-[416px]
+          xl:min-w-[720px] xl:min-h-[435px]
+          2xl:min-w-[860px] 2xl:min-h-[436px]'
           hideTabs={true}
           device='default'
           toolbar='hidden'
           layouts = {{
-            'xs': { 'device': 'phone', 'width': 309, 'height': 600 },
-            'sm': { 'device': 'phone', 'width': 486, 'height': 1350 },
-            'md': { 'device': 'default', 'width': 600, 'height': 1000 },
-            'lg': { 'device': 'phone', 'width': 540, 'height': 416 },
-            'xl': { 'device': 'tablet', 'width': 720, 'height': 435 },
-            'xl2': { 'device': 'desktop', 'width': 860, 'height': 436 },
+            'xs': { 'device': 'phone' },
+            'sm': { 'device': 'phone' },
+            'md': { 'device': 'default' },
+            'lg': { 'device': 'phone' },
+            'xl': { 'device': 'tablet' },
+            'xl2': { 'device': 'desktop' },
           }}
         />
       </CardContent>
