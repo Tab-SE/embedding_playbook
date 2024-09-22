@@ -114,8 +114,6 @@ const Shipping = () => {
       <CardContent className="flex items-center justify-center">
         <TableauEmbed
           src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip'
-          width={790}
-          height={445}
           className='min-w-[309px] min-h-[600px]
           sm:min-w-[486px] sm:min-h-[1350px]
           md:min-w-[600px] md:min-h-[1000px]

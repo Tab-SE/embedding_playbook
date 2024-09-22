@@ -1,26 +1,10 @@
 import {
-  File,
-  ListFilter,
-  PlusCircle,
-} from "lucide-react";
-
-import { Button } from "components/ui";
-import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "components/ui";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "components/ui";
 import {
   Tabs,
@@ -63,13 +47,21 @@ export const Products = (props) => {
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
+                className='
+                min-w-[300px] min-h-[500px]
+                sm:min-w-[490px] sm:min-h-[500px]
+                md:min-w-[620px] md:min-h-[500px]
+                lg:min-w-[800px] lg:min-h-[500px]
+                xl:min-w-[1000px] xl:min-h-[700px]
+                2xl:min-w-[1200px] 2xl:min-h-[800px]
+                '
                 layouts = {{
-                  'xs': { 'device': 'default', 'width': 300, 'height': 500 },
-                  'sm': { 'device': 'default', 'width': 520, 'height': 600 },
-                  'md': { 'device': 'default', 'width': 650, 'height': 700 },
-                  'lg': { 'device': 'phone', 'width': 900, 'height': 800 },
-                  'xl': { 'device': 'tablet', 'width': 1150, 'height': 800 },
-                  'xl2': { 'device': 'desktop', 'width': 1400, 'height': 800 },
+                  'xs': { 'device': 'default' },
+                  'sm': { 'device': 'default' },
+                  'md': { 'device': 'default' },
+                  'lg': { 'device': 'default' },
+                  'xl': { 'device': 'default' },
+                  'xl2': { 'device': 'default' },
                 }}
               />
             </CardContent>
@@ -91,13 +83,21 @@ export const Products = (props) => {
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
+                className='
+                min-w-[300px] min-h-[500px]
+                sm:min-w-[490px] sm:min-h-[500px]
+                md:min-w-[620px] md:min-h-[500px]
+                lg:min-w-[800px] lg:min-h-[500px]
+                xl:min-w-[1000px] xl:min-h-[700px]
+                2xl:min-w-[1200px] 2xl:min-h-[800px]
+                '
                 layouts = {{
-                  'xs': { 'device': 'default', 'width': 300, 'height': 500 },
-                  'sm': { 'device': 'default', 'width': 520, 'height': 600 },
-                  'md': { 'device': 'default', 'width': 650, 'height': 700 },
-                  'lg': { 'device': 'phone', 'width': 900, 'height': 800 },
-                  'xl': { 'device': 'tablet', 'width': 1150, 'height': 800 },
-                  'xl2': { 'device': 'desktop', 'width': 1400, 'height': 800 },
+                  'xs': { 'device': 'default' },
+                  'sm': { 'device': 'default' },
+                  'md': { 'device': 'default' },
+                  'lg': { 'device': 'default' },
+                  'xl': { 'device': 'default' },
+                  'xl2': { 'device': 'default' },
                 }}
               />
             </CardContent>
