@@ -1,12 +1,12 @@
 /**
- * Retrieves layout properties for a given breakpoint from the layouts object.
- * If the specific breakpoint properties are not found, it falls back to the wildcard properties.
- * If neither are available, it throws an error.
+ * Retrieves layout properties for a given breakpoint from the layouts object
+ * If the specific breakpoint properties are not found, it falls back to the wildcard properties
+ * If neither are available, it throws an error
  *
- * @param {Object} layouts - The layouts object containing properties for various breakpoints.
- * @param {string} breakpoint - The specific breakpoint key to retrieve properties for (e.g., 'xs', 'sm', 'md').
- * @returns {Object} - The layout properties for the specified breakpoint or wildcard.
- * @throws {Error} - Throws an error if neither the specified breakpoint nor wildcard properties are found.
+ * @param {Object} layouts - The layouts object containing properties for various breakpoints
+ * @param {string} breakpoint - The specific breakpoint key to retrieve properties for (e.g., 'xs', 'sm', 'md')
+ * @returns {Object} - The layout properties for the specified breakpoint or wildcard
+ * @throws {Error} - Throws an error if neither the specified breakpoint nor wildcard properties are found
  */
 export const getLayoutProps = (layouts, breakpoint) => {
   const layoutProps = layouts[breakpoint] || layouts['*'];
@@ -20,7 +20,9 @@ export const getLayoutProps = (layouts, breakpoint) => {
 
 
 /**
- * Parses the className string and extracts CSS properties for each breakpoint.
+ * Parses the className string and extracts TailwindCSS height & width for each breakpoint
+ * it then assigns the values to the corresponding breakpoint in the layouts object used
+ * by the TableauViz component to set the height, width and device type for the embedding web component
  *
  * @param {string} className - The className string containing CSS properties.
  * @param {Object} layouts - The existing layouts object to be updated.
