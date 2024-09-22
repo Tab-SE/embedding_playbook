@@ -27,6 +27,7 @@ export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
       <TableauAuth
         src={src}
         ref={innerRef}
+        className={className}
         height={height}
         width={width}
         hide-tabs={hideTabs ? true : false}

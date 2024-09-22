@@ -6,13 +6,14 @@ import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 import { tab_embed } from 'libs';
 
 import { TableauToolbar, XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
-import { getLayoutProps } from './vizUtils';
+import { getLayoutProps, parseClassNameForLayouts } from './vizUtils';
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
 export const TableauViz = forwardRef(function Viz(props, ref) {
   const {
     src,
+    className,
     jwt,
     hideTabs,
     toolbar,
@@ -55,6 +56,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     }
   }, [interactive, innerRef, setActiveSheet])
 
+  const layoutSpec = parseClassNameForLayouts(className, layouts);
+
   return (
     <div>
       <XSLayout>
@@ -64,9 +67,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           id="tableauViz"
           src={src}
           token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layouts, 'xs').height}px`}
-          width={`${getLayoutProps(layouts, 'xs').width}px`}
-          device={getLayoutProps(layouts, 'xs').device}
+          height={`${getLayoutProps(layoutSpec, 'xs').height}px`}
+          width={`${getLayoutProps(layoutSpec, 'xs').width}px`}
+          device={getLayoutProps(layoutSpec, 'xs').device}
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
@@ -81,9 +84,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           id="tableauViz"
           src={src}
           token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layouts, 'sm').height}px`}
-          width={`${getLayoutProps(layouts, 'sm').width}px`}
-          device={getLayoutProps(layouts, 'sm').device}
+          height={`${getLayoutProps(layoutSpec, 'sm').height}px`}
+          width={`${getLayoutProps(layoutSpec, 'sm').width}px`}
+          device={getLayoutProps(layoutSpec, 'sm').device}
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
@@ -98,9 +101,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           id="tableauViz"
           src={src}
           token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layouts, 'md').height}px`}
-          width={`${getLayoutProps(layouts, 'md').width}px`}
-          device={getLayoutProps(layouts, 'md').device}
+          height={`${getLayoutProps(layoutSpec, 'md').height}px`}
+          width={`${getLayoutProps(layoutSpec, 'md').width}px`}
+          device={getLayoutProps(layoutSpec, 'md').device}
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
@@ -115,9 +118,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           id="tableauViz"
           src={src}
           token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layouts, 'lg').height}px`}
-          width={`${getLayoutProps(layouts, 'lg').width}px`}
-          device={getLayoutProps(layouts, 'lg').device}
+          height={`${getLayoutProps(layoutSpec, 'lg').height}px`}
+          width={`${getLayoutProps(layoutSpec, 'lg').width}px`}
+          device={getLayoutProps(layoutSpec, 'lg').device}
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
@@ -132,9 +135,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           id="tableauViz"
           src={src}
           token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layouts, 'xl').height}px`}
-          width={`${getLayoutProps(layouts, 'xl').width}px`}
-          device={getLayoutProps(layouts, 'xl').device}
+          height={`${getLayoutProps(layoutSpec, 'xl').height}px`}
+          width={`${getLayoutProps(layoutSpec, 'xl').width}px`}
+          device={getLayoutProps(layoutSpec, 'xl').device}
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
@@ -149,9 +152,9 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
             id="tableauViz"
             src={src}
             token={!isPublic ? jwt : null}
-            height={`${getLayoutProps(layouts, 'xl2').height}px`}
-            width={`${getLayoutProps(layouts, 'xl2').width}px`}
-            device={getLayoutProps(layouts, 'xl2').device}
+            height={`${getLayoutProps(layoutSpec, 'xl2').height}px`}
+            width={`${getLayoutProps(layoutSpec, 'xl2').width}px`}
+            device={getLayoutProps(layoutSpec, 'xl2').device}
             hide-tabs={hideTabs ? true : false}
             toolbar={toolbar}
             class='flex justify-center items-center rounded'

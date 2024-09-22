@@ -9,6 +9,7 @@ import { TableauViz, TableauWebAuthor } from 'components';
 export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
   const {
     src,
+    className,
     height,
     width,
     hideTabs,
@@ -47,6 +48,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
       <TableauViz
         src={src}
         ref={ref}
+        className={className}
         jwt={embed_token}
         hide-tabs={hideTabs ? true : false}
         toolbar={toolbar}

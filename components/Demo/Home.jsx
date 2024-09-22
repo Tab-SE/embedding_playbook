@@ -40,12 +40,12 @@ export const Home = () => {
                   2xl:min-w-[860px] 2xl:min-h-[1180px]
                   '
                   layouts = {{
-                    'xs': { 'device': 'phone', 'width': 300, 'height': 1350 },
-                    'sm': { 'device': 'phone', 'width': 510, 'height': 1350 },
-                    'md': { 'device': 'default', 'width': 600, 'height': 1000 },
-                    'lg': { 'device': 'phone', 'width': 400, 'height': 1360 },
-                    'xl': { 'device': 'tablet', 'width': 720, 'height': 1100 },
-                    'xl2': { 'device': 'desktop', 'width': 860, 'height': 1100 },
+                    'xs': { 'device': 'phone' },
+                    'sm': { 'device': 'phone' },
+                    'md': { 'device': 'default' },
+                    'lg': { 'device': 'phone' },
+                    'xl': { 'device': 'tablet' },
+                    'xl2': { 'device': 'desktop' },
                   }}
                 />
               </CardContent>

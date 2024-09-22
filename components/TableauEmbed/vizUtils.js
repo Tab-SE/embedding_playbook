@@ -17,3 +17,46 @@ export const getLayoutProps = (layouts, breakpoint) => {
 
   return layoutProps;
 };
+
+
+/**
+ * Parses the className string and extracts CSS properties for each breakpoint.
+ *
+ * @param {string} className - The className string containing CSS properties.
+ * @param {Object} layouts - The existing layouts object to be updated.
+ * @returns {Object} - The updated layouts object with extracted width and height.
+ */
+export const parseClassNameForLayouts = (className, layouts) => {
+  const breakpointMap = {
+    '': 'xs',
+    'sm:': 'sm',
+    'md:': 'md',
+    'lg:': 'lg',
+    'xl:': 'xl',
+    '2xl:': 'xl2'
+  };
+  const updatedLayouts = { ...layouts };
+
+  Object.entries(breakpointMap).forEach(([prefix, layoutKey]) => {
+    const regex = new RegExp(`${prefix}min-w-\\[(\\d+)px\\]\\s*${prefix}min-h-\\[(\\d+)px\\]`);
+    const match = className.match(regex);
+
+    if (match) {
+      const width = parseInt(match[1], 10);
+      const height = parseInt(match[2], 10);
+
+      if (!updatedLayouts[layoutKey]) {
+        updatedLayouts[layoutKey] = {};
+      }
+
+      updatedLayouts[layoutKey] = {
+        ...updatedLayouts[layoutKey],
+        width,
+        height
+      };
+    }
+  });
+
+  return updatedLayouts;
+};
+
