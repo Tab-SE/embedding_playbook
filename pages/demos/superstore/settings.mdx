@@ -1,3 +1,23 @@
-import { Settings } from 'components';
+---
+title: "Settings"
+description: "A page to configure user settings for the app, including billing and subscriptions"
+---
 
-<Settings/>
+import { Demo, Settings } from 'components';
+
+<Demo
+  basePath='/demos'
+  crumbs={{
+    'Superstore Analytics': {
+      path: '/superstore',
+      child: {
+        'Settings': {
+          path: '/settings',
+          child: null
+        }
+      }
+    }
+  }}
+>
+  <Settings />
+</Demo>

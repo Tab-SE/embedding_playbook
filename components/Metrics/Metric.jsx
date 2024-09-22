@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { IconSparkles, IconTrendingUp, IconTrendingDown, IconArrowNarrowRight } from '@tabler/icons-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from "components/ui";
+import { Card, CardContent } from "components/ui";
 import { Skeleton } from "components/ui";
 import { Badge } from "components/ui";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "components/ui";
+import { Dialog, DialogTrigger } from "components/ui";
 
 import { useInsights } from "hooks";
 import { parseInsights } from "utils";

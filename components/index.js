@@ -42,7 +42,8 @@ export {
   RecentSales,
   ProductsTable,
   OrdersTable,
-  OrderDetail
+  OrderDetail,
+  GeneralSettings
 } from './Mockups';
 
 export { ActionCard } from './ActionCard';
