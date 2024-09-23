@@ -4,7 +4,7 @@ export { Chat, ChatPopover } from './Chat';
 
 export { Head } from './Head';
 
-export { Hero, HeroDemo } from './Hero';
+export { Hero, HeroDemo, Superstore, NTO, Ebikes } from './Hero';
 
 export { Logo } from './Logo';
 
@@ -17,8 +17,6 @@ export {
   TableauAuth,
   TableauToolbar
 } from './TableauEmbed';
-
-export { ThemeSelector, Themes, Superstore, NTO, Ebikes } from './Themes';
 
 export { Explore } from './Explore';
 

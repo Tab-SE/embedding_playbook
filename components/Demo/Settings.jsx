@@ -25,11 +25,11 @@ export const Settings = () => {
               <TabsContent value="general">
                 <GeneralSettings />
               </TabsContent>
+
               <TabsContent value="billing">
-                <GeneralSettings />
               </TabsContent>
+
               <TabsContent value="security">
-                <GeneralSettings />
               </TabsContent>
             </div>
           </div>

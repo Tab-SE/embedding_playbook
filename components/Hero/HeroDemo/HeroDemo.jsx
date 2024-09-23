@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 
 import { Metrics } from 'components';
-import { Themes } from 'components';
-
 import { MainNav, MobilePreview } from './index';
-
+import { Themes } from '../Themes';
 
 export const HeroDemo = (props) => {
   const { hideMetrics, hideSheets } = props;
@@ -25,7 +23,7 @@ export const HeroDemo = (props) => {
   // }
 
   return (
-    <>
+    <div>
       <MobilePreview />
       <div className="hidden sm:grid grid-col  my-6">
         <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-xl h-min-screen">
@@ -40,6 +38,6 @@ export const HeroDemo = (props) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
