@@ -87,11 +87,19 @@ As a result, your website or app would have an embed that looks like this:
 
 <TableauEmbed
   src='https://public.tableau.com/views/superstore_embed/Profitability'
-  width={800}
-  height={830}
   hideTabs={true}
-  device='default'
   isPublic
+  className='
+  min-w-[327px] min-h-[840px]
+  sm:min-w-[592px] sm:min-h-[840px]
+  md:min-w-[416px] md:min-h-[840px]
+  lg:min-w-[672px] lg:min-h-[840px]
+  xl:min-w-[672px] xl:min-h-[840px]
+  2xl:min-w-[832px] 2xl:min-h-[840px]
+  '
+  layouts = {{
+    '*': { 'device': 'default' }
+  }}
 />
 
 To learn more about embedding Tableau, see the article on architecture for the [frontend](/architecture/frontend).

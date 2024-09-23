@@ -1,16 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
 
 import { useMetrics } from 'hooks';
-import { OrdersTable, OrderDetail, ActionCard, Metric, TableauEmbed } from 'components';
+import { OrdersTable, OrderDetail, ActionCard, Metric, extractMetrics, TableauEmbed } from 'components';
 
 export const description = "An orders dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. The main area has a list of recent orders with a filter and export button. The main area also has a detailed view of a single order with order details, shipping information, billing information, customer information, and payment information."
 
 export const Orders = (props) => {
-  const metricIds = ["da6f99eb-8cda-418f-8d9a-564a0c35bd1f", "54f85f6b-9c68-4e2c-98b7-b2ee8d2e07a9"]
   const { status, data, error, isError, isSuccess } = useMetrics();
+  // define which metrics to store on this page
+  const metricIds = ["da6f99eb-8cda-418f-8d9a-564a0c35bd1f", "54f85f6b-9c68-4e2c-98b7-b2ee8d2e07a9"];
   let metrics;
 
   if (isSuccess && data) {
+    // extract metrics if data is available
     metrics = extractMetrics(data, metricIds);
   }
 
@@ -37,58 +39,69 @@ export const Orders = (props) => {
       <OrdersTable />
     </div>
     <div className="grid gap-6">
-      <Card className="dark:bg-stone-900">
+      <Card className="dark:bg-stone-900 shadow-xl">
         <CardHeader>
-          <CardTitle>Shipping Trends</CardTitle>
+          <CardTitle>Shipping Summary</CardTitle>
           <CardDescription>
-            Shows trends on three shipping categories: Shipped Late, Shipped on Time and Shipped Early
+            Displays how many orders Shipped Early, Shipped on Time and Shipped Late
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-center">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'
-            width={360}
-            height={240}
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShipSummary'
             hideTabs={true}
-            device='default'
             toolbar='hidden'
+            className='
+            min-w-[309px] min-h-[240px]
+            sm:min-w-[486px] sm:min-h-[300px]
+            md:min-w-[600px] md:min-h-[400px]
+            lg:min-w-[240px] lg:min-h-[248px]
+            xl:min-w-[309px] xl:min-h-[226px]
+            2xl:min-w-[400px] 2xl:min-h-[236px]
+            '
+            layouts = {{
+              'xs': { 'device': 'default' },
+              'sm': { 'device': 'phone' },
+              'md': { 'device': 'default' },
+              'lg': { 'device': 'default' },
+              'xl': { 'device': 'tablet' },
+              'xl2': { 'device': 'desktop' }
+            }}
           />
         </CardContent>
       </Card>
-      <Card className="dark:bg-stone-900">
+      <Card className="dark:bg-stone-900 shadow-xl">
         <CardHeader>
           <CardTitle>Shipping Trends</CardTitle>
           <CardDescription>
-            Shows trends on three shipping categories: Shipped Late, Shipped on Time and Shipped Early
+            Shows trends on three shipping categories: Shipped Early, Shipped on Time and Shipped Late
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-center">
           <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'
-            width={360}
-            height={240}
             hideTabs={true}
-            device='default'
             toolbar='hidden'
+            className='
+            min-w-[309px] min-h-[240px]
+            sm:min-w-[486px] sm:min-h-[300px]
+            md:min-w-[600px] md:min-h-[400px]
+            lg:min-w-[240px] lg:min-h-[248px]
+            xl:min-w-[309px] xl:min-h-[226px]
+            2xl:min-w-[400px] 2xl:min-h-[236px]
+            '
+            layouts = {{
+              'xs': { 'device': 'default' },
+              'sm': { 'device': 'phone' },
+              'md': { 'device': 'default' },
+              'lg': { 'device': 'default' },
+              'xl': { 'device': 'tablet' },
+              'xl2': { 'device': 'desktop' }
+            }}
           />
         </CardContent>
       </Card>
     </div>
   </main>
   )
-}
-
-const extractMetrics = (metrics, metricIds) => {
-  const result = {};
-
-  // Iterate over each metric in the payload
-  metrics.forEach(metric => {
-      // Check if the current metric's id is in the metricIds array
-      if (metricIds.includes(metric.id)) {
-          // Assign the metric to the result object with its id as the key
-          result[metric.name.replace(/\s+/g, '').toLowerCase()] = metric;
-      }
-  });
-
-  return result;
 }

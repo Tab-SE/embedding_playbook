@@ -1,6 +1,9 @@
 import Image from "next/image";
 import {
   MoreHorizontal,
+  File,
+  ListFilter,
+  PlusCircle,
 } from "lucide-react";
 
 import { Badge } from "components/ui";
@@ -33,7 +36,7 @@ import {
 
 export const ProductsTable = () => {
   return (
-    <Card x-chunk="dashboard-06-chunk-0">
+    <Card className='shadow-xl' x-chunk="dashboard-06-chunk-0">
       <CardHeader>
         <CardTitle>Products</CardTitle>
         <CardDescription>
@@ -41,6 +44,41 @@ export const ProductsTable = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        <div className="ml-auto flex items-center gap-2 mt-6 justify-end">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8 gap-1">
+                <ListFilter className="h-3.5 w-3.5" />
+                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                  Filter
+                </span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem checked>
+                Active
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem>
+                Archived
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button size="sm" variant="outline" className="h-8 gap-1">
+            <File className="h-3.5 w-3.5" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Export
+            </span>
+          </Button>
+          <Button size="sm" className="h-8 gap-1">
+            <PlusCircle className="h-3.5 w-3.5" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Add Product
+            </span>
+          </Button>
+        </div>
         <Table>
           <TableHeader>
             <TableRow>

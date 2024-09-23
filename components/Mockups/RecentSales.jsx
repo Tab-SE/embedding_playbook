@@ -13,7 +13,7 @@ import {
 
 export const RecentSales = () => {
   return (
-    <Card x-chunk="dashboard-01-chunk-5">
+    <Card className='shadow-xl' x-chunk="dashboard-01-chunk-5">
       <CardHeader>
         <CardTitle>Recent Sales</CardTitle>
       </CardHeader>

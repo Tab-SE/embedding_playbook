@@ -1,8 +1,8 @@
 import { users } from './users';
-import { Superstore } from "components/Themes/Superstore";
-import { Ebikes } from "components/Themes/Ebikes";
-import { NTO } from "components/Themes/NTO";
-import { Pacifica } from "components/Themes/Pacifica";
+import { Superstore } from "components/Hero/Themes/Superstore";
+import { Ebikes } from "components/Hero/Themes/Ebikes";
+import { NTO } from "components/Hero/Themes/NTO";
+import { Pacifica } from "components/Hero/Themes/Pacifica";
 
 
 export const settings = {

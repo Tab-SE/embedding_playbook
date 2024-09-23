@@ -29,7 +29,7 @@ export const ChatPopover = () => {
   const [showChat, setShowChat] = useState(true);
 
   return (
-    <div>
+    <div className='bg-stone-100'>
     {showChat && (
       <Popover modal>
         <PopoverTrigger>

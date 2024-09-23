@@ -66,6 +66,9 @@ const Dashboards = (props) => {
         device='default'
         toolbar='hidden'
         customToolbar={false}
+        layouts = {{
+          '*': { 'device': 'default', 'width': 1300, 'height': 540 }
+        }}
       />
     </TabsContent>
   )

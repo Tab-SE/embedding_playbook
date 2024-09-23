@@ -36,7 +36,7 @@ import { Separator } from "components/ui";
 export const OrderDetail = () => {
   return (
     <Card
-        className="overflow-hidden" x-chunk="dashboard-05-chunk-4"
+        className="overflow-hidden shadow-xl" x-chunk="dashboard-05-chunk-4"
       >
         <CardHeader className="flex flex-row items-start bg-muted/50">
           <div className="grid gap-0.5">

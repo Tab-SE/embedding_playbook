@@ -84,7 +84,7 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   return (
     <Menubar className='mt-1 mb-3 inline-flex' >
       <MenubarMenu >
-        <MenubarTrigger className='cursor-pointer'>
+        <MenubarTrigger className='cursor-pointer px-1'>
           <IconFile stroke={1} size={18} className='mr-1'/> File
         </MenubarTrigger>
 
@@ -121,7 +121,7 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
       </MenubarMenu>
 
       <MenubarMenu>
-        <MenubarTrigger className='cursor-pointer'>
+        <MenubarTrigger className='cursor-pointer px-1'>
           <IconChartDots stroke={1} size={18} className='mr-1'/> View
         </MenubarTrigger>
 
@@ -143,7 +143,7 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
       </MenubarMenu>
 
       <MenubarMenu>
-        <MenubarTrigger className='cursor-pointer'>
+        <MenubarTrigger className='cursor-pointer px-1'>
           <IconCloudDownload stroke={1} size={18} className='mr-1'/> Export
         </MenubarTrigger>
 

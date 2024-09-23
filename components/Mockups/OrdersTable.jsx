@@ -43,7 +43,7 @@ import { TableauEmbed } from "components";
 export const OrdersTable = () => {
   return (
     <Tabs defaultValue="week">
-        <div className="flex items-center">
+        <div className="flex items-center mt-3">
           <TabsList>
             <TabsTrigger value="week">Week</TabsTrigger>
             <TabsTrigger value="month">Month</TabsTrigger>
@@ -104,7 +104,7 @@ export const OrdersTable = () => {
 
 const Shipping = () => {
   return (
-    <Card className="dark:bg-stone-900">
+    <Card className="shadow-xl">
       <CardHeader>
         <CardTitle>Days to Ship by Order</CardTitle>
         <CardDescription>
@@ -114,11 +114,23 @@ const Shipping = () => {
       <CardContent className="flex items-center justify-center">
         <TableauEmbed
           src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip'
-          width={790}
-          height={445}
+          className='min-w-[309px] min-h-[600px]
+          sm:min-w-[486px] sm:min-h-[1350px]
+          md:min-w-[600px] md:min-h-[1000px]
+          lg:min-w-[540px] lg:min-h-[416px]
+          xl:min-w-[720px] xl:min-h-[435px]
+          2xl:min-w-[860px] 2xl:min-h-[436px]'
           hideTabs={true}
           device='default'
           toolbar='hidden'
+          layouts = {{
+            'xs': { 'device': 'phone' },
+            'sm': { 'device': 'phone' },
+            'md': { 'device': 'default' },
+            'lg': { 'device': 'phone' },
+            'xl': { 'device': 'tablet' },
+            'xl2': { 'device': 'desktop' },
+          }}
         />
       </CardContent>
     </Card>
@@ -127,7 +139,7 @@ const Shipping = () => {
 
 const TableTemplate = () => {
   return (
-    <Card x-chunk="dashboard-05-chunk-3">
+    <Card className='shadow-xl' x-chunk="dashboard-05-chunk-3">
       <CardHeader className="px-7">
         <CardTitle>Orders</CardTitle>
         <CardDescription>

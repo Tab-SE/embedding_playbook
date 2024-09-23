@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { IconSparkles, IconTrendingUp, IconTrendingDown, IconArrowNarrowRight } from '@tabler/icons-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from "components/ui";
+import { Card, CardContent } from "components/ui";
 import { Skeleton } from "components/ui";
 import { Badge } from "components/ui";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "components/ui";
+import { Dialog, DialogTrigger } from "components/ui";
 
 import { useInsights } from "hooks";
 import { parseInsights } from "utils";
@@ -83,14 +83,14 @@ export const Metric = (props) => {
           }
 
           if (sent === 'positive') {
-            stats.color = 'text-sky-600';
-            stats.badge = 'bg-sky-600 dark:bg-sky-600';
-          } else if (sent === 'negative') {
-            stats.color = 'text-orange-600';
-            stats.badge = 'bg-orange-600 dark:bg-orange-600';
+            stats.color = 'text-metricsPositive';
+            stats.badge = 'bg-metricsPositive';
           } else if (sent === 'neutral') {
-            stats.color = 'text-stone-500 dark:text-stone-400';
-            stats.badge = 'bg-stone-500 dark:bg-stone-400';
+            stats.color = 'text-metricsNeutral';
+            stats.badge = 'bg-metricsNeutral';
+          } else if (sent === 'negative') {
+            stats.color = 'text-metricsNegative';
+            stats.badge = 'bg-metricsNegative';
           }
         }
       });
@@ -99,7 +99,7 @@ export const Metric = (props) => {
 
   // fully loaded state
   return (
-    <Card className="h-[120px] max-w-[240px] dark:bg-stone-900 cursor-grab">
+    <Card className="h-[120px] max-w-[240px] dark:bg-stone-900 cursor-grab shadow-md">
       <CardContent className="p-3 pt-1">
         <Stats
           isSuccess={isSuccess}
@@ -129,9 +129,9 @@ const Stats = (props) => {
             </div>
             <Dialog>
               <DialogTrigger>
-                <Badge className={`${stats.badge} text-stone-50 h-6 ml-6`}>
+                <Badge className={`${stats.badge} text-stone-50 h-6 w-full ml-6 flex items-center justify-center`}>
                   <IconSparkles width={15} height={15} className="mr-1"/>
-                  Insights: {bundleCount}
+                  {bundleCount}
                 </Badge>
               </DialogTrigger>
               <InsightsModal metric={metric} stats={stats} />

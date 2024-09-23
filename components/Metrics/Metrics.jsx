@@ -15,10 +15,10 @@ export const Metrics = (props) => {
   const { status, data, error, isError, isSuccess } = useMetrics();
 
   return (
-    <div className="h-[111px] px-16">
+    <div className="h-[132px] px-12 flex justify-center items-center">
       {Array.isArray(data) ?
-        <Carousel>
-          <CarouselContent>
+        <Carousel className='flex-grow max-w-full'>
+          <CarouselContent className='pt-6 pb-9 px-3'>
             {Array.isArray(data) ? data.map((metric) => (
               <CarouselItem
                 key={metric.id}

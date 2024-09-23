@@ -29,7 +29,7 @@ export const NavigationSm = (props) => {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="sm:max-w-xs">
+      <SheetContent side="left" className="sm:max-w-xs bg-navigationBackground">
         <nav className="grid gap-6 text-lg font-medium">
           <Link
             href="/demos"
@@ -71,7 +71,7 @@ export const NavigationSm = (props) => {
             Customers
           </Link>
           <Link
-            href="#"
+            href="/demos/superstore/settings"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
             <Settings className="h-5 w-5" />

@@ -1,26 +1,10 @@
 import {
-  File,
-  ListFilter,
-  PlusCircle,
-} from "lucide-react";
-
-import { Button } from "components/ui";
-import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "components/ui";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "components/ui";
 import {
   Tabs,
@@ -39,73 +23,52 @@ export const Products = (props) => {
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <Tabs defaultValue="products">
-        <div className="flex items-center">
-          <TabsList>
-            <TabsTrigger value="products">Products</TabsTrigger>
-            <TabsTrigger value="segment">Segments</TabsTrigger>
-            <TabsTrigger value="category">Categories</TabsTrigger>
-          </TabsList>
-          <div className="ml-auto flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8 gap-1">
-                  <ListFilter className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Filter
-                  </span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuCheckboxItem checked>
-                  Active
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem>
-                  Archived
-                </DropdownMenuCheckboxItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button size="sm" variant="outline" className="h-8 gap-1">
-              <File className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Export
-              </span>
-            </Button>
-            <Button size="sm" className="h-8 gap-1">
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add Product
-              </span>
-            </Button>
-          </div>
-        </div>
+        <TabsList className="mb-2 sm:mb-0">
+          <TabsTrigger value="products">Products</TabsTrigger>
+          <TabsTrigger value="segment">Segments</TabsTrigger>
+          <TabsTrigger value="category">Categories</TabsTrigger>
+        </TabsList>
         <TabsContent value="products">
           <ProductsTable />
         </TabsContent>
         <TabsContent value="segment">
-          <Card className="dark:bg-stone-900">
+          <Card className="dark:bg-stone-900 shadow-xl">
             <CardHeader>
               <CardTitle>Segment Analysis</CardTitle>
               <CardDescription>
                 A comparison of product sales and profitability by segment and category
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center justify-center">
+            <CardContent className="flex items-center justify-center px-1">
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
                 width={1260}
-                height={510}
+                height={516}
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
+                className='
+                min-w-[300px] min-h-[500px]
+                sm:min-w-[490px] sm:min-h-[500px]
+                md:min-w-[620px] md:min-h-[500px]
+                lg:min-w-[800px] lg:min-h-[500px]
+                xl:min-w-[1000px] xl:min-h-[700px]
+                2xl:min-w-[1200px] 2xl:min-h-[800px]
+                '
+                layouts = {{
+                  'xs': { 'device': 'default' },
+                  'sm': { 'device': 'default' },
+                  'md': { 'device': 'default' },
+                  'lg': { 'device': 'default' },
+                  'xl': { 'device': 'default' },
+                  'xl2': { 'device': 'default' },
+                }}
               />
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="category">
-          <Card className="dark:bg-stone-900">
+          <Card className="dark:bg-stone-900 shadow-xl">
             <CardHeader>
               <CardTitle>Category Performance</CardTitle>
               <CardDescription>
@@ -116,10 +79,26 @@ export const Products = (props) => {
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
                 width={1260}
-                height={510}
+                height={516}
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
+                className='
+                min-w-[300px] min-h-[500px]
+                sm:min-w-[490px] sm:min-h-[500px]
+                md:min-w-[620px] md:min-h-[500px]
+                lg:min-w-[800px] lg:min-h-[500px]
+                xl:min-w-[1000px] xl:min-h-[700px]
+                2xl:min-w-[1200px] 2xl:min-h-[800px]
+                '
+                layouts = {{
+                  'xs': { 'device': 'default' },
+                  'sm': { 'device': 'default' },
+                  'md': { 'device': 'default' },
+                  'lg': { 'device': 'default' },
+                  'xl': { 'device': 'default' },
+                  'xl2': { 'device': 'default' },
+                }}
               />
             </CardContent>
           </Card>
