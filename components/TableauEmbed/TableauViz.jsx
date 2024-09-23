@@ -41,8 +41,6 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       const iframe = viz.shadowRoot.querySelector('iframe');
       iframe.style.margin = "auto";
       iframe.style.position = "relative";
-      iframe.style.top = "-5px";
-      iframe.style.left = "-5px";
 
       // handles all viz event listeners and clears them
       const eventListeners = handleVizEventListeners(viz, setInteractive);
