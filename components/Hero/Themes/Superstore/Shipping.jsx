@@ -21,8 +21,16 @@ export const Shipping = () => {
             hideTabs={true}
             device='default'
             toolbar='hidden'
+            className='
+            min-w-[240px] min-h-[600px]
+            sm:min-w-[480px] sm:min-h-[500px]
+            md:min-w-[630px] md:min-h-[600px]
+            lg:min-w-[540px] lg:min-h-[400px]
+            xl:min-w-[720px] xl:min-h-[400px]
+            2xl:min-w-[830px] 2xl:min-h-[400px]
+            '
             layouts = {{
-              '*': { 'device': 'default', 'width': 800, 'height': 400 }
+            '*': { 'device': 'default' }
             }}
           />
         </CardContent>
@@ -42,8 +50,16 @@ export const Shipping = () => {
             hideTabs={true}
             device='default'
             toolbar='hidden'
+            className='
+            min-w-[240px] min-h-[400px]
+            sm:min-w-[480px] sm:min-h-[360px]
+            md:min-w-[630px] md:min-h-[360px]
+            lg:min-w-[540px] lg:min-h-[200px]
+            xl:min-w-[720px] xl:min-h-[240px]
+            2xl:min-w-[830px] 2xl:min-h-[240px]
+            '
             layouts = {{
-              '*': { 'device': 'default', 'width': 800, 'height': 300 }
+            '*': { 'device': 'default' }
             }}
           />
         </CardContent>

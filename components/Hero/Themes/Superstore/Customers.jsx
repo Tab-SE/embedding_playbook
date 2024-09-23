@@ -18,18 +18,23 @@ export const Customers = () => {
           <CardContent className="flex items-center justify-center">
             <TableauEmbed
               src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/customer_scatter_plot'
-              width={450}
-              height={450}
               hideTabs={true}
-              device='default'
               toolbar='hidden'
+              className='
+              min-w-[240px] min-h-[600px]
+              sm:min-w-[480px] sm:min-h-[500px]
+              md:min-w-[630px] md:min-h-[500px]
+              lg:min-w-[300px] lg:min-h-[300px]
+              xl:min-w-[400px] xl:min-h-[300px]
+              2xl:min-w-[470px] 2xl:min-h-[300px]
+              '
               layouts = {{
-              '*': { 'device': 'default', 'width': 450, 'height': 450 }
-            }}
+              '*': { 'device': 'default' }
+              }}
             />
           </CardContent>
         </Card>
-        <Card className="col-span-5 dark:bg-stone-900">
+        <Card className="col-span-5 sm:col-span-7 lg:col-span-5 dark:bg-stone-900">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
             <CardDescription>
@@ -51,13 +56,18 @@ export const Customers = () => {
         <CardContent className="flex items-center justify-center">
           <TableauEmbed
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/customer_region'
-            width={800}
-            height={218}
             hideTabs={true}
-            device='default'
             toolbar='hidden'
+            className='
+              min-w-[240px] min-h-[600px]
+              sm:min-w-[510px] sm:min-h-[500px]
+              md:min-w-[630px] md:min-h-[500px]
+              lg:min-w-[570px] lg:min-h-[218px]
+              xl:min-w-[720px] xl:min-h-[300px]
+              2xl:min-w-[840px] 2xl:min-h-[300px]
+              '
             layouts = {{
-              '*': { 'device': 'default', 'width': 800, 'height': 218 }
+              '*': { 'device': 'default' }
             }}
           />
         </CardContent>
@@ -68,7 +78,7 @@ export const Customers = () => {
 
 const SampleList = () => {
   return (
-    <div className="space-y-8">
+    <div className="flex flex-col space-y-8 overflow-hidden">
       <div className="flex items-center">
         <Avatar className="h-9 w-9">
           <AvatarImage src="/avatars/01.png" alt="Avatar" />
@@ -80,7 +90,6 @@ const SampleList = () => {
             olivia.martin@email.com
           </p>
         </div>
-        <div className="ml-auto font-medium">+$1,999.00</div>
       </div>
       <div className="flex items-center">
         <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
@@ -91,7 +100,6 @@ const SampleList = () => {
           <p className="text-sm font-medium leading-none">Jackson Lee</p>
           <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
         </div>
-        <div className="ml-auto font-medium">+$39.00</div>
       </div>
       <div className="flex items-center">
         <Avatar className="h-9 w-9">
@@ -104,7 +112,6 @@ const SampleList = () => {
             isabella.nguyen@email.com
           </p>
         </div>
-        <div className="ml-auto font-medium">+$299.00</div>
       </div>
       <div className="flex items-center">
         <Avatar className="h-9 w-9">
@@ -115,7 +122,6 @@ const SampleList = () => {
           <p className="text-sm font-medium leading-none">William Kim</p>
           <p className="text-sm text-muted-foreground">will@email.com</p>
         </div>
-        <div className="ml-auto font-medium">+$99.00</div>
       </div>
       <div className="flex items-center">
         <Avatar className="h-9 w-9">
@@ -126,7 +132,6 @@ const SampleList = () => {
           <p className="text-sm font-medium leading-none">Sofia Davis</p>
           <p className="text-sm text-muted-foreground">sofia.davis@email.com</p>
         </div>
-        <div className="ml-auto font-medium">+$39.00</div>
       </div>
     </div>
   )
