@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "components/ui";
+import { settings } from '../settings';
 
 export const description = "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image";
 
@@ -28,22 +29,22 @@ export const Auth = (props) => {
         <div className="mx-auto grid w-[420px] gap-6">
           <div className="flex justify-center">
             <Avatar className="flex items-center justify-center min-h-12 min-w-12">
-              <AvatarImage src="/img/themes/superstore/superstore.png" className="object-cover rounded-full" />
+              <AvatarImage src={settings.app_logo} className="object-cover rounded-full" />
               <AvatarFallback>APP</AvatarFallback>
             </Avatar>
           </div>
           <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">Superstore Analytics</h1>
+            <h1 className="text-3xl font-bold">{settings.app_name}</h1>
             <p className="text-balance text-muted-foreground">
               Select a user to login
             </p>
           </div>
-          <DemoTeamMembers />
+          <DemoTeamMembers config={settings} />
         </div>
       </div>
       <div className="hidden bg-muted lg:block lg:col-span-8">
         <Image
-          src="https://images.unsplash.com/photo-1590859808308-3d2d9c515b1a?q=80&w=2948&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src={settings.auth_hero}
           alt="Image"
           width="1920"
           height="1080"
@@ -57,7 +58,7 @@ export const Auth = (props) => {
 
 
 const DemoTeamMembers = (props) => {
-  const { } = props;
+  const { config } = props;
 
   return (
     <Card>
@@ -100,7 +101,7 @@ const DemoTeamMembers = (props) => {
             </div>
           </div>
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-fit mx-auto">
           Login
         </Button>
       </CardContent>
@@ -109,13 +110,8 @@ const DemoTeamMembers = (props) => {
 }
 
 const demoUser = (props) => {
-  const { user } = props;
+  const { user, roles } = props;
   const { name, email, role, img } = user;
-  const roleMap = {
-    1: { title: 'hobby', description: 'Basic data & analytics'},
-    2: { title: 'pro', description: 'More data, analytics & exports'},
-    3: { title: 'premium', description: 'Self-service analytics'},
-  };
 
   return (
     <div className="flex items-center justify-between space-x-4">
@@ -129,8 +125,8 @@ const demoUser = (props) => {
           <p className="text-sm text-muted-foreground">{email}</p>
         </div>
         <div>
-          <p className="text-sm font-medium leading-none">{}</p>
-          <p className="text-xs text-muted-foreground"></p>
+          <p className="text-sm font-medium leading-none">{role.title}</p>
+          <p className="text-xs text-muted-foreground">{role.description}</p>
         </div>
       </div>
     </div>
