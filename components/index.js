@@ -32,7 +32,8 @@ export {
   UserMenu,
   Navigation,
   Gallery,
-  Settings
+  Settings,
+  Auth
 } from './Demo';
 
 export {

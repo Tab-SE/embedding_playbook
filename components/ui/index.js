@@ -184,3 +184,5 @@ export { ToggleGroup, ToggleGroupItem } from './ToggleGroup';
 export { HoverCard, HoverCardTrigger, HoverCardContent } from './HoverCard';
 
 export { Checkbox } from './Checkbox';
+
+export { RadioGroup, RadioGroupItem } from './Radio-Group';
