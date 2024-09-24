@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   Home,
-  LineChart,
   Package,
   Settings,
   ShoppingCart,

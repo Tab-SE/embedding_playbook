@@ -1,10 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ChevronDownIcon } from "@radix-ui/react-icons"
 
 
 import { Button } from "components/ui";
-import { Checkbox } from "components/ui";
+import { RadioGroup, RadioGroupItem } from "components/ui";
 import {
   Avatar,
   AvatarFallback,
@@ -17,19 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "components/ui";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "components/ui";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "components/ui";
 
 export const description = "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image";
 
@@ -39,7 +25,7 @@ export const Auth = (props) => {
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-12 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12 lg:col-span-4">
-        <div className="mx-auto grid w-[350px] gap-6">
+        <div className="mx-auto grid w-[420px] gap-6">
           <div className="flex justify-center">
             <Avatar className="flex items-center justify-center min-h-12 min-w-12">
               <AvatarImage src="/img/themes/superstore/superstore.png" className="object-cover rounded-full" />
@@ -61,7 +47,7 @@ export const Auth = (props) => {
           alt="Image"
           width="1920"
           height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale bg-demoBackground"
         />
       </div>
     </div>
@@ -70,7 +56,7 @@ export const Auth = (props) => {
 
 
 
-export const DemoTeamMembers = (props) => {
+const DemoTeamMembers = (props) => {
   const { } = props;
 
   return (
@@ -83,7 +69,7 @@ export const DemoTeamMembers = (props) => {
       </CardHeader>
       <CardContent className="grid gap-6">
         <div className="flex items-center justify-between space-x-4">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-9">
             <Avatar>
               <AvatarImage src="/avatars/01.png" />
               <AvatarFallback>OM</AvatarFallback>
@@ -94,11 +80,12 @@ export const DemoTeamMembers = (props) => {
             </div>
             <div>
               <p className="text-sm font-medium leading-none">Explorer</p>
+              <p className="text-sm text-muted-foreground">Self-service analytics</p>
             </div>
           </div>
         </div>
         <div className="flex items-center justify-between space-x-4">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-9">
             <Avatar>
               <AvatarImage src="/avatars/02.png" />
               <AvatarFallback>JL</AvatarFallback>
@@ -109,6 +96,7 @@ export const DemoTeamMembers = (props) => {
             </div>
             <div>
               <p className="text-sm font-medium leading-none">Viewer</p>
+              <p className="text-sm text-muted-foreground">Analytics consumer</p>
             </div>
           </div>
         </div>
@@ -117,5 +105,34 @@ export const DemoTeamMembers = (props) => {
         </Button>
       </CardContent>
     </Card>
+  )
+}
+
+const demoUser = (props) => {
+  const { user } = props;
+  const { name, email, role, img } = user;
+  const roleMap = {
+    1: { title: 'hobby', description: 'Basic data & analytics'},
+    2: { title: 'pro', description: 'More data, analytics & exports'},
+    3: { title: 'premium', description: 'Self-service analytics'},
+  };
+
+  return (
+    <div className="flex items-center justify-between space-x-4">
+      <div className="flex items-center space-x-9">
+        <Avatar>
+          <AvatarImage src={img} />
+          <AvatarFallback>USER</AvatarFallback>
+        </Avatar>
+        <div>
+          <p className="text-sm font-medium leading-none">{name}</p>
+          <p className="text-sm text-muted-foreground">{email}</p>
+        </div>
+        <div>
+          <p className="text-sm font-medium leading-none">{}</p>
+          <p className="text-xs text-muted-foreground"></p>
+        </div>
+      </div>
+    </div>
   )
 }

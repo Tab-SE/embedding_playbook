@@ -29,22 +29,24 @@ export const ChatPopover = () => {
   const [showChat, setShowChat] = useState(true);
 
   return (
-    <div className='bg-stone-100'>
-    {showChat && (
-      <Popover modal>
-        <PopoverTrigger>
-          <AIAvatar />
-        </PopoverTrigger>
-        <PopoverContent
-          className='w-[51vw] mb-9'
-          side='left'
-          align='start'
-          sideOffset={33}
-        >
-          <Chat/>
-        </PopoverContent>
-      </Popover>
-    )}
+    <div className='relative bg-transparent'>
+      <div class="absolute top-[-9999px] left-[-9999px] bg-transparent">
+        {showChat && (
+          <Popover modal>
+            <PopoverTrigger>
+              <AIAvatar />
+            </PopoverTrigger>
+            <PopoverContent
+              className='w-[51vw] mb-9'
+              side='left'
+              align='start'
+              sideOffset={33}
+            >
+              <Chat/>
+            </PopoverContent>
+          </Popover>
+        )}
+      </div>
     </div>
   )
 }
