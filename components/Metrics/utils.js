@@ -13,3 +13,26 @@ export const extractMetrics = (metrics, metricIds) => {
 
   return result;
 }
+
+
+export const sortPayloadByIds = (payload, sortOrder) => {
+  // Ensure sortOrder is defined and check if it's empty
+  if (!Array.isArray(sortOrder) || sortOrder.length === 0) {
+    return payload; // Return original payload unchanged
+  }
+
+  const sortedJson = payload.sort((a, b) => {
+    const indexA = sortOrder.indexOf(a.id);
+    const indexB = sortOrder.indexOf(b.id);
+
+    if (indexA === -1) {
+      return 1; // Move items not in sortOrder to the end
+    }
+    if (indexB === -1) {
+      return -1; // Move items not in sortOrder to the end
+    }
+    return indexA - indexB;
+  });
+
+  return sortedJson;
+}
