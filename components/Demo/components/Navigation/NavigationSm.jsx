@@ -17,6 +17,8 @@ import {
 } from "components/ui";
 import { Separator } from "components/ui";
 
+import { settings } from '../../settings';
+
 
 export const NavigationSm = (props) => {
   const { } = props;
@@ -32,44 +34,19 @@ export const NavigationSm = (props) => {
       <SheetContent side="left" className="sm:max-w-xs bg-navigationBackground">
         <nav className="grid gap-6 text-lg font-medium">
           <Link
-            href="/demos"
+            href={settings.base_path}
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
             <Avatar className="h-6 w-6 transition-all group-hover:scale-110">
-              <AvatarImage src='/img/themes/superstore/superstore.png' alt="demo brand logo" />
-              <AvatarFallback>MD</AvatarFallback>
+              <AvatarImage src={settings.app_logo} alt="demo brand logo" />
+              <AvatarFallback>APP</AvatarFallback>
             </Avatar>
-            <span>Superstore Analytics</span>
+            <span>{settings.app_name}</span>
           </Link>
           <Separator className="my-4" />
-          <Link
-            href="/demos/superstore"
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-          >
-            <Home className="h-5 w-5" />
-            Home
-          </Link>
-          <Link
-            href="/demos/superstore/orders"
-            className="flex items-center gap-4 px-2.5 text-foreground"
-          >
-            <ShoppingCart className="h-5 w-5" />
-            Orders
-          </Link>
-          <Link
-            href="/demos/superstore/products"
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-          >
-            <Package className="h-5 w-5" />
-            Products
-          </Link>
-          <Link
-            href="/demos/superstore/customers"
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-          >
-            <Users2 className="h-5 w-5" />
-            Customers
-          </Link>
+          {settings.sections ? settings.sections.map((section) => {
+            return <NavBarItem key={section.name} section={section} />
+          }): null}
           <Link
             href="/demos/superstore/settings"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
@@ -80,5 +57,20 @@ export const NavigationSm = (props) => {
         </nav>
       </SheetContent>
     </Sheet>
+  )
+}
+
+const NavBarItem = (props) => {
+  const { section } = props;
+  const { name, icon, path, min_role, description} = section;
+
+  return (
+    <Link
+      href={settings.base_path + path}
+      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+    >
+      {icon}
+      {name}
+    </Link>
   )
 }

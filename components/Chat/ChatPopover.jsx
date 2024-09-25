@@ -30,7 +30,7 @@ export const ChatPopover = () => {
 
   return (
     <div className='relative bg-transparent'>
-      <div class="absolute top-[-9999px] left-[-9999px] bg-transparent">
+      <div className="absolute top-[-9999px] left-[-9999px] bg-transparent">
         {showChat && (
           <Popover modal>
             <PopoverTrigger>
