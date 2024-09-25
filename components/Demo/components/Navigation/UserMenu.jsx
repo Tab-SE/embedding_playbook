@@ -19,10 +19,12 @@ import {
   DropdownMenuTrigger,
 } from "components/ui";
 
+import { settings } from '../../settings';
+
 
 export function UserMenu(props) {
-  const { src } = props;
-  const avatar = src ? src : '/img/users/mackenzie_day.png';
+  const { activeUser } = props;
+  const avatar = activeUser ? activeUser : '/img/users/mackenzie_day.png';
   const [user, setUser] = useState(undefined);
   // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
   const { status, data } = useSession({ required: false });
@@ -37,7 +39,7 @@ export function UserMenu(props) {
     <DropdownMenu>
       <Trigger src={avatar} />
       <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-        <Label />
+        <Label app_name={''} email={''} />
         <Group />
         <Logout status={status} />
       </DropdownMenuContent>
@@ -90,7 +92,7 @@ const Trigger = (props) => {
       <Button variant="ghost" className="relative h-12 w-12 rounded-full shadow-xl">
         <Avatar className="h-12 w-12 shadow-xl">
           <AvatarImage src={src} alt="user profile picture" />
-          <AvatarFallback>MD</AvatarFallback>
+          <AvatarFallback>USER</AvatarFallback>
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
@@ -99,13 +101,13 @@ const Trigger = (props) => {
 
 
 const Label = (props) => {
+  const { app_name, email } = props;
+
   return (
     <DropdownMenuLabel className="font-normal">
       <div className="flex flex-col space-y-1">
-        <p className="text-sm font-medium leading-none">Superstore Analytics</p>
-        <p className="text-xs leading-none text-muted-foreground">
-          mday@mail.com
-        </p>
+        <p className="text-sm font-medium leading-none">{app_name}</p>
+        <p className="text-xs leading-none text-muted-foreground">{email}</p>
       </div>
     </DropdownMenuLabel>
   )

@@ -36,19 +36,6 @@ export const useTableauSession = (userName) => {
 }
 
 const getClientSession = async (userEmail) => {
-  const { name, email, picture, tableau } = await getUser(userEmail);
-  const { user_id, embed_token, site, created, expires  } = tableau;
-  // form a payload to safely represent the user on the client
-  const clientSession = {
-    name: name,
-    email: email,
-    picture: picture,
-    user_id: user_id,
-    embed_token: embed_token,
-    site: site,
-    created: created,
-    expires: expires
-  };
-
-  return clientSession;
+  const clientSafeUser = await getUser(userEmail);
+  return clientSafeUser;
 }
