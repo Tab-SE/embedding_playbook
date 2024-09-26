@@ -1,10 +1,6 @@
 import Link from "next/link";
 import {
-  Home,
-  Package,
   PanelLeft,
-  ShoppingCart,
-  Users2,
   Settings
 } from "lucide-react";
 
@@ -27,7 +23,7 @@ export const NavigationSm = (props) => {
     <Sheet>
       <SheetTrigger asChild>
         <Button size="icon" variant="outline" className="sm:hidden">
-          <PanelLeft className="h-5 w-5" />
+          <PanelLeft className="h-5 w-5 text-navigationIcons"/>
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
@@ -51,7 +47,7 @@ export const NavigationSm = (props) => {
             href="/demos/superstore/settings"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
-            <Settings className="h-5 w-5" />
+            <Settings className="h-5 w-5 text-navigationIcons"/>
             Settings
           </Link>
         </nav>
@@ -67,7 +63,7 @@ const NavBarItem = (props) => {
   return (
     <Link
       href={settings.base_path + path}
-      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground text-navigationIcons"
     >
       {icon}
       {name}

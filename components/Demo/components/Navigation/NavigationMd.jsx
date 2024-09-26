@@ -46,7 +46,7 @@ export const NavigationMd = (props) => {
                 href="/demos/superstore/settings"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <Settings className="h-5 w-5" />
+                <Settings className="h-5 w-5 text-navigationIcons"/>
                 <span className="sr-only">Settings</span>
               </Link>
             </TooltipTrigger>
@@ -69,7 +69,7 @@ const NavBarItem = (props) => {
         <TooltipTrigger asChild>
           <Link
             href={settings.base_path + path}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 text-navigationIcons"
           >
             {icon}
             <span className="sr-only">{name}</span>
