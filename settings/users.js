@@ -9,7 +9,7 @@ export const UserStore = {
       A: {
         name: "Julie Morris",
         email: "jmorris@mail.com",
-        picture: "/img/users/julie_morris.png",
+        picture: "/img/users/mackenzie_day.png",
         role: 3,
         vector_store: 'superstore_jmorris',
         uaf: {}
