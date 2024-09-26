@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import Link from 'next/link';
 
 import {
@@ -19,29 +18,49 @@ import {
   DropdownMenuTrigger,
 } from "components/ui";
 
+import { useTableauSession } from 'hooks';
+
 
 export function UserMenu(props) {
-  const { src } = props;
-  const avatar = src ? src : '/img/users/mackenzie_day.png';
-  const [user, setUser] = useState(undefined);
-  // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
-  const { status, data } = useSession({ required: false });
+  const { } = props;
 
-  useEffect(() => {
-    if (status === 'authenticated') {
-      setUser(data.user.name);
-    }
-  }, [status, data]);
+  // tanstack query hook to manage embed sessions
+  const {
+    status,
+    data: user,
+    error: sessionError,
+    isSuccess: isSessionSuccess,
+    isError: isSessionError,
+    isLoading: isSessionLoading
+  } = useTableauSession('a', 'superstore');
+
+  if (isSessionError) {
+    console.debug(sessionError);
+  }
 
   return (
-    <DropdownMenu>
-      <Trigger src={avatar} />
-      <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-        <Label />
-        <Group />
-        <Logout status={status} />
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div>
+      {isSessionSuccess ?
+        <DropdownMenu>
+          <Trigger src={user.picture} />
+          <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
+            <Label app_name={''} email={user.email} />
+            <Group />
+            <Logout status={status} />
+          </DropdownMenuContent>
+        </DropdownMenu>
+    : null}
+    {isSessionError ?
+        <DropdownMenu>
+          <Trigger src='' />
+          <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
+            <Label app_name='' email='' />
+            <Group />
+            <Logout status={status} />
+          </DropdownMenuContent>
+        </DropdownMenu>
+    : null}
+    </div>
   )
 }
 
@@ -49,7 +68,7 @@ export function UserMenu(props) {
 const Logout = (props) => {
   const { status } = props;
 
-  if (status === 'authenticated') {
+  if (status === 'success') {
     return (
       <DropdownMenuItem
         className='hover:cursor-pointer'
@@ -90,7 +109,7 @@ const Trigger = (props) => {
       <Button variant="ghost" className="relative h-12 w-12 rounded-full shadow-xl">
         <Avatar className="h-12 w-12 shadow-xl">
           <AvatarImage src={src} alt="user profile picture" />
-          <AvatarFallback>MD</AvatarFallback>
+          <AvatarFallback>USER</AvatarFallback>
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
@@ -99,13 +118,13 @@ const Trigger = (props) => {
 
 
 const Label = (props) => {
+  const { app_name, email } = props;
+
   return (
     <DropdownMenuLabel className="font-normal">
       <div className="flex flex-col space-y-1">
-        <p className="text-sm font-medium leading-none">Superstore Analytics</p>
-        <p className="text-xs leading-none text-muted-foreground">
-          mday@mail.com
-        </p>
+        <p className="text-sm font-medium leading-none">{app_name}</p>
+        <p className="text-xs leading-none text-muted-foreground">{email}</p>
       </div>
     </DropdownMenuLabel>
   )

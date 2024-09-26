@@ -9,7 +9,7 @@ import { getUser } from "libs";
 // more on dependent queries: https://tanstack.com/query/v5/docs/framework/react/guides/dependent-queries
 // more on retries (default 3): https://tanstack.com/query/v5/docs/framework/react/guides/query-retries
 // secures UI components via these methods: https://next-auth.js.org/getting-started/client#require-session
-export const useTableauSession = (userName) => {
+export const useTableauSession = (userName, demo) => {
   // set to an empty array if enumerated function parameters are not available in array
   const queryKey = [userName].every(param => param != null) ? ["tableau", "user session", userName] : [];
 
@@ -17,7 +17,7 @@ export const useTableauSession = (userName) => {
     required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
     async onUnauthenticated() {
       // The user is not authenticated, handle it here.
-      const { error, status, ok } = await signIn('demo-user', { redirect: false, ID: userName });
+      const { error, status, ok } = await signIn('demo-user', { redirect: false, ID: userName, demo: demo });
     }
   });
 
@@ -36,19 +36,6 @@ export const useTableauSession = (userName) => {
 }
 
 const getClientSession = async (userEmail) => {
-  const { name, email, picture, tableau } = await getUser(userEmail);
-  const { user_id, embed_token, site, created, expires  } = tableau;
-  // form a payload to safely represent the user on the client
-  const clientSession = {
-    name: name,
-    email: email,
-    picture: picture,
-    user_id: user_id,
-    embed_token: embed_token,
-    site: site,
-    created: created,
-    expires: expires
-  };
-
-  return clientSession;
+  const clientSafeUser = await getUser(userEmail);
+  return clientSafeUser;
 }

@@ -3,7 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { Session } from "models";
-import { settings } from "settings";
+import { UserStore } from "settings";
 
 
 export const authOptions = {
@@ -24,6 +24,7 @@ export const authOptions = {
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         ID: { label: "ID", type: "text", placeholder: "a, b, c, d or e" },
+        demo: { label: "Demo", type: "text" }
       },
       async authorize(credentials, req) {
         // You need to provide your own logic here that takes the credentials
@@ -33,8 +34,10 @@ export const authOptions = {
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
         let user = null;
+        // maps logins to specific demos so non-demo sessions can be logged out
+        const demo = UserStore[credentials.demo]
         // check all keys in user store
-        for (const [key, value] of Object.entries(settings.demo_users)) {
+        for (const [key, value] of Object.entries(demo.users)) {
           // find keys that match credential
           if (key.toUpperCase() === credentials.ID.toUpperCase()) {
             // if a match is found store value as user
@@ -42,6 +45,8 @@ export const authOptions = {
           }
         }
         if (user) {
+          // add the demo to the user object to see it on the client
+          user.demo = credentials.demo;
           // server-side env vars
           const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
           const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
@@ -92,6 +97,7 @@ export const authOptions = {
               username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires,
             };
           }
+
           // Return false to display a default error message
           return user.tableau ? user : false;
         } else {
@@ -126,19 +132,22 @@ export const authOptions = {
       return baseUrl;
     },
     async jwt({ token, account, profile, user }) {
-
       // persist metadata added to user object in authorize() callback to the JWT as claims
       if (user) {
         token.picture = user.picture;
+        token.demo = user.demo;
+        token.role = user.role; // tableau session object
+        token.vector_store = user.vector_store; // tableau session object
         token.uaf = user.uaf; // user attribute function claims
         token.tableau = user.tableau; // tableau session object
+
       }
       return token;
     },
     async session({ session, token, user }) {
       // database sessions pass user, JWT sessions pass token
       // console.count('session runs');
-
+      session.user.vector_store = token.vector_store;
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
       return session;

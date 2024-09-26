@@ -25,5 +25,8 @@
   },
   "settings": {
     "title": "Settings"
+  },
+  "auth": {
+    "title": "Log In"
   }
 }
