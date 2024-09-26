@@ -14,13 +14,17 @@ export async function POST(req) {
 
   // Check if token is defined
   if (token?.tableau) {
-    const { name, email, picture, tableau } = token;
+    const { name, demo, email, picture, role, vector_store, uaf, tableau } = token;
 
     // form a payload to safely represent the user on the client
     const clientSafeUser = {
       name,
+      demo,
       email,
       picture,
+      role,
+      vector_store,
+      uaf,
       embed_token: tableau.embed_token,
       user_id: tableau.user_id,
       site: tableau.site,

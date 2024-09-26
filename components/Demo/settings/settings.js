@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 
 export const settings = {
+  app_id: 'superstore',
   app_name: 'Superstore Analytics',
   app_logo: '/img/themes/superstore/superstore.png',
   base_path: '/demos/superstore',
@@ -42,35 +43,4 @@ export const settings = {
       description: 'improve customer retention rates and identify critical business partnerships'
     },
   ],
-  roles: {
-    1: { title: 'hobby', description: 'Basic data & analytics'},
-    2: { title: 'pro', description: 'More data, analytics & exports'},
-    3: { title: 'premium', description: 'Full self-service analytics'},
-  },
-  users: {
-    A: {
-      name: "Julie Morris",
-      email: "jmorris@superstore.com",
-      picture: "/img/users/julie_morris.png",
-      role: 3,
-      vector_store: 'superstore_jmorris',
-      uaf: {}
-    },
-    B: {
-      name: "Justin Chen",
-      email: "jchen@superstore.com",
-      picture: "/img/users/justin_chen.png",
-      role: 2,
-      vector_store: 'superstore_jchen',
-      uaf: {}
-    },
-    C: {
-      name: "Sofia Lopez",
-      email: "slopez@superstore.com",
-      picture: "/img/users/sofia_lopez.png",
-      role: 1,
-      vector_store: 'superstore_slopez',
-      uaf: {}
-    }
-  }
 }

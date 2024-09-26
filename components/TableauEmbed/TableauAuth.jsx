@@ -30,7 +30,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession('a');
+  } = useTableauSession('a', 'superstore');
 
   if (isSessionError) {
     console.debug(sessionError);

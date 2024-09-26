@@ -1,4 +1,3 @@
-import { users } from './users';
 import { Superstore } from "components/Hero/Themes/Superstore";
 import { Ebikes } from "components/Hero/Themes/Ebikes";
 import { NTO } from "components/Hero/Themes/NTO";
@@ -22,6 +21,5 @@ export const settings = {
         data_sources: []
       }
     },
-  ],
-  demo_users: users
+  ]
 }
