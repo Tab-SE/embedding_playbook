@@ -1,4 +1,4 @@
 export default {
-  index: "Visual Analytics",
-  pulse: "AI Analytics"
+  index: { title: "Visual Analytics" },
+  pulse: { title: "AI Analytics" }
 }

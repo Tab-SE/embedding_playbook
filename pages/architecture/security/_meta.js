@@ -1,5 +1,5 @@
 export default {
-  index: "Securing Tableau",
-  auth: "Authenticating Users",
-  data: "Securing Data"
+  index: { title: "Securing Tableau" },
+  auth: { title: "Authenticating Users" },
+  data: { title: "Securing Data" }
 }

@@ -1,5 +1,8 @@
 export default {
-  index: "Automation & Integration",
-  rest: "REST API",
-  apis: "Other Web APIs"
+  index: {
+    title: "Automation & Integration"
+  },
+  rest: {
+    title: "REST API"
+  }
 }

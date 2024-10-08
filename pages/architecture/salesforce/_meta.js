@@ -1,4 +1,4 @@
 export default {
-  index: "Lowcode",
-  code: "Highcode"
+  index: { title: "Lowcode" },
+  code: { title: "Highcode" }
 }

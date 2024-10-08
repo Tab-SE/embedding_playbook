@@ -1,5 +1,5 @@
 export default {
-  index: "Automation",
-  users: "Provisioning Users",
-  content: "Managing Content"
+  index: { title: "Automation" },
+  users: { title: "Provisioning Users" },
+  content: { title: "Managing Content" }
 }
