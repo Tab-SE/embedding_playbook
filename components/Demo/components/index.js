@@ -7,5 +7,5 @@ export { NavigationMd, NavigationSm, Breadcrumbs, UserMenu, Navigation } from '.
 export { Gallery } from './Gallery';
 export { Settings } from './Settings';
 export { Auth } from './Auth';
-export { HomeDigitalBanking } from './HomeDigitalBanking';
-export { BusinessDigitalBanking } from './BusinessDigitalBanking';
+export { Personal } from './Personal';
+export { Business } from './Business';

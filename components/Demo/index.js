@@ -11,5 +11,7 @@ export {
   Navigation,
   Gallery,
   Settings,
-  Auth
+  Auth,
+  Personal,
+  Business
 } from './components';

@@ -12,15 +12,19 @@
     }
   },
   "index": {
-    "title": "Personal Banking Insights"
+    "title": "Member Analytics",
+    "type": "page"
   },
   "business": {
-    "title": "Business Account Insights"
+    "title": "Business",
+    "type": "page"
   },
   "settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "type": "page"
   },
   "auth": {
-    "title": "Log In"
+    "title": "Log In",
+    "type": "page"
   }
 }
