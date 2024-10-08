@@ -1,0 +1,23 @@
+---
+title: "Member Analytics"
+description: "A demonstration of embedded analytics using Tableau's Digital Banking dataset"
+---
+
+import { Demo, BusinessDigitalBanking } from 'components';
+
+<Demo
+  basePath='/demos'
+  crumbs={{
+    'Member Analytics': {
+      path: '/digitalbanking',
+      child: {
+        'Business Account': {
+          path: '/business',
+          child: null
+        }
+      }
+    }
+  }}
+>
+  <BusinessDigitalBanking />
+</Demo>

@@ -1,0 +1,23 @@
+---
+title: "Settings"
+description: "A page to configure user settings for the app, including billing and subscriptions"
+---
+
+import { Demo, Settings } from 'components';
+
+<Demo
+  basePath='/demos'
+  crumbs={{
+    'Member Analytics': {
+      path: '/digitalbanking',
+      child: {
+        'Settings': {
+          path: '/settings',
+          child: null
+        }
+      }
+    }
+  }}
+>
+  <Settings />
+</Demo>

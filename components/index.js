@@ -21,6 +21,8 @@ export {
 export { Explore } from './Explore';
 
 export {
+  HomeDigitalBanking,
+  BusinessDigitalBanking,
   Demo,
   Home,
   Orders,

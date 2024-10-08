@@ -1,0 +1,26 @@
+{
+  "*": {
+    "theme": {
+      "layout": "raw",
+      "breadcrumb": false,
+      "footer": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false,
+      "navbar": false,
+      "timestamp": false
+    }
+  },
+  "index": {
+    "title": "Personal Banking Insights"
+  },
+  "business": {
+    "title": "Business Account Insights"
+  },
+  "settings": {
+    "title": "Settings"
+  },
+  "auth": {
+    "title": "Log In"
+  }
+}
