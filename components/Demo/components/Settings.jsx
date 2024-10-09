@@ -17,16 +17,12 @@ export const Settings = () => {
             <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
                 <TabsList className="flex mt-6 md:flex-col md:items-start md:space-y-2 md:mt-12">
                   <TabsTrigger value="general">General</TabsTrigger>
-                  <TabsTrigger value="billing">Billing</TabsTrigger>
                   <TabsTrigger value="security">Security</TabsTrigger>
                 </TabsList>
             </nav>
             <div>
               <TabsContent value="general">
                 <GeneralSettings />
-              </TabsContent>
-
-              <TabsContent value="billing">
               </TabsContent>
 
               <TabsContent value="security">

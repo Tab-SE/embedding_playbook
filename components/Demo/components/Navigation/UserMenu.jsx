@@ -140,7 +140,7 @@ const Group = (props) => {
           Billing
           <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
         </DropdownMenuItem>
-        <Link href="/demos/superstore/settings">
+        <Link href="/settings">
           <DropdownMenuItem className='hover:cursor-pointer'>
             Settings
             <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>

@@ -44,7 +44,9 @@ export {
   ProductsTable,
   OrdersTable,
   OrderDetail,
-  GeneralSettings
+  GeneralSettings,
+  Deposits,
+  Withdrawals
 } from './Mockups';
 
 export { ActionCard } from './ActionCard';

@@ -11,6 +11,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter
 } from "components/ui";
 import {
   Table,
@@ -33,12 +34,6 @@ export const Transactions = () => {
             Recent transactions from your store.
           </CardDescription>
         </div>
-        <Button asChild size="sm" className="ml-auto gap-1">
-          <Link href="#">
-            View All
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-        </Button>
       </CardHeader>
       <CardContent>
         <Table>
@@ -161,6 +156,14 @@ export const Transactions = () => {
           </TableBody>
         </Table>
       </CardContent>
+      <CardFooter className="flex justify-end">
+        <Button asChild size="sm" className="gap-1">
+          <Link href="#">
+            View All
+            <ArrowUpRight className="h-4 w-4 ml-1" />
+          </Link>
+        </Button>
+      </CardFooter>
     </Card>
   )
 }

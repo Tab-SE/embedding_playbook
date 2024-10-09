@@ -44,7 +44,7 @@ export const NavigationSm = (props) => {
             return <NavBarItem key={section.name} section={section} />
           }): null}
           <Link
-            href="/demos/superstore/settings"
+            href="/settings"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
             <Settings className="h-5 w-5 text-navigationIcons"/>

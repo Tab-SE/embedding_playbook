@@ -33,9 +33,6 @@ export const Metric = (props) => {
     console.debug(error);
   }
 
-  // console.log(`failureCount ${metric.name}`, failureCount);
-  // console.log(`failureReason ${metric.name}`, failureReason);
-
   if (isSuccess) {
     const insight_groups = data?.bundle_response?.result.insight_groups;
 

@@ -1,22 +1,26 @@
 {
-  "index": {
-    "title": "Embed Tableau",
-    "type": "page",
-    "display": "hidden",
+  "*": {
     "theme": {
-      "layout": "full"
+      "layout": "raw",
+      "breadcrumb": false,
+      "footer": false,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false,
+      "navbar": false,
+      "timestamp": false
     }
   },
-  "start": {
-    "title": "Getting Started",
-    "type": "page"
+  "index": {
+    "title": "Member Analytics"
   },
-  "architecture": {
-    "title": "Architecture",
-    "type": "page"
+  "business": {
+    "title": "Business Account"
   },
-  "demos": {
-    "title": "Demos",
-    "type": "page"
+  "settings": {
+    "title": "Settings"
+  },
+  "auth": {
+    "title": "Log In"
   }
 }

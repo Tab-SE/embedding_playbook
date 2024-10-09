@@ -1,8 +1,18 @@
 ---
-title: "Embed Tableau"
-description: "A playbook to help you get started embedding Tableau into your app!"
+title: "Member Analytics"
+description: "A demonstration of embedded analytics using Tableau's Digital Banking dataset"
 ---
 
-import { Hero } from 'components';
+import { Demo, Personal } from 'components';
 
-<Hero/>
+<Demo
+  basePath='/'
+  crumbs={{
+    'Member Analytics': {
+      path: '/',
+      child: null
+    }
+  }}
+>
+  <Personal/>
+</Demo>
