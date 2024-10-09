@@ -6,7 +6,7 @@
   },
   "overrides": [
     {
-      "files": ["pages/**/_meta.js"],
+      "files": ["src/pages/**/_meta.js"],
       "rules": {
         "import/no-anonymous-default-export": "off"
       }

@@ -11,6 +11,7 @@ export const useInsights = (metric) => {
   const queryKey = [metric].every(param => param != null) ? ["tableau", "insights", metric.name, metric.id] : [];
 
   return useQuery({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: queryKey,
     queryFn: () => {
       return getInsights(metric);
