@@ -84,12 +84,12 @@
     "vega": "^5.26.1",
     "vega-interpreter": "^1.0.5",
     "vega-lite": "^5.16.3",
-    "vega-tooltip": "^0.33.0"
+    "vega-tooltip": "^0.34.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@tanstack/eslint-plugin-query": "^5.0.5",
-    "@types/node": "18.11.10",
+    "@types/node": "^22.7.5",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.3",
