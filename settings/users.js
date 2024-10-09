@@ -7,8 +7,8 @@ export const UserStore = {
     },
     users: {
       A: {
-        //Changed Julie Morris to me
-        name: "Raman Chand",
+        //Changed Julie Morris to Eva
+        name: "Eva Morris",
         email: "rchand@salesforce.com",
         picture: "/img/users/mackenzie_day.png",
         role: 3,
