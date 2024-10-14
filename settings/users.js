@@ -10,7 +10,7 @@ export const UserStore = {
         name: "Julie Morris",
         email: "daniel.castro+simplify@salesforce.com",
         picture: "/img/users/mackenzie_day.png",
-        role: 1,
+        role: 3,
         vector_store: 'superstore_jmorris',
         uaf: {}
       },

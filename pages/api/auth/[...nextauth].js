@@ -67,6 +67,7 @@ export const authOptions = {
           };
           const embed_session = new Session(user.name);
           await embed_session.jwt(user.email, embed_options, embed_scopes);
+          console.log(1)
 
           // used for backend HTTP calls
           const rest_scopes = [
@@ -97,9 +98,11 @@ export const authOptions = {
               username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires,
             };
           }
+          console.log("credentials", user.email)
 
           // Return false to display a default error message
           return user.tableau ? user : false;
+          
         } else {
           return false;
         }
