@@ -11,9 +11,9 @@ const config: DocsThemeConfig = {
   primarySaturation: 100,
   logo:
   <Logo
-    src="/img/tableau/tableau_logo.png"
+    src="svg/simplifyvms/logo-4.svg"
     width='33'
-    text='Embed Tableau'
+    text='Simplify VMS'
   />,
   footer: {
     text:
@@ -37,11 +37,11 @@ const config: DocsThemeConfig = {
     // changes title on home '/' route
     if (route !== '/') {
       return {
-        titleTemplate: '%s ✨ Embed Tableau'
+        titleTemplate: '%s ✨ Simplify VMS'
       };
     } else {
       return {
-        titleTemplate: 'Embed Tableau ✨ Home'
+        titleTemplate: 'Simplify VMS ✨ Home'
       };
     }
   },
@@ -58,7 +58,7 @@ const config: DocsThemeConfig = {
         />
         <link rel="icon" href={imgHost + "/svg/logo_color.svg?h=32&w=32"} type="image/svg+xml" />
         <link rel="icon" href={imgHost + "/img/tableau/tableau.ico?h=32&w=32"} type="image/ico" />
-        <link rel="icon" href={imgHost + "/img/tableau/tableau_logo.png?h=32&w=32"} type="image/png" />
+        <link rel="icon" href={imgHost + "svg/simplifyvms/logo-4.svg?h=32&w=32"} type="image/png" />
         <link rel="icon" href={imgHost + "/svg/dark.svg?h=32&w=32"} type="image/svg+xml" media="(prefers-color-scheme: dark)" />
         <link rel="icon" href={imgHost + "/img/tableau/tableau_logo_dark.png?h=32&w=32"} type="image/png" media="(prefers-color-scheme: dark)" />
       </>

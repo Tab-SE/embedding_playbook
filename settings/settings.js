@@ -13,7 +13,7 @@ export const settings = {
       name: "superstore",
       component: Superstore,
       type: "default",
-      logo: "/img/tableau/tableau_logo.png",
+      logo: "svg/simplifyvms/logo-4.svg",
       styles: "",
       project: {
         name: "superstore",
