@@ -12,13 +12,12 @@ const config: DocsThemeConfig = {
   logo:
   <Logo
     src="svg/simplifyvms/logo-4.svg"
-    width='33'
-    text='Simplify VMS'
+    width='120'
   />,
   footer: {
     text:
     <Logo
-      src="/img/tableau/logo_text.png"
+      src="svg/simplifyvms/logo-4.svg"
       width='300'
     />
   },

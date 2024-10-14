@@ -6,13 +6,13 @@ import { HeroDemo } from 'components';
 const Intro = () => {
   return (
     <div>
-      <h1 className='text-5xl font-bold mb-9'>Simplify VMS</h1>
+      <h1 className='text-5xl font-bold mb-9' style={{color: "#1B211F"}}>Simplify VMS</h1>
         <div className='leading-loose space-y-9'>
           <p>In a world that is changing rapidly and unpredictably, businesses need advanced technology solutions to manage their contingent workforce with ease and efficiency.</p>
           <b/>
           <p>Simplify’s Direct Sourcing technology solution enables contingent worker sourcing, engagement and management without staffing suppliers.</p>
           <Image
-            src='/img/tableau/stock/showcase.png'
+            src='/svg/simplifyvms/best-talent-private-talent-pools-simplify-marketing-img-2.svg'
             width='750'
             height='500'
             alt='stock photo'
@@ -34,7 +34,7 @@ const Outro = () => {
   return (
     <div className='overflow-hidden leading-loose space-y-9'>
       <Image
-        src='/img/tableau/stock/embed_samples.png'
+        src='/svg/simplifyvms/source-without-staffing-suppliers-simplify-markerting-img-1.svg'
         width='750'
         height='500'
         alt='stock photo'
