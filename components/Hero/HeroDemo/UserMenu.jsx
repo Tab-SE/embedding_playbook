@@ -101,7 +101,7 @@ const Label = (props) => {
   return (
     <DropdownMenuLabel className="font-normal">
       <div className="flex flex-col space-y-1">
-        <p className="text-sm font-medium leading-none">Superstore Analytics</p>
+        <p className="text-sm font-medium leading-none">Simplify VMS</p>
         <p className="text-xs leading-none text-muted-foreground">
           mday@mail.com
         </p>
