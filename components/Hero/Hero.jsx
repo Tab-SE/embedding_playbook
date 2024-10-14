@@ -17,14 +17,14 @@ const Intro = () => {
             height='500'
             alt='stock photo'
           />
-        <p><strong>Source Without Staffing Suppliers</strong>
+        <div><strong>Source Without Staffing Suppliers</strong>
         <ul style={{listStyleType: 'disc', marginLeft: '20px'}}>
             <li>Avoid costly agency mark-ups while taking control of candidate experience and vetting</li>
             <li>Slash recruitment spend by 10% and vacancy aging rates by half</li>
             <li>Get full visibility across the entire req-to-check process and optimize on your own terms</li>
             <li>Design your own social recruitment marketing campaigns and engagement strategies</li>
         </ul>
-        </p>
+        </div>
         </div>
     </div>
   )
@@ -39,14 +39,14 @@ const Outro = () => {
         height='500'
         alt='stock photo'
       />
-       <p><strong>Re-engage Your Best Talent</strong>
+       <div><strong>Re-engage Your Best Talent</strong>
         <ul style={{listStyleType: 'disc', marginLeft: '20px'}}>
             <li>Don’t allow your best contingent talent to disappear after they worked for you – develop a relationship</li>
             <li>Maintain your own curated private talent pools of preferred contingent workers to re-engage and redeploy to new assignments</li>
             <li>Leverage chatbot capabilities to continuously engage and communicate with talent members</li>
             <li>Build your brand and a talent community that grows by word of mouth</li>
         </ul>
-        </p>
+        </div>
     </div>
   )
 }
