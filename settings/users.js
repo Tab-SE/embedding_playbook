@@ -8,7 +8,7 @@ export const UserStore = {
     users: {
       A: {
         name: "Julie Morris",
-        email: "jmorris@mail.com",
+        email: "daniel.castro+simplify@salesforce.com",
         picture: "/img/users/mackenzie_day.png",
         role: 3,
         vector_store: 'superstore_jmorris',
