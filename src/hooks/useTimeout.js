@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 
 // from Josh Comeau https://www.joshwcomeau.com/snippets/react-hooks/use-timeout/

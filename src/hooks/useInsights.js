@@ -1,3 +1,4 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import { getInsights } from "libs";
 // implements custom hooks with tanstack query for asynchronous state management

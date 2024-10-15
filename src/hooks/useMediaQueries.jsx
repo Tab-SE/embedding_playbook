@@ -1,3 +1,4 @@
+"use client";
 import { useMediaQuery } from 'react-responsive';
 
 // tailwind CSS breakpoints used by the app
