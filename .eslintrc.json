@@ -3,5 +3,13 @@
   "extends": ["next", "next/core-web-vitals", "plugin:@tanstack/eslint-plugin-query/recommended"],
   "rules": {
     "react/no-unescaped-entities": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/pages/**/_meta.js"],
+      "rules": {
+        "import/no-anonymous-default-export": "off"
+      }
+    }
+  ]
 }

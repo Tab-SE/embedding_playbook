@@ -3,8 +3,9 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{js,jsx,ts,tsx,md,mdx}',
-    './components/**/*.{js,jsx,ts,tsx,md,mdx}',
+    './src/app/**/*.{js,jsx,ts,tsx,md,mdx}',
+    './src/pages/**/*.{js,jsx,ts,tsx,md,mdx}',
+    './src/components/**/*.{js,jsx,ts,tsx,md,mdx}',
   ],
   prefix: "",
   theme: {
@@ -19,6 +20,7 @@ module.exports = {
       colors: {
         demoBackground: '#f5f5f4',
         navigationBackground: '#fafaf9',
+        navigationIcons: '#0c0a09',
         metricsPositive: '#0284c7',
         metricsNeutral: '#78716c',
         metricsNegative: '#ea580c',

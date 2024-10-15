@@ -39,6 +39,7 @@
     "@radix-ui/react-navigation-menu": "^1.1.4",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
@@ -62,10 +63,10 @@
     "jsonwebtoken": "^9.0.2",
     "llamaindex": "^0.1.21",
     "lucide-react": "^0.439.0",
-    "next": "^14.2.3",
+    "next": "^14.2.14",
     "next-auth": "^4.24.5",
-    "nextra": "^2.13.2",
-    "nextra-theme-docs": "^2.13.2",
+    "nextra": "^3.0.6",
+    "nextra-theme-docs": "^3.0.6",
     "openai": "^4.28.4",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.0",
@@ -83,17 +84,17 @@
     "vega": "^5.26.1",
     "vega-interpreter": "^1.0.5",
     "vega-lite": "^5.16.3",
-    "vega-tooltip": "^0.33.0"
+    "vega-tooltip": "^0.34.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@tanstack/eslint-plugin-query": "^5.0.5",
-    "@types/node": "18.11.10",
+    "@types/node": "^22.7.5",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.3",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.4.1",
-    "typescript": "^4.9.3"
+    "typescript": "^5.6.2"
   }
 }
