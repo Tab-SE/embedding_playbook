@@ -173,9 +173,34 @@ const handleVizEventListeners = (viz, setInteractive) => {
     console.error('vizloaderror', event);
   }
 
+  const handleMarkSelectionChanged = (event) => {
+    
+    // Debug - Inspect the event
+    // console.error('event:');
+    // console.error(event);
+   
+    // Parse the selected marks
+    event.detail.getMarksAsync().then((marks) => {
+    
+      for (let markIndex = 0; markIndex < marks.data[0].data.length; markIndex++) {
+        const columns = marks.data[0].columns;
+    
+        const markSelected = {};
+        for (let colIndex = 0; colIndex < columns.length; colIndex++) {
+          markSelected[columns[colIndex].fieldName] = marks.data[0].data[markIndex][colIndex].formattedValue;
+        }
+
+        console.log("markSelected:",markIndex);
+        console.log(markSelected);
+
+      }
+    });
+  }
+
    // event listeners can only be added after component mounts
   viz.addEventListener('firstinteractive', handleInteractive);
   viz.addEventListener('vizloaderror', handleVizLoadError);
+  viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
 
   // cleanup after effects
   return () => {
