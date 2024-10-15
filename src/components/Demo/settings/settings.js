@@ -3,6 +3,7 @@ import {
   Package,
   ShoppingCart,
   Users2,
+  BrainCircuit
 } from "lucide-react";
 
 import users from './users';
@@ -44,6 +45,13 @@ export const settings = {
       path: '/customers',
       min_role: 3,
       description: 'improve customer retention rates and identify critical business partnerships'
+    },
+    {
+      name: 'AI',
+      icon: <BrainCircuit className="h-5 w-5"/>,
+      path: '/ai',
+      min_role: 1,
+      description: 'dedicated AI chat interface'
     },
   ],
 }
