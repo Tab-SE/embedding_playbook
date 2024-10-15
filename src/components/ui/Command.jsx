@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react"
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons"
 import { Command as CommandPrimitive } from "cmdk"
