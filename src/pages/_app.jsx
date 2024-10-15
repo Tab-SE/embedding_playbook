@@ -3,9 +3,10 @@ import { SessionProvider } from "components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
+import { AgentRuntimeProvider } from 'app';
 
 import '../global.css';
-import { ChatPopover } from 'components';
+import { ChatPopover, AgentModal } from 'components';
 
 export default function App({
   Component,
@@ -48,13 +49,15 @@ export default function App({
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
           <ThemeProvider attribute="class" forcedTheme='light'>
-            <Component {...pageProps} />
-            {showDevtools && (
-              <Suspense fallback={null}>
-                <ReactQueryDevtoolsProduction />
-              </Suspense>
-            )}
-            <ChatPopover />
+            <AgentRuntimeProvider>
+              <Component {...pageProps} />
+              {showDevtools && (
+                <Suspense fallback={null}>
+                  <ReactQueryDevtoolsProduction />
+                </Suspense>
+              )}
+              <AgentModal/>
+            </AgentRuntimeProvider>
           </ThemeProvider>
       </QueryClientProvider>
     </SessionProvider>
