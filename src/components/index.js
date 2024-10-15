@@ -53,4 +53,4 @@ export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './R
 
 export { SessionProvider } from './SessionProvider';
 
-export { AgentModal } from './Agent';
+export { AgentModal, AgentThread } from './Agent';
