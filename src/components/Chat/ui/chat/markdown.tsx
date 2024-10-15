@@ -1,3 +1,4 @@
+"use client";
 import { FC, memo } from "react";
 import ReactMarkdown, { Options } from "react-markdown";
 import remarkGfm from "remark-gfm";

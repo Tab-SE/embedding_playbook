@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import { IconSparkles, IconTrendingUp, IconTrendingDown, IconArrowNarrowRight } from '@tabler/icons-react';
 

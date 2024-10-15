@@ -1,3 +1,4 @@
+"use client";
 import { forwardRef, useRef } from 'react';
 
 import { TableauAuth } from 'components';

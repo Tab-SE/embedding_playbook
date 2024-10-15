@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from 'react';
 import { View, parse, expressionFunction } from 'vega';
 import { expressionInterpreter } from 'vega-interpreter';

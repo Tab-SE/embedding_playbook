@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, forwardRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useSession } from "next-auth/react";

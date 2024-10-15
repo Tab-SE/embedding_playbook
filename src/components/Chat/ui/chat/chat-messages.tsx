@@ -1,3 +1,4 @@
+"use client";
 import { IconLoader } from '@tabler/icons-react';
 import { useEffect, useRef } from "react";
 

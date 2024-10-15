@@ -1,3 +1,5 @@
+"use client";
+
 import { useXSQuery, useSMQuery, useMDQuery, useLGQuery, useXLQuery, use2XLQuery } from 'hooks';
 
 // tailwind CSS breakpoints used by the app

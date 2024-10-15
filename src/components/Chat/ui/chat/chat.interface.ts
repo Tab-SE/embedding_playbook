@@ -1,3 +1,4 @@
+"use client";
 import { Message } from "ai";
 
 export interface ChatHandler {
