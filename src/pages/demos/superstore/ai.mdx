@@ -1,0 +1,23 @@
+---
+title: "Customers"
+description: "A demonstration of embedded AI showcasing Tableau capabilities"
+---
+
+import { Demo, AgentThread } from 'components';
+
+<Demo
+  basePath='/demos'
+  crumbs={{
+    'Superstore Analytics': {
+      path: '/superstore',
+      child: {
+        'AI': {
+          path: '/ai',
+          child: null
+        }
+      }
+    }
+  }}
+>
+  <AgentThread />
+</Demo>
