@@ -52,3 +52,5 @@ export { ActionCard } from './ActionCard';
 export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './ResponsiveLayouts';
 
 export { SessionProvider } from './SessionProvider';
+
+export { AgentModal } from './Agent';
