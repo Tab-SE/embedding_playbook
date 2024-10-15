@@ -44,7 +44,10 @@ module.exports = {
   plugins: [
     require("tailwindcss-animate"),
     require("@assistant-ui/react/tailwindcss")({
-      components: ["assistant-modal"],
+      components: [
+        "assistant-modal",
+        "thread"
+      ],
       shadcn: true
     })
   ],
