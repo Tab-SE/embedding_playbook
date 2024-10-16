@@ -10,6 +10,8 @@ export { Logo } from './Logo';
 
 export { Metrics, Metric, extractMetrics } from './Metrics';
 
+export { LoadDatasources } from './Datasources';
+
 export {
   TableauEmbed,
   TableauViz,
@@ -17,6 +19,12 @@ export {
   TableauAuth,
   TableauToolbar
 } from './TableauEmbed';
+
+export { PulseExtension } from 'components/PulseExtension';
+export { PulseExtensionDialog } from 'components/PulseExtension';
+// export { TableauExtension } from './TableauExtension';
+export { InsightsOnly } from './Insights';
+export { ExtensionDataProvider, ExtensionDataContext } from './ExtensionDataProvider';
 
 export { Explore } from './Explore';
 

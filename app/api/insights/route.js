@@ -1,4 +1,4 @@
-export const maxDuration = 300; // This function can run for a maximum of 300 seconds
+export const maxDuration = 60; // 60 is the hobby limit.  300; // This function can run for a maximum of 300 seconds
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 
 import { NextResponse } from "next/server";
@@ -22,7 +22,7 @@ export async function POST(req) {
   if (token?.tableau) {
     const requestBody = await req.json();
     // only responds with data to authorized users
-    const payload = await makePayload(token.tableau.rest_key, requestBody.metric);
+    const payload = await makePayload(token.tableau.rest_key, requestBody.metric, token.tableau.tableauUrl);
     if (payload) {
       return NextResponse.json(payload, { status: 200 });
     } else {

@@ -11,7 +11,12 @@ export const InsightsModal = (props) => {
       <Tabs defaultValue="insights">
         <DialogHeader className="ml-6">
           <DialogTitle className="text-3xl">
-            <span className={`${stats.color} inline-block`}>{stats.direction}</span> <span className="text-stone-600 dark:text-stone-300">{metric.name}:</span> <span className="font-bold ml-3">{stats.value}</span>
+            <span className={`${stats.color} inline-block`}>{stats.direction}</span> <span className="text-stone-600 dark:text-stone-300">
+              {metric.name}:
+              <span className="text-xl ml-3">
+                {metric.namePeriod} - {metric.nameFilters}
+              </span>
+            </span> <span className="font-bold ml-3">{stats.value}</span>
           </DialogTitle>
           <DialogDescription className='pt-3'>
             <span className={`text-2xl text-muted-foreground ${stats.color}`}>
@@ -20,25 +25,25 @@ export const InsightsModal = (props) => {
             <span className={`text-2xl text-muted-foreground ${stats.color}`}>
               &nbsp; △ {stats.relative ? `${stats.relative}` : null}
             </span>
-            <TabsList className='mx-6'>
+{/*             <TabsList className='mx-6'>
               <TabsTrigger value="insights">
                 Insights
               </TabsTrigger>
               <TabsTrigger value="dashboard">
                 Dashboard
               </TabsTrigger>
-            </TabsList>
+            </TabsList> */}
           </DialogDescription>
         </DialogHeader>
-          <InsightsChat metric={metric} stats={stats} />
-          <Dashboards src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip' />
+        <InsightsChat metric={metric} stats={stats} />
+        <Dashboards src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip' />
       </Tabs>
     </DialogContent>
   )
 }
 
 const InsightsChat = (props) => {
-  const {metric, stats} = props;
+  const { metric, stats } = props;
 
   return (
     <TabsContent value="insights" className="space-y-4">
@@ -66,7 +71,7 @@ const Dashboards = (props) => {
         device='default'
         toolbar='hidden'
         customToolbar={false}
-        layouts = {{
+        layouts={{
           '*': { 'device': 'default', 'width': 1300, 'height': 540 }
         }}
       />

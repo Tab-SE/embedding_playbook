@@ -8,7 +8,7 @@ import { getInsights } from "libs";
 
 export const useInsights = (metric) => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [metric].every(param => param != null) ? ["tableau", "insights", metric.name, metric.id] : [];
+  const queryKey = [metric].every(param => param != null) ? ["tableau", "insights", metric.name, metric.specification_id] : [];
 
   return useQuery({
     queryKey: queryKey,

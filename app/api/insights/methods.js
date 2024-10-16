@@ -2,12 +2,12 @@ const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tabl
 const pulse_path = '/api/-/pulse'; // path to resource
 
 // returns stringified payload to form responses
-export const makePayload = async (rest_key, metric) => {
+export const makePayload = async (rest_key, metric, tableauUrl) => {
   if (rest_key && metric) {
     let bundle;
     try {
       // request insights
-      bundle = await getInsightBundle(rest_key, metric, '/detail');
+      bundle = await getInsightBundle(rest_key, metric, '/detail', tableauUrl);
     } catch (err) {
       console.debug(err);
       return null;
@@ -22,11 +22,14 @@ export const makePayload = async (rest_key, metric) => {
 }
 
 // requests insight bundles for all supported types given a metric (params)
-const getInsightBundle = async (apiKey, metric, resource) => {
+const getInsightBundle = async (apiKey, metric, resource, tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  
   // create a request body (standard for all Pulse bundle requests)
   const body = makeBundleBody(metric);
 
-  const endpoint = tableau_domain + pulse_path + '/insights' + resource;
+  const endpoint = _domain + pulse_path + '/insights' + resource;
 
   const request = new Request(endpoint, {
     method: 'POST',
@@ -79,7 +82,8 @@ const makeBundleBody = (metric) => {
     bundle_request: {
       version: "1",
       options: {
-        output_format: "OUTPUT_FORMAT_TEXT",
+        // output_format: "OUTPUT_FORMAT_TEXT",
+        output_format: "OUTPUT_FORMAT_HTML",
         now: formattedDate,
         time_zone: timeZone
       },

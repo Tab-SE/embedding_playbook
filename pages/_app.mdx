@@ -3,6 +3,8 @@ import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
+import { ExtensionDataProvider } from 'components/ExtensionDataProvider'
+
 
 import '../global.css';
 import { ChatPopover } from 'components';
@@ -44,19 +46,26 @@ export default function App({
   // Session Provider: https://next-auth.js.org/getting-started/client#sessionprovider
   // Query Client Provider: https://tanstack.com/query/v4/docs/react/reference/QueryClientProvider
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
-          <ThemeProvider attribute="class" forcedTheme='light'>
-            <Component {...pageProps} />
-            {showDevtools && (
+    <div id="outerouter" className="nx-mx-auto nx-flex w-full !max-w-none">
+      <SessionProvider session={session} basePath='/pulseExtension/api/auth'>
+        {process.env.NODE_ENV === 'production' && <button className="text-gray-300" onClick={() => window.toggleDevtools()} style={{ position: 'fixed', bottom: 5, right: 10, zIndex: 1000 }}>
+          Toggle Devtools
+        </button>}
+        <QueryClientProvider client={queryClient}>
+          <ExtensionDataProvider>
+            <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left' />
+            {showDevtools ? (
               <Suspense fallback={null}>
                 <ReactQueryDevtoolsProduction />
               </Suspense>
-            )}
-            <ChatPopover />
-          </ThemeProvider>
-      </QueryClientProvider>
-    </SessionProvider>
+            ) : null}
+            <ThemeProvider attribute="class">
+              <Component {...pageProps} />
+              <ChatPopover />
+            </ThemeProvider>
+          </ExtensionDataProvider>
+        </QueryClientProvider>
+      </SessionProvider>
+    </div>
   )
 }

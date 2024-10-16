@@ -1,4 +1,4 @@
-import { getSubscriptions, getSpecifications, getDefinitions } from "libs"
+import { getSubscriptions, getSpecifications, getDefinitions, getFilter } from "libs"
 import { parseSubscriptions, parseSpecifications, parseDefinitions } from "utils"
 
 /*
@@ -6,43 +6,57 @@ Request and process data for metrics. The "sync" prefix indicates that these met
 should eventually support Tanstack client-side or SWR server-side for state management
 */
 
-export const handleSubscriptions = async (apiKey, userId) => {
+export const handleSubscriptions = async (apiKey, userId, tableauUrl) => {
   try {
-    const response = await getSubscriptions(apiKey, userId, 20);
+    const response = await getSubscriptions(apiKey, userId, 20, tableauUrl);
     responseHandler(response); // output any errors returned from Tableau Pulse request
     const parsedData = parseSubscriptions(response);
     return parsedData;
   } catch(err) {
     console.error(err);
-    return parsedData;
+    return err;
   }
 }
 
-export const handleSpecifications = async (apiKey, subscriptions) => {
+export const handleSpecifications = async (apiKey, subscriptions: any, tableauUrl) => {
   try {
     // create a comma separated string for URL parameters the next request
-    const metric_ids = Object.values(subscriptions).map(obj => obj.metric_id).join(',');
-    const response = await getSpecifications(apiKey, metric_ids);
+    const metric_ids = Object.values(subscriptions).map((obj: any) => obj.metric_id).join(',');
+    const response = await getSpecifications(apiKey, metric_ids, tableauUrl);
     responseHandler(response); // output any errors returned from Tableau Pulse request
     const parsedData = parseSpecifications(response);
     return parsedData;
   } catch(err) {
     console.debug(err);
-    return parsedData;
+    return err;
   }
 }
 
-export const handleDefinitions = async (apiKey, specifications) => {
+export const handleDefinitions = async (apiKey, specifications, tableauUrl) => {
   try {
     // create a comma separated string for URL parameters the next request
-    const definition_ids = Object.values(specifications).map(obj => obj.definition_id).join(',');
-    const response = await getDefinitions(apiKey, definition_ids);
+    const definition_ids = Object.values(specifications).map((obj: any) => obj.definition_id).join(',');
+    const response = await getDefinitions(apiKey, definition_ids, tableauUrl);
     responseHandler(response); // output any errors returned from Tableau Pulse request
     const parsedData = parseDefinitions(response);
     return parsedData;
   } catch(err) {
     console.debug(err);
-    return parsedData;
+    return err;
+  }
+}
+
+export const handleFilter = async (apiKey, defSpec, tableauUrl) => {
+  try {
+
+    const response = await getFilter(apiKey, defSpec, tableauUrl);
+    responseHandler(response); // output any errors returned from Tableau Pulse request
+    return response;
+    // const parsedData = parseDefinitions(response);
+    // return parsedData;
+  } catch(err) {
+    console.debug(err);
+    return err;
   }
 }
 

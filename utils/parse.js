@@ -136,10 +136,10 @@ export const parseDetail = (bundle) => {
     });
 
     // sorts the array based on the "score" property
-    const sortedDetails = details.sort((a, b) => b.score - a.score);
+    details.sort((a, b) => b.score - a.score);
 
     // remove elements with type === 'ban'
-    const filteredDetails = sortedDetails.filter(item => item.type !== 'ban');
+    const filteredDetails = details.filter(item => item.type !== 'ban');
 
     return filteredDetails;
   } else {
@@ -162,11 +162,56 @@ export const parseInsights = (bundle) => {
         if (insight?.result) {
           // get insight properties
           const { result: { id, type, markup, viz, facts, characterization, question, score } } = insight;
+          let typeText = type;
+          switch (type) {
+            case 'ban':
+              typeText = 'Big ass number';
+              break;
+            case 'unusualchange':
+              typeText = 'Unusual change';
+              break;
+            case 'popC':
+              typeText = 'Period over period';
+              break;
+            case 'currenttrend':
+              typeText = 'Current trend';
+              break;
+            case "top-contributors":
+              typeText = "Top contributors";
+              break;
+            case "bottom-contributors":
+              typeText = "Bottom contributors";
+              break;
+            case "top-detractors":
+              typeText = "Top detractors";
+              break;
+            case "bottom-detractors":
+              typeText = "Bottom detractors";
+              break;
+            case "top-drivers":
+              typeText = "Top drivers";
+              break;
+            case "bottom-drivers":
+              typeText = "Bottom drivers";
+              break;
+            case "recordleveloutlier":
+              typeText = "Record level outlier";
+              break;
+            case "newtrend":
+              typeText = "New trend";
+              break;
+            case "riskmo":
+              typeText = "Risky monopoly";
+              break;
+            default:
+              typeText = type;
+          }
           // push insights into array
           insights.push({
             id,
             group: groupName,
             type,
+            typeText,
             markup,
             viz,
             fact: facts,
@@ -179,9 +224,9 @@ export const parseInsights = (bundle) => {
     });
 
     // Sort the array based on the "score" property
-    const sortedInsights = insights.sort((a, b) => b.score - a.score);
+    insights.sort((a, b) => b.score - a.score);
 
-    return sortedInsights;
+    return insights;
   } else {
     throw new Error(`Error parsing insights bundle, could not form an array: ${bundle}`);
   }
@@ -223,7 +268,7 @@ const parseWorkbooks = (rawMetadata) => {
     });
 
     // convert array to Set removes duplicates, then convert back to array
-    const distinctProjects = Array.from(new Set(projects));
+    const distinctProjects = [...new Set(projects)];
 
     // loop through all unique projects and find their child workbooks
     for (const project of distinctProjects) {

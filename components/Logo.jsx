@@ -1,10 +1,10 @@
 import Image from 'next/image';
-
+const basePath = process.env.NEXT_PUBLIC_BASE_URL;
 export const Logo = (props) => {
   const { src, width, height, alt, text } = props;
 
   const imageSize = Number(width) || 40;
-  const imageSrc = src || "/img/tableau/tableau_logo.png";
+  const imageSrc = src || basePath + "/img/tableau/tableau_logo.png";
 
   const imageProps = {
     src: imageSrc,

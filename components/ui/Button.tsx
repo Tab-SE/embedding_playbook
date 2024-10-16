@@ -4,6 +4,7 @@ import { cva } from "class-variance-authority";
 
 import { cn } from "utils";
 
+
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-stone-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-stone-300",
   {
@@ -34,7 +35,18 @@ const buttonVariants = cva(
   }
 )
 
-const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
+type ButtonProps = {
+  id?: string;
+  asChild?: boolean;
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | null | undefined;
+  size?: "default" | "sm" | "lg" | "icon" | null | undefined;
+  className?: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  children?: React.ReactNode;
+};
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant, size, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : "button"
   return (
     (<Comp
@@ -43,6 +55,7 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
       {...props} />)
   );
 })
+
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
