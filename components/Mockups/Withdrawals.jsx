@@ -1,8 +1,8 @@
 import Link from "next/link"
 import { ArrowUpRight, DollarSign, CreditCard, Banknote, Building, ShoppingCart } from "lucide-react"
 
-import { Badge } from "/components/ui/badge"
-import { Button } from "/components/ui/button"
+import { Badge } from "components/ui"
+import { Button } from "components/ui"
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
   CardFooter
-} from "/components/ui/card"
+} from "components/ui"
 import {
   Table,
   TableBody,
@@ -18,7 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "/components/ui/table"
+} from "components/ui"
 
 export const Withdrawals = () => {
   return (
