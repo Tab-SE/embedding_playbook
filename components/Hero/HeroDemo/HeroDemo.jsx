@@ -28,7 +28,7 @@ export const HeroDemo = (props) => {
       <div className="hidden sm:grid grid-col  my-6">
         <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-xl h-min-screen">
           <MainNav setTheme={setTheme} />
-          <div className='bg-stone-300 dark:bg-stone-700 pt-6 min-h-[1170px]'>
+          <div className='bg-stone-300 dark:bg-stone-700 pt-6 min-h-[1170px]' style={{backgroundColor: "#E5E4E2"}}>
             <div className='px-6'>
               {hideMetrics ? null : <Metrics basis="sm:basis-1/2 xl:basis-1/3" />}
             </div>

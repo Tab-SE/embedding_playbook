@@ -83,8 +83,8 @@ export const Metric = (props) => {
           }
 
           if (sent === 'positive') {
-            stats.color = 'text-metricsPositive';
-            stats.badge = 'bg-metricsPositive';
+            stats.color = 'purple';
+            stats.badge = 'purple';
           } else if (sent === 'neutral') {
             stats.color = 'text-metricsNeutral';
             stats.badge = 'bg-metricsNeutral';

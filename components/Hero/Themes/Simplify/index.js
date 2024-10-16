@@ -1,7 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 
 import { Recruiting } from './Recruiting';
-import {Workforce} from './Workforce'
+import {Workforce} from './Workforce';
+import {ContractJobManagement} from './ContractJobManagement'
 
 export const Simplify = () => {
   return (
@@ -13,10 +14,14 @@ export const Simplify = () => {
         <TabsTrigger value="recruiting">
           Recruiting Efficiency
         </TabsTrigger>
+        <TabsTrigger value="contract">
+          Contract Job Management
+        </TabsTrigger>
       </TabsList>
       <section className="min-h-[892px]">
             <Recruiting/>
             <Workforce/>
+            <ContractJobManagement/>
       </section>
     </Tabs>
   )

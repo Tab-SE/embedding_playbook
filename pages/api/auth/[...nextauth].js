@@ -43,6 +43,7 @@ export const authOptions = {
             // if a match is found store value as user
             user = value;
           }
+          console.log(2)
         }
         if (user) {
           // add the demo to the user object to see it on the client
@@ -67,7 +68,7 @@ export const authOptions = {
           };
           const embed_session = new Session(user.name);
           await embed_session.jwt(user.email, embed_options, embed_scopes);
-          console.log(1)
+          console.log("1")
 
           // used for backend HTTP calls
           const rest_scopes = [
