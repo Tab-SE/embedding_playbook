@@ -10,9 +10,6 @@ export const ContractJobManagement = () => {
       <Card style={{backgroundColor: "white"}}>
         <CardHeader>
           <CardTitle>Contract Job Management</CardTitle>
-          <CardDescription>
-          TBD
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center items-center">
           <TableauEmbed

@@ -10,9 +10,6 @@ export const Recruiting = () => {
       <Card style={{backgroundColor: "white"}}>
         <CardHeader>
           <CardTitle>Recruiting Efficiency</CardTitle>
-          <CardDescription>
-          TBD
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center items-center">
           <TableauEmbed

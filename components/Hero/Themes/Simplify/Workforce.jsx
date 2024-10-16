@@ -10,9 +10,6 @@ export const Workforce = () => {
       <Card style={{backgroundColor: "white"}}>
         <CardHeader>
           <CardTitle>Workforce Overview</CardTitle>
-          <CardDescription>
-          TBD
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center items-center">
           <TableauEmbed
