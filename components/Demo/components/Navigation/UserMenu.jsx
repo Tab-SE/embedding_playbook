@@ -32,7 +32,7 @@ export function UserMenu(props) {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession('a', 'superstore');
+  } = useTableauSession('a', 'simplify');
 
   if (isSessionError) {
     console.debug(sessionError);
