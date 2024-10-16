@@ -50,6 +50,9 @@ export const MetricSalesforceDetails: React.FC<{
     if (mff && mff.length > 0) {
       setFilterReady(true);
     }
+    else {
+      setFilterReady(false);
+    }
   }, [() => contextData.datasourceCollection.getDatasource(datasourceId)?.metricFilterFields]);
 
   useEffect(() => {
