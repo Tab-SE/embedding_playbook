@@ -1,20 +1,20 @@
 export const UserStore = {
-  superstore: {
+  simplify: {
     roles: {
       1: { title: 'hobby', description: 'Basic data & analytics'},
       2: { title: 'pro', description: 'More data, analytics & exports'},
       3: { title: 'premium', description: 'Full self-service analytics'},
     },
     users: {
-      A: {
+      Ewa: {
         name: "Julie Morris",
         email: "daniel.castro+simplify@salesforce.com",
         picture: "/img/users/mackenzie_day.png",
         role: 3,
-        vector_store: 'superstore_jmorris',
+        vector_store: 'simplify_jmorris',
         uaf: {}
       },
-      B: {
+      Daniel: {
         name: "Justin Chen",
         email: "jchen@mail.com",
         picture: "/img/users/justin_chen.png",
@@ -22,7 +22,7 @@ export const UserStore = {
         vector_store: 'superstore_jchen',
         uaf: {}
       },
-      C: {
+      Allison: {
         name: "Sofia Lopez",
         email: "slopez@mail.com",
         picture: "/img/users/sofia_lopez.png",
