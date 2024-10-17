@@ -23,6 +23,7 @@ export const Simplify = () => {
       setShowContract(isEwa);
       setShowWorkforce(isJustin);
       setShowRecruiting(isJustin);
+      console.log("isJustin", isJustin)
 
       // Set dynamic default tab based on the user
       if (isEwa) {
@@ -30,7 +31,7 @@ export const Simplify = () => {
       } else if (isJustin) {
         setDefaultTab("workforce");
       } else {
-        setDefaultTab("contract"); // Fallback to another tab if needed
+        setDefaultTab("recruiting"); // Fallback to another tab if needed
       }
     }
   }, [session_data, status]);
@@ -45,10 +46,8 @@ export const Simplify = () => {
   >
     Log in
   </Button>
-  
-  
   }
-
+console.log("showRecruiting", showRecruiting)
   return (
     <Tabs defaultValue={defaultTab} className="space-y-3">
       <TabsList>
@@ -64,13 +63,13 @@ export const Simplify = () => {
         )}
         {showRecruiting && (
           <TabsTrigger value="recruiting">
-            Recruiting Efficiency
+            Job Requisition Efficiency
           </TabsTrigger>
         )}
       </TabsList>
       <section className="min-h-[892px]">
-        {defaultTab === "recruiting" && showRecruiting && <Recruiting />}
         {defaultTab === "workforce" && showWorkforce && <Workforce />}
+        {defaultTab === "workforce" && showRecruiting && <Recruiting />}
         {defaultTab === "contract" && showContract && <ContractJobManagement />}
       </section>
     </Tabs>

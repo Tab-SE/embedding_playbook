@@ -5,11 +5,12 @@ import { TableauEmbed } from 'components';
 
 
 export const Recruiting = () => {
+    console.log("recruiting running")
   return (
     <TabsContent value="recruiting" className="space-y-4">
       <Card style={{backgroundColor: "white"}}>
         <CardHeader>
-          <CardTitle>Recruiting Efficiency</CardTitle>
+          <CardTitle>Job Requisition Efficiency</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center items-center">
           <TableauEmbed
