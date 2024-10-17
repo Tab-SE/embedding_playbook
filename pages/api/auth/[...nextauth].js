@@ -23,7 +23,7 @@ export const authOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        ID: { label: "ID", type: "text", placeholder: "Ewa, Vince, Daniel, or Allison" },
+        ID: { label: "ID", type: "text", placeholder: "Ewa or Justin" },
         demo: { label: "Demo", type: "text" }
       },
       async authorize(credentials, req) {
@@ -36,6 +36,7 @@ export const authOptions = {
         let user = null;
         // maps logins to specific demos so non-demo sessions can be logged out
         const demo = UserStore[credentials.demo]
+
         // check all keys in user store
         for (const [key, value] of Object.entries(demo.users)) {
           // find keys that match credential
@@ -43,7 +44,6 @@ export const authOptions = {
             // if a match is found store value as user
             user = value;
           }
-          console.log(2)
         }
         if (user) {
           // add the demo to the user object to see it on the client
@@ -60,7 +60,7 @@ export const authOptions = {
             "tableau:views:embed",
             "tableau:views:embed_authoring",
             "tableau:insights:embed",
-          ];
+           ];
           const embed_options = {
             jwt_secret: embed_secret,
             jwt_secret_id: embed_secret_id,
@@ -68,7 +68,6 @@ export const authOptions = {
           };
           const embed_session = new Session(user.name);
           await embed_session.jwt(user.email, embed_options, embed_scopes);
-          console.log("1")
 
           // used for backend HTTP calls
           const rest_scopes = [
@@ -99,7 +98,6 @@ export const authOptions = {
               username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires,
             };
           }
-          console.log("credentials", user.email)
 
           // Return false to display a default error message
           return user.tableau ? user : false;

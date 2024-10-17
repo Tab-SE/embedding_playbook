@@ -17,7 +17,6 @@ export const TableauWebAuthor = forwardRef(function Viz(props, ref) {
   const innerRef = ref || localRef;
   // most viz interactions must wait until interactive
   const [interactive, setInteractive] = useState(false);
-  console.log("123", src)
 
   return (
     <tableau-authoring-viz

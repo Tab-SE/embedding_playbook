@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
 export const jwtSign = (sub, jwt_options, scopes) => {
+    console.log("123jwtSign crypto", sub)
     // https://help.tableau.com/current/online/en-us/connected_apps_direct.htm#step-3-configure-the-jwt
     try {
         const payload = {

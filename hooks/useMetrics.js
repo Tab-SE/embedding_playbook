@@ -16,7 +16,7 @@ export const useMetrics = () => {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession('a', 'none');
+  } = useTableauSession('na', 'none');
 
   // set to an empty array if enumerated function parameters are not available in array
   const queryKey = [user?.name].every(param => param != null) ? ["tableau", user.name, "metrics"] : [];

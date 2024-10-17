@@ -7,19 +7,19 @@ export const UserStore = {
     },
     users: {
       Ewa: {
-        name: "Julie Morris",
-        email: "daniel.castro+simplify@salesforce.com",
+        name: "Ewa Przywara",
+        email: "ewa.przywara@mail.com",
         picture: "/img/users/mackenzie_day.png",
         role: 3,
         vector_store: 'simplify_jmorris',
         uaf: {}
       },
-      Daniel: {
+      Justin: {
         name: "Justin Chen",
         email: "jchen@mail.com",
         picture: "/img/users/justin_chen.png",
-        role: 2,
-        vector_store: 'superstore_jchen',
+        role: 1,
+        vector_store: 'simplify_jchen',
         uaf: {}
       },
       Allison: {

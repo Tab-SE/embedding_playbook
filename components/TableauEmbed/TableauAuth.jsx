@@ -30,7 +30,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession('a', 'none');
+  } = useTableauSession('na', 'none');
 
   if (isSessionError) {
     console.debug(sessionError);
@@ -39,6 +39,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
   if (isSessionSuccess) {
     embed_token = user.embed_token;
   }
+  console.log("embed_token", embed_token)
 
   return (
     <div>

@@ -32,7 +32,7 @@ export function UserMenu(props) {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession('a', 'none');
+  } = useTableauSession('na', 'none');
 
   if (isSessionError) {
     console.debug(sessionError);
@@ -76,8 +76,7 @@ const Logout = (props) => {
       >
         <Button
           variant="ghost"
-          className="h-min p-1"
-        >
+          className="h-min p-1">
         Log out
         </Button>
         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

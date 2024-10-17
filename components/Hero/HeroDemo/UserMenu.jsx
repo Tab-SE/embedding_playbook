@@ -98,12 +98,18 @@ const Trigger = (props) => {
 
 
 const Label = (props) => {
+  const { data: session_data } = useSession();
+  
+  // Use session data or fallback to props if provided
+  const userName = session_data?.user?.name || props.name || "User";
+  const userEmail = session_data?.user?.email || props.email || "user@example.com";
+  
   return (
     <DropdownMenuLabel className="font-normal">
       <div className="flex flex-col space-y-1">
-        <p className="text-sm font-medium leading-none">Ewa Przywara</p>
+        <p className="text-sm font-medium leading-none">{userName}</p>
         <p className="text-xs leading-none text-muted-foreground">
-          eprzywara@mail.com
+          {userEmail}
         </p>
       </div>
     </DropdownMenuLabel>

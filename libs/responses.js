@@ -2,6 +2,7 @@ import { Session } from "models";
 
 // server-side access to JWT sessions with Tableau
 export const serverJWT = async (user, jwt_options, scopes) => {
+  console.log("123serverJWT")
   // user provided during authentication is used to create a new Session
   const session = new Session(user.name);
   // authorize to Tableau via JWT

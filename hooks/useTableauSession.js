@@ -10,12 +10,13 @@ import { getUser } from "libs";
 // more on retries (default 3): https://tanstack.com/query/v5/docs/framework/react/guides/query-retries
 // secures UI components via these methods: https://next-auth.js.org/getting-started/client#require-session
 export const useTableauSession = (userName, demo) => {
+  console.log("useTableauSession", userName)
   // set to an empty array if enumerated function parameters are not available in array
   const queryKey = [userName].every(param => param != null) ? ["tableau", "user session", userName] : [];
-
   const { status: session_status, data: session_data } = useSession({
     required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
     async onUnauthenticated() {
+      console.log("onUnauthenticated")
       // The user is not authenticated, handle it here.
       const { error, status, ok } = await signIn('demo-user', { redirect: false, ID: userName, demo: demo });
     }
@@ -28,6 +29,7 @@ export const useTableauSession = (userName, demo) => {
   return useQuery({
     queryKey: queryKey,
     queryFn: () => {
+      console.log("getClientSession", session_data.user.email)
       return getClientSession(session_data.user.email);
     },
     enabled: signedIn,
