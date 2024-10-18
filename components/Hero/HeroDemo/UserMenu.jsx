@@ -21,7 +21,7 @@ import {
 
 export function UserMenu(props) {
   const { src } = props;
-  const avatar = src ? src : 'img/users/mackenzie_day.png';
+  const [avatar, setAvatar] = useState('img/users/mackenzie_day.png')
   const [user, setUser] = useState(undefined);
   // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
   const { status, data } = useSession({ required: false });
@@ -29,6 +29,8 @@ export function UserMenu(props) {
   useEffect(() => {
     if (status === 'authenticated') {
       setUser(data.user.name);
+      setAvatar(data.user.image)
+      console.log("data.user", data.user)
     }
   }, [status, data]);
 

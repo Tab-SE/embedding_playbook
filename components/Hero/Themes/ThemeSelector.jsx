@@ -50,7 +50,7 @@ export const ThemeSelector = (props) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
+        {/* <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
@@ -66,7 +66,7 @@ export const ThemeSelector = (props) => {
           </Avatar>
           {selectedTeam.label}
           <CaretSortIcon className="ml-3 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+        </Button> */}
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0 shadow-xl">
         <Command>
