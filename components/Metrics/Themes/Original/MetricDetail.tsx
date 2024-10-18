@@ -195,54 +195,56 @@ const Stats: React.FC<StatsProps> = (props) => {
             <div className="flex flex-col">
               <div className="text-2xl font-bold">{stats.value ? stats.value : null}</div>
               <div className="text-xs text-muted-foreground -mt-2">{stats.units}</div>
+              <div className="mt-2">
+                <Dialog>
+                  <DialogTrigger>
+                    <Badge
+                      className={`${stats.badge} text-stone-50 h-6 flex items-center justify-center whitespace-nowrap w-min px-2`}
+                      variant={undefined}
+                    >
+                      <IconSparkles width={15} height={15} className="mr-1" />
+                      <span className="inline-block">{bundleCount}</span>
+                    </Badge>
+                  </DialogTrigger>
+                  <InsightsModal metric={metric} stats={stats} />
+                </Dialog>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col flex-grow items-start text-xs text-muted-foreground mx-4">
-            {contextData.timeComparisonMode !== 'text' &&
-              stats?.comparisons?.[0] && (
-                <>
-                  <div className={`flex space-x-2 items-center ${stats.color}`}>
-                    <div>{stats.comparisons[0].directionIcon}</div>
-                    <div>{stats.comparisons[0].absolute}</div>
-                    <div>
-                      {stats.comparisons[0].relative ? `${stats.comparisons[0].relative} △` : null}
-                    </div>
-                  </div>
-                  <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
-                    {stats.comparisons[0].comparison}
-                  </div>
-                </>
-              )}
-            {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
-              <>
-                <div className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1`}>
-                  <div>{stats?.comparisons[1].directionIcon}</div>
-                  <div>{stats?.comparisons[1].absolute}</div>
-                  <div>
-                    {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
-                  </div>
-                </div>
-                <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
-                  {stats?.comparisons[1].comparison}
-                </div>
-              </>
-            )}
-          </div>
-          <div>
-            <Dialog>
-              <DialogTrigger>
-                <Badge
-                  className={`${stats.badge} text-stone-50 h-6 flex items-center justify-center whitespace-nowrap w-min px-2`}
-                  variant={undefined}
-                >
-                  <IconSparkles width={15} height={15} className="mr-1" />
-                  <span className="inline-block">{bundleCount}</span>
-                </Badge>
-              </DialogTrigger>
-              <InsightsModal metric={metric} stats={stats} />
-            </Dialog>
-          </div>
+            
+            
+         
         </div>
+        <div className="flex flex-col flex-grow items-start text-xs text-muted-foreground mx-4">
+          {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
+            <>
+              <div className={`flex space-x-2 items-center ${stats.color}`}>
+                <div>{stats.comparisons[0].directionIcon}</div>
+                <div>{stats.comparisons[0].absolute}</div>
+                <div>
+                  {stats.comparisons[0].relative ? `${stats.comparisons[0].relative} △` : null}
+                </div>
+              </div>
+              <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
+                {stats.comparisons[0].comparison}
+              </div>
+            </>
+          )}
+          {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
+            <>
+              <div className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1`}>
+                <div>{stats?.comparisons[1].directionIcon}</div>
+                <div>{stats?.comparisons[1].absolute}</div>
+                <div>
+                  {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
+                </div>
+              </div>
+              <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
+                {stats?.comparisons[1].comparison}
+              </div>
+            </>
+          )}
+        </div>
+</div>
         {contextData.timeComparisonMode === 'text' && (
           <div className="pl-3 text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
             <br />
