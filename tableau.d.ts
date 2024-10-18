@@ -22,6 +22,7 @@ interface ContextData {
   companionMode: string;
   displayMode: 'original' | 'singlePane' | 'salesforce' | 'tableau';
   currentFiltersDisplayMode: 'top' | 'bottom';
+  timeComparisonMode: 'primary' | 'both' | 'text';
   handleSetVal: (metricId: string) => void;
   increment: number;
   metricIdParamIsValid: boolean;
@@ -63,6 +64,20 @@ interface Metric {
   created?: string;
   updated?: string;
   insights?: any[];
+  comparisons?: Comparisons;
+}
+
+interface ComparisonConfig {
+  comparison: "TIME_COMPARISON_PREVIOUS_PERIOD" | "TIME_COMPARISON_YEAR_AGO_PERIOD";
+}
+
+interface Comparison {
+  compare_config: ComparisonConfig;
+  index: string;
+}
+
+interface Comparisons {
+  comparisons: Comparison[];
 }
 
 interface Definition {
@@ -129,7 +144,8 @@ interface RowLevelNameField {
 interface StatsProps {
   isSuccess: boolean;
   stats: {
-    units: ReactNode;
+    target_time_period_value?: string;
+    units?: string;
     value?: string;
     absolute?: string;
     relative?: string;
@@ -137,6 +153,8 @@ interface StatsProps {
     color?: string;
     badge?: string;
     markup?: string;
+    comparisons?: any[]
+    target_time_period_range?: string;
   };
   bundleCount: number | null;
   metric: Metric;

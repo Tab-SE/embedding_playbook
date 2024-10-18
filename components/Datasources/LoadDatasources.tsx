@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { useState, useEffect, useContext, useMemo } from 'react';
-import { useMetricFilters, useDatasourceFields, useDatasource } from '../../hooks';
+import { useState, useEffect, useContext } from 'react';
+import { useDatasource } from '../../hooks';
 import { ExtensionDataContext } from '../ExtensionDataProvider';
-import { DatasourceModel, InsightsModel, MetricCollection } from 'models';
+import { DatasourceModel, InsightsModel } from 'models';
 import { DatasourceModelCollection } from 'models/Datasource';
 
 export const LoadDatasources = (props) => {

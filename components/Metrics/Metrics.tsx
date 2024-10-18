@@ -33,7 +33,7 @@ export const Metrics = (props) => {
     if ( data && data.length > 0 && !isError ) {    // extract metrics if data is available
       let metrics = sortPayloadByIds(data, sortOrder);
       let metricCollection = new MetricCollection(metrics);
-      metricCollection.setMetricOptions(metricOptions);
+      metricCollection.setMetricOptions(contextData.metricCollection.metricOptions);
       updateContextData({ metricCollection: metricCollection });
     }
   }, [data]);

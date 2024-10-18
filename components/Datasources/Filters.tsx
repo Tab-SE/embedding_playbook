@@ -40,7 +40,7 @@ interface MetricFilterProps {
   handleMetricFilter: (datasourceId: string, metricId: string, selectedValues: string[]) => void;
 }
 
-const Filters: React.FC<MetricFilterProps & { metric: Metric }> = ({
+export const Filters: React.FC<MetricFilterProps & { metric: Metric }> = ({
   // filterName,
   // data,
   passedValues,

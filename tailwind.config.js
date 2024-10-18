@@ -5,8 +5,18 @@ module.exports = {
   content: [
     './pages/**/*.{js,jsx,ts,tsx,md,mdx}',
     './components/**/*.{js,jsx,ts,tsx,md,mdx}',
+    './hooks/**/*.{js,jsx,ts,tsx}', 
+    './utils/**/*.{js,jsx,ts,tsx}', 
+    './context/**/*.{js,jsx,ts,tsx}', 
   ],
-  prefix: "",
+  safelist: [
+    'text-metricsPositive',
+    'text-metricsNeutral',
+    'text-metricsNegative',
+    'bg-metricsPositive',
+    'bg-metricsNeutral',
+    'bg-metricsNegative'
+  ],
   theme: {
     container: {
       center: true,
@@ -22,7 +32,7 @@ module.exports = {
         navigationIcons: '#0c0a09',
         metricsPositive: '#0284c7',
         metricsNeutral: '#78716c',
-        metricsNegative: '#ea580c',
+        metricsNegative: '#ea580c'
       },
       keyframes: {
         "accordion-down": {
@@ -41,4 +51,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

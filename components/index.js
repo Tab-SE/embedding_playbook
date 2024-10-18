@@ -10,7 +10,7 @@ export { Logo } from './Logo';
 
 export { Metrics, Metric, extractMetrics } from './Metrics';
 
-export { LoadDatasources } from './Datasources';
+export { LoadDatasources, Filters } from './Datasources';
 
 export {
   TableauEmbed,

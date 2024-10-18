@@ -24,6 +24,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   const [tableauInitialized, setTableauInitialized] = useState(false);
   const [handlersRegistered, setHandlersRegistered] = useState(false);
   const [initialFiltersRun, setInitialFiltersRun] = useState(false);
+  // const dashboardRef = useRef(null);
   useEffect(() => {
     if (tableauInitialized && !handlersRegistered) {
       console.log(`Registering event listeners for FilterChanged and SettingsChanged`);
@@ -59,11 +60,8 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   useEffect(() => {
     // Always keep the ref up to date with the latest contextData
     contextDataRef.current = contextData;
-    console.log(`updating contextDataRef`);
-    console.log(contextData);
-    console.log(contextDataRef.current);
   }, [contextData]);
-  // }, [contextData, contextData.loginData, contextData.companionMode, contextData.currentFiltersDisplayMode, contextData.debug, contextData.displayMode, contextData.showPulseAnchorChart, contextData.showPulseFilters, contextData.showPulseTopInsight]);
+
 
   useEffect(() => {
     const handleSetVal = (metric_id) => {
@@ -109,6 +107,11 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         'currentFiltersDisplayMode',
         settings.currentFiltersDisplayMode
       );
+    if (typeof settings.timeComparisonMode !== 'undefined')
+      tableau.extensions.settings.set(
+        'timeComparisonMode',
+        settings.timeComparisonMode
+      );
     if (typeof settings.showPulseAnchorChart !== 'undefined')
       tableau.extensions.settings.set('showPulseAnchorChart', settings.showPulseAnchorChart);
     if (typeof settings.showPulseTopInsight !== 'undefined')
@@ -129,7 +132,16 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       console.log(`an error occurred closing the dialogue box: ${error} ${error.stack}`);
     }
 
-    let m = new MetricCollection(settings.metricCollection?.metrics || []);
+    let m: MetricCollection;
+    // need to check this logic to see if it will work in all cases (eg. changing user/site)
+    if (Object.keys(settings.metricCollection?.metrics).length > 0) {
+      m = new MetricCollection(settings.metricCollection?.metrics);
+    } else if (Object.keys(contextDataRef.current.metricCollection.metrics).length > 0) {
+      m = new MetricCollection(contextDataRef.current.metricCollection.metrics);
+    }
+    else {
+      m = new MetricCollection([]);
+    }
     m.setMetricOptions(settings.metricCollection?.metricOptions || {});
     settings.metricCollection = m;
 
@@ -157,6 +169,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       showPulseTopInsight: contextDataRef.current.showPulseTopInsight,
       debug: contextDataRef.current.debug,
       showPulseFilters: contextDataRef.current.showPulseFilters,
+      timeComparisonMode: contextDataRef.current.timeComparisonMode,
     };
     console.log(`opening configure dialog with ${JSON.stringify(passedSettings)}`);
     console.log(passedSettings);
@@ -173,6 +186,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         width: 500,
       })
       .then(async (closePayload) => {
+        console.log(`closePayload: ${closePayload}`);
         let settings = JSON.parse(closePayload);
         let currContextData = contextDataRef.current;
         currContextData = { ...currContextData, ...settings }; // This function has an empty contextData because of how initializeAsync works;  but we can grab the current contextData from the ref
@@ -191,7 +205,6 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         configureOpenRef.current = false;
       });
   };
-
 
   useEffect(() => {
     let handleParameterChange;
@@ -308,6 +321,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
           await updateAllSettings(settings);
         }
+        // dashboardRef.current = tableau.extensions.dashboardContent.dashboard; // store as a ref for the
         setTableauInitialized(true);
         //  getAllFiltersCallback(); // this runs too earrly here; datasources aren't yet loaded
       })
@@ -327,13 +341,19 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
   /* This code will listen for the data sources to be populated, and then run grab the filters. */
   useEffect(() => {
-    if (Object.keys(contextData.datasourceCollection.datasources).length > 0  && !initialFiltersRun) {
+    if (
+      Object.keys(contextData.datasourceCollection.datasources).length > 0 &&
+      !initialFiltersRun
+    ) {
       filterHandlerDebounce();
       setInitialFiltersRun(true);
     }
   }, [contextData.datasourceCollection, initialFiltersRun]);
 
   const getAllFiltersCallback = useCallback(async () => {
+    if (!tableauInitialized) {
+      return;
+    }
     // even with the debounce, the event is called simultaneously for all filters.
     if (updatingFilters.current) {
       console.log(`getAllFilters already running`);
@@ -382,7 +402,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     updateContextData({ dashboardFilters });
     console.log(`ending getAllFilters`);
     updatingFilters.current = false;
-  }, []);
+  }, [tableauInitialized, contextData]);
 
   const handleLogout = async () => {
     console.log('Signing Out...');

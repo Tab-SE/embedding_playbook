@@ -1,6 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
-import { IconArrowNarrowRight, IconSparkles, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
-import Filters from '../../Filters';
+import {
+  IconArrowNarrowRight,
+  IconSparkles,
+  IconTrendingDown,
+  IconTrendingUp,
+} from '@tabler/icons-react';
+import { Filters } from 'components';
 
 import { Skeleton } from '../../../ui';
 import { Badge } from '../../../ui';
@@ -14,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { InsightsModel } from 'models';
+import { parseStats } from 'utils/parse';
 
 export const MetricTableauDetails: React.FC<{
   metric: Metric;
@@ -49,8 +55,7 @@ export const MetricTableauDetails: React.FC<{
     let mff = contextData?.datasourceCollection?.getDatasource(datasourceId)?.metricFilterFields;
     if (mff && mff.length > 0) {
       setFilterReady(true);
-    }
-    else {
+    } else {
       setFilterReady(false);
     }
   }, [() => contextData.datasourceCollection.getDatasource(datasourceId)?.metricFilterFields]);
@@ -75,72 +80,36 @@ export const MetricTableauDetails: React.FC<{
     console.debug(error);
   }
   if (isSuccess) {
-    const insight_groups = data?.bundle_response?.result.insight_groups;
-    if (Array.isArray(insight_groups)) {
-      insight_groups.forEach((insight) => {
-        // uses the ban insight to generate stats
-        if (insight.type === 'ban') {
-          // BAN responses only have 1 insight_groups and 1 insights
-          result = data?.bundle_response?.result.insight_groups[0].insights[0].result;
-          facts = result?.facts;
-          stats.markup = result?.markup;
-          // formatted current value
-          stats.value = facts?.target_period_value.formatted;
-          // control for plural or singular values
-          if (stats.value === 1) {
-            stats.plural = false;
-          } else {
-            stats.plural = true;
-          }
-          if (stats.plural === true) {
-            stats.units = metric.representation_options?.number_units.plural_noun;
-          } else {
-            stats.units = metric.representation_options?.number_units.singular_noun;
-          }
-          // absolute difference in unit of measurement
-          stats.absolute = facts?.difference.absolute.formatted;
-          // always a percentage
-          stats.relative = facts?.difference.relative.formatted;
-          // show a plus sign for increments
-          if (stats.absolute) {
-            if (!stats?.absolute.startsWith('-')) {
-              stats.absolute = '+' + stats.absolute;
-              stats.relative = '+' + stats.relative;
-            }
-          }
+    stats = parseStats(data, metric);
+    if (stats.dir === 'up') {
+      stats.direction = <IconTrendingUp />;
+    } else if (stats.dir === 'down') {
+      stats.direction = <IconTrendingDown />;
+    } else if (stats.dir === 'flat') {
+      stats.direction = <IconArrowNarrowRight />;
+    }
 
-          // direction of the arrow icon -- new Logical/sentimental version dschober
-          const dir = facts?.difference.direction;
-          const sent = facts?.sentiment;
+    if (stats.comparisons && stats.comparisons[0]) {
+      if (stats.comparisons[0].direction === 'up') {
+        stats.comparisons[0].directionIcon = <IconTrendingUp />;
+      } else if (stats.comparisons[0].direction === 'down') {
+        stats.comparisons[0].directionIcon = <IconTrendingDown />;
+      } else if (stats.comparisons[0].direction === 'flat') {
+        stats.comparisons[0].directionIcon = <IconArrowNarrowRight />;
+      }
+    }
 
-          if (dir === 'up') {
-            stats.direction = <IconTrendingUp />;
-          } else if (dir === 'down') {
-            stats.direction = <IconTrendingDown />;
-          } else if (dir === 'flat') {
-            stats.direction = <IconArrowNarrowRight />;
-          }
-
-          if (sent === 'positive') {
-            stats.color = 'text-sky-600';
-            stats.badge = 'bg-sky-600 dark:bg-sky-600';
-          } else if (sent === 'negative') {
-            stats.color = 'text-orange-600';
-            stats.badge = 'bg-orange-600 dark:bg-orange-600';
-          } else if (sent === 'neutral') {
-            stats.color = 'text-stone-500 dark:text-stone-400';
-            stats.badge = 'bg-stone-500 dark:bg-stone-400';
-          }
-        }
-      });
+    if (stats.comparisons && stats.comparisons[1]) {
+      if (stats.comparisons[1].direction === 'up') {
+        stats.comparisons[1].directionIcon = <IconTrendingUp />;
+      } else if (stats.comparisons[1].direction === 'down') {
+        stats.comparisons[1].directionIcon = <IconTrendingDown />;
+      } else if (stats.comparisons[1].direction === 'flat') {
+        stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
+      }
     }
   }
 
-  // if (insights && insights.length) {
-  //   console.log(`insights for ${metric.name}`);
-  //   console.log(JSON.stringify(insights));
-  // }
-  let viz = data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz;
   // fully loaded state
   return (
     <div>
@@ -222,13 +191,53 @@ const Stats: React.FC<StatsProps> = (props) => {
                 </span>
                 <span className="font-normal text-[1rem]">{stats.units}&nbsp;</span>
               </div>
-              <div className={`${stats.color}`}>
-                <div>{stats.direction}</div>
-                <div>{stats.relative ? `${stats.relative}` : null}</div>
-                <div className="block mt-[-2px] leading-none">△ {stats.absolute}</div>
-              </div>
+              {contextData.timeComparisonMode !== 'text' && (
+                <div className={`${stats?.comparisons?.[0].color}`}>
+                  <div className="text-xs">{stats?.comparisons?.[0].comparison}</div>
+                  <div>{stats?.comparisons?.[0].directionIcon}</div>
+                  <div>
+                    {stats?.comparisons?.[0].relative
+                      ? `${stats?.comparisons?.[0].relative}`
+                      : null}
+                  </div>
+                  <div className="block mt-[-2px] leading-none">
+                    △ {stats?.comparisons?.[0].absolute}
+                  </div>
+                </div>
+              )}
+              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
+                <div className={`${stats?.comparisons?.[1]?.color} ml-3`}>
+                  <div className="text-xs">{stats?.comparisons?.[1].comparison}</div>
+                  <div>{stats?.comparisons?.[1].directionIcon}</div>
+                  <div>
+                    {stats?.comparisons?.[1].relative
+                      ? `${stats?.comparisons?.[1].relative}`
+                      : null}
+                  </div>
+                  <div className="block mt-[-2px] leading-none">
+                    △ {stats?.comparisons?.[1].absolute}
+                  </div>
+                </div>
+              )}
             </div>
-
+            {contextData.timeComparisonMode === 'text' && (
+              <div className="pl-3 text-sm text-muted-foreground text-stone-500 dark:text-stone-300">
+                <br />
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      stats?.comparisons && stats?.comparisons[0] && stats?.comparisons[0].markup,
+                  }}
+                />
+                <br />
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      stats.comparisons && stats?.comparisons[1] && stats?.comparisons[1].markup,
+                  }}
+                />
+              </div>
+            )}
             {/* Card Content */}
             <div className="mb-4">
               {viz && contextData.showPulseAnchorChart === 'true' && (

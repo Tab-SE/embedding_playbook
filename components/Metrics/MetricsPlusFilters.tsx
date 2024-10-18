@@ -8,7 +8,7 @@ Example of data passed to applyFilters:
 */
 import _ from 'lodash';
 import { useState, useEffect, useContext, useMemo } from 'react';
-import { useMetricFilters, useDatasourceFields, useDatasource } from '../../hooks';
+import { useMetricFilters, useDatasourceFields } from '../../hooks';
 import { MetricsPlusFiltersPlusDSFilters } from './MetricsPlusFiltersPlusDSFilters';
 import { ExtensionDataContext } from '../ExtensionDataProvider';
 import { InsightsModel } from 'models';
@@ -39,7 +39,7 @@ export const MetricsPlusFilters = (props) => {
   useEffect(() => {
     if (contextData?.metricCollection?.metrics?.length && Object.keys(contextData?.metricCollection?.metricOptions).length){
       // filter out metrics that are hidden in metricOptions
-      let visibleMetrics = contextData.metricCollection.metrics.filter((m) => contextData.metricCollection.metricOptions[m.specification_id].show);
+      let visibleMetrics = contextData.metricCollection.metrics.filter((m) => contextData.metricCollection.metricOptions[m.specification_id].show.toString() === 'true');
       if (!_.isEqual(visibleMetrics, metrics)) {
         setMetrics(visibleMetrics);
       }
@@ -136,7 +136,7 @@ export const MetricsPlusFilters = (props) => {
   }, [contextData.displayMode, contextData.showPulseAnchorChart, contextData.currentFiltersDisplayMode, contextData.showPulseTopInsight]);
 
   const applyFilters = (passedFilters) => {
-    if (JSON.stringify(passedFilters) !== JSON.stringify(filters)) {
+    if (!_.isEqual(passedFilters, filters)) {
       console.log(`appliedFilters: ${JSON.stringify(passedFilters)}`);
       setFilters(passedFilters);
     }

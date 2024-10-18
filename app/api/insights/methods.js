@@ -8,6 +8,12 @@ export const makePayload = async (rest_key, metric, tableauUrl) => {
     try {
       // request insights
       bundle = await getInsightBundle(rest_key, metric, '/detail', tableauUrl);
+      let ban = await getInsightBundle(rest_key, metric, '/ban', tableauUrl);
+      let banInsight = ban.bundle_response.result.insight_groups[0].insights[0];
+      // if the target time comparison is the same, then don't push
+      if (bundle.bundle_response.result.insight_groups[0].insights[0].result.facts.comparison_time_period.range !== banInsight.result.facts.comparison_time_period.range){
+        bundle.bundle_response.result.insight_groups[0].insights.push(banInsight);
+      }
     } catch (err) {
       console.debug(err);
       return null;
@@ -28,6 +34,17 @@ const getInsightBundle = async (apiKey, metric, resource, tableauUrl) => {
   
   // create a request body (standard for all Pulse bundle requests)
   const body = makeBundleBody(metric);
+
+  // if we are requesting the BAN, it is because we want the 2nd PoPc type
+  // eg if the /insights/detail request is for TIME_COMPARISON_YEAR_AGO_PERIOD, then we flip it to TIME_COMPARISON_PREVIOUS_PERIOD
+  if (resource === '/ban'){
+    if (body.bundle_request.input.metric.metric_specification.comparison.comparison === 'TIME_COMPARISON_YEAR_AGO_PERIOD') {
+      body.bundle_request.input.metric.metric_specification.comparison.comparison = 'TIME_COMPARISON_PREVIOUS_PERIOD';
+    } else if (body.bundle_request.input.metric.metric_specification.comparison.comparison === 'TIME_COMPARISON_PREVIOUS_PERIOD') {
+      body.bundle_request.input.metric.metric_specification.comparison.comparison = 'TIME_COMPARISON_YEAR_AGO_PERIOD';
+    }
+  }
+
 
   const endpoint = _domain + pulse_path + '/insights' + resource;
 

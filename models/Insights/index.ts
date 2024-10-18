@@ -1,3 +1,4 @@
+import { parseGranularity } from 'utils/parse';
 import { matchSpecification, matchSubscription } from '../../utils'
 import { handleInsights } from './controller';
 /* 
@@ -20,6 +21,7 @@ export class InsightsModel implements Metric {
       if (def.extension_options) this.extension_options = def.extension_options;
       if (def.representation_options) this.representation_options = def.representation_options;
       if (def.insights_options) this.insights_options = def.insights_options;
+      if (def.comparisons) this.comparisons = def.comparisons;
     }
     this.user_id = userId;
     // this.specification_id = null;
@@ -51,6 +53,7 @@ export class InsightsModel implements Metric {
   insights: any[];
   viz: any;
   markup: string;
+  comparisons?: Comparisons;
 
   // starting with a single specification, the model finds matching definitions and specifications from batched results
   init = (subscriptionsObj, specificationObj, definitionsObj) => {
@@ -64,30 +67,8 @@ export class InsightsModel implements Metric {
     // time period
     let granularity = this.specification.measurement_period.granularity;
     let range = this.specification.measurement_period.range;
-
-    if (granularity === "GRANULARITY_BY_DAY" && range === "RANGE_CURRENT_PARTIAL") {
-     this.namePeriod = "Today";
-    } else if (granularity === "GRANULARITY_BY_DAY" && range === "RANGE_LAST_COMPLETE") {
-     this.namePeriod = "Yesterday";
-    } else if (granularity === "GRANULARITY_BY_DAY" && range === "RANGE_CURRENT_PARTIAL") {
-     this.namePeriod = "Week to date";
-    } else if (granularity === "GRANULARITY_BY_WEEK" && range === "RANGE_LAST_COMPLETE") {
-     this.namePeriod = "Last week";
-    } else if (granularity === "GRANULARITY_BY_MONTH" && range === "RANGE_CURRENT_PARTIAL") {
-     this.namePeriod = "Month to date";
-    } else if (granularity === "GRANULARITY_BY_MONTH" && range === "RANGE_LAST_COMPLETE") {
-     this.namePeriod = "Last month";
-    } else if (granularity === "GRANULARITY_BY_QUARTER" && range === "RANGE_CURRENT_PARTIAL") {
-     this.namePeriod = "Quarter to date";
-    } else if (granularity === "GRANULARITY_BY_QUARTER" && range === "RANGE_LAST_COMPLETE") {
-     this.namePeriod = "Last quarter";
-    } else if (granularity === "GRANULARITY_BY_YEAR" && range === "RANGE_CURRENT_PARTIAL") {
-     this.namePeriod = "Year to date";
-    } else if (granularity === "GRANULARITY_BY_YEAR" && range === "RANGE_LAST_COMPLETE") {
-     this.namePeriod = "Last year";
-    } else {
-     this.namePeriod = "Unknown";
-    }
+    this.namePeriod = parseGranularity(granularity, range);
+    
     let filtersDescription = this.specification.filters.map(filter => {
       if (filter.values.length === 1) {
       return `${filter.field} | ${filter.values[0]}`;

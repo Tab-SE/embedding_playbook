@@ -1,6 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
-import { IconSparkles } from '@tabler/icons-react';
-import Filters from '../../Filters';
+import {
+  IconArrowNarrowRight,
+  IconSparkles,
+  IconTrendingDown,
+  IconTrendingUp,
+} from '@tabler/icons-react';
+import { Filters } from 'components';
 
 import { Skeleton } from '../../../ui';
 import { Badge } from '../../../ui';
@@ -15,6 +20,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { InsightsModel } from 'models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { parseStats } from 'utils/parse';
 
 export const MetricSalesforceDetails: React.FC<{
   metric: Metric;
@@ -49,8 +55,7 @@ export const MetricSalesforceDetails: React.FC<{
     let mff = contextData?.datasourceCollection?.getDatasource(datasourceId)?.metricFilterFields;
     if (mff && mff.length > 0) {
       setFilterReady(true);
-    }
-    else {
+    } else {
       setFilterReady(false);
     }
   }, [() => contextData.datasourceCollection.getDatasource(datasourceId)?.metricFilterFields]);
@@ -84,64 +89,33 @@ export const MetricSalesforceDetails: React.FC<{
     console.debug(error);
   }
   if (isSuccess) {
-    const insight_groups = data?.bundle_response?.result.insight_groups;
-    if (Array.isArray(insight_groups)) {
-      insight_groups.forEach((insight) => {
-        // uses the ban insight to generate stats
-        if (insight.type === 'ban') {
-          // BAN responses only have 1 insight_groups and 1 insights
-          result = data?.bundle_response?.result.insight_groups[0].insights[0].result;
-          facts = result?.facts;
-          // formatted current value
-          stats.value = facts?.target_period_value.formatted;
-          // control for plural or singular values
-          if (stats.value === 1) {
-            stats.plural = false;
-          } else {
-            stats.plural = true;
-          }
-          if (stats.plural === true) {
-            stats.units = metric.representation_options?.number_units.plural_noun;
-          } else {
-            stats.units = metric.representation_options?.number_units.singular_noun;
-          }
+    stats = parseStats(data, metric);
+    if (stats.dir === 'up') {
+      stats.direction = <IconTrendingUp />;
+    } else if (stats.dir === 'down') {
+      stats.direction = <IconTrendingDown />;
+    } else if (stats.dir === 'flat') {
+      stats.direction = <IconArrowNarrowRight />;
+    }
 
-          // absolute difference in unit of measurement
-          stats.absolute = facts?.difference.absolute.formatted;
-          // always a percentage
-          stats.relative = facts?.difference.relative.formatted;
-          // show a plus sign for increments
-          if (stats.absolute) {
-            if (!stats?.absolute.startsWith('-')) {
-              stats.absolute = '+' + stats.absolute;
-              stats.relative = '+' + stats.relative;
-            }
-          }
+    if (stats.comparisons && stats.comparisons[0]) {
+      if (stats.comparisons[0].direction === 'up') {
+        stats.comparisons[0].directionIcon = <IconTrendingUp />;
+      } else if (stats.comparisons[0].direction === 'down') {
+        stats.comparisons[0].directionIcon = <IconTrendingDown />;
+      } else if (stats.comparisons[0].direction === 'flat') {
+        stats.comparisons[0].directionIcon = <IconArrowNarrowRight />;
+      }
+    }
 
-          // direction of the arrow icon -- new Logical/sentimental version dschober
-          const dir = facts?.difference.direction;
-          const sent = facts?.sentiment;
-
-          if (dir === 'up') {
-            stats.direction = 'Up ↗︎';
-          } else if (dir === 'down') {
-            stats.direction = 'Down ↘︎';
-          } else if (dir === 'flat') {
-            stats.direction = 'Flat →';
-          }
-
-          if (sent === 'positive') {
-            stats.color = 'text-green-500 ';
-            stats.badge = 'bg-sky-600 dark:bg-sky-600';
-          } else if (sent === 'negative') {
-            stats.color = 'text-orange-500';
-            stats.badge = 'bg-orange-600 dark:bg-orange-600';
-          } else if (sent === 'neutral') {
-            stats.color = 'text-black-500';
-            stats.badge = 'bg-stone-500 dark:bg-stone-400';
-          }
-        }
-      });
+    if (stats.comparisons && stats.comparisons[1]) {
+      if (stats.comparisons[1].direction === 'up') {
+        stats.comparisons[1].directionIcon = <IconTrendingUp />;
+      } else if (stats.comparisons[1].direction === 'down') {
+        stats.comparisons[1].directionIcon = <IconTrendingDown />;
+      } else if (stats.comparisons[1].direction === 'flat') {
+        stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
+      }
     }
   }
 
@@ -185,6 +159,7 @@ export const MetricSalesforceDetails: React.FC<{
           <div className="w-1/2 pr-2">
             <div className="text-xs font-normal">Metric Period</div>
             <div className="text-muted-foreground">{metric.namePeriod}</div>
+            <div>({stats?.target_time_period_range})</div>
             <hr className="my-2 border-gray-300" />
           </div>
           {contextData.currentFiltersDisplayMode === 'top' && (
@@ -255,46 +230,111 @@ const Stats: React.FC<StatsProps> = (props) => {
   if (isSuccess) {
     return (
       <div className="block">
-        <div className="flex flex-col">
-          {/* Row 1: Metric Value */}
-          <div className="flex items-end mb-2">
-            <div className="w-1/2 pr-2">
-              <div className="text-xs font-normal">Metric Value</div>
+        <div className="flex flex-row flex-grow-0 mt-2">
+          {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
+            <div className="w-full h-full">
+              <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                Metric Value
+              </div>
               <div className="text-muted-foreground text-3xl">
-                {stats.value ? stats.value : null}
+                {stats.value ? stats.value : null} {stats.units}
               </div>
               <hr className="my-2 border-gray-300" />
-            </div>
-            <div className="w-1/2 pl-2">
-              <div className="text-xs font-normal">Metric Ind.</div>
-              <div className={`text-muted-foreground text-3xl ${stats.color}`}>
-                {stats.direction}
-              </div>
-              <hr className="my-2 border-gray-300" />
-            </div>
-          </div>
+              {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
+                <>
+                  <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                    Comparison {stats?.comparisons[0].comparison}
+                  </div>
 
-          {/* Row 2: Metric Change % */}
-          <div className="flex items-end mb-2">
-            <div className="w-1/2 pr-2">
-              <div className="text-xs font-normal">Metric Change %</div>
-              <div className="text-muted-foreground">
-                {stats.relative ? `${stats.relative}` : null}
-              </div>
-              <hr className="my-2 border-gray-300" />
-            </div>
-            <div className="w-1/2 pl-2"></div> {/* Placeholder for alignment */}
-          </div>
+                  <div className="flex items-end mb-2">
+                    <div className="w-1/4 pl-2">
+                      <div className="text-xs font-normal">Metric Ind.</div>
+                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                        {stats.comparisons[0].directionIcon}
+                      </div>
+                      <hr className="my-2 border-gray-300" />
+                    </div>
+                    <div className="w-1/2 pl-2">
+                      <div className="text-xs font-normal">Relative Change</div>
+                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                        {stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}
+                      </div>
+                      <hr className="my-2 border-gray-300" />
+                    </div>
+                    <div className="w-1/2 pl-2">
+                      <div className="text-xs font-normal">Abs. Change</div>
+                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                        △ {stats.comparisons[0].absolute}
+                      </div>
+                      <hr className="my-2 border-gray-300" />
+                    </div>
+                  </div>
+                </>
+              )}
+              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
+                <>
+                  <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                    Comparison {stats?.comparisons[1].comparison}
+                  </div>
 
-          {/* Row 3: Metric Delta */}
-          <div className="flex items-end">
-            <div className="w-1/2 pr-2">
-              <div className="text-xs font-normal">Metric Delta</div>
-              <div className="text-muted-foreground">△{stats.absolute}</div>
-              <hr className="my-2 border-gray-300" />
+                  <div className="flex items-end mb-2">
+                    <div className="w-1/4 pl-2">
+                      <div className="text-xs font-normal">Metric Ind.</div>
+                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                        {stats.comparisons[1].directionIcon}
+                      </div>
+                      <hr className="my-2 border-gray-300" />
+                    </div>
+                    <div className="w-1/2 pl-2">
+                      <div className="text-xs font-normal">Relative Change</div>
+                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                        {stats.comparisons[1].relative ? `${stats.comparisons[1].relative}` : null}
+                      </div>
+                      <hr className="my-2 border-gray-300" />
+                    </div>
+                    <div className="w-1/2 pl-2">
+                      <div className="text-xs font-normal">Abs. Change</div>
+                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                        △ {stats.comparisons[1].absolute}
+                      </div>
+                      <hr className="my-2 border-gray-300" />
+                    </div>
+                  </div>
+                </>
+              )}
+              {contextData.timeComparisonMode === 'text' && (
+                <>
+                  <div className="w-full h-full">
+                    <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                      Comparisons
+                    </div>
+                    <div className="text-muted-foreground">
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            stats?.comparisons &&
+                            stats?.comparisons[0] &&
+                            stats?.comparisons[0].markup,
+                        }}
+                      />
+                    </div>
+                      <hr className="my-2 border-gray-300" />
+                    <div className="text-muted-foreground">
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            stats.comparisons &&
+                            stats?.comparisons[1] &&
+                            stats?.comparisons[1].markup,
+                        }}
+                      />
+                    </div>
+                    <hr className="my-2 border-gray-300" />
+                  </div>
+                </>
+              )}
             </div>
-            <div className="w-1/2 pl-2"></div> {/* Placeholder for alignment */}
-          </div>
+          )}
         </div>
 
         <div className="flex flex-row flex-grow-0 mt-2">

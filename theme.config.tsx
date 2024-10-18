@@ -56,7 +56,7 @@ const config: DocsThemeConfig = {
           description={description}
           imgHost={imgHost}
         /> 
-        {process.env.NODE_ENV === 'development' && <script src="http://localhost:8097"></script>}
+        {/* {process.env.NODE_ENV === 'development' && <script src="http://localhost:8097"></script>} */}
         <link rel="icon" href={imgHost + basePath + "/svg/logo_color.svg?h=32&w=32"} type="image/svg+xml" />
         <link rel="icon" href={imgHost + basePath + "/img/tableau/tableau.ico?h=32&w=32"} type="image/ico" />
         <link rel="icon" href={imgHost + basePath + "/img/tableau/tableau_logo.png?h=32&w=32"} type="image/png" />

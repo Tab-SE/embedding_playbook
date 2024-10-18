@@ -62,6 +62,7 @@ export const parseDefinitions = (definitionsResponse) => {
   const extension_options = JSONPath({ path: '$.[*].extension_options', json: definitionsResponse });
   const representation_options = JSONPath({ path: '$.[*].representation_options', json: definitionsResponse });
   const insights_options = JSONPath({ path: '$.[*].insights_options', json: definitionsResponse });
+  const comparisons = JSONPath({ path: '$.[*].comparisons.comparisons', json: definitionsResponse });
 
 
   // Iterate through indexing array and create leaves in the return object
@@ -74,6 +75,7 @@ export const parseDefinitions = (definitionsResponse) => {
       extension_options: extension_options[index],
       representation_options: representation_options[index],
       insights_options: insights_options[index],
+      comparisons: { comparisons: [comparisons[index]] },
     };
   });
   return definitions;
@@ -146,6 +148,165 @@ export const parseDetail = (bundle) => {
     throw new Error(`Error parsing detail bundle, could not form an array: ${bundle}`);
   }
 }
+
+export const parseGranularity = (granularity, range) => {
+  if (granularity === "GRANULARITY_BY_DAY" && range === "RANGE_CURRENT_PARTIAL") {
+    return "Today";
+  } else if (granularity === "GRANULARITY_BY_DAY" && range === "RANGE_LAST_COMPLETE") {
+    return "Yesterday";
+  } else if (granularity === "GRANULARITY_BY_DAY" && range === "RANGE_CURRENT_PARTIAL") {
+    return "Week to date";
+  } else if (granularity === "GRANULARITY_BY_WEEK" && range === "RANGE_LAST_COMPLETE") {
+    return "Last week";
+  } else if (granularity === "GRANULARITY_BY_MONTH" && range === "RANGE_CURRENT_PARTIAL") {
+    return "Month to date";
+  } else if (granularity === "GRANULARITY_BY_MONTH" && range === "RANGE_LAST_COMPLETE") {
+    return "Last month";
+  } else if (granularity === "GRANULARITY_BY_QUARTER" && range === "RANGE_CURRENT_PARTIAL") {
+    return "Quarter to date";
+  } else if (granularity === "GRANULARITY_BY_QUARTER" && range === "RANGE_LAST_COMPLETE") {
+    return "Last quarter";
+  } else if (granularity === "GRANULARITY_BY_YEAR" && range === "RANGE_CURRENT_PARTIAL") {
+    return "Year to date";
+  } else if (granularity === "GRANULARITY_BY_YEAR" && range === "RANGE_LAST_COMPLETE") {
+    return "Last year";
+  } else {
+    return "Unknown";
+  }
+}
+
+export const parseStats = (data, metric) => {
+  const insight_groups = data?.bundle_response?.result.insight_groups;
+  let result; // contains question, markup and facts
+  let facts; // contains values, absolute and relative changes
+  let stats = {};
+
+
+
+  if (Array.isArray(insight_groups)) {
+    insight_groups.forEach((insight) => {
+      // uses the ban insight to generate stats
+      if (insight.type === 'ban') {
+        // BAN responses only have 1 insight_groups and 2 insights; 2nd insight group is requested separately 
+        // for time comparison purposes
+        result = data?.bundle_response?.result.insight_groups[0].insights[0].result;
+        facts = result?.facts;
+        // formatted current value
+        stats.value = facts?.target_period_value.formatted;
+        stats.target_time_period_range = facts?.target_time_period.range; // dates within the current period
+        stats.target_time_period_label = facts?.target_time_period.label; // label for the current period
+        // control for plural or singular values
+        if (stats.value === 1) {
+          stats.plural = false;
+        }
+        else {
+          stats.plural = true;
+        }
+        if (stats.plural === true) {
+          stats.units = metric.representation_options.number_units.plural_noun;
+        }
+        else {
+          stats.units = metric.representation_options.number_units.singular_noun;
+        }
+        // absolute difference in unit of measurement
+        stats.absolute = facts?.difference.absolute.formatted;
+        // always a percentage
+        stats.relative = facts?.difference.relative.formatted;
+        // show a plus sign for increments
+        if (stats.absolute) {
+          if (!stats?.absolute.startsWith('-')) {
+            stats.absolute = '+' + stats.absolute;
+            stats.relative = '+' + stats.relative;
+          }
+        }
+
+        // direction of the arrow icon -- new Logical/sentimental version dschober
+        const dir = facts?.difference.direction;
+        const sent = facts?.sentiment;
+
+        stats.dir = dir; // need to add react icon back in jsx/tsx files
+
+        if (sent === 'positive') {
+          stats.color = 'text-metricsPositive';
+          stats.badge = 'bg-metricsPositive';
+        } else if (sent === 'neutral') {
+          stats.color = 'text-metricsNeutral';
+          stats.badge = 'bg-metricsNeutral';
+        } else if (sent === 'negative') {
+          stats.color = 'text-metricsNegative';
+          stats.badge = 'bg-metricsNegative';
+        }
+      }
+    });
+    stats.comparisons = parseTimeComparisons(data, metric)
+
+  }
+  return stats;
+};
+
+const parseTimeComparisons = (data, metric) => {
+  const insights = data.bundle_response.result.insight_groups.filter(group => group.type === 'ban')[0].insights;
+  
+  const formatComparison = (comparison, ban) => {
+    const { absolute, relative, direction } = ban.result.facts.difference;
+    const { target_period_value, comparison_period_value, comparison_time_period, sentiment } = ban.result.facts;
+    const { markup } = ban.result;
+
+    comparison.absolute = absolute.formatted;
+    comparison.relative = relative.formatted;
+
+    // Add plus sign for increments
+    if (absolute.formatted && !absolute.formatted.startsWith('-')) {
+      comparison.absolute = `+${absolute.formatted}`;
+      comparison.relative = `+${relative.formatted}`;
+    }
+
+    comparison.range = comparison_time_period.range;
+    comparison.markup = markup;
+    comparison.target_period_value = target_period_value.formatted;
+    comparison.comparison_period_value = comparison_period_value.formatted;
+    comparison.direction = direction;
+
+    if (sentiment === 'positive') {
+      comparison.color = 'text-metricsPositive';
+      comparison.badge = 'bg-metricsPositive';
+    } else if (sentiment === 'neutral') {
+      comparison.color = 'text-metricsNeutral';
+      comparison.badge = 'bg-metricsNeutral';
+    } else if (sentiment === 'negative') {
+      comparison.color = 'text-metricsNegative';
+      comparison.badge = 'bg-metricsNegative';
+    }
+
+    if (absolute.formatted.includes('%')) {
+      const directionText = target_period_value.raw > comparison_period_value.raw ? 'Up' : 'Down';
+      comparison.text = `${directionText} from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`;
+      comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${directionText}\u003c/span\u003e from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`
+    } else {
+      comparison.text = `${comparison.relative} (${comparison.absolute}) ${comparison.comparison} (${comparison.range})`;
+      comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${comparison.relative}\u003c/span\u003e (${comparison.absolute}) \u003c/span\u003e ${comparison.comparison} (${comparison.range})`;
+    }
+  };
+
+  let comparisons = metric.comparisons.comparisons[0].map(item => ({
+    comparison: item.compare_config.comparison.includes('YEAR')?'vs. prior year':'vs. prior period',
+  }));
+
+  // Format the first comparison
+  formatComparison(comparisons[0], insights[0]);
+
+  // If there are two comparisons, format the second one if ban exists
+  if (insights.length === 2) {
+    formatComparison(comparisons[1], insights[1]);
+  }
+  else {
+    comparisons.splice(1, 1);
+  }
+
+  return comparisons;
+};
+
+
 
 // return an minimal representation for insights
 export const parseInsights = (bundle) => {

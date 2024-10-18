@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
-import { Button, Input } from '../ui';
+import { Button, Checkbox, Input, Label, Select, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { tab_extension } from 'libs';
 import { LoadMetrics } from '.';
 import { MetricsTab } from './DialogMetricsTab';
 import { MetricCollection } from 'models';
-import { update } from 'lodash';
+import { set, update } from 'lodash';
+import { Info } from 'lucide-react'
 // import { ExtensionDataContext } from '../ExtensionDataProvider';
 
 const ConnectionTab = ({
@@ -123,27 +124,6 @@ const ConnectionTab = ({
         Logout
       </Button>
       {loginEnabled && userName !== '' && (
-        /* <TableauExtension
-          tableauUrl={tableauUrlFQDN}
-          site_id={site_id}
-          userName={userName}
-          caClientId={caClientId}
-          caSecretId={caSecretId}
-          caSecretValue={caSecretValue}
-          showMetrics={false}
-          isDashboardExtension={'true'}
-        /> */
-        // <TableauDialogExtension
-        //   tableauUrl={tableauUrlFQDN}
-        //   site_id={site_id}
-        //   userName={userName}
-        //   caClientId={caClientId}
-        //   caSecretId={caSecretId}
-        //   caSecretValue={caSecretValue}
-        //   showMetrics={false}
-        //   isDashboardExtension={'true'}
-        //   metricOptions={metricOptions}
-        // />
         <LoadMetrics
           metricCollection={metricCollection}
           setMetricCollection={setMetricCollection}
@@ -162,13 +142,15 @@ const OptionsTab = ({
   currentFiltersDisplayMode,
   handleCurrentFiltersDisplayModeChange,
   debug,
-  handleDebugCheckboxChange,
+  handleDebugChange,
   showPulseFilters,
-  handleShowPulseFilters,
+  handleShowPulseFiltersChange,
   showPulseAnchorChart,
-  handleShowPulseAnchorChartCheckboxChange,
+  handleShowPulseAnchorChartChange,
   showPulseTopInsight,
-  handleShowPulseTopInsightCheckboxChange,
+  handleShowPulseTopInsightChange,
+  timeComparisonMode,
+  handleTimeComparisonModeChange,
 }) => {
   // State to manage which tooltip is shown
   const [activeTooltip, setActiveTooltip] = useState(null);
@@ -181,175 +163,381 @@ const OptionsTab = ({
   const handleMouseLeave = () => {
     setActiveTooltip(null);
   };
-  return (
-    <div>
+     return (
       <div>
-        <label htmlFor="companionModeDropdown" className="relative">
-          Choose a companion mode:
-          <span
-            className="tooltip-icon"
-            onMouseEnter={() => handleMouseEnter('companionMode')}
-            onMouseLeave={handleMouseLeave}
+        <div className="text-xl">Formatting:</div>
+        <div>
+          <label htmlFor="displayModeDropdown" className="relative">
+            Metric UI display style:
+            <span
+              className="tooltip-icon"
+              onMouseEnter={() => handleMouseEnter('displayMode')}
+              onMouseLeave={handleMouseLeave}
+            >
+              i
+              {activeTooltip === 'displayMode' && (
+                <div className="tooltip-content ml-10">
+                  <span className="tooltiptext">
+                    Carousel - small footprint metrics that can be scrolled
+                    <br />
+                    Single Pane - grid display of metrics
+                    <br />
+                    Salesforce - mimics a Salesforce record level display
+                    <br />
+                    Tableau - mimics a Tableau Pulse format
+                  </span>
+                </div>
+              )}
+            </span>
+          </label>
+          <select
+            id="displayModeDropdown"
+            value={displayMode}
+            onChange={(e) => {
+              handleDisplayModeChange(e);
+            }}
           >
-            i
-            {activeTooltip === 'companionMode' && (
-              <div className="tooltip-content">
-                <span className="tooltiptext">
-                  Select "None" if insights should display in this same extension.
-                  <br />
-                  Select "Source" if you want insights to display in another extension in the same
-                  dashboard.
-                  <br />
-                  Select "Source (with a pop-up window)" if you want insights to display in a pop-up
-                  window. Useful for embedding in SF or other forms where you want to use limited
-                  space for the metrics and more space for the insights.
-                  <br />
-                  Select "Target" if this is the extension where you want insights to display.
-                </span>
-              </div>
-            )}
-          </span>
-        </label>
-        <select
-          id="companionModeDropdown"
-          value={companionMode}
-          onChange={(e) => handleCompanionModeChange(e)}
-        >
-          <option value="none">None</option>
-          <option value="source">Source</option>
-          <option value="popup">Source (with a pop-up window)</option>
-          <option value="target">Target</option>
-        </select>
+            <option value="original">Carousel</option>
+            <option value="singlePane">Single Pane</option>
+            <option value="salesforce">Salesforce</option>
+            <option value="tableau">Tableau</option>
+          </select>
+
+          <div>
+            <label htmlFor="showPulseAnchorChart" className="mr-3">
+              Show Pulse Anchor Chart:
+            </label>
+            <input
+              title="Check this box to show the chart in the BAN"
+              type="checkbox"
+              id="showPulseAnchorChart"
+              checked={showPulseAnchorChart}
+              onChange={(e) => {
+                handleShowPulseAnchorChartChange(e);
+              }}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="showPulseTopInsight" className="mr-3">
+              Show Pulse Top Insight:
+            </label>
+            <input
+              title="Check this box to show all of the Metric filters below each card."
+              type="checkbox"
+              id="showPulseTopInsight"
+              checked={showPulseTopInsight}
+              onChange={(e) => handleShowPulseTopInsightChange(e)}
+            />
+          </div>
+
+          <div className="flex items-center">
+            <label htmlFor="currentFiltersDisplayModeDropdown" className="relative">
+              Display mode:
+              <span
+                className="tooltip-icon"
+                onMouseEnter={() => handleMouseEnter('currentFiltersDisplayMode')}
+                onMouseLeave={handleMouseLeave}
+              >
+                i
+                {activeTooltip === 'currentFiltersDisplayMode' && (
+                  <div className="relative">
+                    <div className="tooltip-content absolute inset-x-0 left-70 right-0 ml-20 bg-white p-3 shadow-lg rounded-md z-50">
+                      <span className="tooltiptext text-sm">
+                        "Top" will show the filters with the name. Does not apply to the time period.
+                        These will be truncated (eg Technology+2)
+                        <br />
+                        "Bottom" will show the filters towards the bottom of the viz. These will not
+                        be truncated.
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </span>
+            </label>
+            <select
+              id="currentFiltersDisplayModeDropdown"
+              value={currentFiltersDisplayMode}
+              onChange={(e) => {
+                handleCurrentFiltersDisplayModeChange(e);
+              }}
+              className="ml-10"
+            >
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="showPulseFilters" className="mr-3">
+              Show Pulse Filters:
+            </label>
+            <input
+              title="Check this box to show all of the Metric filters below each card."
+              type="checkbox"
+              id="showPulseFilters"
+              checked={showPulseFilters}
+              onChange={(e) => {
+                handleShowPulseFiltersChange(e);
+              }}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="timeComparisonModeDropdown" className="relative">
+              Choose a time comparison mode:
+              <span
+                className="tooltip-icon"
+                onMouseEnter={() => handleMouseEnter('timeComparisonMode')}
+                onMouseLeave={handleMouseLeave}
+              >
+                i
+                {activeTooltip === 'timeComparisonMode' && (
+                  <div className="relative">
+                    <div className="tooltip-content absolute inset-x-0 left-70 right-0 ml-20 bg-white p-3 shadow-lg rounded-md z-50">
+                      <span className="tooltiptext text-sm">
+                        Select "Primary comparison with indicator" for primary comparison with an
+                        indicator.
+                        <br />
+                        Select "Both comparisons with indicator" for both comparisons with an
+                        indicator.
+                        <br />
+                        Select "Text based comparisons" for text-based comparisons.
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </span>
+            </label>
+            <select
+              id="timeComparisonModeDropdown"
+              value={timeComparisonMode}
+              onChange={(e) => handleTimeComparisonModeChange(e)}
+            >
+              <option value="primary">Primary comparison with indicator</option>
+              <option value="both">Both comparisons with indicator</option>
+              <option value="text">Text based comparisons</option>
+            </select>
+          </div>
+
+          <div className="text-xl mt-10">Interactivity:</div>
+          <div>
+            <label htmlFor="companionModeDropdown" className="relative">
+              Companion mode:
+              <span
+                className="tooltip-icon"
+                onMouseEnter={() => handleMouseEnter('companionMode')}
+                onMouseLeave={handleMouseLeave}
+              >
+                i
+                {activeTooltip === 'companionMode' && (
+                  <div className="relative">
+                    <div className="tooltip-content absolute inset-x-0 left-70 right-0 ml-20 bg-white p-3 shadow-lg rounded-md z-50">
+                      <span className="tooltiptext text-sm">
+                        Select "None" if insights should display in this same extension.
+                        <br />
+                        Select "Source" if you want insights to display in another extension in the
+                        same dashboard.
+                        <br />
+                        Select "Source (with a pop-up window)" if you want insights to display in a
+                        pop-up window. Useful for embedding in SF or other forms where you want to use
+                        limited space for the metrics and more space for the insights.
+                        <br />
+                        Select "Target" if this is the extension where you want insights to display.
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </span>
+            </label>
+            <select
+              id="companionModeDropdown"
+              value={companionMode}
+              onChange={(e) => handleCompanionModeChange(e)}
+            >
+              <option value="none">None</option>
+              <option value="source">Source</option>
+              <option value="popup">Source (with a pop-up window)</option>
+              <option value="target">Target</option>
+            </select>
+          </div>
+
+          <div className={`mt-10`}>
+            <div className="text-xl">Miscellaneous:</div>
+            <label htmlFor="debug" className="mr-3">
+              Debug Mode:
+            </label>
+            <input
+              title="Debug Mode: Check to show detailed troubleshooting information in the extension and the console."
+              type="checkbox"
+              id="debug"
+              checked={debug}
+              onChange={(e) => {
+                handleDebugChange(e);
+              }}
+            />
+          </div>
+        </div>
       </div>
-      <div>
-        <label htmlFor="displayModeDropdown" className="relative">
-          Choose a display mode:
-          <span
-            className="tooltip-icon"
-            onMouseEnter={() => handleMouseEnter('displayMode')}
-            onMouseLeave={handleMouseLeave}
-          >
-            i
-            {activeTooltip === 'displayMode' && (
-              <div className="tooltip-content ml-10">
-                <span className="tooltiptext">
-                  Carousel - small footprint metrics that can be scrolled
-                  <br />
-                  Single Pane - grid display of metrics
-                  <br />
-                  Salesforce - mimics a Salesforce record level display
-                  <br />
-                  Tableau - mimics a Tableau Pulse format
-                </span>
-              </div>
-            )}
-          </span>
-        </label>
-        <select
-          id="displayModeDropdown"
-          value={displayMode}
-          onChange={(e) => {
-            handleDisplayModeChange(e);
-          }}
-        >
-          <option value="original">Carousel</option>
-          <option value="singlePane">Single Pane</option>
-          <option value="salesforce">Salesforce</option>
-          <option value="tableau">Tableau</option>
-        </select>
+    ); 
 
-        <div>
-          <label htmlFor="showPulseAnchorChart" className="mr-3">
-            Show Pulse Anchor Chart:
-          </label>
-          <input
-            title="Check this box to show the chart in the BAN"
-            type="checkbox"
-            id="showPulseAnchorChart"
-            checked={showPulseAnchorChart}
-            onChange={(e) => {
-              handleShowPulseAnchorChartCheckboxChange(e);
-            }}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="showPulseTopInsight" className="mr-3">
-            Show Pulse Top Insight:
-          </label>
-          <input
-            title="Check this box to show all of the Metric filters below each card."
-            type="checkbox"
-            id="showPulseTopInsight"
-            checked={showPulseTopInsight}
-            onChange={(e) => handleShowPulseTopInsightCheckboxChange(e)}
-          />
-        </div>
-
-        <label htmlFor="currentFiltersDisplayModeDropdown" className="relative">
-          Choose a display mode:
-          <span
-            className="tooltip-icon"
-            onMouseEnter={() => handleMouseEnter('currentFiltersDisplayMode')}
-            onMouseLeave={handleMouseLeave}
-          >
-            i
-            {activeTooltip === 'currentFiltersDisplayMode' && (
-              <div className="tooltip-content ml-10">
-                <span className="tooltiptext">
-                  "Top" will show the filters with the name. Does not apply to the time period.
-                  These will be truncated (eg Technology+2)
-                  <br />
-                  "Bottom" will show the filters towards the bottom of the viz. These will not be
-                  truncated.
-                </span>
-              </div>
-            )}
-          </span>
-        </label>
-        <select
-          id="currentFiltersDisplayModeDropdown"
-          value={currentFiltersDisplayMode}
-          onChange={(e) => {
-            handleCurrentFiltersDisplayModeChange(e);
-          }}
-        >
-          <option value="top">Top</option>
-          <option value="bottom">Bottom</option>
-        </select>
-
-        <div>
-          <label htmlFor="showPulseFilters" className="mr-3">
-            Show Pulse Filters:
-          </label>
-          <input
-            title="Check this box to show all of the Metric filters below each card."
-            type="checkbox"
-            id="showPulseFilters"
-            checked={showPulseFilters}
-            onChange={(e) => {
-              handleShowPulseFilters(e);
-            }}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="debug" className="mr-3">
-            Debug Mode:
-          </label>
-          <input
-            title="Debug Mode: Check to show detailed troubleshooting information in the extension and the console."
-            type="checkbox"
-            id="debug"
-            checked={debug}
-            onChange={(e) => {
-              handleDebugCheckboxChange(e);
-            }}
-          />
-        </div>
+/*     return (
+      <div className="p-6 max-w-2xl mx-auto">
+        <h1 className="text-2xl font-bold mb-6">Options</h1>
+  
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Formatting</h2>
+          
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="displayMode" className="mb-2 block">
+                Metric UI display style
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="w-4 h-4 inline-block ml-2" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Carousel - small footprint metrics that can be scrolled</p>
+                      <p>Single Pane - grid display of metrics</p>
+                      <p>Salesforce - mimics a Salesforce record level display</p>
+                      <p>Tableau - mimics a Tableau Pulse format</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
+              <Select value={displayMode} onValueChange={handleDisplayModeChange}>
+                <option value="original">Carousel</option>
+                <option value="singlePane">Single Pane</option>
+                <option value="salesforce">Salesforce</option>
+                <option value="tableau">Tableau</option>
+              </Select>
+            </div>
+  
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                checked={showPulseAnchorChart} 
+                onChange={handleShowPulseAnchorChartChange}
+              />
+              <Label htmlFor="showPulseAnchorChart">Show Pulse Anchor Chart</Label>
+            </div>
+  
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                checked={showPulseTopInsight} 
+                onChange={handleShowPulseTopInsightChange}
+              />
+              <Label htmlFor="showPulseTopInsight">Show Pulse Top Insight</Label>
+            </div>
+  
+            <div>
+              <Label htmlFor="currentFiltersDisplayMode" className="mb-2 block">
+                Display mode
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="w-4 h-4 inline-block ml-2" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>"Top" will show the filters with the name. Does not apply to the time period. These will be truncated (eg Technology+2)</p>
+                      <p>"Bottom" will show the filters towards the bottom of the viz. These will not be truncated.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
+              <Select value={currentFiltersDisplayMode} onValueChange={handleCurrentFiltersDisplayModeChange}>
+                <option value="top">Top</option>
+                <option value="bottom">Bottom</option>
+              </Select>
+            </div>
+  
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                checked={showPulseFilters} 
+                onCheckedChange={(e) => handleShowPulseFiltersChange(e)}
+              />
+              <Label htmlFor="showPulseFilters">Show Pulse Filters</Label>
+            </div>
+  
+            <div>
+              <Label htmlFor="timeComparisonMode" className="mb-2 block">
+                Choose a time comparison mode
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="w-4 h-4 inline-block ml-2" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Primary comparison with indicator: For primary comparison with an indicator.</p>
+                      <p>Both comparisons with indicator: For both comparisons with an indicator.</p>
+                      <p>Text based comparisons: For text-based comparisons.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
+              <Select value={timeComparisonMode} onValueChange={handleTimeComparisonModeChange}>
+                <option value="primary">Primary comparison with indicator</option>
+                <option value="both">Both comparisons with indicator</option>
+                <option value="text">Text based comparisons</option>
+              </Select>
+            </div>
+          </div>
+        </section>
+  
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Interactivity</h2>
+          
+          <div>
+            <Label htmlFor="companionMode" className="mb-2 block">
+              Companion mode
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="w-4 h-4 inline-block ml-2" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>None: Insights display in this same extension.</p>
+                    <p>Source: Insights display in another extension in the same dashboard.</p>
+                    <p>Source (with a pop-up window): Insights display in a pop-up window. Useful for embedding in SF or other forms where you want to use limited space for the metrics and more space for the insights.</p>
+                    <p>Target: This is the extension where you want insights to display.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </Label>
+            <Select value={companionMode} onValueChange={handleCompanionModeChange}>
+              <option value="none">None</option>
+              <option value="source">Source</option>
+              <option value="popup">Source (with a pop-up window)</option>
+              <option value="target">Target</option>
+            </Select>
+          </div>
+        </section>
+  
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Miscellaneous</h2>
+          
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              checked={debug} 
+              onCheckedChange={handleDebugChange}
+            />
+            <Label htmlFor="debug">
+              Debug Mode
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="w-4 h-4 inline-block ml-2" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Check to show detailed troubleshooting information in the extension and the console.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </Label>
+          </div>
+        </section>
       </div>
-    </div>
-  );
+    ) */
 };
 
 const NavigationTabs = ({ activeTab, setActiveTab, ...props }) => {
@@ -409,43 +597,21 @@ export const PulseExtensionDialog = (props: any) => {
     caSecretValue: 'undefined',
     isDashboardExtension: 'true',
   });
-  // const [tableauUrl, setTableauUrl] = useState<string>('undefined');
-  // const tableauUrlRef = useRef<string>(tableauUrl);
   const [tableauUrlSubDomain, setTableauUrlSubDomain] = useState<string>('undefined');
-  // const tableauUrlFQDNRef = useRef<string>(tableauUrlFQDN);
-  // const [site_id, setsite_id] = useState<string>('undefined');
-  // const site_idRef = useRef<string>(site_id);
-  // const [userName, setUserName] = useState<string>('undefined');
-  // const userNameRef = useRef<string>(userName);
-  // const [caClientId, setCaClientId] = useState<string>('undefined');
-  // const caClientIdRef = useRef<string>(caClientId);
-  // const [caSecretId, setCaSecretId] = useState<string>('undefined');
-  // const caSecretIdRef = useRef<string>(caSecretId);
-  // const [caSecretValue, setCaSecretValue] = useState<string>('undefined');
-  // const caSecretValueRef = useRef<string>(caSecretValue);
   const [loginEnabled, setLoginEnabled] = useState<boolean>(false);
   const [companionMode, setCompanionMode] = useState('none');
-  // const companionModeRef = useRef<string>(companionMode);
   const [displayMode, setDisplayMode] = useState('original');
-  // const displayModeRef = useRef<string>(displayMode);
+  const [timeComparisonMode, setTimeComparisonMode] = useState('primary');
   const [currentFiltersDisplayMode, setCurrentFiltersDisplayMode] = useState('top');
-  const currentFiltersDisplayModeRef = useRef<string>(currentFiltersDisplayMode);
   const [showPulseAnchorChart, setShowPulseAnchorChart] = useState<boolean>(false);
-  // const showPulseAnchorChartRef = useRef<string>(showPulseAnchorChart ? 'true' : 'false');
   const [showPulseTopInsight, setShowPulseTopInsight] = useState<boolean>(false);
-  // const showPulseTopInsightRef = useRef<string>(showPulseTopInsight ? 'true' : 'false');
   const [debug, setDebug] = useState<boolean>(false);
-  const debugRef = useRef<string>(debug ? 'true' : 'false');
   const [showPulseFilters, setShowPulseFilters] = useState<boolean>(false);
-  // const showPulseFiltersRef = useRef<string>(showPulseFilters ? 'true' : 'false');
   let [metricCollection, setMetricCollection] = useState<MetricCollection>(
     new MetricCollection([])
   );
-  // const [metricOptions, setMetricOptions] = useState<MetricOptions>({});
-  // const metricOptionsRef = useRef<MetricOptions>(metricOptions);
   const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState('connection');
-  // const { contextData, updateContextData } = useContext(ExtensionDataContext);
 
   const validateAndFormatTableauUrl = (url: string) => {
     // Remove extra https:// instances
@@ -478,28 +644,6 @@ export const PulseExtensionDialog = (props: any) => {
    */
   const closeDialog = () => {
     console.log('Closing dialog...');
-    var selectedMetrics: string[] = [];
-    var checkboxes = document.querySelectorAll('input[name=metrics]:checked');
-    // checkboxes.forEach((checkbox: any) => {
-    //   selectedMetrics.push(checkbox.value);
-    // });
-    // console.log('Selected Metrics:', selectedMetrics);
-    // saveSettings();
-
-    // let obj = {
-    //   loginData,
-    //   companionMode: companionModeRef.current,
-    //   displayMode: displayModeRef.current,
-    //   currentFiltersDisplayMode: currentFiltersDisplayModeRef.current,
-    //   showPulseAnchorChart: showPulseAnchorChartRef.current,
-    //   showPulseTopInsight: showPulseTopInsightRef.current,
-    //   debug: debugRef.current,
-    //   showPulseFilters: showPulseFiltersRef.current,
-    //   metricCollection: {
-    //     metrics: [],
-    //     metricOptions: metricCollection.metricOptions,
-    //   },
-    // };
 
     let obj2 = {
       loginData,
@@ -510,13 +654,14 @@ export const PulseExtensionDialog = (props: any) => {
       showPulseTopInsight,
       debug,
       showPulseFilters,
+      timeComparisonMode,
       metricCollection: {
         metrics: [],
         metricOptions: metricCollection.metricOptions,
       },
     };
     let strObj = JSON.stringify(obj2, (key, value) => {
-      return typeof value === "boolean" ? value.toString() : value;
+      return typeof value === 'boolean' ? value.toString() : value;
     });
     console.log(`Saving dialog settings: ${strObj}`);
     // await delay(10000);  // enable this to debug when hitting the close button
@@ -549,13 +694,6 @@ export const PulseExtensionDialog = (props: any) => {
       let passedSettings = JSON.parse(settingsStr);
       console.log(`Opening with settings: ${JSON.stringify(passedSettings)}`);
 
-      // document.getElementById('closeButton')?.addEventListener('click', closeDialog);
-
-      // setsite_id(passedSettings.loginData.site_id);
-      // setUserName(passedSettings.loginData.userName);
-      // setCaClientId(passedSettings.loginData.caClientId);
-      // setCaSecretId(passedSettings.loginData.caSecretId);
-      // setCaSecretValue(passedSettings.loginData.caSecretValue);
       setLoginData(passedSettings.loginData);
       setCompanionMode(passedSettings.companionMode);
       setDisplayMode(passedSettings.displayMode);
@@ -564,6 +702,7 @@ export const PulseExtensionDialog = (props: any) => {
       setShowPulseTopInsight(passedSettings.showPulseTopInsight === 'true' ? true : false);
       setDebug(passedSettings.debug === 'true' ? true : false);
       setShowPulseFilters(passedSettings.showPulseFilters === 'true' ? true : false);
+      setTimeComparisonMode(passedSettings.timeComparisonMode);
       let m = new MetricCollection(passedSettings.metricCollection.metrics);
       m.metricOptions = passedSettings.metricCollection.metricOptions;
       setMetricCollection(m);
@@ -622,92 +761,32 @@ export const PulseExtensionDialog = (props: any) => {
     }
   }, [loginEnabled]);
 
-  const handleDebugCheckboxChange = (event: any) => {
+  const handleDebugChange = (event: any) => {
     setDebug(event.target.checked);
-    // debugRef.current = event.target.checked ? 'true' : 'false';
   };
-  const handleShowPulseAnchorChartCheckboxChange = (event: any) => {
+  const handleShowPulseAnchorChartChange = (event: any) => {
     setShowPulseAnchorChart(event.target.checked);
-    // showPulseAnchorChartRef.current = event.target.checked ? 'true' : 'false';
   };
 
-  const handleShowPulseTopInsightCheckboxChange = (event: any) => {
+  const handleShowPulseTopInsightChange = (event: any) => {
     setShowPulseTopInsight(event.target.checked);
-    // showPulseTopInsightRef.current = event.target.checked ? 'true' : 'false';
   };
 
-  const handleShowPulseFilters = (event: any) => {
+  const handleShowPulseFiltersChange = (event: any) => {
     setShowPulseFilters(event.target.checked);
-    // showPulseFiltersRef.current = event.target.checked ? 'true' : 'false';
   };
-
-  // useEffect(() => {
-  //   // tableauUrlRef.current = tableauUrl;
-  //   let url = `https://${tableauUrlSubDomain}.online.tableau.com`;
-  //   // setTableauUrlSubDomain(url);
-  //   // tableauUrlFQDNRef.current = url;
-  //   updateLoginData('tableauUrl', validateAndFormatTableauUrl(tableauUrl));
-  // }, [tableauUrlSubDomain]);
-
-  // useEffect(() => {
-  //   // site_idRef.current = site_id;
-  //   updateLoginData('site_id', site_id);
-  // }, [loginData.site_id]);
-
-  // useEffect(() => {
-  //   userNameRef.current = userName;
-  // }, [loginData.userName]);
-
-  // useEffect(() => {
-  //   caClientIdRef.current = caClientId;
-  // }, [loginData.caClientId]);
-
-  // useEffect(() => {
-  //   caSecretIdRef.current = caSecretId;
-  // }, [loginData.caSecretId]);
-
-  // useEffect(() => {
-  //   caSecretValueRef.current = caSecretValue;
-  // }, [loginData.caSecretValue]);
-
-  /*   useEffect(() => {
-    if (!_.isEqual(metricCollection.metrics, [])) {
-    let m = new MetricCollection(metricCollection.metrics);
-    m.setMetricOptions(metricCollection.metricOptions);
-    // metricOptionsRef.current = metricOptions;
-    }
-  }, [metricCollection.metricOptions]); */
-
-  // useEffect(() => {
-  //   companionModeRef.current = companionMode;
-  // }, [companionMode]);
-
-  // useEffect(() => {
-  //   console.log(`setting displayMode to ${displayMode}`);
-  //   displayModeRef.current = displayMode;
-  // }, [displayMode]);
-  // useEffect(() => {
-  //   console.log(`setting currentFiltersDisplayMode to ${currentFiltersDisplayMode}`);
-  //   currentFiltersDisplayModeRef.current = currentFiltersDisplayMode;
-  // }, [currentFiltersDisplayMode]);
-  // useEffect(() => {
-  //   showPulseAnchorChartRef.current = showPulseAnchorChart ? 'true' : 'false';
-  // }, [showPulseAnchorChart]);
-  // useEffect(() => {
-  //   showPulseTopInsightRef.current = showPulseTopInsight ? 'true' : 'false';
-  // }, [showPulseTopInsight]);
 
   const handleCompanionModeChange = (event: any) => {
     setCompanionMode(event.target.value);
-    // companionModeRef.current = event.target.value;
   };
   const handleDisplayModeChange = (event: any) => {
     setDisplayMode(event.target.value);
-    // displayModeRef.current = event.target.value;
+  };
+  const handleTimeComparisonModeChange = (event: any) => {
+    setTimeComparisonMode(event.target.value);
   };
   const handleCurrentFiltersDisplayModeChange = (event: any) => {
     setCurrentFiltersDisplayMode(event.target.value);
-    // currentFiltersDisplayModeRef.current = event.target.value;
   };
 
   const handleUserName = (event: any) => {
@@ -779,25 +858,12 @@ export const PulseExtensionDialog = (props: any) => {
         <NavigationTabs
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          // tableauUrl={tableauUrl}
-          // setTableauUrl={setTableauUrl}
           tableauUrlFQDN={tableauUrlSubDomain}
           setTableauUrlFQDN={setTableauUrlSubDomain}
-          // site_id={site_id}
-          // setsite_id={setsite_id}
-          // userName={userName}
-          // setUserName={setUserName}
-          // caClientId={caClientId}
-          // setCaClientId={setCaClientId}
-          // caSecretId={caSecretId}
-          // setCaSecretId={setCaSecretId}
-          // caSecretValue={caSecretValue}
-          // setCaSecretValue={setCaSecretValue}
           tableauUrlSubDomain={tableauUrlSubDomain}
           loginData={loginData}
           setLoginData={setLoginData}
           updateLoginData={updateLoginData}
-          // status={status}
           loginEnabled={loginEnabled}
           handleLogin={handleLogin}
           handleSample={handleSample}
@@ -814,17 +880,20 @@ export const PulseExtensionDialog = (props: any) => {
           displayMode={displayMode}
           setDisplayMode={setDisplayMode}
           handleDisplayModeChange={handleDisplayModeChange}
+          timeComparisonMode={timeComparisonMode}
+          setTimeComparisonMode={setTimeComparisonMode}
+          handleTimeComparisonModeChange={handleTimeComparisonModeChange}
           currentFiltersDisplayMode={currentFiltersDisplayMode}
           setCurrentFiltersDisplayMode={setCurrentFiltersDisplayMode}
           handleCurrentFiltersDisplayModeChange={handleCurrentFiltersDisplayModeChange}
           debug={debug}
-          handleDebugCheckboxChange={handleDebugCheckboxChange}
+          handleDebugChange={handleDebugChange}
           showPulseAnchorChart={showPulseAnchorChart}
-          handleShowPulseAnchorChartCheckboxChange={handleShowPulseAnchorChartCheckboxChange}
+          handleShowPulseAnchorChartChange={handleShowPulseAnchorChartChange}
           showPulseTopInsight={showPulseTopInsight}
-          handleShowPulseTopInsightCheckboxChange={handleShowPulseTopInsightCheckboxChange}
+          handleShowPulseTopInsightChange={handleShowPulseTopInsightChange}
           showPulseFilters={showPulseFilters}
-          handleShowPulseFilters={handleShowPulseFilters}
+          handleShowPulseFiltersChange={handleShowPulseFiltersChange}
           metricCollection={metricCollection}
           setMetricCollection={setMetricCollection}
         />

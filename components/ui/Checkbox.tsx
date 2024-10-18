@@ -4,7 +4,12 @@ import { CheckIcon } from "@radix-ui/react-icons";
 
 import { cn } from "utils";
 
-const Checkbox = React.forwardRef(({ className, ...props }, ref) => (
+interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+  className?: string;
+  checked?: boolean;
+}
+
+const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root>, CheckboxProps>(({ className, ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(

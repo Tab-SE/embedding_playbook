@@ -20,6 +20,7 @@ export const MetricsTab = ({
     let m = new MetricCollection(metricCollection.metrics);
     m.setMetricOptions(metricCollection.metricOptions);
     m.setMetricOptionShowOrHideSingle(metric.specification_id, e.target.checked);
+    // metricCollection.setMetricOptionShowOrHideSingle(metric.specification_id, e.target.checked);
     setMetricCollection(m);
   };
 
@@ -28,6 +29,7 @@ export const MetricsTab = ({
     let m = new MetricCollection(metricCollection.metrics);
     m.setMetricOptions(metricCollection.metricOptions);
     m.setMetricOptionsShowOrHideAll(e.target.checked);
+    // metricCollection.setMetricOptionsShowOrHideAll(e.target.checked);
     setMetricCollection(m);
   };
 
@@ -64,10 +66,10 @@ export const MetricsTab = ({
                     onChange={(e) => handleCheckboxChange(e, metric)}
                     id={`metric-${metric.specification_id}`}
                     title={`${metric.name}${metric.nameFilters}`}
-                    checked={metricCollection?.metricOptions[metric.specification_id]?.show}
+                    checked={metricCollection?.metricOptions[metric.specification_id]?.show.toString()==='true'}
                   />
                 </td>
-                <td>
+                <td> 
                   {metric.name} - {metric.namePeriod}
                   {metric.nameFilters && ` - ${metric.nameFilters}`}
                 </td>
