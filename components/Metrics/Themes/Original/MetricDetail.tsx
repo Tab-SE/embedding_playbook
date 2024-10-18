@@ -191,7 +191,7 @@ const Stats: React.FC<StatsProps> = (props) => {
     return (
       <div className="flex flex-col space-y-4">
         <div className="flex justify-between items-center">
-          <div className="pl-3 pr-3">
+          <div className="pl-1">
             <div className="flex flex-col">
               <div className="text-2xl font-bold">{stats.value ? stats.value : null}</div>
               <div className="text-xs text-muted-foreground -mt-2">{stats.units}</div>
