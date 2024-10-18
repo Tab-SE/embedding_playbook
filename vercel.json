@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/insights.js": {
+      "maxDuration": 240 // Adjust as needed
+    }
+  }
+}
