@@ -30,7 +30,6 @@ export function UserMenu(props) {
     if (status === 'authenticated') {
       setUser(data.user.name);
       setAvatar(data.user.image)
-      console.log("data.user", data.user)
     }
   }, [status, data]);
 
