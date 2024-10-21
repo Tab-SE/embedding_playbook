@@ -16,7 +16,7 @@ export const FloatingAssistant = () => {
       </AssistantModalPrimitive.Anchor>
       <AssistantModalPrimitive.Content
         sideOffset={16}
-        className="bg-white text-stone-950 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out data-[state=open]:zoom-in data-[state=open]:slide-in-from-bottom-1/2 data-[state=open]:slide-in-from-right-1/2 data-[state=closed]:slide-out-to-bottom-1/2 data-[state=closed]:slide-out-to-right-1/2 z-50 h-[500px] w-[400px] overflow-clip rounded-xl border border-stone-200 p-0 shadow-md outline-none [&>div]:bg-inherit dark:bg-stone-950 dark:text-stone-50 dark:border-stone-800"
+        className="bg-white text-stone-950 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out data-[state=open]:zoom-in data-[state=open]:slide-in-from-bottom-1/2 data-[state=open]:slide-in-from-right-1/2 data-[state=closed]:slide-out-to-bottom-1/2 data-[state=closed]:slide-out-to-right-1/2 z-50 h-[500px] w-[600px] min-w-[320px] overflow-clip rounded-xl border border-stone-200 p-0 shadow-md outline-none [&>div]:bg-inherit dark:bg-stone-950 dark:text-stone-50 dark:border-stone-800"
       >
         <MiniThread />
       </AssistantModalPrimitive.Content>
@@ -34,7 +34,8 @@ const FloatingAssistantButton = forwardRef(({ "data-state": state, ...rest }, re
       side="left"
       {...rest}
       className="size-full rounded-full shadow transition-transform hover:scale-110 active:scale-90 text-stone-900 bg-stone-50 hover:bg-stone-200"
-      ref={ref}>
+      ref={ref}
+      >
       <Image
         src="/img/themes/superstore/superstore.png"
         alt="Assistant"
