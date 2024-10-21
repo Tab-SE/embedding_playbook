@@ -12,7 +12,7 @@ export const UserStore = {
         picture: "/img/users/mackenzie_day.png",
         role: 3,
         vector_store: 'simplify_jmorris',
-        uaf: {"Region": ["South"]}
+        uaf: {"Hiring Manager": ["Ewa Przywara"]}
       },
       Justin: {
         name: "Justin Chen",
@@ -20,7 +20,7 @@ export const UserStore = {
         picture: "/img/users/justin_chen.png",
         role: 1,
         vector_store: 'simplify_jchen',
-        uaf: {}
+        uaf: {"Hiring Manager": ["Amelia Cox","Ashley Yates","Blake Shah","Eve Sanford","Ewa Przywara","Jade Higgins","Lucas Blum","Major Tyler"]}
       },
       Allison: {
         name: "Sofia Lopez",
