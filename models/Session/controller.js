@@ -18,10 +18,10 @@ export const lifespan = (estimatedTimeToExpiration) => {
 };
 
 // Tableau Embed and REST API authentication via JWT
-export const handleJWT = async (sub, jwt_options, scopes) => {
+export const handleJWT = async (sub, jwt_options, scopes, claims) => {
   // encode and sign new JWTs for Embed and REST APIs
-  const embed_token = jwtSign(sub, jwt_options, scopes);
-  const rest_token = jwtSign(sub, jwt_options, scopes);
+  const embed_token = jwtSign(sub, jwt_options, scopes, claims);
+  const rest_token = jwtSign(sub, jwt_options, scopes, claims);
   const { jwt_secret, jwt_client_id } = jwt_options;
   // verify the JWT against the same parameters
   const valid_embed = jwtVerify(embed_token, sub, jwt_secret, jwt_client_id);

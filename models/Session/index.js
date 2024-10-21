@@ -80,8 +80,8 @@ export class Session {
   }
 
   // JSON Web Token authentication
-  jwt = async (sub, jwt_options, scopes) => {
-    const { credentials, embed_token } = await handleJWT(sub, jwt_options, scopes);
+  jwt = async (sub, jwt_options, scopes, claims) => {
+    const { credentials, embed_token } = await handleJWT(sub, jwt_options, scopes, claims);
     this._authorize(credentials, embed_token);
   }
   

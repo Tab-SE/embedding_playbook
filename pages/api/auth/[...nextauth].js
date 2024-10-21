@@ -72,7 +72,7 @@ export const authOptions = {
             jwt_client_id
           };
           const embed_session = new Session(user.name);
-          await embed_session.jwt(user.email, embed_options, embed_scopes);
+          await embed_session.jwt(user.email, embed_options, embed_scopes, user.uaf);
 
           // used for backend HTTP calls
           const rest_scopes = [
@@ -90,7 +90,7 @@ export const authOptions = {
             jwt_client_id
           };
           const rest_session = new Session(user.name);
-          await rest_session.jwt(user.email, rest_options, rest_scopes);
+          await rest_session.jwt(user.email, rest_options, rest_scopes, user.uaf);
           if (embed_session.authorized && rest_session.authorized) {
             // frontend requires user_id & embed_token
              const {
