@@ -85,9 +85,9 @@ export const Simplify = () => {
         )}
       </TabsList>
       <section className="min-h-[892px]">
-        {defaultTab === "workforce" && showWorkforce && <Workforce />}
-        {defaultTab === "workforce" && showRecruiting && <Recruiting />}
-        {defaultTab === "contract" && showContract && <ContractJobManagement />}
+        {showWorkforce && <Workforce />}
+        {showRecruiting && <Recruiting />}
+        {showContract && <ContractJobManagement />}
       </section>
     </Tabs>
   );
