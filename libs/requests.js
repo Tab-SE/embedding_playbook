@@ -168,6 +168,7 @@ export const getMetrics = async () => {
 
 // obtains a public token for the frontend
 export const getUser = async (userId) => {
+  console.log("getUser endpoint", getUser)
   const endpoint = '/api/user';
   const body = { userId };
 

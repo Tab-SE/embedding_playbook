@@ -43,11 +43,16 @@ export const authOptions = {
           if (key.toUpperCase() === credentials.ID.toUpperCase()) {
             // if a match is found store value as user
             user = value;
+            console.log('Found user:', user);
+            user.uaf = user.uaf || {};  // Ensure uaf is initialized
           }
         }
+        console.log('User in JWT callback:', user); // Log the user object
+
         if (user) {
           // add the demo to the user object to see it on the client
           user.demo = credentials.demo;
+          user.uaf = user.uaf || {}; 
           // server-side env vars
           const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
           const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
@@ -95,7 +100,7 @@ export const authOptions = {
             const { user_id: rest_id, rest_key } = rest_session;
             // add members to a new tableau object in user
             user.tableau = {
-              username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires,
+              username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires
             };
           }
 
@@ -140,9 +145,9 @@ export const authOptions = {
         token.demo = user.demo;
         token.role = user.role; // tableau session object
         token.vector_store = user.vector_store; // tableau session object
-        token.uaf = user.uaf; // user attribute function claims
+        token.uaf = user.uaf || {}; // Ensure uaf is set, even if it's empty
         token.tableau = user.tableau; // tableau session object
-
+        
       }
       return token;
     },

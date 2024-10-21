@@ -13,6 +13,7 @@ export class Session {
     this.site = null; // site name
     this.created = null; // Get the current time in seconds since the epoch
     this.expires = null; // estimated future expiry date
+    this.uaf = null;
   }
 
   // securely return session data
@@ -26,6 +27,7 @@ export class Session {
        site: this.site, 
        created: this.created, 
        expires: this.expires,
+       uaf: this.uaf,
      };
    } else {
     return null;
@@ -38,6 +40,7 @@ export class Session {
     this.site_id = credentials?.site_id;
     this.site = credentials?.site;
     this.user_id = credentials?.user_id;
+    this.uaf = credentials?.uaf || null;
     // API key from the REST API credentials response
     credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
     // JWT token used for embedding on the frontend

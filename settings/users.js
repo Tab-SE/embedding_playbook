@@ -12,7 +12,7 @@ export const UserStore = {
         picture: "/img/users/mackenzie_day.png",
         role: 3,
         vector_store: 'simplify_jmorris',
-        uaf: {}
+        uaf: {"Region": ["South"]}
       },
       Justin: {
         name: "Justin Chen",
