@@ -187,4 +187,4 @@ export { Checkbox } from './Checkbox';
 
 export { RadioGroup, RadioGroupItem } from './Radio-Group';
 
-export { MyAssistantModal, MyThread, TooltipIconButton, MarkdownText, SyntaxHighlighter } from './assistant-ui';
+export { MyAssistantModal, MyThread } from './assistant-ui';

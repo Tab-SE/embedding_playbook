@@ -1,4 +1,5 @@
 "use client";
+
 import { MarkdownTextPrimitive, useIsMarkdownCodeBlock } from "@assistant-ui/react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
@@ -6,8 +7,8 @@ import remarkMath from "remark-math";
 import { memo, useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 
-import { TooltipIconButton } from "@/components/ui";
-import { SyntaxHighlighter } from "@/components/ui";
+import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
+import { SyntaxHighlighter } from "@/components/ui/assistant-ui/syntax-highlighter";
 import { cn } from "utils";
 
 import "katex/dist/katex.min.css";
