@@ -7,7 +7,8 @@ import {
 import { SendHorizontalIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
-import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
+import { TooltipIconButton, MarkdownText } from "@/components/ui";
+
 
 export const Thread = (props) => {
   const { } = props;
@@ -87,7 +88,7 @@ const DemoUserMessage = () => {
       />
       <div
         className="bg-stone-100 text-stone-950 col-start-2 row-start-1 max-w-xl break-words rounded-3xl px-5 py-2.5 dark:bg-stone-800 dark:text-stone-50">
-        <MessagePrimitive.Content />
+        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
       </div>
     </MessagePrimitive.Root>)
   );
@@ -107,7 +108,7 @@ const AgentMessage = () => {
       />
       <div
         className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
-        <MessagePrimitive.Content />
+        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
       </div>
     </MessagePrimitive.Root>)
   );
