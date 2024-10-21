@@ -22,8 +22,7 @@ export const Simplify = () => {
 
       setShowContract(isEwa);
       setShowWorkforce(isJustin);
-      setShowRecruiting(isJustin);
-      console.log("isJustin", isJustin)
+      setShowRecruiting(isJustin || isEwa);
 
       // Set dynamic default tab based on the user
       if (isEwa) {
