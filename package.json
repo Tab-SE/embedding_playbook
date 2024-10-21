@@ -27,7 +27,7 @@
   "homepage": "https://github.com/Tab-SE/embedding_playbook#readme",
   "dependencies": {
     "@ai-sdk/openai": "^0.0.68",
-    "@assistant-ui/react": "^0.5.87",
+    "@assistant-ui/react": "^0.5.89",
     "@assistant-ui/react-ai-sdk": "^0.6.14",
     "@assistant-ui/react-markdown": "^0.2.19",
     "@assistant-ui/react-syntax-highlighter": "^0.0.14",
