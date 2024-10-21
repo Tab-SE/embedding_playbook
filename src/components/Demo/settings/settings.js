@@ -3,6 +3,7 @@ import {
   Package,
   ShoppingCart,
   Users2,
+  BrainCircuit
 } from "lucide-react";
 
 import users from './users';
@@ -23,6 +24,13 @@ export const settings = {
       path: '',
       min_role: 1,
       description: 'your superstore homepage'
+    },
+    {
+      name: 'Agent',
+      icon: <BrainCircuit className="h-5 w-5"/>,
+      path: '/agent',
+      min_role: 1,
+      description: 'a fully tooled superstore agent ready to assist you'
     },
     {
       name: 'Orders',
