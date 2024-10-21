@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext, useCallback } from 'rea
 import { Button, Checkbox, Input, Label, Select, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { tab_extension } from 'libs';
-import { LoadMetrics } from '.';
+import { LoadMetricsOnly } from '.';
 import { MetricsTab } from './DialogMetricsTab';
 import { MetricCollection } from 'models';
 import { set, update } from 'lodash';
@@ -124,7 +124,7 @@ const ConnectionTab = ({
         Logout
       </Button>
       {loginEnabled && userName !== '' && (
-        <LoadMetrics
+        <LoadMetricsOnly
           metricCollection={metricCollection}
           setMetricCollection={setMetricCollection}
           loginData={loginData}

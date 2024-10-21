@@ -25,18 +25,18 @@ export const InsightsModal = (props) => {
             <span className={`text-2xl text-muted-foreground ${stats.color}`}>
               &nbsp; △ {stats.relative ? `${stats.relative}` : null}
             </span>
-{/*             <TabsList className='mx-6'>
+            {/*             <TabsList className='mx-6'>
               <TabsTrigger value="insights">
-                Insights
+              Insights
               </TabsTrigger>
               <TabsTrigger value="dashboard">
-                Dashboard
+              Dashboard
               </TabsTrigger>
-            </TabsList> */}
+              </TabsList> */}
           </DialogDescription>
         </DialogHeader>
         <InsightsChat metric={metric} stats={stats} />
-        <Dashboards src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip' />
+        {/* <Dashboards src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip' /> */}
       </Tabs>
     </DialogContent>
   )

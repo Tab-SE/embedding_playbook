@@ -19,7 +19,7 @@ interface ContextDataWrapper {
 interface ContextData {
   showPulseAnchorChart: 'true' | 'false';
   showPulseTopInsight: 'true' | 'false';
-  companionMode: string;
+  companionMode: 'none' | 'source' | 'popup' | 'target';
   displayMode: 'original' | 'singlePane' | 'salesforce' | 'tableau';
   currentFiltersDisplayMode: 'top' | 'bottom';
   timeComparisonMode: 'primary' | 'both' | 'text';

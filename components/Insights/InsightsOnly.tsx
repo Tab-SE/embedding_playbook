@@ -7,32 +7,29 @@ import { InsightsModal } from '..';
 import { useInsights } from '../../hooks';
 import { parseInsights } from '../../utils';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  Dialog, DialogTrigger
 } from '../../components/ui';
+import { IconTrendingUp, IconTrendingDown, IconArrowNarrowRight } from '@tabler/icons-react';
+import { parseStats } from 'utils/parse';
 
 
 export const InsightsOnly = (props) => {
-  const {metricId} = props;
+
   const [user, setUser] = useState<null | string | undefined>(null);
   const [metric, setMetric] = useState<Metric | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { status: session_status, data: session_data } = useSession();
   const [specification_id, setSpecification_id] = useState<string | undefined>(undefined);
-
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
+  const { data, error } = useMetric(contextData.loginData.userName, contextData.loginData, contextData.currentMetric);
   // syncs with user metrics, only fires query when user is defined -> controlled query
-  const { status, data, error, isError, isSuccess } = useMetric(user, contextData.currentMetric);
-  useEffect(() => {
-    if (session_status === 'authenticated') {
-      setUser(session_data?.user?.name); // value used for controlled queries
-    }
-    console.log(`session user name: ${session_data?.user?.name}`);
-  }, [session_status, session_data]);
+  //const { data } = useMetric(contextData.loginData.userName, contextData.loginData, metric.specification_id);
+  // useEffect(() => {
+  //   if (session_status === 'authenticated') {
+  //     setUser(session_data?.user?.name); // value used for controlled queries
+  //   }
+  //   console.log(`session user name: ${session_data?.user?.name}`);
+  // }, [session_status, session_data]);
 
   useEffect(() => {
     if (contextData.debug === "true") console.log(`contextData in InsightsOnly: ${JSON.stringify(contextData, null, 2)}`)
@@ -40,7 +37,15 @@ export const InsightsOnly = (props) => {
       setMetric(data[0]);
       // if (contextData.debug) console.log(`metric: ${JSON.stringify(metric, null, 2)}`);
     }
-  }, [contextData.currentMetric, data, metric, contextData]);
+    else if (typeof contextData.currentMetric === 'undefined'){
+      setMetric(null);
+    }
+  }, [data, contextData]);
+
+  useEffect(() => {
+    console.log(`insights only data...`);
+    console.log(data);
+  }, [data])
 
 /*   useEffect(() => {
     if (contextData.currentMetric !== "" && contextData.currentMetric !== specification_id) {
@@ -84,8 +89,6 @@ export const InsightsOnly = (props) => {
 export const MetricShell = (props) => {
   const { metric } = props;
   const [bundleCount, setBundleCount] = useState<number | null>(null);
-  let result;
-  let facts;
   let stats: any = { sentiment: undefined };
   const { data, error, isError, isSuccess, failureCount, failureReason } = useInsights(metric);
   useEffect(() => {
@@ -95,68 +98,37 @@ export const MetricShell = (props) => {
     }
   }, [isSuccess, data]);
   if (isSuccess) {
-    const insight_groups = data?.bundle_response?.result.insight_groups;
-    if (Array.isArray(insight_groups)) {
-      insight_groups.forEach((insight) => {
-        if (insight.type === 'ban') {
-          result = data?.bundle_response?.result.insight_groups[0].insights[0].result;
-          facts = result?.facts;
-          stats.value = facts?.target_period_value.formatted;
-          stats.absolute = facts?.difference.absolute.formatted;
-          stats.relative = facts?.difference.relative.formatted;
-          if (stats.absolute) {
-            if (!stats?.absolute.startsWith('-')) {
-              stats.absolute = '+' + stats.absolute;
-              stats.relative = '+' + stats.relative;
-            }
-          }
-          const dir = facts?.difference.direction;
-          const sent = facts?.sentiment;
-          if (dir === 'up') {
-            stats.direction = '↗︎';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
-          } else if (dir === 'down') {
-            stats.direction = '↘︎';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
-          } else if (dir === 'flat') {
-            stats.direction = '→';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
-          }
-        }
-      });
+    stats = parseStats(data, metric);
+    if (stats.dir === 'up') {
+      stats.direction = <IconTrendingUp />;
+    } else if (stats.dir === 'down') {
+      stats.direction = <IconTrendingDown />;
+    } else if (stats.dir === 'flat') {
+      stats.direction = <IconArrowNarrowRight />;
+    }
+
+    if (stats.comparisons && stats.comparisons[0]) {
+      if (stats.comparisons[0].direction === 'up') {
+        stats.comparisons[0].directionIcon = <IconTrendingUp />;
+      } else if (stats.comparisons[0].direction === 'down') {
+        stats.comparisons[0].directionIcon = <IconTrendingDown />;
+      } else if (stats.comparisons[0].direction === 'flat') {
+        stats.comparisons[0].directionIcon = <IconArrowNarrowRight />;
+      }
+    }
+
+    if (stats.comparisons && stats.comparisons[1]) {
+      if (stats.comparisons[1].direction === 'up') {
+        stats.comparisons[1].directionIcon = <IconTrendingUp />;
+      } else if (stats.comparisons[1].direction === 'down') {
+        stats.comparisons[1].directionIcon = <IconTrendingDown />;
+      } else if (stats.comparisons[1].direction === 'flat') {
+        stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
+      }
     }
   }
   return (
     <div>
-      {/* <StatsShell isSuccess={isSuccess} stats={stats} bundleCount={bundleCount} metric={metric} />
-       */}
       <InsightsModal metric={metric} stats={stats} />
     </div>
   );

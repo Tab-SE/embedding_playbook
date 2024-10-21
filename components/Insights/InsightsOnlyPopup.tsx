@@ -5,22 +5,17 @@ from the PulseExtensionInsightsPopup.tsx file.  This is a work in progress.
 */
 
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { ExtensionDataContext } from '../ExtensionDataProvider';
 
 import { useMetric } from '../../hooks';
 import { InsightsModal } from '..';
 import { useInsights } from '../../hooks';
-import { parseInsights } from '../../utils';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  Dialog, DialogTrigger
 } from '../ui';
+import { IconTrendingUp, IconTrendingDown, IconArrowNarrowRight } from '@tabler/icons-react';
+import { parseStats } from 'utils/parse';
 
 
 export const InsightsOnlyPopup = (props) => {
@@ -33,7 +28,7 @@ export const InsightsOnlyPopup = (props) => {
   const [currentMetric, setCurrentMetric] = useState<string>("");
   // const { contextData, updateContextData } = useContext(ExtensionDataContext);
   // syncs with user metrics, only fires query when user is defined -> controlled query
-  const { status, data, error, isError, isSuccess } = useMetric(user, currentMetric);
+  const { status, data, error, isError, isSuccess } = useMetric(user || "", {}, currentMetric);
 
 
 useEffect(() => {
@@ -78,62 +73,33 @@ export const MetricShell = (props) => {
   const { data, error, isError, isSuccess, failureCount, failureReason } = useInsights(metric);
 
   if (isSuccess) {
-    const insight_groups = data?.bundle_response?.result.insight_groups;
-    if (Array.isArray(insight_groups)) {
-      insight_groups.forEach((insight) => {
-        if (insight.type === 'ban') {
-          result = data?.bundle_response?.result.insight_groups[0].insights[0].result;
-          facts = result?.facts;
-          stats.value = facts?.target_period_value.formatted;
-          stats.absolute = facts?.difference.absolute.formatted;
-          stats.relative = facts?.difference.relative.formatted;
-          if (stats.absolute) {
-            if (!stats?.absolute.startsWith('-')) {
-              stats.absolute = '+' + stats.absolute;
-              stats.relative = '+' + stats.relative;
-            }
-          }
-          const dir = facts?.difference.direction;
-          const sent = facts?.sentiment;
-          if (dir === 'up') {
-            stats.direction = '↗︎';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
-          } else if (dir === 'down') {
-            stats.direction = '↘︎';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
-          } else if (dir === 'flat') {
-            stats.direction = '→';
-            if (sent === 'positive') {
-              stats.color = 'text-sky-600';
-              stats.badge = 'bg-sky-600 dark:bg-sky-600';
-            } else if (sent === 'negative') {
-              stats.color = 'text-orange-600';
-              stats.badge = 'bg-orange-600 dark:bg-orange-600';
-            } else if (sent === 'neutral') {
-              stats.color = 'text-stone-500 dark:text-stone-400';
-              stats.badge = 'bg-stone-500 dark:bg-stone-400';
-            }
-          }
-        }
-      });
+    stats = parseStats(data, metric);
+    if (stats.dir === 'up') {
+      stats.direction = <IconTrendingUp />;
+    } else if (stats.dir === 'down') {
+      stats.direction = <IconTrendingDown />;
+    } else if (stats.dir === 'flat') {
+      stats.direction = <IconArrowNarrowRight />;
+    }
+
+    if (stats.comparisons && stats.comparisons[0]) {
+      if (stats.comparisons[0].direction === 'up') {
+        stats.comparisons[0].directionIcon = <IconTrendingUp />;
+      } else if (stats.comparisons[0].direction === 'down') {
+        stats.comparisons[0].directionIcon = <IconTrendingDown />;
+      } else if (stats.comparisons[0].direction === 'flat') {
+        stats.comparisons[0].directionIcon = <IconArrowNarrowRight />;
+      }
+    }
+
+    if (stats.comparisons && stats.comparisons[1]) {
+      if (stats.comparisons[1].direction === 'up') {
+        stats.comparisons[1].directionIcon = <IconTrendingUp />;
+      } else if (stats.comparisons[1].direction === 'down') {
+        stats.comparisons[1].directionIcon = <IconTrendingDown />;
+      } else if (stats.comparisons[1].direction === 'flat') {
+        stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
+      }
     }
   }
 

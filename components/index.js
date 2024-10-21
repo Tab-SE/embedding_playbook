@@ -20,9 +20,7 @@ export {
   TableauToolbar
 } from './TableauEmbed';
 
-export { PulseExtension } from 'components/PulseExtension';
-export { PulseExtensionDialog } from 'components/PulseExtension';
-// export { TableauExtension } from './TableauExtension';
+export { PulseExtension, PulseExtensionDialog, PulseExtensionInsightsPopup } from 'components/PulseExtension';
 export { InsightsOnly } from './Insights';
 export { ExtensionDataProvider, ExtensionDataContext } from './ExtensionDataProvider';
 

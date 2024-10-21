@@ -9,7 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSession, signOut } from 'next-auth/react';
 import { MetricCollection } from 'models';
 import _, { update } from 'lodash';
-import { Metrics } from 'components';
+import { Insights, InsightsOnly, Metrics } from 'components';
 
 export const PulseExtension = forwardRef(function Extension(props, ref) {
   const basePath = process.env.NEXT_PUBLIC_BASE_URL;
@@ -62,7 +62,6 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     contextDataRef.current = contextData;
   }, [contextData]);
 
-
   useEffect(() => {
     const handleSetVal = (metric_id) => {
       console.log(`handleSetVal called with metric_id: ${metric_id}`);
@@ -108,10 +107,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         settings.currentFiltersDisplayMode
       );
     if (typeof settings.timeComparisonMode !== 'undefined')
-      tableau.extensions.settings.set(
-        'timeComparisonMode',
-        settings.timeComparisonMode
-      );
+      tableau.extensions.settings.set('timeComparisonMode', settings.timeComparisonMode);
     if (typeof settings.showPulseAnchorChart !== 'undefined')
       tableau.extensions.settings.set('showPulseAnchorChart', settings.showPulseAnchorChart);
     if (typeof settings.showPulseTopInsight !== 'undefined')
@@ -138,8 +134,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       m = new MetricCollection(settings.metricCollection?.metrics);
     } else if (Object.keys(contextDataRef.current.metricCollection.metrics).length > 0) {
       m = new MetricCollection(contextDataRef.current.metricCollection.metrics);
-    }
-    else {
+    } else {
       m = new MetricCollection([]);
     }
     m.setMetricOptions(settings.metricCollection?.metricOptions || {});
@@ -227,7 +222,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           });
       };
     }
-    if (contextData.companionMode === 'target' || contextData.companionMode === 'source') {
+    if (contextData.companionMode !== 'none') {
       let metricIdParameter;
       tableau.extensions.dashboardContent.dashboard
         .getParametersAsync()
@@ -445,7 +440,13 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           SessionVal: {sessionVal}
         </div>
       )}
-      {!configureOpenRef.current && <Metrics />}
+      {!configureOpenRef.current && contextData.companionMode !== 'target' ? (
+        <>
+          <Metrics />
+        </>
+      ) : !configureOpenRef.current && contextData.companionMode === 'target' ? (
+        <InsightsOnly />
+      ) : null}
 
       {configureOpenRef.current && 'Configure dialog open'}
       {contextData.debug === 'true' && (

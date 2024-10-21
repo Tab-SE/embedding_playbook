@@ -132,8 +132,10 @@ export const MetricDetail: React.FC<{
 
   // fully loaded state
   return (
-    // tslint: disable-next-line
-    <Card className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white text-stone-950 shadow dark:border-stone-800 dark:text-stone-50 min-h-[111px] max-w-[350px] dark:bg-stone-900">
+    <>
+    {contextData.companionMode !== 'target' ? (
+      
+      <Card className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white text-stone-950 shadow dark:border-stone-800 dark:text-stone-50 min-h-[111px] max-w-[350px] dark:bg-stone-900">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
         <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 overflow-hidden">
           {metric.name}
@@ -154,10 +156,10 @@ export const MetricDetail: React.FC<{
           metric={metric}
           insights={insights}
           viz={data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz}
-        />
+          />
         {contextData.currentFiltersDisplayMode === 'bottom' && (
           <div
-            className={`text-stone-500 dark:text-stone-300 leading-5 pl-3 overflow-hidden ${filtersApplied}`}
+          className={`text-stone-500 dark:text-stone-300 leading-5 pl-3 overflow-hidden ${filtersApplied}`}
           >
             <FontAwesomeIcon icon={myIcon} />
             {appliedFilters}
@@ -168,17 +170,19 @@ export const MetricDetail: React.FC<{
           currDatasourceFilterFields.map((filter: string) => {
             return (
               <Filters
-                key={datasourceId + '-' + metric.id + '-' + filter}
-                datasourceId={datasourceId}
-                filterId={filter}
-                handleMetricFilter={handleMetricFilter}
-                passedValues={selectedValues}
-                metric={metric}
+              key={datasourceId + '-' + metric.id + '-' + filter}
+              datasourceId={datasourceId}
+              filterId={filter}
+              handleMetricFilter={handleMetricFilter}
+              passedValues={selectedValues}
+              metric={metric}
               />
             );
           })}
       </CardContent>
     </Card>
+        ) : null}
+          </>
   );
 };
 
@@ -197,7 +201,29 @@ const Stats: React.FC<StatsProps> = (props) => {
               <div className="text-xs text-muted-foreground -mt-2">{stats.units}</div>
               <div className="mt-2">
                 <Dialog>
-                  <DialogTrigger>
+                  <DialogTrigger
+                    onClick={() => {
+                      const metricId = (metric as any).specification_id;
+                      console.log(`calling handleSetVal with ${metricId}`);
+
+                      if (contextData.companionMode === 'source') {
+                        contextData.handleSetVal(metricId);
+                      } else if (contextData.companionMode === 'popup') {
+                        const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
+
+                        if (!popupWindowRef || popupWindowRef.closed) {
+                          popupWindowRef = window.open(
+                            popupUrl,
+                            'insightsPopup',
+                            'width=1225,height=645'
+                          );
+                        } else {
+                          popupWindowRef.location.href = popupUrl;
+                          popupWindowRef.focus();
+                        }
+                      }
+                    }}
+                  >
                     <Badge
                       className={`${stats.badge} text-stone-50 h-6 flex items-center justify-center whitespace-nowrap w-min px-2`}
                       variant={undefined}
@@ -206,45 +232,45 @@ const Stats: React.FC<StatsProps> = (props) => {
                       <span className="inline-block">{bundleCount}</span>
                     </Badge>
                   </DialogTrigger>
-                  <InsightsModal metric={metric} stats={stats} />
+                  {contextData.companionMode === 'none' ||
+                  contextData.companionMode === 'target' ? (
+                    <InsightsModal metric={metric} stats={stats} />
+                  ) : null}
                 </Dialog>
               </div>
             </div>
-            
-            
-         
-        </div>
-        <div className="flex flex-col flex-grow items-start text-xs text-muted-foreground mx-4">
-          {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
-            <>
-              <div className={`flex space-x-2 items-center ${stats.color}`}>
-                <div>{stats.comparisons[0].directionIcon}</div>
-                <div>{stats.comparisons[0].absolute}</div>
-                <div>
-                  {stats.comparisons[0].relative ? `${stats.comparisons[0].relative} △` : null}
+          </div>
+          <div className="flex flex-col flex-grow items-start text-xs text-muted-foreground mx-1">
+            {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
+              <>
+                <div className={`flex space-x-2 items-center ${stats.color}`}>
+                  <div>{stats.comparisons[0].directionIcon}</div>
+                  <div>{stats.comparisons[0].absolute}</div>
+                  <div>
+                    {stats.comparisons[0].relative ? `${stats.comparisons[0].relative} △` : null}
+                  </div>
                 </div>
-              </div>
-              <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
-                {stats.comparisons[0].comparison}
-              </div>
-            </>
-          )}
-          {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
-            <>
-              <div className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1`}>
-                <div>{stats?.comparisons[1].directionIcon}</div>
-                <div>{stats?.comparisons[1].absolute}</div>
-                <div>
-                  {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
+                <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
+                  {stats.comparisons[0].comparison}
                 </div>
-              </div>
-              <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
-                {stats?.comparisons[1].comparison}
-              </div>
-            </>
-          )}
+              </>
+            )}
+            {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
+              <>
+                <div className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1`}>
+                  <div>{stats?.comparisons[1].directionIcon}</div>
+                  <div>{stats?.comparisons[1].absolute}</div>
+                  <div>
+                    {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
+                  </div>
+                </div>
+                <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
+                  {stats?.comparisons[1].comparison}
+                </div>
+              </>
+            )}
+          </div>
         </div>
-</div>
         {contextData.timeComparisonMode === 'text' && (
           <div className="pl-3 text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
             <br />
@@ -268,13 +294,13 @@ const Stats: React.FC<StatsProps> = (props) => {
 
         {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
           <div className="flex flex-col mt-2">
-            <div className="inline-block text-white py-0 px-2 rounded-full bg-[#003a6ae0] text-[0.8rem] self-start">
+            <div className="inline-block text-white py-0 px-2 rounded-full bg-metricsNeutral text-[0.8rem] self-start">
               {insights[0].typeText}
             </div>
-            <div className="text-[#030303e0] mt-1 text-[0.9rem] font-medium">
+            <div className="text-stone-500 mt-1 text-[0.9rem] font-medium">
               {insights[0].question}
             </div>
-            <div className="text-[#003a6ae0] mt-1 text-[0.9rem] font-medium">
+            <div className="text-stone-500 mt-1 text-[0.9rem] font-medium">
               {insights[0].markup.includes('<span') ? (
                 <p dangerouslySetInnerHTML={{ __html: insights[0].markup }} />
               ) : (
@@ -283,37 +309,6 @@ const Stats: React.FC<StatsProps> = (props) => {
             </div>
           </div>
         )}
-
-        <div className="flex flex-row">
-          <Dialog>
-            <DialogTrigger
-              onClick={() => {
-                const metricId = (metric as any).specification_id;
-                console.log(`calling handleSetVal with ${metricId}`);
-
-                if (contextData.companionMode === 'source') {
-                  contextData.handleSetVal(metricId);
-                } else if (contextData.companionMode === 'popup') {
-                  const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
-
-                  if (!popupWindowRef || popupWindowRef.closed) {
-                    popupWindowRef = window.open(
-                      popupUrl,
-                      'insightsPopup',
-                      'width=1225,height=645'
-                    );
-                  } else {
-                    popupWindowRef.location.href = popupUrl;
-                    popupWindowRef.focus();
-                  }
-                }
-              }}
-            ></DialogTrigger>
-            {contextData.companionMode === 'none' || contextData.companionMode === 'target' ? (
-              <InsightsModal metric={metric} stats={stats} />
-            ) : null}
-          </Dialog>
-        </div>
       </div>
     );
   }

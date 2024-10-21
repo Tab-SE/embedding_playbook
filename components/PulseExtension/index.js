@@ -1,3 +1,4 @@
 export { PulseExtension } from './PulseExtension';
 export { PulseExtensionDialog } from './PulseExtensionDialog';
-export { LoadMetricsOnly as LoadMetrics } from '../Metrics/LoadMetricsOnly';
+export { PulseExtensionInsightsPopup } from './PulseExtensionInsightsPopup';
+export { LoadMetricsOnly } from '../Metrics/LoadMetricsOnly';
