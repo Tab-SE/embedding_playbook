@@ -10,7 +10,7 @@ export function AgentRuntimeProvider({
   children: React.ReactNode;
 }>) {
   const chat = useChat({
-    api: "/api/agent",
+    api: "/api/chat",
   });
 
   const runtime = useVercelUseChatRuntime(chat);
