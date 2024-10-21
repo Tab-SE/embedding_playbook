@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
   "style": "new-york",
-  "rsc": false,
+  "rsc": true,
   "tsx": false,
   "tailwind": {
     "config": "tailwind.config.js",
@@ -12,6 +12,8 @@
   },
   "aliases": {
     "components": "components",
-    "utils": "utils"
+    "utils": "utils",
+    "lib": "libs",
+    "hooks": "hooks"
   }
 }
