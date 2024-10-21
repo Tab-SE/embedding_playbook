@@ -3,10 +3,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
 
-import { MyAssistantModal } from 'components/ui';
-
 import '../global.css';
-import { SessionProvider, AgentRuntimeProvider, ChatPopover } from 'components';
+import { SessionProvider, AgentRuntimeProvider, FloatingAssistant } from 'components';
 
 export default function App({
   Component,
@@ -56,7 +54,7 @@ export default function App({
                   <ReactQueryDevtoolsProduction />
                 </Suspense>
               )}
-              <MyAssistantModal />
+              <FloatingAssistant />
             </AgentRuntimeProvider>
           </ThemeProvider>
       </QueryClientProvider>
