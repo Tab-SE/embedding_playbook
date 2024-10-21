@@ -24,7 +24,7 @@ export default withNextra({
     ],
   },
   webpack(config) {
-    config.optimization.minimize = false;
+    // config.optimization.minimize = false;
     // uses svgr for safe usage of SVGs in React
     config.module.rules.push({
       test: /\.svg$/i,
