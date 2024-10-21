@@ -4,8 +4,7 @@ import Image from "next/image";
 import { forwardRef } from "react";
 import { AssistantModalPrimitive } from "@assistant-ui/react";
 
-import { Thread } from "./Thread";
-import { TooltipIconButton } from "@/components/ui";
+import { MiniThread, TooltipIconButton } from "./ui";
 
 export const FloatingAssistant = () => {
   return (
@@ -19,7 +18,7 @@ export const FloatingAssistant = () => {
         sideOffset={16}
         className="bg-white text-stone-950 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out data-[state=open]:zoom-in data-[state=open]:slide-in-from-bottom-1/2 data-[state=open]:slide-in-from-right-1/2 data-[state=closed]:slide-out-to-bottom-1/2 data-[state=closed]:slide-out-to-right-1/2 z-50 h-[500px] w-[400px] overflow-clip rounded-xl border border-stone-200 p-0 shadow-md outline-none [&>div]:bg-inherit dark:bg-stone-950 dark:text-stone-50 dark:border-stone-800"
       >
-        <Thread />
+        <MiniThread />
       </AssistantModalPrimitive.Content>
     </AssistantModalPrimitive.Root>)
   );
