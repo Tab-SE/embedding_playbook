@@ -84,7 +84,7 @@ export const Simplify = () => {
             Job Requisition Efficiency
           </TabsTrigger>
         )}
-        <TabsTrigger value="UAF">
+        <TabsTrigger value="dynamictheme">
             UAF theme
           </TabsTrigger>
       </TabsList>

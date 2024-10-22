@@ -6,7 +6,7 @@ import { TableauEmbed } from 'components';
 
 export const UAF = () => {
   return (
-    <TabsContent value="UAF" className="space-y-4">
+    <TabsContent value="dynamictheme" className="space-y-4">
       <Card style={{backgroundColor: "white"}}>
         <CardHeader>
           <CardTitle>Sample Dashboard for Dynamic Themes</CardTitle>
