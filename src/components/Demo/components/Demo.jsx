@@ -4,12 +4,12 @@ export const Demo = (props) => {
   const { children, basePath, crumbs } = props;
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+    <div className="flex h-full w-full flex-col bg-muted/40 overflow-auto">
       <NavigationMd />
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 bg-demoBackground flex-grow">
+      <main className="flex flex-col sm:pl-14 bg-demoBackground flex-grow">
         <Navigation basePath={basePath} crumbs={crumbs} />
         {children}
-      </div>
+      </main>
     </div>
   );
 }

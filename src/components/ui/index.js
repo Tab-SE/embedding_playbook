@@ -186,3 +186,5 @@ export { HoverCard, HoverCardTrigger, HoverCardContent } from './HoverCard';
 export { Checkbox } from './Checkbox';
 
 export { RadioGroup, RadioGroupItem } from './Radio-Group';
+
+export { MyAssistantModal, MyThread } from './assistant-ui';

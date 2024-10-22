@@ -131,10 +131,6 @@ dist
 
 # MacOS
 .DS_Store
+
+# local vercel config
 .vercel
-
-# shadcn config file (conflicts with components/)
-components.json
-
-# ignore temporarily
-config/assets

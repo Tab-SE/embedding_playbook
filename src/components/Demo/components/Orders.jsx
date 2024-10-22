@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "components/ui";
 
 import { useMetrics } from 'hooks';

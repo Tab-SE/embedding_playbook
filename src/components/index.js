@@ -1,5 +1,3 @@
-import { SessionProvider } from 'next-auth/react';
-
 export { Insights, InsightsModal, VegaLiteViz } from './Insights';
 
 export { Chat, ChatPopover } from './Chat';
@@ -33,10 +31,11 @@ export {
   Breadcrumbs,
   UserMenu,
   Navigation,
-  Gallery,
   Settings,
   Auth
 } from './Demo';
+
+export { Gallery } from './Gallery';
 
 export {
   Transactions,
@@ -51,4 +50,6 @@ export { ActionCard } from './ActionCard';
 
 export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './ResponsiveLayouts';
 
-export { SessionProvider } from './SessionProvider';
+export { SessionProvider, AgentRuntimeProvider } from './Providers';
+
+export { FloatingAssistant, Thread, Agent } from './Agent';
