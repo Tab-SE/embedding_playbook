@@ -7,7 +7,7 @@ import { ThemeProvider } from 'next-themes'
 import { SessionProvider } from 'next-auth/react'
 
 import './global.css'
-import { AgentRuntimeProvider, FloatingAssistant } from '../components'
+import { AgentRuntimeProvider } from '../components'
 
 export default function RootLayout({
   children,
@@ -30,7 +30,6 @@ export default function RootLayout({
             <ThemeProvider attribute="class" forcedTheme='light'>
               <AgentRuntimeProvider>
                 {children}
-                <FloatingAssistant />
               </AgentRuntimeProvider>
             </ThemeProvider>
           </QueryClientProvider>

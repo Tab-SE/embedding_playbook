@@ -1,4 +1,4 @@
-import { Demo, Products } from 'components';
+import { Demo, Products, FloatingAssistant } from 'components';
 
 
 const ProductsPage = () => {
@@ -18,6 +18,7 @@ const ProductsPage = () => {
       }}
     >
       <Products />
+      <FloatingAssistant />
     </Demo>
   )
 }

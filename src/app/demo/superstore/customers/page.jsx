@@ -1,4 +1,4 @@
-import { Demo, Customers } from 'components';
+import { Demo, Customers, FloatingAssistant } from 'components';
 
 
 const CustomersPage = () => {
@@ -18,6 +18,7 @@ const CustomersPage = () => {
       }}
     >
       <Customers />
+      <FloatingAssistant />
     </Demo>
   )
 }

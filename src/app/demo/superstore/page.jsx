@@ -1,4 +1,4 @@
-import { Demo, Home } from 'components';
+import { Demo, Home, FloatingAssistant } from 'components';
 
 
 const Superstore = () => {
@@ -13,6 +13,7 @@ const Superstore = () => {
       }}
     >
       <Home/>
+      <FloatingAssistant />
     </Demo>
   )
 }

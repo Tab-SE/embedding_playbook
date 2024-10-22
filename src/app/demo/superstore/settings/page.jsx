@@ -1,4 +1,4 @@
-import { Demo, Settings } from 'components';
+import { Demo, Settings, FloatingAssistant } from 'components';
 
 
 const SettingsPage = () => {
@@ -18,6 +18,7 @@ const SettingsPage = () => {
       }}
     >
       <Settings />
+      <FloatingAssistant />
     </Demo>
   )
 }
