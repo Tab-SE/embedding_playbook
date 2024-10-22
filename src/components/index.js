@@ -51,4 +51,4 @@ export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './R
 
 export { SessionProvider, AgentRuntimeProvider } from './Providers';
 
-export { FloatingAssistant, Thread } from './Agent';
+export { FloatingAssistant, Thread, Agent } from './Agent';
