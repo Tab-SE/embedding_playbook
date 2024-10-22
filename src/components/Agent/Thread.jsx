@@ -28,7 +28,7 @@ export const Thread = () => {
   return (
     (<ThreadPrimitive.Root className="bg-white h-full dark:bg-stone-950">
       <ThreadPrimitive.Viewport
-        className="flex h-full flex-col items-center overflow-y-scroll scroll-smooth bg-inherit px-4 pt-8">
+        className="flex h-full flex-col items-center overflow-y-scroll scroll-smooth bg-inherit px-4 pt-3">
         <MyThreadWelcome />
 
         <ThreadPrimitive.Messages

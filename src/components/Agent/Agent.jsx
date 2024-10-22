@@ -6,7 +6,7 @@ export const description = "A settings page. The settings page has a sidebar nav
 export const Agent = () => {
   return (
     <main className="flex h-full w-full flex-col">
-      <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-3 md:gap-8 rounded">
+      <div className="flex h-full flex-1 flex-col gap-4 bg-muted/40 p-3 md:gap-8 rounded">
         <Thread />
       </div>
     </main>
