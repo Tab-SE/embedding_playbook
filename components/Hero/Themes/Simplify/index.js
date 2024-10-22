@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 import { useSession } from "next-auth/react";
 import { Recruiting } from './Recruiting';
 import { Workforce } from './Workforce';
+import { UAF } from './UAF';
 import { ContractJobManagement } from './ContractJobManagement';
 import { useState, useEffect } from "react";
 import { Button } from "components/ui";
@@ -83,11 +84,15 @@ export const Simplify = () => {
             Job Requisition Efficiency
           </TabsTrigger>
         )}
+        <TabsTrigger value="UAF">
+            UAF theme
+          </TabsTrigger>
       </TabsList>
       <section className="min-h-[892px]">
         {showWorkforce && <Workforce />}
         {showRecruiting && <Recruiting />}
         {showContract && <ContractJobManagement />}
+        <UAF/>
       </section>
     </Tabs>
   );
