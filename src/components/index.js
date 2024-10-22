@@ -31,10 +31,11 @@ export {
   Breadcrumbs,
   UserMenu,
   Navigation,
-  Gallery,
   Settings,
   Auth
 } from './Demo';
+
+export { Gallery } from './Gallery';
 
 export {
   Transactions,
