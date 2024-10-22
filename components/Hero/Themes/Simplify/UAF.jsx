@@ -9,7 +9,7 @@ export const UAF = () => {
     <TabsContent value="UAF" className="space-y-4">
       <Card style={{backgroundColor: "white"}}>
         <CardHeader>
-          <CardTitle>Contract Job Management</CardTitle>
+          <CardTitle>Sample Dashboard for Dynamic Themes</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center items-center">
           <TableauEmbed
