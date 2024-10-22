@@ -3,10 +3,12 @@ import { useEffect, useState, useRef, forwardRef, useContext, useCallback } from
 
 import { ExtensionDataContext } from '../ExtensionDataProvider';
 import { InsightsOnlyPopup } from '../Insights';
+import { useSession } from 'next-auth/react';
 
 export const PulseExtensionInsightsPopup
  = function Extension(props: any, ref) {
   const { metricId } = props;
+  const { status: session_status, data: session_data } = useSession();
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
   
   return (
@@ -19,9 +21,9 @@ export const PulseExtensionInsightsPopup
           <br />
 
           <br />
-          {/* session status: {JSON.stringify(session_status)}
+           session status: {JSON.stringify(session_status)}
           <br />
-          session data: {JSON.stringify(session_data)} */}
+          session data: {JSON.stringify(session_data)} 
           <br />
           contextData: Too big to display. {/* {JSON.stringify(contextData, null, 2)} 
           */}

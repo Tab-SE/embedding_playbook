@@ -1,3 +1,10 @@
-import { PulseExtensionInsightsPopup } from 'components'
+import { PulseExtensionInsightsPopup } from 'components';
+import { useSearchParams } from "next/navigation";
 
-<PulseExtensionInsightsPopup />
+
+export default function InsightsPopupPage() {
+  const searchParams = useSearchParams();
+  let metricId = searchParams.get("metricId");
+  console.log(`metricId: ${metricId}`);
+  return <PulseExtensionInsightsPopup metricId={metricId} />;
+}

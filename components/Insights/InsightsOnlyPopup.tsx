@@ -8,7 +8,7 @@ from the PulseExtensionInsightsPopup.tsx file.  This is a work in progress.
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
-import { useMetric } from '../../hooks';
+import { useMetric, useMetricPopup } from '../../hooks';
 import { InsightsModal } from '..';
 import { useInsights } from '../../hooks';
 import {
@@ -28,7 +28,8 @@ export const InsightsOnlyPopup = (props) => {
   const [currentMetric, setCurrentMetric] = useState<string>("");
   // const { contextData, updateContextData } = useContext(ExtensionDataContext);
   // syncs with user metrics, only fires query when user is defined -> controlled query
-  const { status, data, error, isError, isSuccess } = useMetric(user || "", {}, currentMetric);
+  // const { status, data, error, isError, isSuccess } = useMetric(user || "", {}, currentMetric);
+  const { status, data, error, isError, isSuccess } = useMetricPopup(currentMetric);
 
 
 useEffect(() => {

@@ -8,7 +8,7 @@ export { Hero, HeroDemo, Superstore, NTO, Ebikes } from './Hero';
 
 export { Logo } from './Logo';
 
-export { Metrics, Metric, extractMetrics } from './Metrics';
+export { Metrics, Metric, extractMetrics, LoadMetricsOnly } from './Metrics';
 
 export { LoadDatasources, Filters } from './Datasources';
 

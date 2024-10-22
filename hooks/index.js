@@ -10,3 +10,4 @@ export { useDatasource } from './useDatasource';
 export { useDatasourceFields } from './useDatasourceFields';
 export { useMetricFilters } from './useMetricFilters';
 export { useXSQuery, useSMQuery, useMDQuery, useLGQuery, useXLQuery, use2XLQuery } from './useMediaQueries';
+export { useMetricPopup } from './useMetricPopup';
