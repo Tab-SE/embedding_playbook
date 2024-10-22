@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       }
 
       const llm = new OpenAI({
-        model: (process.env.MODEL as any) ?? "gpt-3.5-turbo",
+        model: (process.env.AGENT_MODEL as any) ?? "gpt-4o-mini",
         maxTokens: 512,
       });
 
