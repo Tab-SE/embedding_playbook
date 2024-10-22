@@ -1,14 +1,16 @@
 "use client";;
-import { ChevronDownIcon } from "lucide-react";
+import { useState, forwardRef } from "react";
 import Image from "next/image";
-import { forwardRef } from "react";
+import { ChevronDownIcon } from "lucide-react";
 import { AssistantModalPrimitive } from "@assistant-ui/react";
 
 import { MiniThread, TooltipIconButton } from "./ui";
 
 export const FloatingAssistant = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    (<AssistantModalPrimitive.Root>
+    (<AssistantModalPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
       <AssistantModalPrimitive.Anchor className="fixed bottom-4 right-4 size-11">
         <AssistantModalPrimitive.Trigger asChild>
           <FloatingAssistantButton />
