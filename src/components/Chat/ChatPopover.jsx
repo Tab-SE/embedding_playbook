@@ -15,11 +15,12 @@ import {
 
 import { Chat } from 'components';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_URL;
 const AIAvatar = () => {
   return (
     <PopoverAnchor asChild>
       <Avatar className='fixed bottom-6 right-6 z-50 w-12 h-12 shadow-xl bg-white dark:bg-stone-900 border border-double border-4 border-stone-300'>
-        <AvatarImage src="/img/tableau/tableau_logo.png" alt="AI Demo" />
+        <AvatarImage src={basePath + "/img/tableau/tableau_logo.png"} alt="AI Demo" />
         <AvatarFallback>AI</AvatarFallback>
       </Avatar>
     </PopoverAnchor>

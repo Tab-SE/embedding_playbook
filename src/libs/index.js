@@ -1,8 +1,15 @@
-export const tab_embed = typeof window !== 'undefined' ? require("./tableau.embedding.3.latest.min.js") : null;
+import structuredClone from "@ungap/structured-clone";
+if (!("structuredClone" in globalThis)) {
+  globalThis.structuredClone = structuredClone;
+}
 
-export {
-  tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications,
-  getDefinitions, getMetrics, getUser, getInsights, getMetadata
+export const tab_embed = typeof window !== 'undefined' ? require("./tableau.embedding.3.latest.min.js") : null;
+export const tab_extension = typeof window !== 'undefined' ? require("./tableau.extensions.1.latest.min.js") : null;
+
+
+export { 
+  tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications, 
+  getDefinitions, getMetrics, getMetricPrivate, getFilter, getUser, getInsights, getMetadata, getDatasourcePrivate, getDatasourceFieldsPrivate, getMetricFiltersPrivate
 } from './requests';
 
 export { serverJWT, serverPAT } from './responses.js';

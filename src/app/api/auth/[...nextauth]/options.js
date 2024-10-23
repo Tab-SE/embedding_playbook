@@ -3,7 +3,43 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { Session } from "models"
 import { UserStore } from "settings"
 
+let cookies = null;
+if (process.env.NODE_ENV === 'production') {
+  cookies = {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'none',
+        path: '/',
+        secure: true,
+        domain: '.embedding-playbook-navy.vercel.app',
+      }
+    },
+    callbackUrl: {
+      name: '__Secure-next-auth.callback-url',
+      options: {
+        sameSite: 'none',
+        path: '/',
+        secure: true,
+        domain: '.embedding-playbook-navy.vercel.app',
+      }
+    },
+    csrfToken: {
+      name: '__Host-next-auth.csrf-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'none',
+        path: '/',
+        secure: true,
+        // domain removed - https://stackoverflow.com/questions/76872800/why-is-my-cookie-prefixed-with-host-getting-rejected-by-chrome
+      }
+    },
+  }
+}
+
 export const authOptions = {
+  cookies,
   session: {
     strategy: "jwt",
     maxAge: 2 * 60 * 60,
@@ -15,54 +51,58 @@ export const authOptions = {
       name: 'Demo User',
       credentials: {
         ID: { label: "ID", type: "text", placeholder: "a, b, c, d or e" },
-        demo: { label: "Demo", type: "text" }
+        demo: { label: "Demo", type: "text" },
+        tableauUrl: { label: "Tableau URL", type: "text" },
+        userName: { label: "User Name", type: "text" },
+        email: { label: "email", type: "text" },
+        site_id: { label: "Site Name", type: "text" },
+        caClientId: { label: "Client ID", type: "text" },
+        caSecretId: { label: "Secret ID", type: "text" },
+        caSecretValue: { label: "Secret Value", type: "text" },
+        isDashboardExtension: { label: "Dashboard Extension", type: "text" },
       },
       async authorize(credentials, req) {
         let user = null;
-        const demo = UserStore[credentials.demo]
-        for (const [key, value] of Object.entries(demo.users)) {
-          if (key.toUpperCase() === credentials.ID.toUpperCase()) {
-            user = value;
+
+        console.log(`Starting [...nextAuth].js flow.`)
+
+        if (credentials.isDashboardExtension === 'true') {
+          console.log(`starting initialize session for dashboard extension...${JSON.stringify(credentials)}`);
+          const rest_session = await initializeSession(credentials.userName, credentials, 'rest');
+          console.log(`returning from initializeSession - rest_session: ${JSON.stringify(rest_session)}`);
+
+          if (rest_session.authorized) {
+            user = {
+              name: credentials.userName,
+              email: credentials.userName,
+              tableau: {
+                ...rest_session,
+                tableauUrl: credentials.tableauUrl,
+                username: credentials.userName,
+                site: credentials.site_id,
+              }
+            };
+            console.log(`user... ${JSON.stringify(user)}`)
           }
-        }
-        if (user) {
+        } else {
+          // maps logins to specific demos so non-demo sessions can be logged out
+          const demo = UserStore[credentials.demo]
+          // check all keys in user store
+          for (const [key, value] of Object.entries(demo.users)) {
+            // find keys that match credential
+            if (key.toUpperCase() === credentials.ID.toUpperCase()) {
+              // if a match is found store value as user
+              user = value;
+            }
+          }
+          // add the demo to the user object to see it on the client
           user.demo = credentials.demo;
-          const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
-          const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
-          const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID;
-          const rest_secret = process.env.TABLEAU_REST_JWT_SECRET;
-          const rest_secret_id = process.env.TABLEAU_REST_JWT_SECRET_ID;
+          const embed_session = await initializeSession(user, {}, 'embed', 'orig');
+          const rest_session = await initializeSession(user, {}, 'rest', 'orig');
 
-          const embed_scopes = [
-            "tableau:views:embed",
-            "tableau:views:embed_authoring",
-            "tableau:insights:embed",
-          ];
-          const embed_options = {
-            jwt_secret: embed_secret,
-            jwt_secret_id: embed_secret_id,
-            jwt_client_id
-          };
-          const embed_session = new Session(user.name);
-          await embed_session.jwt(user.email, embed_options, embed_scopes);
 
-          const rest_scopes = [
-            "tableau:datasources:read",
-            "tableau:workbooks:read",
-            "tableau:projects:read",
-            "tableau:insight_definitions_metrics:read",
-            "tableau:insight_metrics:read",
-            "tableau:insights:read",
-            "tableau:metric_subscriptions:read",
-          ];
-          const rest_options = {
-            jwt_secret: rest_secret,
-            jwt_secret_id: rest_secret_id,
-            jwt_client_id
-          };
-          const rest_session = new Session(user.name);
-          await rest_session.jwt(user.email, rest_options, rest_scopes);
           if (embed_session.authorized && rest_session.authorized) {
+            // frontend requires user_id & embed_token
             const {
               username, user_id, embed_token, site_id, site, created, expires,
             } = embed_session;
@@ -72,10 +112,12 @@ export const authOptions = {
             };
           }
 
-          return user.tableau ? user : false;
-        } else {
-          return false;
         }
+        // Return false to display a default error message
+        if (!user) {
+          throw new Error('Invalid credentials');
+        }
+        return user.tableau ? user : false;
       }
     }),
     GithubProvider({
@@ -101,18 +143,64 @@ export const authOptions = {
       if (user) {
         token.picture = user.picture;
         token.demo = user.demo;
-        token.role = user.role;
-        token.vector_store = user.vector_store;
-        token.uaf = user.uaf;
-        token.tableau = user.tableau;
+        token.role = user.role; // tableau session object
+        token.vector_store = user.vector_store; // tableau session object
+        token.uaf = user.uaf; // user attribute function claims
+        token.tableau = user.tableau; // tableau session object
       }
       return token;
     },
     async session({ session, token, user }) {
       session.user.vector_store = token.vector_store;
       session.accessToken = token.accessToken;
+      session.tableau = token.tableau;
+      // session.tableau.tableauUrl = token.tableauUrl;
+      if (!session.tableau.rest_id) session.tableau.rest_id = session.tableau.user_id; // TODO - this ties in to rest_id being missing in api/metrics/methods.js
+      // session.tableau.site_id = token.site_id; // duplicated as site
       return session;
     }
   },
   debug: process.env.NODE_ENV === 'development' ? true : false,
 }
+
+
+async function initializeSession(username, credentials, type = 'rest', method = 'new') {
+  const clientId = credentials?.isDashboardExtension === 'true' ? credentials.caClientId : process.env.TABLEAU_JWT_CLIENT_ID;
+  const secret = credentials?.isDashboardExtension === 'true' ? credentials.caSecretValue : type === 'rest' ? process.env.TABLEAU_REST_JWT_SECRET : process.env.TABLEAU_EMBED_JWT_SECRET;
+  const secretId = credentials?.isDashboardExtension === 'true' ? credentials.caSecretId : type === 'rest' ? process.env.TABLEAU_REST_JWT_SECRET_ID : process.env.TABLEAU_EMBED_JWT_SECRET_ID;
+  const scopes = type === 'rest' ? [
+    "tableau:datasources:read",
+    "tableau:workbooks:read",
+    "tableau:projects:read",
+    "tableau:insight_definitions_metrics:read",
+    "tableau:insight_metrics:read",
+    "tableau:insight_metrics:create", // used for metrics:getOrCreate
+    "tableau:insights:read",
+    "tableau:metric_subscriptions:read",
+    "tableau:content:read"
+  ] : [
+    "tableau:views:embed",
+    "tableau:views:embed_authoring",
+    "tableau:insights:embed",
+  ];
+
+  const options = {
+    jwt_secret: secret,
+    jwt_secret_id: secretId,
+    jwt_client_id: clientId
+  };
+
+  console.log(`creating new session in initialize session...${JSON.stringify(username)}.  credentials: ${JSON.stringify(credentials)}.  scopes: ${JSON.stringify(scopes)}`);
+  const session = new Session(username, credentials);
+  if (method === 'orig') {
+    await session.jwt(username, options, scopes);
+  }
+  else {
+    type === 'rest' ?
+      await session.restjwt(options, scopes)
+      :
+      await session.embedjwt(options, scopes);
+  }
+  return session;
+}
+export default NextAuth(authOptions);

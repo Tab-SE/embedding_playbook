@@ -8,7 +8,9 @@ export { Hero, HeroDemo, Superstore, NTO, Ebikes } from './Hero';
 
 export { Logo } from './Logo';
 
-export { Metrics, Metric, extractMetrics } from './Metrics';
+export { Metrics, Metric, extractMetrics, LoadMetricsOnly } from './Metrics';
+
+export { LoadDatasources, Filters } from './Datasources';
 
 export {
   TableauEmbed,
@@ -17,6 +19,10 @@ export {
   TableauAuth,
   TableauToolbar
 } from './TableauEmbed';
+
+export { PulseExtension, PulseExtensionDialog, PulseExtensionInsightsPopup } from 'components/PulseExtension';
+export { InsightsOnly } from './Insights';
+export { ExtensionDataProvider, ExtensionDataContext } from './ExtensionDataProvider';
 
 export { Explore } from './Explore';
 

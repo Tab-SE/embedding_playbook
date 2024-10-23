@@ -6,8 +6,16 @@ module.exports = {
     './src/app/**/*.{js,jsx,ts,tsx,md,mdx}',
     './src/pages/**/*.{js,jsx,ts,tsx,md,mdx}',
     './src/components/**/*.{js,jsx,ts,tsx,md,mdx}',
+    './src/utils/**/*.{js,jsx,ts,tsx}',
   ],
-  prefix: "",
+  safelist: [
+    'text-metricsPositive',
+    'text-metricsNeutral',
+    'text-metricsNegative',
+    'bg-metricsPositive',
+    'bg-metricsNeutral',
+    'bg-metricsNegative'
+  ],
   theme: {
     container: {
       center: true,
@@ -23,7 +31,7 @@ module.exports = {
         navigationIcons: '#0c0a09',
         metricsPositive: '#0284c7',
         metricsNeutral: '#78716c',
-        metricsNegative: '#ea580c',
+        metricsNegative: '#ea580c'
       },
       keyframes: {
         "accordion-down": {

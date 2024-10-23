@@ -1,43 +1,47 @@
-import { lifespan, handlePAT, handleJWT } from "./controller";
+import { lifespan, handlePAT, handleEmbedJWT, handleRestJWT, handleJWT } from "./controller";
 import { tabSignOut } from "../../libs";
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
-  constructor(username) {
+  constructor(username, credentials) {
     this.authorized = false; // flag controlling access to authenticated operations
     this.username = username;
-    this.user_id = null;
+    this.user_id = null;  // stores the luid of the user
     this.embed_token = null; // only JWT authentication supports embed keys
     this.rest_key = null; // some authentication methods only support REST API keys (PAT)
-    this.site_id = null;
-    this.site = null; // site name
+    this.site_id = null || credentials?.site_id; // luid for site
+    this.site = null || credentials?.site_id; // site name
     this.created = null; // Get the current time in seconds since the epoch
     this.expires = null; // estimated future expiry date
+    // this.site = credentials?.site;
+    // this.user_id = credentials?.user_id;
+    this.tableauUrl = credentials?.tableauUrl
   }
-
+  
   // securely return session data
   _returnSession = () => {
     if (this.authorized) {
       return { 
-       username: this.username,
-       user_id: this.user_id, 
-       rest_key: this.rest_key, 
-       site_id: this.site_id, 
-       site: this.site, 
-       created: this.created, 
-       expires: this.expires,
-     };
-   } else {
-    return null;
-   }
+        username: this.username,
+        user_id: this.user_id, 
+        rest_key: this.rest_key, 
+        site_id: this.site_id, 
+        site: this.site, 
+        created: this.created, 
+        expires: this.expires,
+        tableauUrl: this.tableauUrl
+      };
+    } else {
+      return null;
+    }
   }
-
+  
   // set class members and authorized status
   _authorize = (credentials, embed_token) => {
     // set data store
-    this.site_id = credentials?.site_id;
-    this.site = credentials?.site;
-    this.user_id = credentials?.user_id;
+    // this.tableauUrl = credentials.tableauUrl;
+    credentials.user_id ? this.user_id = credentials.user_id : null;
+    credentials.site_id ? this.site_id = credentials.site_id : null;
     // API key from the REST API credentials response
     credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
     // JWT token used for embedding on the frontend
@@ -76,6 +80,17 @@ export class Session {
     this._authorize(credentials);
   }
 
+  // JSON Web Token authentication
+  restjwt = async (jwt_options, scopes) => {
+    const { credentials } = await handleRestJWT(this, jwt_options, scopes);
+    this._authorize(credentials);
+  }
+  // JSON Web Token authentication
+  embedjwt = async (jwt_options, scopes) => {
+    const { credentials } = await handleEmbedJWT(this, jwt_options, scopes);
+    this._authorize(credentials);
+  }
+  
   // JSON Web Token authentication
   jwt = async (sub, jwt_options, scopes) => {
     const { credentials, embed_token } = await handleJWT(sub, jwt_options, scopes);

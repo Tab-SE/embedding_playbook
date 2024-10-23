@@ -1,25 +1,31 @@
 import { httpGet, httpPost } from "utils";
 
 const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
+const contentUrl = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
 const pulse_path = '/api/-/pulse'; // path to resource
 const api = process.env.TABLEAU_API; // Tableau API version (classic resources)
-const contentUrl = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
+
+const basePath = process.env.NEXT_PUBLIC_BASE_URL;
 
 // authenticate to Tableau with JSON Web Tokens
-export const tabAuthJWT = async (jwt) => {
-  const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
+export const tabAuthJWT = async (jwt, tableauUrl, contentUrl) => {
 
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = `${_domain}/api/${api}/auth/signin`;
+  let _contentUrl = contentUrl;
+  if (typeof contentUrl !== 'undefined') _contentUrl = contentUrl;
   const body = {
     credentials: {
       jwt: jwt,
       site: {
-        contentUrl: contentUrl,
+        contentUrl: _contentUrl,
       }
     }
   };
 
   const config = {
-    tableau_domain,
+    tableau_domain: _domain,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -27,6 +33,23 @@ export const tabAuthJWT = async (jwt) => {
   };
 
   const response = await httpPost(endpoint, body, config);
+  if (!response.credentials) {
+    console.log(`RESPONSE NOT OK!`);
+    console.log(response);
+    console.log(JSON.stringify(response.response.data.error, null, 2));
+    if (response?.response.status === 401) {
+      throw new Error('Unauthorized: Invalid JWT token.');
+    } else if (response?.response?.status === 404) {
+      throw new Error('Not Found: The specified endpoint does not exist.');
+    } else if (response?.response?.status >= 400 && response.response.status < 500) {
+      throw new Error(`Client Error: ${response.response.statusText}`);
+    } else if (response?.response?.status >= 500) {
+      throw new Error(`Server Error: ${response.response.statusText}`);
+    }
+    else {
+      throw new Error(`Something went wrong: ${JSON.stringify(response)}`);
+    }
+  }
 
   const site_id = response.credentials.site.id;
   const site = response.credentials.site.contentUrl;
@@ -67,11 +90,13 @@ export const tabAuthPAT = async (pat_name, pat_secret) => {
   return { site_id, site, user_id, rest_key, expiration };
 }
 
-export const tabSignOut = async () => {
-  const endpoint = tableau_domain + '/auth/signout';
+export const tabSignOut = async (tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = _domain + '/auth/signout';
 
   const config = {
-    tableau_domain,
+    tableau_domain: _domain,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -82,11 +107,13 @@ export const tabSignOut = async () => {
 }
 
 // get subscription IDs for the provided user
-export const getSubscriptions = async (apiKey, userId, pageSize) => {
-  const endpoint = tableau_domain + pulse_path + '/subscriptions';
+export const getSubscriptions = async (apiKey, userId, pageSize, tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = `${_domain}${pulse_path}/subscriptions`;
 
   const config = {
-    tableau_domain,
+    tableau_domain: _domain,
     headers: {
       'X-Tableau-Auth': apiKey,
       Accept: 'application/json',
@@ -101,12 +128,15 @@ export const getSubscriptions = async (apiKey, userId, pageSize) => {
   return await httpGet(endpoint, config);
 }
 
+
 // get specifications for the provided metric IDs
-export const getSpecifications = async (apiKey, metric_ids) => {
-  const endpoint = tableau_domain + pulse_path + '/metrics:batchGet';
+export const getSpecifications = async (apiKey, metric_ids, tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = _domain + pulse_path + '/metrics:batchGet';
 
   const config = {
-    tableau_domain,
+    tableau_domain: _domain,
     headers: {
       'X-Tableau-Auth': apiKey,
       Accept: 'application/json',
@@ -121,11 +151,13 @@ export const getSpecifications = async (apiKey, metric_ids) => {
 }
 
 // get definitions for the provided metric IDs
-export const getDefinitions = async (apiKey, definition_ids) => {
-  const endpoint = tableau_domain + pulse_path + '/definitions:batchGet';
+export const getDefinitions = async (apiKey, definition_ids, tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = _domain + pulse_path + '/definitions:batchGet';
 
   const config = {
-    tableau_domain,
+    _domain,
     headers: {
       'X-Tableau-Auth': apiKey,
       Accept: 'application/json',
@@ -141,7 +173,7 @@ export const getDefinitions = async (apiKey, definition_ids) => {
 
 // requests parsed metrics from private API
 export const getMetrics = async () => {
-  const endpoint = '/api/metrics';
+  const endpoint = `${basePath}/api/metrics`;
   const config = {
     headers: {
       Accept: 'application/json',
@@ -165,10 +197,162 @@ export const getMetrics = async () => {
 
   return res;
 }
+// requests parsed metrics from private API
+export const getMetricPrivate = async (specification_id) => {
+
+  if (!specification_id) {
+    throw new Error('getMetricPrivate: No specification_id');
+  };
+  const endpoint = `${basePath}/api/metric`;
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    params: {
+      specification_id: specification_id,
+    }
+  }
+
+  const res = await httpGet(endpoint, config);
+  const timeout = isServerlessTimeout(res);
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  if (res.length <= 0) {
+    throw new Error('Empty array');
+  }
+
+  return res;
+}
+
+// https://10az.online.tableau.com/api/-/pulse/metrics:getOrCreate
+export const getFilter = async (apiKey, defSpec, tableauUrl) => {
+  let _domain = tableau_domain;
+  if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
+  const endpoint = _domain + pulse_path + '/metrics:getOrCreate';
+
+  const config = {
+    tableau_domain: _domain,
+    headers: {
+      'X-Tableau-Auth': apiKey,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }
+  };
+
+  const res = await httpPost(endpoint, defSpec, config);
+  const timeout = isServerlessTimeout(res);
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  if (res.length <= 0) {
+    throw new Error('Empty array');
+  }
+
+  return res;
+}
+
+
+// requests parsed metrics from private API
+export const getMetricFiltersPrivate = async (metrics, filters) => {
+  const endpoint = `${basePath}/api/filterMetrics`;
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+
+  }
+  const body = { metrics, filters };
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  if (res.length <= 0) {
+    throw new Error('Empty array');
+  }
+
+  return res;
+}
+
+
+
+// requests a datasource from private API
+export const getDatasourceFieldsPrivate = async (datasourceId, fieldName) => {
+  const endpoint = `${basePath}/api/pulse/datasources/fields`;
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    params: {
+      datasourceId: datasourceId,
+      fieldName: fieldName
+    }
+  }
+
+  const res = await httpGet(endpoint, config);
+  const timeout = isServerlessTimeout(res);
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  return res;
+}
+// requests a datasource from private API
+export const getDatasourcePrivate = async (datasourceId, extension_options) => {
+  const endpoint = `${basePath}/api/pulse/datasources`;
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    params: {
+      datasourceId: datasourceId,
+    }
+  }
+
+  const body = {
+    extension_options: extension_options,
+  }
+
+  const res = await httpPost(endpoint, body, config);
+  const timeout = isServerlessTimeout(res);
+
+  // when used with tanstack queries, errors trigger retries
+  if (timeout) {
+    throw new Error('Serverless timeout');
+  }
+  if (!res) {
+    throw new Error('Unexpected response');
+  }
+  return res;
+}
 
 // obtains a public token for the frontend
 export const getUser = async (userId) => {
-  const endpoint = '/api/user';
+  const endpoint = `${basePath}/api/user`;
   const body = { userId };
 
   const config = {
@@ -185,7 +369,7 @@ export const getUser = async (userId) => {
 
 // requests parsed insights from private API
 export const getInsights = async (metric) => {
-  const endpoint = '/api/insights';
+  const endpoint = `${basePath}/api/insights`;
   const body = { metric };
 
   const config = {
@@ -216,7 +400,7 @@ export const getInsights = async (metric) => {
 
 // obtains metadata from private API for dynamic content
 export const getMetadata = async () => {
-  const endpoint = '/api/metadata';
+  const endpoint = `${basePath}/api/metadata`;
 
   const config = {
     headers: {

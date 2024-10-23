@@ -1,3 +1,7 @@
 export { Metrics } from './Metrics';
-export { Metric } from './Metric';
 export { extractMetrics, sortPayloadByIds } from './utils';
+export { Metric } from './Themes/Original/Metric';
+export { MetricSinglePane } from './Themes/SinglePane/MetricSinglePane';
+export { MetricSalesforce } from './Themes/Salesforce/MetricSalesforce';
+export { MetricTableau } from './Themes/Tableau/MetricTableau';
+export { LoadMetricsOnly } from './LoadMetricsOnly';

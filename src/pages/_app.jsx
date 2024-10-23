@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
+import { ExtensionDataProvider } from 'components/ExtensionDataProvider'
+
 
 import '../global.css';
 import { SessionProvider, AgentRuntimeProvider, FloatingAssistant } from 'components';
@@ -23,15 +25,17 @@ export default function App({
   // Session Provider: https://next-auth.js.org/getting-started/client#sessionprovider
   // Query Client Provider: https://tanstack.com/query/v4/docs/react/reference/QueryClientProvider
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} basePath='/pulseExtension/api/auth'>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
+        <ExtensionDataProvider>
+          <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
           <ThemeProvider attribute="class" forcedTheme='light'>
             <AgentRuntimeProvider>
               <Component {...pageProps} />
               <FloatingAssistant />
             </AgentRuntimeProvider>
           </ThemeProvider>
+        </ExtensionDataProvider>
       </QueryClientProvider>
     </SessionProvider>
   )

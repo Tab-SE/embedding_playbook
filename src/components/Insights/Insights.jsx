@@ -28,7 +28,7 @@ export const Insights = (props) => {
           {!details ? null : details.map((insight, index) => {
             return (
               <CarouselItem key={insight.id}>
-                <Insight insight={insight} />
+                <Insight insight={insight} stats={stats} />
               </CarouselItem>
             )
           })}
@@ -47,16 +47,16 @@ const Insight = (props) => {
   const formattedScore = `${(score * 100).toFixed(1)}`;
 
   return type !== 'ban' ? (
-    <Card className='rounded'>
+    <Card>
       <CardHeader>
         <CardTitle>{question}</CardTitle>
         <CardDescription style={{ fontSize: '10px', color: '#999' }}>Score: {formattedScore}</CardDescription>
       </CardHeader>
       <CardContent>
-        {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={360} width={560} spec={viz}></VegaLiteViz>}
+        {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={260} width={560} spec={viz}></VegaLiteViz>} {/* Dashboard extensions can only be so tall... need to reduce height to 260 */}
       </CardContent>
       <CardFooter>
-        <div>{markup}</div>
+       {markup.includes("<span") ? <span dangerouslySetInnerHTML={{__html: markup}} />  :{markup}}
       </CardFooter>
     </Card>
   ) : null;
