@@ -9,7 +9,6 @@ export {
   Breadcrumbs,
   UserMenu,
   Navigation,
-  Gallery,
   Settings,
   Auth,
 } from './components';
