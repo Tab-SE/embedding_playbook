@@ -182,7 +182,7 @@ export const MetricSalesforceDetails: React.FC<{
           viz={data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz}
         />
         {metric.description && metric.description.length > 0 && (
-          <div>
+          <div className="pl-2">
             <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
               Metric Description
             </div>
@@ -231,47 +231,60 @@ const Stats: React.FC<StatsProps> = (props) => {
     return (
       <div className="block">
         <div className="flex flex-row flex-grow-0 mt-2">
-          {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
-            <div className="w-full h-full">
-              <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
-                Metric Value
-              </div>
-              <div className="text-muted-foreground text-3xl">
-                {stats.value ? stats.value : null} {stats.units}
-              </div>
-              <hr className="my-2 border-gray-300" />
-              {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
-                <>
-                  <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
-                    Comparison {stats?.comparisons[0].comparison}
-                  </div>
+          <div className="w-full h-full">
+            <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+              Metric Value
+            </div>
+            <div className="text-muted-foreground text-3xl">
+              {stats.value ? stats.value : null} {stats.units}
+            </div>
+            <hr className="my-2 border-gray-300" />
+            {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
+              <>
+                <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                  Comparison {stats?.comparisons[0].comparison}
+                </div>
 
-                  <div className="flex items-end mb-2">
-                    <div className="w-1/4 pl-2">
-                      <div className="text-xs font-normal">Metric Ind.</div>
-                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
-                        {stats.comparisons[0].directionIcon}
-                      </div>
-                      <hr className="my-2 border-gray-300" />
+                <div className="flex items-end mb-2">
+                  <div className="w-1/4 pl-2">
+                    <div className="text-xs font-normal">Metric Ind.</div>
+                    <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                      {stats.comparisons[0].directionIcon}
                     </div>
-                    <div className="w-1/2 pl-2">
-                      <div className="text-xs font-normal">Relative Change</div>
-                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
-                        {stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}
-                      </div>
-                      <hr className="my-2 border-gray-300" />
-                    </div>
-                    <div className="w-1/2 pl-2">
-                      <div className="text-xs font-normal">Abs. Change</div>
-                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
-                        △ {stats.comparisons[0].absolute}
-                      </div>
-                      <hr className="my-2 border-gray-300" />
-                    </div>
+                    <hr className="my-2 border-gray-300" />
                   </div>
-                </>
-              )}
-              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
+                  <div className="w-1/2 pl-2">
+                    <div className="text-xs font-normal">Relative Change</div>
+                    <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                      {stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}
+                    </div>
+                    <hr className="my-2 border-gray-300" />
+                  </div>
+                  <div className="w-1/2 pl-2">
+                    <div className="text-xs font-normal">Abs. Change</div>
+                    <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                      △ {stats.comparisons[0].absolute}
+                    </div>
+                    <hr className="my-2 border-gray-300" />
+                  </div>
+                </div>
+              </>
+            )}
+            {contextData.timeComparisonMode === 'both' &&
+              stats?.comparisons?.[1] &&
+              (stats?.comparisons[1].is_nan ? (
+                <div className="pl-2">
+                  <div className="text-xs font-normal">Metric Ind.</div>
+                  <div className={`text-muted-foreground text-xl ${stats.color}`}>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: stats?.comparisons[1].markup,
+                      }}
+                    />
+                  </div>
+                  <hr className="my-2 border-gray-300" />
+                </div>
+              ) : (
                 <>
                   <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
                     Comparison {stats?.comparisons[1].comparison}
@@ -287,7 +300,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                     </div>
                     <div className="w-1/2 pl-2">
                       <div className="text-xs font-normal">Relative Change</div>
-                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                      <div className={`text-muted-foregroundF text-3xl ${stats.color}`}>
                         {stats.comparisons[1].relative ? `${stats.comparisons[1].relative}` : null}
                       </div>
                       <hr className="my-2 border-gray-300" />
@@ -301,40 +314,39 @@ const Stats: React.FC<StatsProps> = (props) => {
                     </div>
                   </div>
                 </>
-              )}
-              {contextData.timeComparisonMode === 'text' && (
-                <>
-                  <div className="w-full h-full">
-                    <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
-                      Comparisons
-                    </div>
-                    <div className="text-muted-foreground">
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            stats?.comparisons &&
-                            stats?.comparisons[0] &&
-                            stats?.comparisons[0].markup,
-                        }}
-                      />
-                    </div>
-                      <hr className="my-2 border-gray-300" />
-                    <div className="text-muted-foreground">
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            stats.comparisons &&
-                            stats?.comparisons[1] &&
-                            stats?.comparisons[1].markup,
-                        }}
-                      />
-                    </div>
-                    <hr className="my-2 border-gray-300" />
+              ))}
+            {contextData.timeComparisonMode === 'text' && (
+              <>
+                <div className="w-full h-full">
+                  <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                    Comparisons
                   </div>
-                </>
-              )}
-            </div>
-          )}
+                  <div className="text-muted-foreground">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          stats?.comparisons &&
+                          stats?.comparisons[0] &&
+                          stats?.comparisons[0].markup,
+                      }}
+                    />
+                  </div>
+                  <hr className="my-2 border-gray-300" />
+                  <div className="text-muted-foreground">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          stats.comparisons &&
+                          stats?.comparisons[1] &&
+                          stats?.comparisons[1].markup,
+                      }}
+                    />
+                  </div>
+                  <hr className="my-2 border-gray-300" />
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-row flex-grow-0 mt-2">
@@ -367,46 +379,52 @@ const Stats: React.FC<StatsProps> = (props) => {
           </div>
         )}
 
-        <div className="text-xs font-normal">All Insights</div>
-        <Dialog>
-          <DialogTrigger
-            // onClick={() => {
-            //   console.log(`calling handleSetVal with ${(metric as any).specification_id}`);
-            //   // handleSetVal(metric.id);
-            //   contextData.companionMode === 'source' ? contextData.handleSetVal((metric as any).specification_id) : null;
-            // }}
-            onClick={() => {
-              const metricId = (metric as any).specification_id;
-              console.log(`calling handleSetVal with ${metricId}`);
+        <div className="text-xs font-normal pl-2">All Insights</div>
+        <div className="pl-2">
+          <Dialog>
+            <DialogTrigger
+              // onClick={() => {
+              //   console.log(`calling handleSetVal with ${(metric as any).specification_id}`);
+              //   // handleSetVal(metric.id);
+              //   contextData.companionMode === 'source' ? contextData.handleSetVal((metric as any).specification_id) : null;
+              // }}
+              onClick={() => {
+                const metricId = (metric as any).specification_id;
+                console.log(`calling handleSetVal with ${metricId}`);
 
-              if (contextData.companionMode === 'source') {
-                contextData.handleSetVal(metricId);
-              } else if (contextData.companionMode === 'popup') {
-                // Define the popup URL
-                const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
+                if (contextData.companionMode === 'source') {
+                  contextData.handleSetVal(metricId);
+                } else if (contextData.companionMode === 'popup') {
+                  // Define the popup URL
+                  const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
 
-                // Check if the popup window is already open and valid
-                if (!popupWindowRef || popupWindowRef.closed) {
-                  // Open a new popup window and store the reference
-                  popupWindowRef = window.open(popupUrl, 'insightsPopup', 'width=1225,height=645');
-                } else {
-                  // If the popup is already open, just update the URL and bring it to focus
-                  popupWindowRef.location.href = popupUrl;
-                  popupWindowRef.focus();
+                  // Check if the popup window is already open and valid
+                  if (!popupWindowRef || popupWindowRef.closed) {
+                    // Open a new popup window and store the reference
+                    popupWindowRef = window.open(
+                      popupUrl,
+                      'insightsPopup',
+                      'width=1225,height=645'
+                    );
+                  } else {
+                    // If the popup is already open, just update the URL and bring it to focus
+                    popupWindowRef.location.href = popupUrl;
+                    popupWindowRef.focus();
+                  }
                 }
-              }
-            }}
-          >
-            <Badge className={`${stats.badge} text-stone-50 max-h-6`} variant="undefined">
-              <IconSparkles width={15} height={15} className="mr-1" />
-              Insights: {bundleCount}
-            </Badge>
-          </DialogTrigger>
-          {contextData.companionMode === 'none' || contextData.companionMode === 'target' ? (
-            <InsightsModal metric={metric} stats={stats} />
-          ) : null}
-        </Dialog>
+              }}
+            >
+              <Badge className={`${stats.badge} text-stone-50 max-h-6`} variant="undefined">
+                <IconSparkles width={15} height={15} className="mr-1" />
+                Insights: {bundleCount}
+              </Badge>
+            </DialogTrigger>
+            {contextData.companionMode === 'none' || contextData.companionMode === 'target' ? (
+              <InsightsModal metric={metric} stats={stats} />
+            ) : null}
+          </Dialog>
         <hr className="my-2 border-gray-300" />
+        </div>
       </div>
     );
   }

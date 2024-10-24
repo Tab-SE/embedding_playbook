@@ -205,7 +205,16 @@ const Stats: React.FC<StatsProps> = (props) => {
                   </div>
                 </div>
               )}
-              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
+              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] &&
+              (stats?.comparisons[1].is_nan ? (
+                <div className="text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: stats?.comparisons[1].markup,
+                    }}
+                  />
+                </div>
+              ) : (
                 <div className={`${stats?.comparisons?.[1]?.color} ml-3`}>
                   <div className="text-xs">{stats?.comparisons?.[1].comparison}</div>
                   <div>{stats?.comparisons?.[1].directionIcon}</div>
@@ -218,7 +227,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                     △ {stats?.comparisons?.[1].absolute}
                   </div>
                 </div>
-              )}
+              ))}
             </div>
             {contextData.timeComparisonMode === 'text' && (
               <div className="pl-3 text-sm text-muted-foreground text-stone-500 dark:text-stone-300">

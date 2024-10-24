@@ -166,15 +166,6 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       showPulseFilters: contextDataRef.current.showPulseFilters,
       timeComparisonMode: contextDataRef.current.timeComparisonMode,
     };
-    console.log(`opening configure dialog with ${JSON.stringify(passedSettings)}`);
-    console.log(passedSettings);
-    console.log(`and contextDataRef.current:`);
-    console.log(contextDataRef.current);
-    console.log(`contextData`);
-    console.log(contextData);
-    console.log(`contextData.showPulseAnchorChart: ${contextData.showPulseAnchorChart}`);
-    console.log(`contextdata dynamic function...`);
-    console.log(() => console.log(contextData));
     tableau.extensions.ui
       .displayDialogAsync(popupUrl, JSON.stringify(passedSettings, null, 2), {
         height: 600,
