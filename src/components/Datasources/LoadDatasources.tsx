@@ -1,9 +1,8 @@
 import _ from 'lodash';
 import { useState, useEffect, useContext } from 'react';
-import { useDatasource } from '../../hooks';
-import { ExtensionDataContext } from '../ExtensionDataProvider';
-import { DatasourceModel, InsightsModel } from 'models';
-import { DatasourceModelCollection } from 'models/Datasource';
+import { useDatasource } from 'hooks';
+import { ExtensionDataContext } from 'components';
+import { DatasourceModel, InsightsModel, DatasourceModelCollection } from 'models';
 
 export const LoadDatasources = (props) => {
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
@@ -65,7 +64,7 @@ export const LoadDatasources = (props) => {
 
       if (!_.isEqual(contextData.datasourceCollection.datasources, datasources)) {
         updateContextData({ datasourceCollection: datasourceModelCollection });
-        
+
       }
     }
   }, [datasourceResults, contextData.datasourceCollection.datasources, updateContextData]);

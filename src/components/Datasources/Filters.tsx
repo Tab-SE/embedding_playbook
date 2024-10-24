@@ -25,7 +25,7 @@
 
 import React, { useState, useEffect, useContext } from 'react';
 import Select, { ActionMeta, MultiValue } from 'react-select';
-import { ExtensionDataContext } from '../ExtensionDataProvider';
+import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 
 interface Option {
   label: string;

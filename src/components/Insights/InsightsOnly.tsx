@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useSession } from 'next-auth/react';
-import { ExtensionDataContext } from '../ExtensionDataProvider';
+import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 
 import { useMetric } from '../../hooks';
 import { InsightsModal } from '..';

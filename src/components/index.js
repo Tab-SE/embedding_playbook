@@ -22,7 +22,7 @@ export {
 
 export { PulseExtension, PulseExtensionDialog, PulseExtensionInsightsPopup } from 'components/PulseExtension';
 export { InsightsOnly } from './Insights';
-export { ExtensionDataProvider, ExtensionDataContext } from './ExtensionDataProvider';
+export { ExtensionDataProvider, ExtensionDataContext } from './Providers/ExtensionDataProvider';
 
 export { Explore } from './Explore';
 
@@ -56,6 +56,6 @@ export { ActionCard } from './ActionCard';
 
 export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './ResponsiveLayouts';
 
-export { SessionProvider, AgentRuntimeProvider } from './Providers';
+export { SessionProvider, AgentRuntimeProvider, ExtensionDataProvider, ExtensionDataContext } from './Providers';
 
 export { FloatingAssistant, Thread, Agent } from './Agent';

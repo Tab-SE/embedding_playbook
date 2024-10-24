@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 
 
-import { ExtensionDataContext } from '../../../ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
 import React from 'react';
 import { MetricSinglePaneDetails } from './MetricSinglePaneDetails';
 import { InsightsModel } from 'models';
@@ -20,7 +20,7 @@ useEffect(() => {
     setMetricOptions(contextData.metricCollection.metricOptions);
   }
 }, [contextData.metricCollection.metricOptions]);
-  
+
 return (
   <div className="min-h-[111px] px-16">
     <div className="grid-container" >

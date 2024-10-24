@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { useState, useEffect, useContext, useMemo } from 'react';
 import { useMetricFilters, useDatasourceFields } from '../../hooks';
 import { MetricsPlusFiltersPlusDSFilters } from './MetricsPlusFiltersPlusDSFilters';
-import { ExtensionDataContext } from '../ExtensionDataProvider';
+import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 import { InsightsModel } from 'models';
 
 
@@ -19,7 +19,7 @@ export const MetricsPlusFilters = (props) => {
 
   // const [metrics, setMetrics] = useState(contextData.metrics.metrics);
   const [metrics, setMetrics] = useState<InsightsModel[]>([]);
-  
+
   const [filteredMetrics, setFilteredMetrics] = useState(metrics);
 
   const [filters, setFilters] = useState([]);
@@ -29,10 +29,10 @@ export const MetricsPlusFilters = (props) => {
   const metricFilterResults = useMetricFilters(metrics, filters);
   const fieldResults: FieldResult[] = useDatasourceFields(consolidatedMetricFilterFields);
   const [fieldResultsLoaded, setFieldResultsLoaded] = useState(false);
-  
+
   // Memoize datasources to avoid unnecessary re-renders
   const memoizedDatasources = useMemo(() => contextData.datasourceCollection, [contextData.datasourceCollection]);
-  
+
   /*
   This useEffect will filter out the metrics that are hidden in the metricOptions.  It will then set the metrics state to the visible metrics.
   */
@@ -130,7 +130,7 @@ export const MetricsPlusFilters = (props) => {
     }
   }, [contextData.dashboardFilters, fieldResultsLoaded, memoizedDatasources]);
 
-  useEffect(() => { 
+  useEffect(() => {
     // force apply filters if the context display options change
     applyFilters(_.cloneDeep(contextData.pulseFilters));
   }, [contextData.displayMode, contextData.showPulseAnchorChart, contextData.currentFiltersDisplayMode, contextData.showPulseTopInsight]);

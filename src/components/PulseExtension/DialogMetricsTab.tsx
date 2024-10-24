@@ -1,6 +1,6 @@
 import { forwardRef, useContext, useState, useEffect, useDebugValue } from 'react';
 import { LoadMetricsOnly } from '../Metrics/LoadMetricsOnly';
-import { ExtensionDataContext } from '../ExtensionDataProvider';
+import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 import { InsightsModel, MetricCollection, MetricsModel } from 'models';
 export const MetricsTab = ({
   loginEnabled,
@@ -69,7 +69,7 @@ export const MetricsTab = ({
                     checked={metricCollection?.metricOptions[metric.specification_id]?.show.toString()==='true'}
                   />
                 </td>
-                <td> 
+                <td>
                   {metric.name} - {metric.namePeriod}
                   {metric.nameFilters && ` - ${metric.nameFilters}`}
                 </td>

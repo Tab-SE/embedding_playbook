@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, forwardRef, useContext, useCallback, useMemo } from 'react';
 import { Worksheet, Filter, CategoricalFilter } from '@tableau/extensions-api-types';
 
-import { ExtensionDataContext } from '../ExtensionDataProvider';
+import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 // import { TableauExtension } from '../TableauExtension';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSession, signOut } from 'next-auth/react';

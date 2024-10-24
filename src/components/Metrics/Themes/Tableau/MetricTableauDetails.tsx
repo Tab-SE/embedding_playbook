@@ -13,7 +13,7 @@ import { Dialog, DialogTrigger } from '../../../ui';
 import { useInsights } from '../../../../hooks';
 import { parseInsights } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
-import { ExtensionDataContext } from '../../../ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';

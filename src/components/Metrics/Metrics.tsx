@@ -1,4 +1,5 @@
-/* 
+"use client";
+/*
 This is the original metrics page from embed tableau.  It fetches the SUBSCRIBED metrics for the user.
 */
 
@@ -7,7 +8,7 @@ import { useSession } from 'next-auth/react';
 
 import { useMetrics } from '../../hooks';
 import { MetricsPlusFilters } from './MetricsPlusFilters';
-import { ExtensionDataContext } from '../ExtensionDataProvider';
+import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 import { MetricCollection } from 'models';
 import { sortPayloadByIds } from '.';
 import { useMetricsExtension } from 'hooks/useMetricsExtension';

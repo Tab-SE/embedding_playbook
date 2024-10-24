@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 
-import { ExtensionDataContext } from '../../../ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
 import React from 'react';
 import { MetricSalesforceDetails } from './MetricSalesforceDetails';
 // import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css';

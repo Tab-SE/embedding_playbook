@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 
-import { ExtensionDataContext } from '../../../ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
 import React from 'react';
 import { MetricTableauDetails } from './MetricTableauDetails';
 import { InsightsModel } from 'models';
@@ -33,14 +33,14 @@ export const MetricTableau: React.FC<{
             return null;
           }
           return (
-            
+
             <MetricTableauDetails
               key={metric.specification_id}
               metric={metric}
               propogateMetricFilter={propogateMetricFilter}
               selectedValues={selectedValues}
             />
-           
+
           );
         })}
       </div>

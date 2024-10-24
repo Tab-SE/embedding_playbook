@@ -1,9 +1,9 @@
 /*
-This is the third layer.  It retrieves the available categorical_dimensions for each metric and passes them to the Metric component.  
-Todo: Many options and variations can exist here.  Do we want to show all the filters for each metric?  Or combine for each data source?  Or hide completely?  Workflows need to be analyzed.  
+This is the third layer.  It retrieves the available categorical_dimensions for each metric and passes them to the Metric component.
+Todo: Many options and variations can exist here.  Do we want to show all the filters for each metric?  Or combine for each data source?  Or hide completely?  Workflows need to be analyzed.
 */
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { ExtensionDataContext } from '../ExtensionDataProvider';
+import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 
 import { Metric, MetricSalesforce, MetricSinglePane, MetricTableau } from '.';
 import { InsightsModel } from 'models';
