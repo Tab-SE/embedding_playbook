@@ -48,7 +48,7 @@ return (
                 }
               
                 return (
-                  <CarouselItem key={metric.specification_id} className={"min-w-0 shrink-0 grow-0 basis-full pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/5 flex flex-col"}>  {/* https://ui.shadcn.com/docs/components/carousel#sizes */}
+                  <CarouselItem key={metric.specification_id} className={"min-w-0 shrink-0 grow-0 basis-full pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 flex flex-col"}>  {/* https://ui.shadcn.com/docs/components/carousel#sizes */}
                     <MetricDetail
                       key={metric.specification_id}
                       metric={metric}

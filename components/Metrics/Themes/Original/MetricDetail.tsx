@@ -134,7 +134,7 @@ export const MetricDetail: React.FC<{
   return (
     <>
       {contextData.companionMode !== 'target' ? (
-        <Card className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white text-stone-950 shadow dark:border-stone-800 dark:text-stone-50 min-h-[111px] max-w-[350px] dark:bg-stone-900">
+        <Card className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white text-stone-950 shadow dark:border-stone-800 dark:text-stone-50 min-h-[111px] min-w-[240px] max-w-[350px] dark:bg-stone-900">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
             <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 overflow-hidden">
               {metric.name}
