@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
-export const jwtSign = (sub, jwt_options, scopes) => {
+export const jwtSign = (sub, jwt_options, scopes, claims) => {
+    console.log("claims", claims)
     // https://help.tableau.com/current/online/en-us/connected_apps_direct.htm#step-3-configure-the-jwt
     try {
         const payload = {
@@ -10,8 +11,9 @@ export const jwtSign = (sub, jwt_options, scopes) => {
             'aud': 'tableau',
             'sub': sub, // enforces user level permissions on embed and REST APIs
             'scp': scopes, // scopes set by calling function and provided as parameter
+            ...claims
         };
-
+console.log("payload", payload)
         const header = {
             'kid': jwt_options.jwt_secret_id, // Connected App configuration
             'iss': jwt_options.jwt_client_id, // Connected App configuration

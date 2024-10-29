@@ -23,10 +23,12 @@ export const authOptions = {
         for (const [key, value] of Object.entries(demo.users)) {
           if (key.toUpperCase() === credentials.ID.toUpperCase()) {
             user = value;
+            user.uaf = user.uaf || {};  // Ensure uaf is initialized
           }
         }
         if (user) {
           user.demo = credentials.demo;
+          user.uaf = user.uaf || {}; 
           const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
           const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
           const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID;
@@ -44,7 +46,7 @@ export const authOptions = {
             jwt_client_id
           };
           const embed_session = new Session(user.name);
-          await embed_session.jwt(user.email, embed_options, embed_scopes);
+          await embed_session.jwt(user.email, embed_options, embed_scopes, user.uaf);
 
           const rest_scopes = [
             "tableau:datasources:read",
@@ -61,7 +63,8 @@ export const authOptions = {
             jwt_client_id
           };
           const rest_session = new Session(user.name);
-          await rest_session.jwt(user.email, rest_options, rest_scopes);
+          ("UserStore demo entry:", UserStore[credentials.demo]);
+          await rest_session.jwt(user.email, rest_options, rest_scopes, user.uaf);
           if (embed_session.authorized && rest_session.authorized) {
             const {
               username, user_id, embed_token, site_id, site, created, expires,
@@ -103,8 +106,8 @@ export const authOptions = {
         token.demo = user.demo;
         token.role = user.role;
         token.vector_store = user.vector_store;
-        token.uaf = user.uaf;
         token.tableau = user.tableau;
+        token.uaf = user.uaf || {}; // Ensure uaf is set, even if it's empty
       }
       return token;
     },
