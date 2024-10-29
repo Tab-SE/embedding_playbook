@@ -22,10 +22,6 @@ export { Explore } from './Explore';
 
 export {
   Demo,
-  Home,
-  Orders,
-  Products,
-  Customers,
   NavigationMd,
   NavigationSm,
   Breadcrumbs,
@@ -41,9 +37,6 @@ export {
 export {
   Transactions,
   RecentSales,
-  ProductsTable,
-  OrdersTable,
-  OrderDetail,
   GeneralSettings,
   Deposits,
   Withdrawals
