@@ -31,66 +31,17 @@ export const Business = () => {
         <Metrics basis='sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5' />
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <div className="xl:col-span-2">
-            <Card className='dark:bg-stone-900 shadow-xl'>
-              <CardHeader>
-                <CardTitle>Member Home - Business Credit Card Insights</CardTitle>
-                <CardDescription>
-                  See how your business credit card spending is distributed across categories like travel, utilities, or supplies.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <TableauEmbed
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/DigitalBanking-MemberAnalytics/Member-BusinessCreditUtilizationDashboard'
-                  hideTabs={true}
-                  toolbar='hidden'
-                  className='
-                  min-w-[300px] min-h-[1430px]
-                  sm:min-w-[510px] sm:min-h-[1430px]
-                  md:min-w-[600px] md:min-h-[1080px]
-                  lg:min-w-[400px] lg:min-h-[1440px]
-                  xl:min-w-[800px] xl:min-h-[1180px]
-                  2xl:min-w-[860px] 2xl:min-h-[1180px]
-                  '
-                  layouts = {{
-                    'xs': { 'device': 'phone' },
-                    'sm': { 'device': 'phone' },
-                    'md': { 'device': 'default' },
-                    'lg': { 'device': 'phone' },
-                    'xl': { 'device': 'tablet' },
-                    'xl2': { 'device': 'desktop' },
-                  }}
-                />
-              </CardContent>
-            </Card>
-          </div>
-          <div className="space-y-6">
-            <Transactions />
-            <RecentSales />
-          </div>
-        </div>
-      </main>
-    </div>
-  )
-}
-/* Commented out to save CardContent code, but needed to simplify this page to improve the performance - RC.
-export const Business = () => {
-  return (
-    <div className="flex min-h-screen w-full flex-col">
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <Metrics basis='sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5' />
-        <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-          <div className="xl:col-span-2">
             <Tabs defaultValue="creditinsights">
               <TabsList className="mb-2 sm:mb-0">
                 <TabsTrigger value="creditinsights">Credit Insights</TabsTrigger>
-                <TabsTrigger value="loanoverview">Loan Overview</TabsTrigger>
+                <TabsTrigger value="loanoverview">Loan Details</TabsTrigger>
               </TabsList>
               <TabsContent value="creditinsights">
                 <Card className="dark:bg-stone-900 shadow-xl">
                   <CardHeader>
-                    <CardTitle>Credit Insights</CardTitle>
+                    <CardTitle>Member Home - Business Credit Card Insights</CardTitle>
                     <CardDescription>
-                      See how your business credit card spending is distributed across categories like travel, utilities, or supplies.
+                      Review business credit card spending across categories like travel, utilities, or supplies.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
@@ -121,14 +72,14 @@ export const Business = () => {
               <TabsContent value="loanoverview">
                 <Card className="dark:bg-stone-900 shadow-xl">
                   <CardHeader>
-                    <CardTitle>Business Loan Overview</CardTitle>
+                    <CardTitle>Member Home - Business Loan Details</CardTitle>
                     <CardDescription>
-                      See your business loan balance over time, including interest and principal breakdown.
+                      Review your small business loan balance and monthly payment summary.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
                     <TableauEmbed
-                      src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/DigitalBanking-MemberAnalytics/Member-BusinessLoanManagementDashboard'
+                      src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/DigitalBanking-MemberAnalytics/Member-SMBLoanDetails'
                       hideTabs={true}
                       toolbar='hidden'
                       className='
@@ -163,4 +114,3 @@ export const Business = () => {
     </div>
   )
 }
-*/
