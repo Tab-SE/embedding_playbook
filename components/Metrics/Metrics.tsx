@@ -47,6 +47,11 @@ export const Metrics = (props) => {
 
   return (
     <>
+      {isError && (
+        <div className="alert alert-danger" role="alert">
+          {error.message || 'There was an error fetching the metrics. Please try again later.'}
+        </div>
+      )}
       <LoadDatasources />
       <MetricsPlusFilters />
     </>
