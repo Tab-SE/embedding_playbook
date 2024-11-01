@@ -231,7 +231,6 @@ const Stats: React.FC<StatsProps> = (props) => {
             </div>
             {contextData.timeComparisonMode === 'text' && (
               <div className="pl-3 text-sm text-muted-foreground text-stone-500 dark:text-stone-300">
-                <br />
                 <span
                   dangerouslySetInnerHTML={{
                     __html:
