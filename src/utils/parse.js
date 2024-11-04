@@ -246,50 +246,80 @@ export const parseStats = (data, metric) => {
 
 const parseTimeComparisons = (data, metric) => {
   const insights = data.bundle_response.result.insight_groups.filter(group => group.type === 'ban')[0].insights;
-  
+
   const formatComparison = (comparison, ban) => {
-    const { absolute, relative, direction } = ban.result.facts.difference;
-    const { target_period_value, comparison_period_value, comparison_time_period, sentiment } = ban.result.facts;
-    const { markup } = ban.result;
+    // if (!ban.result.)
+    try {
+      const { absolute, relative, direction } = ban.result.facts.difference;
+      const { target_period_value, comparison_period_value, comparison_time_period, sentiment } = ban.result.facts;
+      const { markup } = ban.result;
 
-    comparison.absolute = absolute.formatted;
-    comparison.relative = relative.formatted;
+      // if the value of is_nan in true, that means there was no data for that period available. 
+      if (absolute.is_nan) {
+        comparison.absolute = '';
+        comparison.relative = '';
+        comparison.direction = '';
+        comparison.range = '';
+        comparison.markup = `No data for prior ${comparison.comparison_name}`;
+        comparison.target_period_value = '';
+        comparison.comparison_period_value = '';
+        comparison.color = 'text-metricsNeutral';
+        comparison.badge = 'bg-metricsNeutral';
+        comparison.text = `No data for prior ${comparison.comparison_name}`;
+        comparison.is_nan = true;
+      }
+      else {
+        comparison.absolute = absolute.formatted;
+        comparison.relative = relative.formatted;
+        // Add plus sign for increments
+        if (absolute.formatted && !absolute.formatted.startsWith('-')) {
+          comparison.absolute = `+${absolute.formatted}`;
+          comparison.relative = `+${relative.formatted}`;
+        }
+        comparison.range = comparison_time_period.range;
+        comparison.target_period_value = target_period_value.formatted;
+        comparison.comparison_period_value = comparison_period_value.formatted;
+        comparison.markup = markup;
+        comparison.direction = direction;
+        if (sentiment === 'positive') {
+          comparison.color = 'text-metricsPositive';
+          comparison.badge = 'bg-metricsPositive';
+        } else if (sentiment === 'neutral') {
+          comparison.color = 'text-metricsNeutral';
+          comparison.badge = 'bg-metricsNeutral';
+        } else if (sentiment === 'negative') {
+          comparison.color = 'text-metricsNegative';
+          comparison.badge = 'bg-metricsNegative';
+        }
+        if (absolute.formatted.includes('%')) {
+          const directionText = target_period_value.raw > comparison_period_value.raw ? 'Up' : 'Down';
+          comparison.text = `${directionText} from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`;
+          comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${directionText}\u003c/span\u003e from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`
+        } else {
+          comparison.text = `${comparison.relative} (${comparison.absolute}) ${comparison.comparison} (${comparison.range})`;
+          comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${comparison.relative}\u003c/span\u003e (${comparison.absolute}) \u003c/span\u003e ${comparison.comparison} (${comparison.range})`;
+        }
+      }
+    } catch (error) {
 
-    // Add plus sign for increments
-    if (absolute.formatted && !absolute.formatted.startsWith('-')) {
-      comparison.absolute = `+${absolute.formatted}`;
-      comparison.relative = `+${relative.formatted}`;
-    }
-
-    comparison.range = comparison_time_period.range;
-    comparison.markup = markup;
-    comparison.target_period_value = target_period_value.formatted;
-    comparison.comparison_period_value = comparison_period_value.formatted;
-    comparison.direction = direction;
-
-    if (sentiment === 'positive') {
-      comparison.color = 'text-metricsPositive';
-      comparison.badge = 'bg-metricsPositive';
-    } else if (sentiment === 'neutral') {
-      comparison.color = 'text-metricsNeutral';
-      comparison.badge = 'bg-metricsNeutral';
-    } else if (sentiment === 'negative') {
-      comparison.color = 'text-metricsNegative';
-      comparison.badge = 'bg-metricsNegative';
-    }
-
-    if (absolute.formatted.includes('%')) {
-      const directionText = target_period_value.raw > comparison_period_value.raw ? 'Up' : 'Down';
-      comparison.text = `${directionText} from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`;
-      comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${directionText}\u003c/span\u003e from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`
-    } else {
-      comparison.text = `${comparison.relative} (${comparison.absolute}) ${comparison.comparison} (${comparison.range})`;
-      comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${comparison.relative}\u003c/span\u003e (${comparison.absolute}) \u003c/span\u003e ${comparison.comparison} (${comparison.range})`;
+      comparison = {
+        absolute: '',
+        relative: '',
+        direction: '',
+        range: '',
+        markup: '',
+        target_period_value: '',
+        comparison_period_value: '',
+        color: 'text-metricsNeutral',
+        badge: 'bg-metricsNeutral',
+        text: '',
+      };
     }
   };
 
   let comparisons = metric.comparisons.comparisons[0].map(item => ({
-    comparison: item.compare_config.comparison.includes('YEAR')?'vs. prior year':'vs. prior period',
+    comparison: item.compare_config.comparison.includes('YEAR') ? 'vs. prior year' : 'vs. prior period',
+    comparison_name: item.compare_config.comparison.includes('YEAR') ? 'year' : 'period',
   }));
 
   // Format the first comparison

@@ -14,7 +14,7 @@ import { Dialog, DialogTrigger } from '../../../ui';
 import { useInsights } from '../../../../hooks';
 import { parseInsights } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
-import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -138,10 +138,10 @@ export const MetricSinglePaneDetails: React.FC<{
           <span className="font-normal text-xs block mt-[-3px]">
             {metric.namePeriod} ({stats?.target_time_period_range})
             <div>
-            {contextData.currentFiltersDisplayMode === 'top' &&
-              metric.nameFilters &&
-              `${metric.nameFilters}`}
-              </div>
+              {contextData.currentFiltersDisplayMode === 'top' &&
+                metric.nameFilters &&
+                `${metric.nameFilters}`}
+            </div>
           </span>
         </div>
         <p className={`${stats.color}`}>{stats.direction}</p>
@@ -216,11 +216,13 @@ const Stats: React.FC<StatsProps> = (props) => {
           <div className="text-3xl font-extrabold text-right mr-1 text-[#003a6a]">
             <div>{stats.value ? stats.value : null}</div>
           </div>
-            {stats.units}
+          {stats.units}
         </div>
         {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
           <>
-            <div className="flex space-x-2 items-center text-muted-foreground ml-auto mr-auto">
+            <div
+              className={`flex space-x-2 items-center text-muted-foreground ${stats?.comparisons[0].color} ml-auto mr-auto`}
+            >
               <div>{stats.comparisons[0].directionIcon}</div>
               <div>{stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}</div>
               <span className="mt-[-2px] leading-none">△ {stats.comparisons[0].absolute}</span>
@@ -230,22 +232,32 @@ const Stats: React.FC<StatsProps> = (props) => {
             </div>
           </>
         )}
-        {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
-          <>
-            <div
-              className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1 ml-auto mr-auto`}
-            >
-              <div>{stats?.comparisons[1].directionIcon}</div>
-              <div>{stats?.comparisons[1].absolute}</div>
-              <div>
-                {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
+        {contextData.timeComparisonMode === 'both' &&
+          stats?.comparisons?.[1] &&
+          (stats?.comparisons[1].is_nan ? (
+            <div className="ml-auto mr-auto text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: stats?.comparisons[1].markup,
+                }}
+              />
+            </div>
+          ) : (
+            <>
+              <div
+                className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1 ml-auto mr-auto`}
+              >
+                <div>{stats?.comparisons[1].directionIcon}</div>
+                <div>{stats?.comparisons[1].absolute}</div>
+                <div>
+                  {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
+                </div>
               </div>
-            </div>
-            <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-auto mr-auto">
-              {stats?.comparisons[1].comparison}
-            </div>
-          </>
-        )}
+              <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-auto mr-auto">
+                {stats?.comparisons[1].comparison}
+              </div>
+            </>
+          ))}
         {contextData.timeComparisonMode === 'text' && (
           <div className="pl-3 text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
             <br />
@@ -288,11 +300,7 @@ const Stats: React.FC<StatsProps> = (props) => {
         <div className="flex flex-row">
           <Dialog>
             <DialogTrigger
-              // onClick={() => {
-              //   console.log(`calling handleSetVal with ${(metric as any).specification_id}`);
-              //   // handleSetVal(metric.id);
-              //   contextData.companionMode === 'source' ? contextData.handleSetVal((metric as any).specification_id) : null;
-              // }}
+              className="bg-white"
               onClick={() => {
                 const metricId = (metric as any).specification_id;
                 console.log(`calling handleSetVal with ${metricId}`);
@@ -301,7 +309,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                   contextData.handleSetVal(metricId);
                 } else if (contextData.companionMode === 'popup') {
                   // Define the popup URL
-                  const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
+                  const popupUrl = `/pulseExtensionInsightsPopup?metricId=${metricId}`;
 
                   // Check if the popup window is already open and valid
                   if (!popupWindowRef || popupWindowRef.closed) {
@@ -348,7 +356,7 @@ const Stats: React.FC<StatsProps> = (props) => {
         <Skeleton className="h-5 w-24 my-auto ml-6" />
       </div>
       <div
-        className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground ${stats.color} py-2`}
+        className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground py-2`}
       >
         <div>
           <Skeleton className="h-4 w-7" />

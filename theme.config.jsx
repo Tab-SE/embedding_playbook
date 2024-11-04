@@ -6,7 +6,7 @@ const vercel = 'https://embedding-playbook.vercel.app';
 const description = "This playbook teaches you how to compose Tableau's varied product capabilities into applications that thrill customers, coworkers and friends!";
 const basePath = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default {
+let opts = {
   darkMode: false,
   primaryHue: 201,
   primarySaturation: 100,
@@ -19,7 +19,7 @@ export default {
   footer: {
     text:
     <Logo
-      src="/img/tableau/logo_text.png"
+      src={basePath + "/img/tableau/logo_text.png"}
       width='300'
     />
   },
@@ -67,3 +67,5 @@ export default {
     );
   }
 }
+
+export default opts;

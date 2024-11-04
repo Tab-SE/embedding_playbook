@@ -22,7 +22,6 @@ export {
 
 export { PulseExtension, PulseExtensionDialog, PulseExtensionInsightsPopup } from 'components/PulseExtension';
 export { InsightsOnly } from './Insights';
-export { ExtensionDataProvider, ExtensionDataContext } from './Providers/ExtensionDataProvider';
 
 export { Explore } from './Explore';
 

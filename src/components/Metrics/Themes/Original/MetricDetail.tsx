@@ -15,7 +15,7 @@ import { Dialog, DialogTrigger } from '../../../ui';
 import { useInsights } from '../../../../hooks';
 import { parseInsights } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
-import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -133,56 +133,55 @@ export const MetricDetail: React.FC<{
   // fully loaded state
   return (
     <>
-    {contextData.companionMode !== 'target' ? (
-
-      <Card className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white text-stone-950 shadow dark:border-stone-800 dark:text-stone-50 min-h-[111px] max-w-[350px] dark:bg-stone-900">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
-        <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 overflow-hidden">
-          {metric.name}
-          <span className="font-normal text-xs block">
-            {metric.namePeriod} ({stats?.target_time_period_range})
-            <br />
-            {contextData.currentFiltersDisplayMode === 'top' &&
-              metric.nameFilters &&
-              `${metric.nameFilters}`}
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-3 pt-0">
-        <Stats
-          isSuccess={isSuccess}
-          stats={stats}
-          bundleCount={bundleCount}
-          metric={metric}
-          insights={insights}
-          viz={data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz}
-          />
-        {contextData.currentFiltersDisplayMode === 'bottom' && (
-          <div
-          className={`text-stone-500 dark:text-stone-300 leading-5 pl-3 overflow-hidden ${filtersApplied}`}
-          >
-            <FontAwesomeIcon icon={myIcon} />
-            {appliedFilters}
-          </div>
-        )}
-        {filterReady &&
-          contextData.showPulseFilters === 'true' &&
-          currDatasourceFilterFields.map((filter: string) => {
-            return (
-              <Filters
-              key={datasourceId + '-' + metric.id + '-' + filter}
-              datasourceId={datasourceId}
-              filterId={filter}
-              handleMetricFilter={handleMetricFilter}
-              passedValues={selectedValues}
+      {contextData.companionMode !== 'target' ? (
+        <Card className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white text-stone-950 shadow dark:border-stone-800 dark:text-stone-50 min-h-[111px] min-w-[240px] max-w-[350px] dark:bg-stone-900">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
+            <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 overflow-hidden">
+              {metric.name}
+              <span className="font-normal text-xs block">
+                {metric.namePeriod} ({stats?.target_time_period_range})
+                <br />
+                {contextData.currentFiltersDisplayMode === 'top' &&
+                  metric.nameFilters &&
+                  `${metric.nameFilters}`}
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-3 pt-0">
+            <Stats
+              isSuccess={isSuccess}
+              stats={stats}
+              bundleCount={bundleCount}
               metric={metric}
-              />
-            );
-          })}
-      </CardContent>
-    </Card>
-        ) : null}
-          </>
+              insights={insights}
+              viz={data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz}
+            />
+            {contextData.currentFiltersDisplayMode === 'bottom' && (
+              <div
+                className={`text-stone-500 dark:text-stone-300 leading-5 pl-3 overflow-hidden ${filtersApplied}`}
+              >
+                <FontAwesomeIcon icon={myIcon} />
+                {appliedFilters}
+              </div>
+            )}
+            {filterReady &&
+              contextData.showPulseFilters === 'true' &&
+              currDatasourceFilterFields.map((filter: string) => {
+                return (
+                  <Filters
+                    key={datasourceId + '-' + metric.id + '-' + filter}
+                    datasourceId={datasourceId}
+                    filterId={filter}
+                    handleMetricFilter={handleMetricFilter}
+                    passedValues={selectedValues}
+                    metric={metric}
+                  />
+                );
+              })}
+          </CardContent>
+        </Card>
+      ) : null}
+    </>
   );
 };
 
@@ -209,7 +208,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                       if (contextData.companionMode === 'source') {
                         contextData.handleSetVal(metricId);
                       } else if (contextData.companionMode === 'popup') {
-                        const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
+                        const popupUrl = `/pulseExtensionInsightsPopup?metricId=${metricId}`;
 
                         if (!popupWindowRef || popupWindowRef.closed) {
                           popupWindowRef = window.open(
@@ -255,20 +254,34 @@ const Stats: React.FC<StatsProps> = (props) => {
                 </div>
               </>
             )}
-            {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
-              <>
-                <div className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1`}>
-                  <div>{stats?.comparisons[1].directionIcon}</div>
-                  <div>{stats?.comparisons[1].absolute}</div>
-                  <div>
-                    {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
+            {contextData.timeComparisonMode === 'both' &&
+              stats?.comparisons?.[1] &&
+              (stats?.comparisons[1].is_nan ? (
+                <div className="ml-10 text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: stats?.comparisons[1].markup,
+                    }}
+                  />
+                </div>
+              ) : (
+                <>
+                  <div
+                    className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1`}
+                  >
+                    <div>{stats?.comparisons[1].directionIcon}</div>
+                    <div>{stats?.comparisons[1].absolute}</div>
+                    <div>
+                      {stats?.comparisons[1].relative
+                        ? `${stats?.comparisons[1].relative} △`
+                        : null}
+                    </div>
                   </div>
-                </div>
-                <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
-                  {stats?.comparisons[1].comparison}
-                </div>
-              </>
-            )}
+                  <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
+                    {stats?.comparisons[1].comparison}
+                  </div>
+                </>
+              ))}
           </div>
         </div>
         {contextData.timeComparisonMode === 'text' && (

@@ -11,20 +11,44 @@ export const InsightsModal = (props) => {
       <Tabs defaultValue="insights">
         <DialogHeader className="ml-6">
           <DialogTitle className="text-3xl">
-            <span className={`${stats.color} inline-block`}>{stats.direction}</span> <span className="text-stone-600 dark:text-stone-300">
+            <span className="text-stone-600 dark:text-stone-300">
               {metric.name}:
+              <span className="font-bold ml-3">{stats.value}</span>
               <span className="text-xl ml-3">
-                {metric.namePeriod} - {metric.nameFilters}
+                {metric.namePeriod}  {metric.nameFilters && `- ` + metric.nameFilters}
               </span>
-            </span> <span className="font-bold ml-3">{stats.value}</span>
+            </span>
           </DialogTitle>
-          <DialogDescription className='pt-3'>
-            <span className={`text-2xl text-muted-foreground ${stats.color}`}>
-              {stats.absolute}
-            </span>
-            <span className={`text-2xl text-muted-foreground ${stats.color}`}>
-              &nbsp; △ {stats.relative ? `${stats.relative}` : null}
-            </span>
+          <DialogDescription className='pt-1'>
+            <div className={`flex space-x-2 text-lg`}>
+              <div className="flex space-x-2 items-center">
+                <div className={`flex space-x-2 items-center ${stats.color}`}></div>
+                <div>{stats.comparisons[0].directionIcon}</div>
+                <div>{stats.comparisons[0].absolute}</div>
+                <div>
+                  {stats.comparisons[0].relative ? `${stats.comparisons[0].relative} △` : null}
+                </div>
+                <div className="text-stone-500 dark:text-stone-300 text-muted-foreground ml-10">
+                  {stats.comparisons[0].comparison}
+                </div>
+              </div>
+              {stats?.comparisons?.[1] && !stats?.comparisons[1].is_nan &&
+                <div className="flex space-x-2 items-center ml-3">
+                  <div className={`flex space-x-2 items-center ${stats?.comparisons[1].color}`}>
+                    <div>{stats?.comparisons[1].directionIcon}</div>
+                    <div>{stats?.comparisons[1].absolute}</div>
+                    <div>
+                      {stats?.comparisons[1].relative
+                        ? `${stats?.comparisons[1].relative} △`
+                        : null}
+                    </div>
+                  </div>
+                  <div className="text-stone-500 dark:text-stone-300 text-muted-foreground ml-10">
+                    {stats?.comparisons[1].comparison}
+                  </div>
+                </div>
+              }
+            </div>
             {/*             <TabsList className='mx-6'>
               <TabsTrigger value="insights">
               Insights
@@ -38,7 +62,7 @@ export const InsightsModal = (props) => {
         <InsightsChat metric={metric} stats={stats} />
         {/* <Dashboards src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip' /> */}
       </Tabs>
-    </DialogContent>
+    </DialogContent >
   )
 }
 

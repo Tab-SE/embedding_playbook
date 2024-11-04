@@ -15,13 +15,14 @@ export const useMetricsExtension = (userName: string, loginData: any) => {
     error: sessionError,
     isSuccess: isSessionSuccess,
     isError: isSessionError,
-    isLoading: isSessionLoading
+    isLoading: isSessionLoading,
+    signInError
   } = useTableauSessionExtension(userName, loginData);
 
   // set to an empty array if enumerated function parameters are not available in array
   const queryKey = [user?.name].every(param => param != null) ? ["tableau", user.name, "metrics"] : [];
 
-  return useQuery({
+  const metricsQuery = useQuery({
     queryKey: queryKey,
     queryFn: () => {
       return getMetrics();
@@ -29,7 +30,7 @@ export const useMetricsExtension = (userName: string, loginData: any) => {
     enabled: !!user,
     retry: 3,
     staleTime: 30 * 60 * 1000, // 30 minutes
-    // cacheTime: 30 * 60 * 1000, // 30 minutes
   });
+
+  return { ...metricsQuery, signInError };
 }
-``

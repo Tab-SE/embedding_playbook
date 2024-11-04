@@ -1,4 +1,4 @@
-
+"use client"
 import React, { createContext, useState, useContext, useCallback, useRef } from 'react';
 import { DatasourceModelCollection, MetricCollection } from 'models';
 

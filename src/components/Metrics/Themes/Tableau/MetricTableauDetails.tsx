@@ -13,7 +13,7 @@ import { Dialog, DialogTrigger } from '../../../ui';
 import { useInsights } from '../../../../hooks';
 import { parseInsights } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
-import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -171,7 +171,7 @@ const Stats: React.FC<StatsProps> = (props) => {
           <div className="mb-4">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-medium truncate">{metric.name}</h2>
-              <button className="text-gray-500 hover:text-gray-700" aria-label="More Actions">
+              <button className="text-gray-500 hover:text-gray-700 bg-white" aria-label="More Actions">
                 {/* More actions button */}
                 •••
               </button>
@@ -205,7 +205,16 @@ const Stats: React.FC<StatsProps> = (props) => {
                   </div>
                 </div>
               )}
-              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
+              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] &&
+              (stats?.comparisons[1].is_nan ? (
+                <div className="text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: stats?.comparisons[1].markup,
+                    }}
+                  />
+                </div>
+              ) : (
                 <div className={`${stats?.comparisons?.[1]?.color} ml-3`}>
                   <div className="text-xs">{stats?.comparisons?.[1].comparison}</div>
                   <div>{stats?.comparisons?.[1].directionIcon}</div>
@@ -218,11 +227,10 @@ const Stats: React.FC<StatsProps> = (props) => {
                     △ {stats?.comparisons?.[1].absolute}
                   </div>
                 </div>
-              )}
+              ))}
             </div>
             {contextData.timeComparisonMode === 'text' && (
               <div className="pl-3 text-sm text-muted-foreground text-stone-500 dark:text-stone-300">
-                <br />
                 <span
                   dangerouslySetInnerHTML={{
                     __html:
@@ -290,12 +298,7 @@ const Stats: React.FC<StatsProps> = (props) => {
 
           <div className="flex flex-row mt-3">
             <Dialog>
-              <DialogTrigger
-                // onClick={() => {
-                //   console.log(`calling handleSetVal with ${(metric as any).specification_id}`);
-                //   // handleSetVal(metric.id);
-                //   contextData.companionMode === 'source' ? contextData.handleSetVal((metric as any).specification_id) : null;
-                // }}
+              <DialogTrigger className='bg-white'
                 onClick={() => {
                   const metricId = (metric as any).specification_id;
                   console.log(`calling handleSetVal with ${metricId}`);
@@ -304,7 +307,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                     contextData.handleSetVal(metricId);
                   } else if (contextData.companionMode === 'popup') {
                     // Define the popup URL
-                    const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
+                    const popupUrl = `/pulseExtensionInsightsPopup?metricId=${metricId}`;
 
                     // Check if the popup window is already open and valid
                     if (!popupWindowRef || popupWindowRef.closed) {
@@ -323,8 +326,8 @@ const Stats: React.FC<StatsProps> = (props) => {
                 }}
               >
                 <Badge
-                  className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}
-                  variant="undefined"
+                  className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`} 
+                  variant="default"
                 >
                   <IconSparkles width={15} height={15} className="mr-1" />
                   Insights: {bundleCount}

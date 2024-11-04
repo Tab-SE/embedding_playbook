@@ -1,3 +1,4 @@
+"use client"
 import _ from 'lodash';
 import { useState, useEffect, useContext } from 'react';
 import { useDatasource } from 'hooks';

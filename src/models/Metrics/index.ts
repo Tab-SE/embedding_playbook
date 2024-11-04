@@ -1,6 +1,5 @@
 import { handleSubscriptions, handleSpecifications, handleDefinitions, handleFilter } from './controller'
 import { InsightsModel } from '../Insights'
-import { join } from 'path/posix';
 
 export class MetricCollection {
   public metrics: InsightsModel[];
@@ -136,7 +135,7 @@ export class MetricsModel {
 
     // make a metrics object
     this.makeMetrics();
-    // console.log(`--------this.metrics--------`);
+// console.log(`--------this.metrics--------`);
     /*     let m = JSON.parse(JSON.stringify(this.metrics));
         console.log(JSON.stringify(m, null, 2));  */
 
@@ -252,7 +251,7 @@ export class MetricsModel {
 
   makeMetrics = () => {
 
-    for (const [key, specification] of Object.entries(this.specifications)) {
+  for (const [key, specification] of Object.entries(this.specifications)) {
       const Metric = new InsightsModel(this.user_id, this.definitions, specification, this.subscriptions);
       this.metrics.push(Metric);
     }

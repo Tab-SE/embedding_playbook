@@ -1,13 +1,5 @@
 export default {
   index: {
-    title: "Pulse Dashboard Extension",
-    type: "page",
-    display: "hidden",
-    theme: {
-      layout: "full"
-    }
-  },
-  index_orig: {
     title: "Embed Tableau",
     type: "page",
     display: "hidden",
@@ -37,19 +29,61 @@ export default {
       timestamp: true
     }
   },
+  pulseExtension: {
+    title: "Pulse Dashboard Extension",
+    type: "page",
+    display: "hidden",
+    theme: {
+      layout: "raw",
+      breadcrumb: false,
+      footer: false,
+      sidebar: false,
+      toc: false,
+      pagination: false,
+      navbar: false,
+      timestamp: false
+    }
+  },
   pulseExtensionDialog: {
     title: "Pulse Dashboard Extension Dialog",
-    type: "page",
-    display: "hidden"
+    display: "hidden",
+    theme: {
+      layout: "raw",
+      breadcrumb: false,
+      footer: false,
+      sidebar: false,
+      toc: false,
+      pagination: false,
+      navbar: false,
+      timestamp: false
+    }
   },
   pulseExtensionInsightsPopup: {
     title: "Pulse Dashboard Extension Insights Popup",
-    type: "page",
-    display: "hidden"
+    display: "hidden",
+    theme: {
+      layout: "raw",
+      breadcrumb: false,
+      footer: false,
+      sidebar: false,
+      toc: false,
+      pagination: false,
+      navbar: false,
+      timestamp: false
+    }
   },
   pulseExtensionInsightsLogin: {
     title: "Pulse Dashboard Extension Insights Popup",
-    type: "page",
-    display: "hidden"
+    display: "hidden",
+    theme: {
+      layout: "raw",
+      breadcrumb: false,
+      footer: false,
+      sidebar: false,
+      toc: false,
+      pagination: false,
+      navbar: false,
+      timestamp: false
+    }
   }
 }

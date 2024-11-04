@@ -56,7 +56,7 @@ const Insight = (props) => {
         {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={260} width={560} spec={viz}></VegaLiteViz>} {/* Dashboard extensions can only be so tall... need to reduce height to 260 */}
       </CardContent>
       <CardFooter>
-       {markup.includes("<span") ? <span dangerouslySetInnerHTML={{__html: markup}} />  :{markup}}
+       {markup.includes("<span") ? <span dangerouslySetInnerHTML={{__html: markup}} />  :markup}
       </CardFooter>
     </Card>
   ) : null;

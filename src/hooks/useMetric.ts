@@ -6,9 +6,9 @@ import { getMetricPrivate } from "libs"
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
 
-export const useMetric = (userName:string, loginData: any, specification_id: string) => {
+export const useMetric = (userName:string, loginData: any, specification_id = "") => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [userName].every(param => param != null) ? ["tableau", "metric", userName, "specification_id", specification_id] : []; 
+  const queryKey = ["tableau", "metric", userName, specification_id];
 
     // tanstack query hook to safely represent users on the client
     const {

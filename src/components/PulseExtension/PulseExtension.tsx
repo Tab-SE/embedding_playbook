@@ -1,3 +1,4 @@
+"use client"
 // eslint-disable-next-line no-unused-vars
 
 import { useEffect, useState, useRef, forwardRef, useContext, useCallback, useMemo } from 'react';
@@ -325,15 +326,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       });
   }, []); // Only run on component mount
 
-  const filterHandlerDebounce = async () => {
-    if (!debounce()) {
-      return;
-    }
-    setTimeout(() => {
-      getAllFiltersCallback();
-    }, 250);
-  };
-
+  
   /* This code will listen for the data sources to be populated, and then run grab the filters. */
   useEffect(() => {
     if (
@@ -344,7 +337,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       setInitialFiltersRun(true);
     }
   }, [contextData.datasourceCollection, initialFiltersRun]);
-
+  
   const getAllFiltersCallback = useCallback(async () => {
     if (!tableauInitialized) {
       return;
@@ -360,7 +353,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     const dashboardFilters: CategoricalFilter[] = [];
     const filterFetchPromises: any[] = [];
     const dashboard = tableau.extensions.dashboardContent.dashboard;
-
+    
     // Then loop through each worksheet and get its filters, save promise for later.
     dashboard.worksheets.forEach(function (worksheet: Worksheet) {
       filterFetchPromises.push(worksheet.getFiltersAsync());
@@ -397,8 +390,17 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     updateContextData({ dashboardFilters });
     console.log(`ending getAllFilters`);
     updatingFilters.current = false;
-  }, [tableauInitialized, contextData]);
-
+  }, [tableauInitialized, updateContextData]);
+  
+  const filterHandlerDebounce = useCallback(async () => {
+    if (!debounce()) {
+      return;
+    }
+    setTimeout(() => {
+      getAllFiltersCallback();
+    }, 250);
+  }, [debounce, getAllFiltersCallback]);
+  
   const handleLogout = async () => {
     console.log('Signing Out...');
     await signOut({ redirect: false });
@@ -410,13 +412,13 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
   return (
     <div
-      className={`${
-        contextData.displayMode === 'singlePane'
-          ? 'w-[93vw]'
-          : contextData.displayMode === 'salesforce'
-          ? 'w-[85vw]'
-          : 'w-[93vw]'
-      }`}
+      // className={`${
+      //   contextData.displayMode === 'singlePane'
+      //     ? 'w-[93vw]'
+      //     : contextData.displayMode === 'salesforce'
+      //     ? 'w-[85vw]'
+      //     : 'w-[93vw]'
+      // }`}
     >
       {contextData.debug === 'true' && (
         <div>
@@ -440,11 +442,12 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           SessionVal: {sessionVal}
         </div>
       )}
-      {!configureOpenRef.current && contextData.companionMode !== 'target' ? (
+      tab initialized? {tableauInitialized.toString()}
+      {!configureOpenRef.current && contextData.companionMode !== 'target' && tableauInitialized ? (
         <>
           <Metrics />
         </>
-      ) : !configureOpenRef.current && contextData.companionMode === 'target' ? (
+      ) : !configureOpenRef.current && contextData.companionMode === 'target' && tableauInitialized ? (
         <InsightsOnly />
       ) : null}
 

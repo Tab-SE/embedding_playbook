@@ -36,19 +36,18 @@ export const tabAuthJWT = async (jwt, tableauUrl, contentUrl) => {
   if (!response.credentials) {
     console.log(`RESPONSE NOT OK!`);
     console.log(response);
-    console.log(JSON.stringify(response.response.data.error, null, 2));
-    if (response?.response.status === 401) {
-      throw new Error('Unauthorized: Invalid JWT token.');
-    } else if (response?.response?.status === 404) {
-      throw new Error('Not Found: The specified endpoint does not exist.');
-    } else if (response?.response?.status >= 400 && response.response.status < 500) {
-      throw new Error(`Client Error: ${response.response.statusText}`);
-    } else if (response?.response?.status >= 500) {
-      throw new Error(`Server Error: ${response.response.statusText}`);
-    }
-    else {
-      throw new Error(`Something went wrong: ${JSON.stringify(response)}`);
-    }
+    // if (response?.response?.status === 401) {
+    //   throw new Error('Unauthorized: Invalid JWT token.');
+    // } else if (response?.response?.status === 404) {
+    //   throw new Error('Not Found: The specified endpoint does not exist.');
+    // } else if (response?.response?.status >= 400 && response?.response?.status < 500) {
+    //   throw new Error(`Client Error: ${response?.response?.statusText}`);
+    // } else if (response?.response?.status >= 500) {
+    //   throw new Error(`Server Error: ${response?.response?.statusText}`);
+    // }
+    // else {
+      throw new Error(`${JSON.stringify(response)}`);
+    // }
   }
 
   const site_id = response.credentials.site.id;
