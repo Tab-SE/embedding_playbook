@@ -442,7 +442,6 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           SessionVal: {sessionVal}
         </div>
       )}
-      tab initialized? {tableauInitialized.toString()}
       {!configureOpenRef.current && contextData.companionMode !== 'target' && tableauInitialized ? (
         <>
           <Metrics />
