@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'production') {
         sameSite: 'none',
         path: '/',
         secure: true,
-        domain: '.embedding-playbook-navy.vercel.app',
+        domain: '.embedding-playbook-git-tagyoureit-main-russ-goldins-projects.vercel.app',
       }
     },
     callbackUrl: {
@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'production') {
         sameSite: 'none',
         path: '/',
         secure: true,
-        domain: '.embedding-playbook-navy.vercel.app',
+        domain: '.embedding-playbook-git-tagyoureit-main-russ-goldins-projects.vercel.app',
       }
     },
     csrfToken: {
