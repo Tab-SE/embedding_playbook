@@ -4,6 +4,9 @@ import { Session } from "models"
 import { UserStore } from "settings"
 import NextAuth from "next-auth"
 
+const basePath = process.env.NEXT_PUBLIC_BASE_URL;
+const domain = '.' + basePath.replace(/(^\w+:|^)\/\//, '');
+
 let cookies = null;
 if (process.env.NODE_ENV === 'production') {
   cookies = {
@@ -14,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
         sameSite: 'none',
         path: '/',
         secure: true,
-        domain: '.embedding-playbook-git-tagyoureit-main-russ-goldins-projects.vercel.app',
+        domain,
       }
     },
     callbackUrl: {
@@ -23,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
         sameSite: 'none',
         path: '/',
         secure: true,
-        domain: '.embedding-playbook-git-tagyoureit-main-russ-goldins-projects.vercel.app',
+        domain,
       }
     },
     csrfToken: {
