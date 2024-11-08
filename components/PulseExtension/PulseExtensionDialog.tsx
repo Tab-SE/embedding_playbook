@@ -811,6 +811,7 @@ export const PulseExtensionDialog = (props: any) => {
 
   const handleTableauUrlChange = (event: any) => {
     let url = `https://${event.target.value}.online.tableau.com`;
+    setTableauUrlSubDomain(event.target.value);
     updateLoginData('tableauUrl', validateAndFormatTableauUrl(url));
   };
 
