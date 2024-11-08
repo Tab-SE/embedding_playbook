@@ -50,9 +50,9 @@ export const useTableauSessionExtension = (userName: string, loginData: any) => 
     },
     enabled: signedIn,
     staleTime: Infinity,
-    onError: (error) => {
-      console.log(`error in tanstack query: ${error}`);
-    },
+    // onError: (error) => {
+    //   console.log(`error in tanstack query: ${error}`);
+    // },
   });
 
   return { ...query, signInError };
