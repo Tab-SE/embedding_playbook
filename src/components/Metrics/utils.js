@@ -18,7 +18,7 @@ export const extractMetrics = (metrics, metricIds) => {
 export const sortPayloadByIds = (payload, sortOrder) => {
   // Ensure sortOrder is defined and check if it's empty
   if (!Array.isArray(sortOrder) || sortOrder.length === 0) {
-    return payload; // Return original payload unchanged
+    return payload; // Return carousel payload unchanged
   }
 
   const sortedJson = payload.sort((a, b) => {

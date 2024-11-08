@@ -48,6 +48,9 @@ export const authOptions = {
     strategy: "jwt",
     maxAge: 2 * 60 * 60,
   },
+  jwt: {
+    maxAge: 2 * 60 * 60,  // 2 mins
+  },
   providers: [
     CredentialsProvider({
       type: 'credentials',
@@ -218,4 +221,6 @@ async function initializeSession(username, credentials, type = 'rest', method = 
   }
   return session;
 }
+
+
 export default NextAuth(authOptions);

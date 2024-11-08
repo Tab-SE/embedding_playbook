@@ -222,17 +222,18 @@ export const parseStats = (data, metric) => {
 
         // direction of the arrow icon -- new Logical/sentimental version dschober
         const dir = facts?.difference.direction;
-        const sent = facts?.sentiment;
+        const sentiment = facts?.sentiment;
 
         stats.dir = dir; // need to add react icon back in jsx/tsx files
+        stats.sentiment = sentiment;
 
-        if (sent === 'positive') {
+        if (sentiment === 'positive') {
           stats.color = 'text-metricsPositive';
           stats.badge = 'bg-metricsPositive';
-        } else if (sent === 'neutral') {
+        } else if (sentiment === 'neutral') {
           stats.color = 'text-metricsNeutral';
           stats.badge = 'bg-metricsNeutral';
-        } else if (sent === 'negative') {
+        } else if (sentiment === 'negative') {
           stats.color = 'text-metricsNegative';
           stats.badge = 'bg-metricsNegative';
         }
@@ -267,6 +268,7 @@ const parseTimeComparisons = (data, metric) => {
         comparison.badge = 'bg-metricsNeutral';
         comparison.text = `No data for prior ${comparison.comparison_name}`;
         comparison.is_nan = true;
+        comparison.sentiment = sentiment;
       }
       else {
         comparison.absolute = absolute.formatted;
@@ -281,6 +283,7 @@ const parseTimeComparisons = (data, metric) => {
         comparison.comparison_period_value = comparison_period_value.formatted;
         comparison.markup = markup;
         comparison.direction = direction;
+        comparison.sentiment = sentiment;
         if (sentiment === 'positive') {
           comparison.color = 'text-metricsPositive';
           comparison.badge = 'bg-metricsPositive';
@@ -313,6 +316,7 @@ const parseTimeComparisons = (data, metric) => {
         color: 'text-metricsNeutral',
         badge: 'bg-metricsNeutral',
         text: '',
+        sentiment: 'neutral',
       };
     }
   };
@@ -539,4 +543,25 @@ const parseDataSources = (rawMetadata) => {
   }
 
   return dataSourceProjects;
+}
+
+export const applyVizFormatting = (viz, contextData) =>{
+  if (viz?.config) {
+    if (typeof contextData?.cardBackgroundColor !== 'undefined')
+      viz.config.background = contextData.cardBackgroundColor;
+    if (typeof contextData?.options?.cardText?.fontFamily !== 'undefined')
+      viz.config.font = contextData.options.cardText.fontFamily;
+    if (!viz.title) viz.title = {};
+    if (typeof contextData?.options?.cardText?.color !== 'undefined')
+      viz.title.color = contextData.options.cardText.color;
+    if (!viz.config.axis) viz.config.axis = {};
+    if (typeof contextData?.options?.cardText?.fontFamily !== 'undefined')
+      viz.config.axis.labelFont = contextData.options.cardText.fontFamily;
+    if (typeof contextData?.options?.cardText?.fontFamily !== 'undefined')
+      viz.config.axis.titleFont = contextData.options.cardText.fontFamily;
+    if (typeof contextData?.options?.cardText?.color !== 'undefined')
+      viz.config.labelColor = contextData.options.cardText.color;
+    if (typeof contextData?.options?.cardText?.color !== 'undefined')
+      viz.config.titleColor = contextData.options.cardText.color;
+  }
 }

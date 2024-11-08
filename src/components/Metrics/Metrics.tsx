@@ -1,6 +1,6 @@
 "use client"
 /* 
-This is the original metrics page from embed tableau.  It fetches the SUBSCRIBED metrics for the user.
+This is the carousel metrics page from embed tableau.  It fetches the SUBSCRIBED metrics for the user.
 */
 
 import { useState, useEffect, useContext } from 'react';

@@ -37,8 +37,8 @@ useEffect(() => {
   }, [metrics]);
 
 return (
-  <div className="h-[111px] px-16">
-    {Array.isArray(metrics) && metricLength > 1 ? (
+  <div className="min-h-[111px] px-16">
+    {Array.isArray(metrics) && metricLength > 0 ? (
       <Carousel >
         <CarouselContent>
           {Array.isArray(metrics)

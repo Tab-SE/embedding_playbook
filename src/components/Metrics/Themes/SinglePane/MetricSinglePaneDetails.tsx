@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { InsightsModel } from 'models';
-import { parseStats } from 'utils/parse';
+import { applyVizFormatting, parseStats } from 'utils';
 
 export const MetricSinglePaneDetails: React.FC<{
   metric: InsightsModel;
@@ -88,6 +88,7 @@ export const MetricSinglePaneDetails: React.FC<{
   if (isError) {
     console.debug(error);
   }
+  let viz;
   if (isSuccess) {
     stats = parseStats(data, metric);
     if (stats.dir === 'up') {
@@ -117,6 +118,9 @@ export const MetricSinglePaneDetails: React.FC<{
         stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
       }
     }
+
+    viz = data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz;
+    applyVizFormatting(viz, contextData);
   }
 
   const myIcon: IconProp = faFilter;
@@ -131,10 +135,22 @@ export const MetricSinglePaneDetails: React.FC<{
   // fully loaded state
   return (
     // tslint: disable-next-line
-    <div>
-      <div className="flex items-center justify-between m-0">
+    <div
+      style={Object.assign({}, contextData.options.cardText, {
+        backgroundColor: contextData.cardBackgroundColor,
+      })}
+    >
+      <div
+        className="flex items-center justify-between m-0"
+        style={contextData.options.cardTitleText}
+      >
         <div>
-          <h1 className="text-base mt-1 text-[#003f72] font-sans">{metric.name}</h1>
+          <h1
+            className="text-base mt-1 text-[#003f72] font-sans"
+            style={{ lineHeight: `calc(${contextData.options.cardTitleText.fontSize}*1.2)` }}
+          >
+            {metric.name}
+          </h1>
           <span className="font-normal text-xs block mt-[-3px]">
             {metric.namePeriod} ({stats?.target_time_period_range})
             <div>
@@ -144,7 +160,18 @@ export const MetricSinglePaneDetails: React.FC<{
             </div>
           </span>
         </div>
-        <p className={`${stats.color}`}>{stats.direction}</p>
+        <p
+          style={{
+            color:
+              stats?.sentiment === 'positive'
+                ? contextData.positiveSentimentColor
+                : stats?.sentiment === 'negative'
+                ? contextData.negativeSentimentColor
+                : contextData?.options?.cardText?.color,
+          }}
+        >
+          {stats.direction}
+        </p>
       </div>
       <div className="">
         <Stats
@@ -179,7 +206,7 @@ export const MetricSinglePaneDetails: React.FC<{
 
         {contextData.currentFiltersDisplayMode === 'bottom' && (
           <div
-            className={`text-stone-500 dark:text-stone-300 leading-5 pl-3 overflow-hidden ${filtersApplied}`}
+            className={` leading-5 pl-3 overflow-hidden ${filtersApplied}`}
           >
             <FontAwesomeIcon icon={myIcon} />
             {appliedFilters}
@@ -211,69 +238,86 @@ const Stats: React.FC<StatsProps> = (props) => {
 
   if (isSuccess) {
     return (
-      <div className="grid auto-rows-auto">
-        <div className="flex justify-center items-center">
-          <div className="text-3xl font-extrabold text-right mr-1 text-[#003a6a]">
-            <div>{stats.value ? stats.value : null}</div>
+      <>
+        <div className="grid auto-rows-auto">
+          <div className="flex justify-center items-center">
+            <div className="font-extrabold text-right mr-1" style={contextData.options.cardBANText}>
+              <div>{stats.value ? stats.value : null}</div>
+            </div>
+            {stats.units}
           </div>
-          {stats.units}
-        </div>
-        {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
-          <>
-            <div
-              className={`flex space-x-2 items-center text-muted-foreground ${stats?.comparisons[0].color} ml-auto mr-auto`}
-            >
-              <div>{stats.comparisons[0].directionIcon}</div>
-              <div>{stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}</div>
-              <span className="mt-[-2px] leading-none">△ {stats.comparisons[0].absolute}</span>
-            </div>
-            <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-auto mr-auto">
-              {stats?.comparisons[0].comparison}
-            </div>
-          </>
-        )}
-        {contextData.timeComparisonMode === 'both' &&
-          stats?.comparisons?.[1] &&
-          (stats?.comparisons[1].is_nan ? (
-            <div className="ml-auto mr-auto text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
+          <div
+            style={{
+              color:
+                stats?.comparisons?.[0]?.sentiment === 'positive'
+                  ? contextData.positiveSentimentColor
+                  : stats?.comparisons?.[0]?.sentiment === 'negative'
+                  ? contextData.negativeSentimentColor
+                  : contextData?.options?.cardText?.color,
+            }}
+          />
+
+          {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
+            <>
+              <div
+                className={`flex space-x-2 items-center text-muted-foreground ml-auto mr-auto`}
+              >
+                <div>{stats.comparisons[0].directionIcon}</div>
+                <div>
+                  {stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}
+                </div>
+                <span className="mt-[-2px] leading-none">△ {stats.comparisons[0].absolute}</span>
+              </div>
+              <div className="text-xs text-muted-foreground -mt-2 ml-auto mr-auto">
+                {stats?.comparisons[0].comparison}
+              </div>
+            </>
+          )}
+          {contextData.timeComparisonMode === 'both' &&
+            stats?.comparisons?.[1] &&
+            (stats?.comparisons[1].is_nan ? (
+              <div className="ml-auto mr-auto text-xs text-muted-foreground">
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: stats?.comparisons[1].markup,
+                  }}
+                />
+              </div>
+            ) : (
+              <>
+                <div
+                  className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1 ml-auto mr-auto`}
+                >
+                  <div>{stats?.comparisons[1].directionIcon}</div>
+                  <div>{stats?.comparisons[1].absolute}</div>
+                  <div>
+                    {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
+                  </div>
+                </div>
+                <div className=" text-xs text-muted-foreground -mt-2 ml-auto mr-auto">
+                  {stats?.comparisons[1].comparison}
+                </div>
+              </>
+            ))}
+          {contextData.timeComparisonMode === 'text' && (
+            <div className="pl-3 text-xs text-muted-foreground ">
+              <br />
               <span
                 dangerouslySetInnerHTML={{
-                  __html: stats?.comparisons[1].markup,
+                  __html:
+                    stats?.comparisons && stats?.comparisons[0] && stats?.comparisons[0].markup,
+                }}
+              />
+              <br />
+              <span
+                dangerouslySetInnerHTML={{
+                  __html:
+                    stats.comparisons && stats?.comparisons[1] && stats?.comparisons[1].markup,
                 }}
               />
             </div>
-          ) : (
-            <>
-              <div
-                className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1 ml-auto mr-auto`}
-              >
-                <div>{stats?.comparisons[1].directionIcon}</div>
-                <div>{stats?.comparisons[1].absolute}</div>
-                <div>
-                  {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
-                </div>
-              </div>
-              <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-auto mr-auto">
-                {stats?.comparisons[1].comparison}
-              </div>
-            </>
-          ))}
-        {contextData.timeComparisonMode === 'text' && (
-          <div className="pl-3 text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
-            <br />
-            <span
-              dangerouslySetInnerHTML={{
-                __html: stats?.comparisons && stats?.comparisons[0] && stats?.comparisons[0].markup,
-              }}
-            />
-            <br />
-            <span
-              dangerouslySetInnerHTML={{
-                __html: stats.comparisons && stats?.comparisons[1] && stats?.comparisons[1].markup,
-              }}
-            />
-          </div>
-        )}
+          )}
+        </div>
         <div className="flex flex-row flex-grow-0 mt-2">
           {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
             <div className="w-full h-full">
@@ -328,7 +372,15 @@ const Stats: React.FC<StatsProps> = (props) => {
               }}
             >
               <Badge
-                className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}
+                className={`text-stone-50 max-h-6 my-auto ml-6`}
+                style={{
+                  backgroundColor:
+                    stats?.sentiment === 'positive'
+                      ? contextData.positiveSentimentColor
+                      : stats?.sentiment === 'negative'
+                      ? contextData.negativeSentimentColor
+                      : contextData?.options?.cardText?.color,
+                }}
                 variant="undefined"
               >
                 <IconSparkles width={15} height={15} className="mr-1" />
@@ -340,14 +392,14 @@ const Stats: React.FC<StatsProps> = (props) => {
             ) : null}
           </Dialog>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
     <div className="grid grid-cols-12">
       <div className="col-span-8 grid grid-rows-3">
-        <div className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
+        <div className=" leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
           <Skeleton className="h-5 w-28" />
         </div>
         <div className="flex items-center justify-end col-span-7 text-2xl font-bold text-right mr-1">

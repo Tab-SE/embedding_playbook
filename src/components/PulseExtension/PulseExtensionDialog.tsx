@@ -1,45 +1,66 @@
-"use client"
-import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
-import { Button, Checkbox, Input, Label, Select, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { tab_extension } from 'libs';
+'use client';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Input,
+  DropdownMenuContent,
+  Checkbox,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  CommandItem,
+  CommandGroup,
+  CommandList,
+  Command,
+  CommandInput,
+  CommandEmpty,
+} from '../ui';
+import { useSession, signOut } from 'next-auth/react';
 import { LoadMetricsOnly } from '.';
 import { MetricsTab } from './DialogMetricsTab';
 import { MetricCollection } from 'models';
-import { set, update } from 'lodash';
-import { Info } from 'lucide-react'
+import options from '@/app/api/auth/[...nextauth]/options';
+import { CaretDownIcon } from '@radix-ui/react-icons';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/utils';
+
 // import { ExtensionDataContext } from '../ExtensionDataProvider';
 
 const ConnectionTab = ({
-  tableauUrl,
-
-  site_id,
-  setsite_id,
   userName,
-  setUserName,
-  caClientId,
-  setCaClientId,
-  caSecretId,
-  setCaSecretId,
-  caSecretValue,
-  setCaSecretValue,
-  status,
   tableauUrlSubDomain,
   loginEnabled,
   handleLogin,
   handleSample,
   handleLogout,
   handleTableauUrlChange,
-  handleUserName,
-  handlesite_id,
-  handleCaClientId,
-  handleCaSecretId,
-  handleCaSecretValue,
-  metricOptions,
   metricCollection,
   setMetricCollection,
   loginData,
+  updateLoginData,
 }) => {
+  const [activeTooltip, setActiveTooltip] = useState<null | string>(null);
+  const tableauUrls = [
+    { value: "prod-apnortheast-a", label: "Asia Pacific - Japan - (prod-apnortheast-a)" },
+    { value: "prod-ca-a", label: "Canada - Quebec - (prod-ca-a)" },
+    { value: "dub01", label: "Europe - Ireland - (DUB01)" },
+    { value: "ew1a", label: "Europe - Ireland - (EW1A)" },
+    { value: "prod-uk-a", label: "Europe - UK - (prod-uk-a)" },
+    { value: "useast-1", label: "United States - East - (useast-1)" },
+    { value: "prod-useast-a", label: "United States - East - (prod-useast-a)" },
+    { value: "prod-useast-b", label: "United States - East - (prod-useast-b)" },
+    { value: "10ax", label: "United States - West - (10AX)" },
+    { value: "10ay", label: "United States - West - (10AY)" },
+    { value: "10az", label: "United States - West - (10AZ)" },
+    { value: "us-west-2a", label: "United States - West - (UW2A)" },
+    { value: "uw2b", label: "United States - West - (UW2B)" }
+  ];
+  
+  
+  
   return (
     <div>
       <span className="text-2xl font-extrabold">Connection to Tableau:</span>
@@ -49,12 +70,12 @@ const ConnectionTab = ({
           type="string"
           id="userName"
           value={loginData.userName}
-          onChange={(e) => handleUserName(e)}
+          onChange={(e) => updateLoginData('userName', e.target.value)}
           placeholder="Enter User Name"
           title="User Name"
         />
       </div>
-      <div className="inputDiv">
+ {/*      <div className="inputDiv">
         <label htmlFor="tableauUrl">Tableau Pod</label>
         <select id="tableauUrl" value={tableauUrlSubDomain} onChange={handleTableauUrlChange}>
           <option value="prod-apsoutheast-a">
@@ -74,14 +95,72 @@ const ConnectionTab = ({
           <option value="us-west-2a">United States - West - (UW2A)</option>
           <option value="uw2b">United States - West - (UW2B)</option>
         </select>
-      </div>
+      </div> */}
+
+<label htmlFor="tableauUrl">Tableau Pod</label>
+      <Popover
+          open={activeTooltip === 'tableauUrl'}
+          onOpenChange={() => setActiveTooltip('tableauUrl')}
+          >
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={activeTooltip === 'tableauUrl'}
+              className="w-[400px] justify-between"
+              id="tableauUrl"
+            >
+              {tableauUrlSubDomain
+                ? tableauUrls.find((_tableauUrl) => _tableauUrl.value === tableauUrlSubDomain)?.label
+                : 'Select location...'}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              {/* <CommandInput placeholder="Search framework..." /> */}
+              <CommandList>
+                <CommandEmpty>No framework found.</CommandEmpty>
+                <CommandGroup>
+                  {tableauUrls.map((_tableauUrl) => (
+                    <CommandItem
+                      key={_tableauUrl.value}
+                      value={_tableauUrl.value}
+                      onSelect={(currentValue) => {
+                        handleTableauUrlChange(currentValue);
+                        setActiveTooltip('');
+                      }}
+                    >
+                      {_tableauUrl.label}
+                      <Check
+                        className={cn(
+                          'ml-auto',
+                          tableauUrlSubDomain === _tableauUrl.value ? 'opacity-100' : 'opacity-0'
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+
+
+
+
+
+
+
+
+
       <div className="inputDiv">
         <label htmlFor="site_id">Site Name</label>
         <Input
           type="text"
           id="site_id"
           value={loginData.site_id}
-          onChange={(e) => handlesite_id(e)}
+          onChange={(e) => updateLoginData('site_id', e.target.value)}
           placeholder="Enter Site Name"
         />
       </div>
@@ -91,7 +170,7 @@ const ConnectionTab = ({
           type="text"
           id="caClientId"
           value={loginData.caClientId}
-          onChange={(e) => handleCaClientId(e)}
+          onChange={(e) => updateLoginData('caClientId', e.target.value)}
           placeholder="Enter Client ID"
         />
       </div>
@@ -101,7 +180,7 @@ const ConnectionTab = ({
           type="text"
           id="caSecretId"
           value={loginData.caSecretId}
-          onChange={(e) => handleCaSecretId(e)}
+          onChange={(e) => updateLoginData('caSecretId', e.target.value)}
           placeholder="Enter Secret ID"
         />
       </div>
@@ -111,7 +190,7 @@ const ConnectionTab = ({
           type="text"
           id="caSecretValue"
           value={loginData.caSecretValue}
-          onChange={(e) => handleCaSecretValue(e)}
+          onChange={(e) => updateLoginData('caSecretValue', e.target.value)}
           placeholder="Enter Secret Value"
         />
       </div>
@@ -137,408 +216,843 @@ const ConnectionTab = ({
 
 const OptionsTab = ({
   companionMode,
-  handleCompanionModeChange,
+  setCompanionMode,
   displayMode,
-  handleDisplayModeChange,
+  setDisplayMode,
   currentFiltersDisplayMode,
-  handleCurrentFiltersDisplayModeChange,
+  setCurrentFiltersDisplayMode,
   debug,
-  handleDebugChange,
+  setDebug,
   showPulseFilters,
-  handleShowPulseFiltersChange,
+  setShowPulseFilters,
   showPulseAnchorChart,
-  handleShowPulseAnchorChartChange,
+  setShowPulseAnchorChart,
   showPulseTopInsight,
-  handleShowPulseTopInsightChange,
+  setShowPulseTopInsight,
   timeComparisonMode,
-  handleTimeComparisonModeChange,
+  setTimeComparisonMode,
+  positiveSentimentColor,
+  setPositiveSentimentColor,
+  negativeSentimentColor,
+  setNegativeSentimentColor,
+  cardBackgroundColor,
+  setCardBackgroundColor,
+  backgroundColor,
+  setBackgroundColor,
+  cardTitleFontFamily,
+  setCardTitleFontFamily,
+  cardTitleFontSize,
+  setCardTitleFontSize,
+  cardTitleColor,
+  setCardTitleColor,
+  cardTextFontFamily,
+  setCardTextFontFamily,
+  cardTextFontSize,
+  setCardTextFontSize,
+  cardTextColor,
+  setCardTextColor,
+  cardBANFontFamily,
+  setCardBANFontFamily,
+  cardBANFontSize,
+  setCardBANFontSize,
+  cardBANColor,
+  setCardBANColor,
 }) => {
   // State to manage which tooltip is shown
-  const [activeTooltip, setActiveTooltip] = useState(null);
+  const [activeTooltip, setActiveTooltip] = useState<null | string>(null);
 
-  // Handlers to show/hide tooltips based on the tooltip ID
-  const handleMouseEnter = (tooltipId) => {
-    setActiveTooltip(tooltipId);
-  };
+  const applyWorkbookFormatting = useCallback(() => {
+    if (
+      !setCardTitleFontFamily ||
+      !setCardTitleFontSize ||
+      !setCardTitleColor ||
+      !setCardBANFontFamily ||
+      !setCardBANFontSize ||
+      !setCardBANColor ||
+      !setCardTextFontFamily ||
+      !setCardTextFontSize ||
+      !setCardTextColor
+    ) {
+      console.log('Props are not yet available.');
+      return;
+    }
 
-  const handleMouseLeave = () => {
-    setActiveTooltip(null);
-  };
-     return (
+    const rgbToHex = (rgb) => {
+      const match = rgb.match(/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/);
+      if (!match) return null;
+
+      const [, r, g, b] = match;
+      return (
+        '#' +
+        [r, g, b]
+          .map((x) => parseInt(x).toString(16).padStart(2, '0'))
+          .join('')
+          .toUpperCase()
+      );
+    };
+
+    const formattingSheets = tableau.extensions.environment.workbookFormatting.formattingSheets;
+
+    const worksheet = formattingSheets.find(
+      (sheet: any) => sheet.classNameKey === 'tableau-worksheet'
+    ).cssProperties;
+    const worksheetTitle = formattingSheets.find(
+      (sheet: any) => sheet.classNameKey === 'tableau-worksheet-title'
+    ).cssProperties;
+    const dashboardTitle = formattingSheets.find(
+      (sheet: any) => sheet.classNameKey === 'tableau-dashboard-title'
+    ).cssProperties;
+
+    if (worksheet && worksheetTitle && dashboardTitle) {
+      setCardTitleFontFamily(dashboardTitle.fontFamily);
+      setCardTitleFontSize(dashboardTitle.fontSize);
+      setCardTitleColor(rgbToHex(dashboardTitle.color));
+      setCardBANFontFamily(worksheetTitle.fontFamily);
+      setCardBANFontSize(worksheetTitle.fontSize);
+      setCardBANColor(rgbToHex(worksheetTitle.color));
+      setCardTextFontFamily(worksheet.fontFamily);
+      setCardTextFontSize(worksheet.fontSize);
+      setCardTextColor(rgbToHex(worksheet.color));
+    } else {
+      console.log('Workbook formatting is not available.');
+    }
+  }, [
+    setCardTitleFontFamily,
+    setCardTitleFontSize,
+    setCardTitleColor,
+    setCardBANFontFamily,
+    setCardBANFontSize,
+    setCardBANColor,
+    setCardTextFontFamily,
+    setCardTextFontSize,
+    setCardTextColor,
+  ]);
+
+  const applyCarouselFormatting = useCallback(() => {
+    setCardTitleFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardTitleFontSize('1.17rem');
+    setCardTitleColor('#78716c');
+    setCardBANFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardBANFontSize('1.5rem');
+    setCardBANColor('#0c0a09');
+    setCardTextFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardTextFontSize('0.75rem');
+    setCardTextColor('#0c0a09');
+  }, [
+    setCardTitleFontFamily,
+    setCardTitleFontSize,
+    setCardTitleColor,
+    setCardBANFontFamily,
+    setCardBANFontSize,
+    setCardBANColor,
+    setCardTextFontFamily,
+    setCardTextFontSize,
+    setCardTextColor,
+  ]);
+  const applySinglePaneFormatting = useCallback(() => {
+    setCardTitleFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardTitleFontSize('16px');
+    setCardTitleColor('#003f72');
+    setCardBANFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardBANFontSize('30px');
+    setCardBANColor('#003a6a');
+    setCardTextFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardTextFontSize('0.7rem');
+    setCardTextColor('#6b7280');
+  }, [
+    setCardTitleFontFamily,
+    setCardTitleFontSize,
+    setCardTitleColor,
+    setCardBANFontFamily,
+    setCardBANFontSize,
+    setCardBANColor,
+    setCardTextFontFamily,
+    setCardTextFontSize,
+    setCardTextColor,
+  ]);
+  const applySalesforceFormatting = useCallback(() => {
+    setCardTitleFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardTitleFontSize('1.5rem');
+    setCardTitleColor('#232323');
+    setCardBANFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardBANFontSize('30px');
+    setCardBANColor('#232323');
+    setCardTextFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardTextFontSize('16px');
+    setCardTextColor('#232323');
+  }, [
+    setCardTitleFontFamily,
+    setCardTitleFontSize,
+    setCardTitleColor,
+    setCardBANFontFamily,
+    setCardBANFontSize,
+    setCardBANColor,
+    setCardTextFontFamily,
+    setCardTextFontSize,
+    setCardTextColor,
+  ]);
+  const applyTableauFormatting = useCallback(() => {
+    setCardTitleFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardTitleFontSize('1.125rem');
+    setCardTitleColor('#6b7280');
+    setCardBANFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardBANFontSize('2.625rem');
+    setCardBANColor('#232323');
+    setCardTextFontFamily(
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    );
+    setCardTextFontSize('16px');
+    setCardTextColor('#232323');
+  }, [
+    setCardTitleFontFamily,
+    setCardTitleFontSize,
+    setCardTitleColor,
+    setCardBANFontFamily,
+    setCardBANFontSize,
+    setCardBANColor,
+    setCardTextFontFamily,
+    setCardTextFontSize,
+    setCardTextColor,
+  ]);
+
+  const displayModes = [
+    {
+      value: 'carousel',
+      label: 'Carousel',
+    },
+    {
+      value: 'singlepane',
+      label: 'Single Pane',
+    },
+    {
+      value: 'salesforce',
+      label: 'Salesforce',
+    },
+    {
+      value: 'tableau',
+      label: 'Tableau',
+    },
+  ];
+  const currentFiltersDisplayModes = [
+    {
+      value: 'top',
+      label: 'Top',
+    },
+    {
+      value: 'bottom',
+      label: 'Bottom',
+    },
+  ];
+  const timeComparisonModes = [
+    {
+      value: 'primary',
+      label: 'Primary comparison with indicator',
+    },
+    {
+      value: 'both',
+      label: 'Both comparisons with indicator',
+    },
+    {
+      value: 'text',
+      label: 'Text based comparisons',
+    },
+
+  ];
+  const companionModes = [
+    {
+      value: 'none',
+      label: 'None',
+    },
+    {
+      value: 'source',
+      label: 'Source',
+    },
+    {
+      value: 'popup',
+      label: 'Source (with a pop-up window)',
+    },
+    {
+      value: 'target',
+      label: 'Target',
+    },
+  ];
+
+  return (
+    <div>
+      <div className="text-xl">Formatting:</div>
       <div>
-        <div className="text-xl">Formatting:</div>
+        <label htmlFor="displayModeDropdown" className="relative">
+          Metric UI display style:
+          <span
+            className="tooltip-icon"
+            onMouseEnter={() => setActiveTooltip('displayModeTooltip')}
+            onMouseLeave={() => setActiveTooltip('')}
+          >
+            i
+            {activeTooltip === 'displayModeTooltip' && (
+              <div className="tooltip-content ml-10">
+                <span className="tooltiptext">
+                  Carousel - small footprint metrics that can be scrolled
+                  <br />
+                  Single Pane - grid display of metrics
+                  <br />
+                  Salesforce - mimics a Salesforce record level display
+                  <br />
+                  Tableau - mimics a Tableau Pulse format
+                </span>
+              </div>
+            )}
+          </span>
+        </label>
+        <Popover
+          open={activeTooltip === 'displayMode'}
+          onOpenChange={() => setActiveTooltip('displayMode')}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={activeTooltip === 'displayMode'}
+              className="w-[200px] justify-between"
+            >
+              {displayMode
+                ? displayModes.find((_displayMode) => _displayMode.value === displayMode)?.label
+                : 'Select framework...'}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              {/* <CommandInput placeholder="Search framework..." /> */}
+              <CommandList>
+                {/* <CommandEmpty>No framework found.</CommandEmpty> */}
+                <CommandGroup>
+                  {displayModes.map((_displayMode) => (
+                    <CommandItem
+                      key={_displayMode.value}
+                      value={_displayMode.value}
+                      onSelect={(currentValue) => {
+                        setDisplayMode(currentValue);
+                        setActiveTooltip('');
+                      }}
+                    >
+                      {_displayMode.label}
+                      <Check
+                        className={cn(
+                          'ml-auto',
+                          displayMode === _displayMode.value ? 'opacity-100' : 'opacity-0'
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+
         <div>
-          <label htmlFor="displayModeDropdown" className="relative">
-            Metric UI display style:
+          <label htmlFor="showPulseAnchorChart" className="mr-3">
+            Show Pulse Anchor Chart:
+          </label>
+          <Checkbox
+            title="Check this box to show the chart in the BAN"
+            id="showPulseAnchorChart"
+            checked={showPulseAnchorChart}
+            onCheckedChange={(e) => {
+              setShowPulseAnchorChart(e);
+            }}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="showPulseTopInsight" className="mr-3">
+            Show Pulse Top Insight:
+          </label>
+          <Checkbox
+            title="Check this box to show all of the Metric filters below each card."
+            id="showPulseTopInsight"
+            checked={showPulseTopInsight}
+            onCheckedChange={(e) => setShowPulseTopInsight(e)}
+          />
+        </div>
+
+
+        <label htmlFor="currentFiltersDisplayModeDropdown" className="relative">
+          Filters display location:
+          <span
+            className="tooltip-icon"
+            onMouseEnter={() => setActiveTooltip('currentFiltersDisplayModeTooltip')}
+            onMouseLeave={()=>{setActiveTooltip('')}}
+          >
+            i
+            {activeTooltip === 'currentFiltersDisplayModeTooltip' && (
+              <div className="tooltip-content ml-10">
+                <span className="tooltiptext">
+                  Top - Metric filters are displayed at the top of the card
+                  <br />
+                  Bottom - Metric filters are displayed at the bottom of the card
+                </span>
+              </div>
+            )}
+          </span>
+        </label>
+        <Popover
+          open={activeTooltip === 'currentFiltersDisplayMode'}
+          onOpenChange={() => setActiveTooltip('currentFiltersDisplayMode')}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={activeTooltip === 'currentFiltersDisplayMode'}
+              className="w-[200px] justify-between"
+            >
+              {currentFiltersDisplayMode
+                ? currentFiltersDisplayModes.find((_currentFiltersDisplayMode) => _currentFiltersDisplayMode.value === currentFiltersDisplayMode)?.label
+                : 'Select location...'}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              {/* <CommandInput placeholder="Search framework..." /> */}
+              <CommandList>
+                <CommandEmpty>No framework found.</CommandEmpty>
+                <CommandGroup>
+                  {currentFiltersDisplayModes.map((_currentFiltersDisplayMode) => (
+                    <CommandItem
+                      key={_currentFiltersDisplayMode.value}
+                      value={_currentFiltersDisplayMode.value}
+                      onSelect={(currentValue) => {
+                        setCurrentFiltersDisplayMode(currentValue);
+                        setActiveTooltip('');
+                      }}
+                    >
+                      {_currentFiltersDisplayMode.label}
+                      <Check
+                        className={cn(
+                          'ml-auto',
+                          currentFiltersDisplayMode === _currentFiltersDisplayMode.value ? 'opacity-100' : 'opacity-0'
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+
+        <div>
+          <label htmlFor="showPulseFilters" className="mr-3">
+            Show Pulse Filters:
+          </label>
+          <Checkbox
+            title="Check this box to show all of the Metric filters below each card."
+            id="showPulseFilters"
+            checked={showPulseFilters}
+            onCheckedChange={(e) => {
+              setShowPulseFilters(e);
+            }}
+          />
+        </div>
+
+{/*         <div>
+          <label htmlFor="timeComparisonModeDropdown" className="relative">
+            Choose a time comparison mode:
             <span
               className="tooltip-icon"
-              onMouseEnter={() => handleMouseEnter('displayMode')}
-              onMouseLeave={handleMouseLeave}
+              onMouseEnter={() => setActiveTooltip('timeComparisonMode')}
+              onMouseLeave={()=>{setActiveTooltip('')}}
             >
               i
-              {activeTooltip === 'displayMode' && (
-                <div className="tooltip-content ml-10">
-                  <span className="tooltiptext">
-                    Carousel - small footprint metrics that can be scrolled
-                    <br />
-                    Single Pane - grid display of metrics
-                    <br />
-                    Salesforce - mimics a Salesforce record level display
-                    <br />
-                    Tableau - mimics a Tableau Pulse format
-                  </span>
+              {activeTooltip === 'timeComparisonMode' && (
+                <div className="relative">
+                  <div className="tooltip-content absolute inset-x-0 left-70 right-0 ml-20 bg-white p-3 shadow-lg rounded-md z-50"></div>
                 </div>
               )}
             </span>
           </label>
           <select
-            id="displayModeDropdown"
-            value={displayMode}
-            onChange={(e) => {
-              handleDisplayModeChange(e);
-            }}
+            id="timeComparisonModeDropdown"
+            value={timeComparisonMode}
+            onChange={(e) => setTimeComparisonMode(e.target.value)}
           >
-            <option value="original">Carousel</option>
-            <option value="singlePane">Single Pane</option>
-            <option value="salesforce">Salesforce</option>
-            <option value="tableau">Tableau</option>
+            <option value="primary">Primary comparison with indicator</option>
+            <option value="both">Both comparisons with indicator</option>
+            <option value="text">Text based comparisons</option>
           </select>
+        </div> */}
 
-          <div>
-            <label htmlFor="showPulseAnchorChart" className="mr-3">
-              Show Pulse Anchor Chart:
-            </label>
-            <input
-              title="Check this box to show the chart in the BAN"
-              type="checkbox"
-              id="showPulseAnchorChart"
-              checked={showPulseAnchorChart}
-              onChange={(e) => {
-                handleShowPulseAnchorChartChange(e);
-              }}
-            />
-          </div>
 
-          <div>
-            <label htmlFor="showPulseTopInsight" className="mr-3">
-              Show Pulse Top Insight:
-            </label>
-            <input
-              title="Check this box to show all of the Metric filters below each card."
-              type="checkbox"
-              id="showPulseTopInsight"
-              checked={showPulseTopInsight}
-              onChange={(e) => handleShowPulseTopInsightChange(e)}
-            />
-          </div>
 
+        <label htmlFor="timeComparisonModeDropdown" className="relative">
+          Metric UI display style:
+          <span
+            className="tooltip-icon"
+            onMouseEnter={() => setActiveTooltip('timeComparisonModeTooltip')}
+            onMouseLeave={() => setActiveTooltip('')}
+          >
+            i
+            {activeTooltip === 'timeComparisonModeTooltip' && (
+              <div className="tooltip-content ml-10">
+                <span className="tooltiptext">
+                  None - Insights will show in the same window
+                  <br />
+                  Source - Insights will be passed via a MetricId parameter to the Target
+                  <br />
+                  Target - Will only display the insights when a metric is selected (eg MetricId parameter is passed)
+                  <br />
+                  Popup - Load Insights in a separate browser window (not ideal for Desktop)
+                </span>
+              </div>
+            )}
+          </span>
+        </label>
+        <Popover
+          open={activeTooltip === 'timeComparisonMode'}
+          onOpenChange={() => setActiveTooltip('timeComparisonMode')}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={activeTooltip === 'timeComparisonMode'}
+              className="w-[200px] justify-between"
+            >
+              {timeComparisonMode
+                ? timeComparisonModes.find((_timeComparisonMode) => _timeComparisonMode.value === timeComparisonMode)?.label
+                : 'Select framework...'}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              {/* <CommandInput placeholder="Search framework..." /> */}
+              <CommandList>
+                {/* <CommandEmpty>No framework found.</CommandEmpty> */}
+                <CommandGroup>
+                  {timeComparisonModes.map((_timeComparisonMode) => (
+                    <CommandItem
+                      key={_timeComparisonMode.value}
+                      value={_timeComparisonMode.value}
+                      onSelect={(currentValue) => {
+                        setTimeComparisonMode(currentValue);
+                        setActiveTooltip('');
+                      }}
+                    >
+                      {_timeComparisonMode.label}
+                      <Check
+                        className={cn(
+                          'ml-auto',
+                          timeComparisonMode === _timeComparisonMode.value ? 'opacity-100' : 'opacity-0'
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+
+
+
+
+
+
+
+
+        <div className="text-xl mt-10">Interactivity:</div>
+
+        <label htmlFor="companionModeDropdown" className="relative">
+          Metric UI display style:
+          <span
+            className="tooltip-icon"
+            onMouseEnter={() => setActiveTooltip('companionModeTooltip')}
+            onMouseLeave={() => setActiveTooltip('')}
+          >
+            i
+            {activeTooltip === 'companionModeTooltip' && (
+              <div className="tooltip-content ml-10">
+                <span className="tooltiptext">
+                  None - Insights will show in the same window
+                  <br />
+                  Source - Insights will be passed via a MetricId parameter to the Target
+                  <br />
+                  Target - Will only display the insights when a metric is selected (eg MetricId parameter is passed)
+                  <br />
+                  Popup - Load Insights in a separate browser window (not ideal for Desktop)
+                </span>
+              </div>
+            )}
+          </span>
+        </label>
+        <Popover
+          open={activeTooltip === 'companionMode'}
+          onOpenChange={() => setActiveTooltip('companionMode')}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={activeTooltip === 'companionMode'}
+              className="w-[200px] justify-between"
+            >
+              {companionMode
+                ? companionModes.find((_companionMode) => _companionMode.value === companionMode)?.label
+                : 'Select framework...'}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              {/* <CommandInput placeholder="Search framework..." /> */}
+              <CommandList>
+                {/* <CommandEmpty>No framework found.</CommandEmpty> */}
+                <CommandGroup>
+                  {companionModes.map((_companionMode) => (
+                    <CommandItem
+                      key={_companionMode.value}
+                      value={_companionMode.value}
+                      onSelect={(currentValue) => {
+                        setCompanionMode(currentValue);
+                        setActiveTooltip('');
+                      }}
+                    >
+                      {_companionMode.label}
+                      <Check
+                        className={cn(
+                          'ml-auto',
+                          companionMode === _companionMode.value ? 'opacity-100' : 'opacity-0'
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+
+
+        <div className="mt-10">
+          <div className="text-xl">Font Settings:</div>
           <div className="flex items-center">
-            <label htmlFor="currentFiltersDisplayModeDropdown" className="relative">
-              Display mode:
-              <span
-                className="tooltip-icon"
-                onMouseEnter={() => handleMouseEnter('currentFiltersDisplayMode')}
-                onMouseLeave={handleMouseLeave}
-              >
-                i
-                {activeTooltip === 'currentFiltersDisplayMode' && (
-                  <div className="relative">
-                    <div className="tooltip-content absolute inset-x-0 left-70 right-0 ml-20 bg-white p-3 shadow-lg rounded-md z-50">
-                      <span className="tooltiptext text-sm">
-                        "Top" will show the filters with the name. Does not apply to the time period.
-                        These will be truncated (eg Technology+2)
-                        <br />
-                        "Bottom" will show the filters towards the bottom of the viz. These will not
-                        be truncated.
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </span>
-            </label>
-            <select
-              id="currentFiltersDisplayModeDropdown"
-              value={currentFiltersDisplayMode}
-              onChange={(e) => {
-                handleCurrentFiltersDisplayModeChange(e);
-              }}
-              className="ml-10"
+            <Button
+              variant="outline"
+              className={'rounded-r-none'}
+              onClick={applyWorkbookFormatting}
             >
-              <option value="top">Top</option>
-              <option value="bottom">Bottom</option>
-            </select>
+              Apply Tableau Dashboard Workbook Formatting
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className={'rounded-l-none border-l-0 px-2'}>
+                  <CaretDownIcon />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="dropdown-menu-content">
+                <DropdownMenuItem onClick={applyCarouselFormatting}>
+                  Apply default Carousel Formatting
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={applySinglePaneFormatting}>
+                  Apply default Single Pane Formatting
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={applySalesforceFormatting}>
+                  Apply default Salesforce Formatting
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={applyTableauFormatting}>
+                  Apply default Tableau Formatting
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-
           <div>
-            <label htmlFor="showPulseFilters" className="mr-3">
-              Show Pulse Filters:
-            </label>
-            <input
-              title="Check this box to show all of the Metric filters below each card."
-              type="checkbox"
-              id="showPulseFilters"
-              checked={showPulseFilters}
-              onChange={(e) => {
-                handleShowPulseFiltersChange(e);
-              }}
+            <label htmlFor="positiveSentimentColor">Positive Sentiment Color:</label>
+            <Input
+              type="color"
+              id="positiveSentimentColor"
+              value={positiveSentimentColor}
+              onChange={(e) => setPositiveSentimentColor(e.target.value)}
             />
           </div>
-
           <div>
-            <label htmlFor="timeComparisonModeDropdown" className="relative">
-              Choose a time comparison mode:
-              <span
-                className="tooltip-icon"
-                onMouseEnter={() => handleMouseEnter('timeComparisonMode')}
-                onMouseLeave={handleMouseLeave}
-              >
-                i
-                {activeTooltip === 'timeComparisonMode' && (
-                  <div className="relative">
-                    <div className="tooltip-content absolute inset-x-0 left-70 right-0 ml-20 bg-white p-3 shadow-lg rounded-md z-50">
-                      <span className="tooltiptext text-sm">
-                        Select "Primary comparison with indicator" for primary comparison with an
-                        indicator.
-                        <br />
-                        Select "Both comparisons with indicator" for both comparisons with an
-                        indicator.
-                        <br />
-                        Select "Text based comparisons" for text-based comparisons.
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </span>
-            </label>
-            <select
-              id="timeComparisonModeDropdown"
-              value={timeComparisonMode}
-              onChange={(e) => handleTimeComparisonModeChange(e)}
-            >
-              <option value="primary">Primary comparison with indicator</option>
-              <option value="both">Both comparisons with indicator</option>
-              <option value="text">Text based comparisons</option>
-            </select>
-          </div>
-
-          <div className="text-xl mt-10">Interactivity:</div>
-          <div>
-            <label htmlFor="companionModeDropdown" className="relative">
-              Companion mode:
-              <span
-                className="tooltip-icon"
-                onMouseEnter={() => handleMouseEnter('companionMode')}
-                onMouseLeave={handleMouseLeave}
-              >
-                i
-                {activeTooltip === 'companionMode' && (
-                  <div className="relative">
-                    <div className="tooltip-content absolute inset-x-0 left-70 right-0 ml-20 bg-white p-3 shadow-lg rounded-md z-50">
-                      <span className="tooltiptext text-sm">
-                        Select "None" if insights should display in this same extension.
-                        <br />
-                        Select "Source" if you want insights to display in another extension in the
-                        same dashboard.
-                        <br />
-                        Select "Source (with a pop-up window)" if you want insights to display in a
-                        pop-up window. Useful for embedding in SF or other forms where you want to use
-                        limited space for the metrics and more space for the insights.
-                        <br />
-                        Select "Target" if this is the extension where you want insights to display.
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </span>
-            </label>
-            <select
-              id="companionModeDropdown"
-              value={companionMode}
-              onChange={(e) => handleCompanionModeChange(e)}
-            >
-              <option value="none">None</option>
-              <option value="source">Source</option>
-              <option value="popup">Source (with a pop-up window)</option>
-              <option value="target">Target</option>
-            </select>
-          </div>
-
-          <div className={`mt-10`}>
-            <div className="text-xl">Miscellaneous:</div>
-            <label htmlFor="debug" className="mr-3">
-              Debug Mode:
-            </label>
-            <input
-              title="Debug Mode: Check to show detailed troubleshooting information in the extension and the console."
-              type="checkbox"
-              id="debug"
-              checked={debug}
-              onChange={(e) => {
-                handleDebugChange(e);
-              }}
+            <label htmlFor="negativeSentimentColor">Negative Sentiment Color:</label>
+            <Input
+              type="color"
+              id="negativeSentimentColor"
+              value={negativeSentimentColor}
+              onChange={(e) => setNegativeSentimentColor(e.target.value)}
             />
           </div>
         </div>
+        <div>
+          <label htmlFor="cardBackgroundColor">Card Background Color:</label>
+          <Input
+            type="color"
+            id="cardBackgroundColor"
+            value={cardBackgroundColor}
+            onChange={(e) => setCardBackgroundColor(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="backgroundColor">Extension Background Color:</label>
+          <Input
+            type="color"
+            id="backgroundColor"
+            value={backgroundColor}
+            onChange={(e) => setBackgroundColor(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="cardTitleFontFamily">Card Title Font Family:</label>
+          <Input
+            type="text"
+            id="cardTitleFontFamily"
+            value={cardTitleFontFamily}
+            onChange={(e) => setCardTitleFontFamily(e.target.value)}
+            placeholder="Enter Card Title Font Family"
+          />
+        </div>
+        <div>
+          <label htmlFor="fontSize">Card Title Font Size:</label>
+          <Input
+            type="text"
+            id="cardTitleFontSize"
+            value={cardTitleFontSize}
+            onChange={(e) => setCardTitleFontSize(e.target.value)}
+            onBlur={(e) => {
+              const value = e.target.value;
+              const validFontSizePattern = /^(?:[1-9]\d*|0)?(?:\.\d+)?(?:px|em|rem|%)$/;
+              if (!validFontSizePattern.test(value)) {
+                console.error('Invalid font size');
+              }
+            }}
+            placeholder="Enter Card Title Font Size (e.g., 16px, 1em)"
+          />
+        </div>
+        <div>
+          <label htmlFor="cardTitleColor">Card Title Font Color:</label>
+          <Input
+            type="color"
+            id="cardTitleColor"
+            value={cardTitleColor}
+            onChange={(e) => setCardTitleColor(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="cardBANFontFamily">Card BAN Font Family:</label>
+          <Input
+            type="text"
+            id="cardBANFontFamily"
+            value={cardBANFontFamily}
+            onChange={(e) => setCardBANFontFamily(e.target.value)}
+            placeholder="Enter Card BAN Font Family"
+          />
+        </div>
+        <div>
+          <label htmlFor="cardBANFontSize">Card BAN Font Size:</label>
+          <Input
+            type="text"
+            id="cardBANFontSize"
+            value={cardBANFontSize}
+            onChange={(e) => setCardBANFontSize(e.target.value)}
+            onBlur={(e) => {
+              const value = e.target.value;
+              const validFontSizePattern = /^(?:[1-9]\d*|0)?(?:\.\d+)?(?:px|em|rem|%)$/;
+              if (!validFontSizePattern.test(value)) {
+                console.error('Invalid font size');
+              }
+            }}
+            placeholder="Enter Card BAN Font Size (e.g., 16px, 1em)"
+          />
+        </div>
+        <div>
+          <label htmlFor="cardBANColor">Card BAN Font Color:</label>
+          <Input
+            type="color"
+            id="cardBANColor"
+            value={cardBANColor}
+            onChange={(e) => setCardBANColor(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="cardTextFontFamily">Card Text Font Family:</label>
+          <Input
+            type="text"
+            id="cardTextFontFamily"
+            value={cardTextFontFamily}
+            onChange={(e) => setCardTextFontFamily(e.target.value)}
+            placeholder="Enter Card Text Font Family"
+          />
+        </div>
+        <div>
+          <label htmlFor="cardTextFontSize">Card Text Font Size:</label>
+          <Input
+            type="text"
+            id="cardTextFontSize"
+            value={cardTextFontSize}
+            onChange={(e) => setCardTextFontSize(e.target.value)}
+            onBlur={(e) => {
+              const value = e.target.value;
+              const validFontSizePattern = /^(?:[1-9]\d*|0)?(?:\.\d+)?(?:px|em|rem|%)$/;
+              if (!validFontSizePattern.test(value)) {
+                console.error('Invalid font size');
+              }
+            }}
+            placeholder="Enter Card Text Font Size (e.g., 16px, 1em)"
+          />
+        </div>
+        <div>
+          <label htmlFor="cardTextColor">Card Text Font Color:</label>
+          <Input
+            type="color"
+            id="cardTextColor"
+            value={cardTextColor}
+            onChange={(e) => setCardTextColor(e.target.value)}
+          />
+        </div>
       </div>
-    ); 
-
-/*     return (
-      <div className="p-6 max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Options</h1>
-  
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Formatting</h2>
-          
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="displayMode" className="mb-2 block">
-                Metric UI display style
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="w-4 h-4 inline-block ml-2" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Carousel - small footprint metrics that can be scrolled</p>
-                      <p>Single Pane - grid display of metrics</p>
-                      <p>Salesforce - mimics a Salesforce record level display</p>
-                      <p>Tableau - mimics a Tableau Pulse format</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </Label>
-              <Select value={displayMode} onValueChange={handleDisplayModeChange}>
-                <option value="original">Carousel</option>
-                <option value="singlePane">Single Pane</option>
-                <option value="salesforce">Salesforce</option>
-                <option value="tableau">Tableau</option>
-              </Select>
-            </div>
-  
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                checked={showPulseAnchorChart} 
-                onChange={handleShowPulseAnchorChartChange}
-              />
-              <Label htmlFor="showPulseAnchorChart">Show Pulse Anchor Chart</Label>
-            </div>
-  
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                checked={showPulseTopInsight} 
-                onChange={handleShowPulseTopInsightChange}
-              />
-              <Label htmlFor="showPulseTopInsight">Show Pulse Top Insight</Label>
-            </div>
-  
-            <div>
-              <Label htmlFor="currentFiltersDisplayMode" className="mb-2 block">
-                Display mode
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="w-4 h-4 inline-block ml-2" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>"Top" will show the filters with the name. Does not apply to the time period. These will be truncated (eg Technology+2)</p>
-                      <p>"Bottom" will show the filters towards the bottom of the viz. These will not be truncated.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </Label>
-              <Select value={currentFiltersDisplayMode} onValueChange={handleCurrentFiltersDisplayModeChange}>
-                <option value="top">Top</option>
-                <option value="bottom">Bottom</option>
-              </Select>
-            </div>
-  
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                checked={showPulseFilters} 
-                onCheckedChange={(e) => handleShowPulseFiltersChange(e)}
-              />
-              <Label htmlFor="showPulseFilters">Show Pulse Filters</Label>
-            </div>
-  
-            <div>
-              <Label htmlFor="timeComparisonMode" className="mb-2 block">
-                Choose a time comparison mode
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="w-4 h-4 inline-block ml-2" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Primary comparison with indicator: For primary comparison with an indicator.</p>
-                      <p>Both comparisons with indicator: For both comparisons with an indicator.</p>
-                      <p>Text based comparisons: For text-based comparisons.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </Label>
-              <Select value={timeComparisonMode} onValueChange={handleTimeComparisonModeChange}>
-                <option value="primary">Primary comparison with indicator</option>
-                <option value="both">Both comparisons with indicator</option>
-                <option value="text">Text based comparisons</option>
-              </Select>
-            </div>
-          </div>
-        </section>
-  
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Interactivity</h2>
-          
-          <div>
-            <Label htmlFor="companionMode" className="mb-2 block">
-              Companion mode
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="w-4 h-4 inline-block ml-2" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>None: Insights display in this same extension.</p>
-                    <p>Source: Insights display in another extension in the same dashboard.</p>
-                    <p>Source (with a pop-up window): Insights display in a pop-up window. Useful for embedding in SF or other forms where you want to use limited space for the metrics and more space for the insights.</p>
-                    <p>Target: This is the extension where you want insights to display.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </Label>
-            <Select value={companionMode} onValueChange={handleCompanionModeChange}>
-              <option value="none">None</option>
-              <option value="source">Source</option>
-              <option value="popup">Source (with a pop-up window)</option>
-              <option value="target">Target</option>
-            </Select>
-          </div>
-        </section>
-  
-        <section>
-          <h2 className="text-xl font-semibold mb-4">Miscellaneous</h2>
-          
-          <div className="flex items-center space-x-2">
-            <Checkbox 
-              checked={debug} 
-              onCheckedChange={handleDebugChange}
-            />
-            <Label htmlFor="debug">
-              Debug Mode
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="w-4 h-4 inline-block ml-2" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Check to show detailed troubleshooting information in the extension and the console.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </Label>
-          </div>
-        </section>
+      <div className={`mt-10`}>
+        <div className="text-xl">Miscellaneous:</div>
+        <label htmlFor="debug" className="mr-3">
+          Debug Mode:
+        </label>
+        <Checkbox
+          title="Debug Mode: Check to show detailed troubleshooting information in the extension and the console."
+          id="debug"
+          checked={debug}
+          onCheckedChange={(e) => {
+            setDebug(e);
+          }}
+        />
       </div>
-    ) */
+    </div>
+  );
 };
 
 const NavigationTabs = ({ activeTab, setActiveTab, ...props }) => {
@@ -601,7 +1115,7 @@ export const PulseExtensionDialog = (props: any) => {
   const [tableauUrlSubDomain, setTableauUrlSubDomain] = useState<string>('undefined');
   const [loginEnabled, setLoginEnabled] = useState<boolean>(false);
   const [companionMode, setCompanionMode] = useState('none');
-  const [displayMode, setDisplayMode] = useState('original');
+  const [displayMode, setDisplayMode] = useState('carousel');
   const [timeComparisonMode, setTimeComparisonMode] = useState('primary');
   const [currentFiltersDisplayMode, setCurrentFiltersDisplayMode] = useState('top');
   const [showPulseAnchorChart, setShowPulseAnchorChart] = useState<boolean>(false);
@@ -613,6 +1127,19 @@ export const PulseExtensionDialog = (props: any) => {
   );
   const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState('connection');
+  const [positiveSentimentColor, setPositiveSentimentColor] = useState<string>('#00FF00');
+  const [negativeSentimentColor, setNegativeSentimentColor] = useState<string>('#FF0000');
+  const [cardBackgroundColor, setCardBackgroundColor] = useState<string>('#FFFFFF');
+  const [backgroundColor, setBackgroundColor] = useState<string>('#FFFFFF'); // New attribute
+  const [cardTitleFontFamily, setCardTitleFontFamily] = useState<string>('');
+  const [cardTitleFontSize, setCardTitleFontSize] = useState<string>('text-base');
+  const [cardTitleColor, setCardTitleColor] = useState<string>('#000000');
+  const [cardTextFontFamily, setCardTextFontFamily] = useState<string>('');
+  const [cardTextFontSize, setCardTextFontSize] = useState<string>('text-base');
+  const [cardTextColor, setCardTextColor] = useState<string>('#000000');
+  const [cardBANFontFamily, setCardBANFontFamily] = useState<string>('');
+  const [cardBANFontSize, setCardBANFontSize] = useState<string>('text-base');
+  const [cardBANColor, setCardBANColor] = useState<string>('#000000');
 
   const validateAndFormatTableauUrl = (url: string) => {
     // Remove extra https:// instances
@@ -646,7 +1173,7 @@ export const PulseExtensionDialog = (props: any) => {
   const closeDialog = () => {
     console.log('Closing dialog...');
 
-    let obj2 = {
+    let returnValues = {
       loginData,
       companionMode,
       displayMode,
@@ -657,11 +1184,32 @@ export const PulseExtensionDialog = (props: any) => {
       showPulseFilters,
       timeComparisonMode,
       metricCollection: {
-        metrics: [],
+        metrics: metricCollection.metrics,
         metricOptions: metricCollection.metricOptions,
       },
+      positiveSentimentColor,
+      negativeSentimentColor,
+      cardBackgroundColor,
+      backgroundColor,
+      options: {
+        cardTitleText: {
+          fontFamily: cardTitleFontFamily,
+          fontSize: cardTitleFontSize,
+          color: cardTitleColor,
+        },
+        cardBANText: {
+          fontFamily: cardBANFontFamily,
+          fontSize: cardBANFontSize,
+          color: cardBANColor,
+        },
+        cardText: {
+          fontFamily: cardTextFontFamily,
+          fontSize: cardTextFontSize,
+          color: cardTextColor,
+        },
+      },
     };
-    let strObj = JSON.stringify(obj2, (key, value) => {
+    let strObj = JSON.stringify(returnValues, (key, value) => {
       return typeof value === 'boolean' ? value.toString() : value;
     });
     console.log(`Saving dialog settings: ${strObj}`);
@@ -704,8 +1252,13 @@ export const PulseExtensionDialog = (props: any) => {
       setDebug(passedSettings.debug === 'true' ? true : false);
       setShowPulseFilters(passedSettings.showPulseFilters === 'true' ? true : false);
       setTimeComparisonMode(passedSettings.timeComparisonMode);
+      setPositiveSentimentColor(passedSettings.positiveSentimentColor);
+      setNegativeSentimentColor(passedSettings.negativeSentimentColor);
       let m = new MetricCollection(passedSettings.metricCollection.metrics);
       m.metricOptions = passedSettings.metricCollection.metricOptions;
+      setCardBackgroundColor(passedSettings.cardBackgroundColor);
+
+      setBackgroundColor(passedSettings.backgroundColor);
       setMetricCollection(m);
 
       // Validate and set tableauUrlFQDN
@@ -718,6 +1271,15 @@ export const PulseExtensionDialog = (props: any) => {
           updateLoginData('tableauUrl', validateAndFormatTableauUrl(tableauUrl));
         }
       }
+      setCardTitleFontFamily(passedSettings.options.cardTitleText.fontFamily);
+      setCardTitleFontSize(passedSettings.options.cardTitleText.fontSize);
+      setCardTitleColor(passedSettings.options.cardTitleText.color);
+      setCardTextFontFamily(passedSettings.options.cardText.fontFamily);
+      setCardTextFontSize(passedSettings.options.cardText.fontSize);
+      setCardTextColor(passedSettings.options.cardText.color);
+      setCardBANFontFamily(passedSettings.options.cardBANText.fontFamily);
+      setCardBANFontSize(passedSettings.options.cardBANText.fontSize);
+      setCardBANColor(passedSettings.options.cardBANText.color);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -761,7 +1323,7 @@ export const PulseExtensionDialog = (props: any) => {
       document.getElementById('logoutButton')?.classList.add('hidden');
     }
   }, [loginEnabled]);
-
+  /*
   const handleDebugChange = (event: any) => {
     setDebug(event.target.checked);
   };
@@ -809,9 +1371,10 @@ export const PulseExtensionDialog = (props: any) => {
   const handleCaSecretValue = (event: any) => {
     updateLoginData('caSecretValue', event.target.value);
   };
-
-  const handleTableauUrlChange = (event: any) => {
-    let url = `https://${event.target.value}.online.tableau.com`;
+*/
+  const handleTableauUrlChange = (subDomain: string) => {
+    setTableauUrlSubDomain(subDomain);
+    let url = `https://${subDomain}.online.tableau.com`;
     updateLoginData('tableauUrl', validateAndFormatTableauUrl(url));
   };
 
@@ -870,33 +1433,50 @@ export const PulseExtensionDialog = (props: any) => {
           handleSample={handleSample}
           handleLogout={handleLogout}
           handleTableauUrlChange={handleTableauUrlChange}
-          handleUserName={handleUserName}
-          handlesite_id={handlesite_id}
-          handleCaClientId={handleCaClientId}
-          handleCaSecretId={handleCaSecretId}
-          handleCaSecretValue={handleCaSecretValue}
           companionMode={companionMode}
           setCompanionMode={setCompanionMode}
-          handleCompanionModeChange={handleCompanionModeChange}
           displayMode={displayMode}
           setDisplayMode={setDisplayMode}
-          handleDisplayModeChange={handleDisplayModeChange}
           timeComparisonMode={timeComparisonMode}
           setTimeComparisonMode={setTimeComparisonMode}
-          handleTimeComparisonModeChange={handleTimeComparisonModeChange}
           currentFiltersDisplayMode={currentFiltersDisplayMode}
           setCurrentFiltersDisplayMode={setCurrentFiltersDisplayMode}
-          handleCurrentFiltersDisplayModeChange={handleCurrentFiltersDisplayModeChange}
           debug={debug}
-          handleDebugChange={handleDebugChange}
+          setDebug={setDebug}
           showPulseAnchorChart={showPulseAnchorChart}
-          handleShowPulseAnchorChartChange={handleShowPulseAnchorChartChange}
+          setShowPulseAnchorChart={setShowPulseAnchorChart}
           showPulseTopInsight={showPulseTopInsight}
-          handleShowPulseTopInsightChange={handleShowPulseTopInsightChange}
+          setShowPulseTopInsight={setShowPulseTopInsight}
           showPulseFilters={showPulseFilters}
-          handleShowPulseFiltersChange={handleShowPulseFiltersChange}
+          setShowPulseFilters={setShowPulseFilters}
           metricCollection={metricCollection}
           setMetricCollection={setMetricCollection}
+          positiveSentimentColor={positiveSentimentColor}
+          setPositiveSentimentColor={setPositiveSentimentColor}
+          negativeSentimentColor={negativeSentimentColor}
+          setNegativeSentimentColor={setNegativeSentimentColor}
+          cardBackgroundColor={cardBackgroundColor}
+          setCardBackgroundColor={setCardBackgroundColor}
+          backgroundColor={backgroundColor}
+          setBackgroundColor={setBackgroundColor}
+          cardTitleFontFamily={cardTitleFontFamily}
+          setCardTitleFontFamily={setCardTitleFontFamily}
+          cardTitleFontSize={cardTitleFontSize}
+          setCardTitleFontSize={setCardTitleFontSize}
+          cardTitleColor={cardTitleColor}
+          setCardTitleColor={setCardTitleColor}
+          cardTextFontFamily={cardTextFontFamily}
+          setCardTextFontFamily={setCardTextFontFamily}
+          cardTextFontSize={cardTextFontSize}
+          setCardTextFontSize={setCardTextFontSize}
+          cardTextColor={cardTextColor}
+          setCardTextColor={setCardTextColor}
+          cardBANFontFamily={cardBANFontFamily}
+          setCardBANFontFamily={setCardBANFontFamily}
+          cardBANFontSize={cardBANFontSize}
+          setCardBANFontSize={setCardBANFontSize}
+          cardBANColor={cardBANColor}
+          setCardBANColor={setCardBANColor}
         />
       </div>
       <Button id="closeButton">Close and Save</Button>
