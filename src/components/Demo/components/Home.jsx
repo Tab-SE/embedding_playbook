@@ -25,7 +25,7 @@ export const Home = () => {
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
                 <TableauEmbed
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/cpq_optimization/Fullscreen'
                   hideTabs={true}
                   toolbar='hidden'
                   className='
