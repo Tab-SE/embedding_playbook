@@ -7,41 +7,44 @@ const description = "This playbook teaches you how to compose Tableau's varied p
 
 export default {
   darkMode: false,
-  primaryHue: 201,
-  primarySaturation: 100,
+  color: {
+    hue: 330,
+    saturation: 75,
+    lightness: {
+      dark: 100,
+      light: 50
+    }
+  },
   logo:
   <Logo
-    src="/img/tableau/tableau_logo.png"
-    width='33'
-    text='Embed Tableau'
+    src='/img/themes/pacifica/pacifica_main.png'
+    width='100'
   />,
   footer: {
-    text:
+    content:
+    <>
     <Logo
-      src="/img/tableau/logo_text.png"
-      width='300'
+      src='/img/themes/pacifica/pacifica_main.png'
+      width='100'
     />
+    </>,
   },
   search: {
-    placeholder: "Search Documentation"
+    placeholder: "Search Pacifica"
   },
   toc: {
     backToTop: true
   },
-  project: {
-    link: 'https://github.com/Tab-SE/embedding_playbook',
-  },
-  docsRepositoryBase: 'https://github.com/Tab-SE/embedding_playbook/tree/main',
   useNextSeoProps() {
     const { route } = useRouter();
     // changes title on home '/' route
     if (route !== '/') {
       return {
-        titleTemplate: '%s ✨ Embed Tableau'
+        titleTemplate: '%s ✨ Pacifica Consulting'
       };
     } else {
       return {
-        titleTemplate: 'Embed Tableau ✨ Home'
+        titleTemplate: 'Pacifica Consulting ✨ Home'
       };
     }
   },

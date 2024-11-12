@@ -1,6 +1,6 @@
 export default {
   reports: {
-    title: "Reports",
+    title: "Strategic Consulting",
     type: "page",
     theme: {
       breadcrumb: true,
