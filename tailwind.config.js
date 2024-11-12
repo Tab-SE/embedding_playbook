@@ -19,8 +19,9 @@ module.exports = {
     extend: {
       colors: {
         demoBackground: '#f5f5f4',
-        navigationBackground: '#fafaf9',
-        navigationIcons: '#0c0a09',
+        navigationBackground: '#e14462',
+        navigationIcons: '#e14462',
+        iconBackground: '#f5f5f4',
         metricsPositive: '#0284c7',
         metricsNeutral: '#78716c',
         metricsNegative: '#ea580c',

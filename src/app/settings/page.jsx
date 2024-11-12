@@ -1,16 +1,18 @@
 import { Demo, Settings, FloatingAssistant } from 'components';
 
+import { settings } from 'components/Demo/settings';
+
 
 const SettingsPage = () => {
   return (
     <Demo
-      basePath='/demos'
+      basePath={settings.base_path}
       crumbs={{
-        'Superstore Analytics': {
-          path: '/superstore',
+        'Pacifica CPQ': {
+          path: '/',
           child: {
             'Settings': {
-              path: '/settings',
+              path: 'settings',
               child: null
             }
           }
