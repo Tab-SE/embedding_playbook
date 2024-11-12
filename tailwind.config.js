@@ -22,9 +22,9 @@ module.exports = {
         navigationBackground: '#e14462',
         navigationIcons: '#e14462',
         iconBackground: '#f5f5f4',
-        metricsPositive: '#0284c7',
-        metricsNeutral: '#78716c',
-        metricsNegative: '#ea580c',
+        metricsPositive: '#e14462',
+        metricsNeutral: '#10b981',
+        metricsNegative: '#1d4ed8',
       },
       keyframes: {
         "accordion-down": {

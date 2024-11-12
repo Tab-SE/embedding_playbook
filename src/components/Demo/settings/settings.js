@@ -1,9 +1,8 @@
 import {
   Home,
-  Package,
-  ShoppingCart,
-  Users2,
-  BrainCircuit
+  BrainCircuit,
+  HandCoins,
+  FileChartColumn
 } from "lucide-react";
 
 import users from './users';
@@ -23,35 +22,28 @@ export const settings = {
       icon: <Home className="h-5 w-5"/>,
       path: '/',
       min_role: 1,
-      description: 'your superstore homepage'
+      description: 'Your superstore homepage'
     },
     {
       name: 'Agent',
       icon: <BrainCircuit className="h-5 w-5"/>,
       path: '/agent',
       min_role: 1,
-      description: 'a fully tooled superstore agent ready to assist you'
+      description: 'A fully tooled superstore agent ready to assist you'
     },
     {
-      name: 'Orders',
-      icon: <ShoppingCart className="h-5 w-5"/>,
-      path: '/orders',
+      name: 'Pay',
+      icon: <HandCoins className="h-5 w-5"/>,
+      path: '/pay',
       min_role: 1,
-      description: 'submit and update orders with data-driven insights'
+      description: 'Pacifica Pay Forecaster'
     },
     {
-      name: 'Products',
-      icon: <Package className="h-5 w-5"/>,
-      path: '/products',
-      min_role: 2,
-      description: 'analyze product performance across segments and categories'
-    },
-    {
-      name: 'Customers',
-      icon: <Users2 className="h-5 w-5"/>,
-      path: '/customers',
+      name: 'Reports',
+      icon: <FileChartColumn className="h-5 w-5"/>,
+      path: '/reports',
       min_role: 3,
-      description: 'improve customer retention rates and identify critical business partnerships'
+      description: 'Reports analyzing the CPQ market'
     },
   ],
 }
