@@ -1,30 +1,13 @@
 export default {
-  index: {
-    title: "Embed Tableau",
-    type: "page",
-    display: "hidden",
-    theme: {
-      layout: "full"
-    }
-  },
-  start: {
-    title: "Getting Started",
-    type: "page"
-  },
-  architecture: {
-    title: "Architecture",
-    type: "page"
-  },
-  demos: {
-    title: "Demos",
+  reports: {
+    title: "Reports",
     type: "page",
     theme: {
-      layout: "full",
-      breadcrumb: false,
+      breadcrumb: true,
       footer: true,
-      sidebar: false,
-      toc: false,
-      pagination: false,
+      sidebar: true,
+      toc: true,
+      pagination: true,
       navbar: true,
       timestamp: true
     }
