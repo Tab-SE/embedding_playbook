@@ -17,7 +17,7 @@ export const galleryItems = [
   },
   {
     id: 2,
-    link: "https://embedding-playbook-git-pacificacpq-tab-se.vercel.app",
+    link: "https://embedding-playbook-git-pacifica-tab-se.vercel.app",
     src: "/img/demos/pacifica_cpq.png",
     alt: "Pacifica | Configure, Price, Quote (CPQ)",
     vertical: "Consulting & Business Services",
