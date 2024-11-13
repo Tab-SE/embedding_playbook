@@ -1,21 +1,20 @@
 import { Demo, Home, FloatingAssistant } from 'components';
 
-
 const Superstore = () => {
   return (
     <Demo
-      basePath='/demo'
+      basePath="/demo"
       crumbs={{
-        'Superstore Analytics': {
+        'eBikes Analytics': {
           path: '/superstore',
-          child: null
-        }
+          child: null,
+        },
       }}
     >
-      <Home/>
+      <Home />
       <FloatingAssistant />
     </Demo>
-  )
-}
+  );
+};
 
 export default Superstore;

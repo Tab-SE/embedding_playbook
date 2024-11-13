@@ -1,25 +1,13 @@
-import Link from "next/link";
-import {
-  Settings,
-} from "lucide-react";
+import Link from 'next/link';
+import { Settings } from 'lucide-react';
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider
-} from "components/ui";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "components/ui";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from 'components/ui';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui';
 
 import { settings } from '../../settings';
 
-
 export const NavigationMd = (props) => {
-  const { } = props;
+  const {} = props;
 
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-navigationBackground sm:flex">
@@ -34,9 +22,11 @@ export const NavigationMd = (props) => {
           </Avatar>
           <span className="sr-only">{settings.app_name}</span>
         </Link>
-        {settings.sections ? settings.sections.map((section) => {
-          return <NavBarItem key={section.name} section={section} />
-        }): null}
+        {settings.sections
+          ? settings.sections.map((section) => {
+              return <NavBarItem key={section.name} section={section} />;
+            })
+          : null}
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
         <TooltipProvider>
@@ -46,22 +36,21 @@ export const NavigationMd = (props) => {
                 href="/demos/superstore/settings"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <Settings className="h-5 w-5 text-navigationIcons"/>
+                <Settings className="h-5 w-5 text-navigationIcons" />
                 <span className="sr-only">Settings</span>
               </Link>
             </TooltipTrigger>
             <TooltipContent side="right">Settings</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-
       </nav>
     </aside>
-  )
-}
+  );
+};
 
 const NavBarItem = (props) => {
   const { section } = props;
-  const { name, icon, path, min_role, description} = section;
+  const { name, icon, path, min_role, description } = section;
 
   return (
     <TooltipProvider>
@@ -78,5 +67,5 @@ const NavBarItem = (props) => {
         <TooltipContent side="right">{name}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
-}
+  );
+};

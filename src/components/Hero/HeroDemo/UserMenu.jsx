@@ -1,14 +1,10 @@
-"use client";
+'use client';
 
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useState, useEffect } from 'react';
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "components/ui";
-import { Button } from "components/ui";
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui';
+import { Button } from 'components/ui';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "components/ui";
-
+} from 'components/ui';
 
 export function UserMenu(props) {
   const { src } = props;
@@ -43,9 +38,8 @@ export function UserMenu(props) {
         <Logout status={status} />
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
-
 
 const Logout = (props) => {
   const { status } = props;
@@ -53,36 +47,26 @@ const Logout = (props) => {
   if (status === 'authenticated') {
     return (
       <DropdownMenuItem
-        className='hover:cursor-pointer'
+        className="hover:cursor-pointer"
         onClick={async () => await signOut('credentials', { redirect: false })}
       >
-        <Button
-          variant="ghost"
-          className="h-min p-1"
-        >
-        Log out
+        <Button variant="ghost" className="h-min p-1">
+          Log out
         </Button>
         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
       </DropdownMenuItem>
-    )
+    );
   }
 
   return (
-    <DropdownMenuItem
-      className='hover:cursor-pointer'
-      onClick={async () => await signIn()}
-    >
-      <Button
-        variant="ghost"
-        className="h-min p-1"
-      >
-      Log in
+    <DropdownMenuItem className="hover:cursor-pointer" onClick={async () => await signIn()}>
+      <Button variant="ghost" className="h-min p-1">
+        Log in
       </Button>
       <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
     </DropdownMenuItem>
-  )
-}
-
+  );
+};
 
 const Trigger = (props) => {
   const { src } = props;
@@ -95,23 +79,19 @@ const Trigger = (props) => {
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
-  )
-}
-
+  );
+};
 
 const Label = (props) => {
   return (
     <DropdownMenuLabel className="font-normal">
       <div className="flex flex-col space-y-1">
-        <p className="text-sm font-medium leading-none">Superstore Analytics</p>
-        <p className="text-xs leading-none text-muted-foreground">
-          mday@mail.com
-        </p>
+        <p className="text-sm font-medium leading-none">eBikes Analyics</p>
+        <p className="text-xs leading-none text-muted-foreground">mday@mail.com</p>
       </div>
     </DropdownMenuLabel>
-  )
-}
-
+  );
+};
 
 const Group = (props) => {
   return (
@@ -134,5 +114,5 @@ const Group = (props) => {
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
     </div>
-  )
-}
+  );
+};

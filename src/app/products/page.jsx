@@ -1,28 +1,25 @@
 import { Demo, Products, FloatingAssistant } from 'components';
 
-
 const ProductsPage = () => {
   return (
     <Demo
-      basePath='/demo'
+      basePath="/demo"
       crumbs={{
-        'Superstore Analytics': {
+        'eBikes Analyics': {
           path: '/superstore',
           child: {
-            'Products': {
+            Products: {
               path: '/products',
-              child: null
-            }
-          }
-        }
+              child: null,
+            },
+          },
+        },
       }}
     >
       <Products />
       <FloatingAssistant />
     </Demo>
-  )
-}
+  );
+};
 
 export default ProductsPage;
-
-

@@ -1,26 +1,25 @@
 import { Demo, Settings, FloatingAssistant } from 'components';
 
-
 const SettingsPage = () => {
   return (
     <Demo
-      basePath='/demos'
+      basePath="/demos"
       crumbs={{
-        'Superstore Analytics': {
+        'eBikes Analyics': {
           path: '/superstore',
           child: {
-            'Settings': {
+            Settings: {
               path: '/settings',
-              child: null
-            }
-          }
-        }
+              child: null,
+            },
+          },
+        },
       }}
     >
       <Settings />
       <FloatingAssistant />
     </Demo>
-  )
-}
+  );
+};
 
 export default SettingsPage;

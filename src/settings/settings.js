@@ -1,25 +1,24 @@
-import { Superstore } from "components/Hero/Themes/Superstore";
-import { Ebikes } from "components/Hero/Themes/Ebikes";
-import { NTO } from "components/Hero/Themes/NTO";
-import { Pacifica } from "components/Hero/Themes/Pacifica";
-
+import { Superstore } from 'components/Hero/Themes/Superstore';
+import { Ebikes } from 'components/Hero/Themes/Ebikes';
+import { NTO } from 'components/Hero/Themes/NTO';
+import { Pacifica } from 'components/Hero/Themes/Pacifica';
 
 export const settings = {
   ai_chat: true,
   custom_metrics: true,
   themes: [
     {
-      label: "Superstore Analytics",
-      name: "superstore",
+      label: 'eBikes Analyics',
+      name: 'superstore',
       component: Superstore,
-      type: "default",
-      logo: "/img/tableau/tableau_logo.png",
-      styles: "",
+      type: 'default',
+      logo: '/img/tableau/tableau_logo.png',
+      styles: '',
       project: {
-        name: "superstore",
+        name: 'superstore',
         workbooks: [],
-        data_sources: []
-      }
+        data_sources: [],
+      },
     },
-  ]
-}
+  ],
+};

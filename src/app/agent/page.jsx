@@ -1,25 +1,24 @@
 import { Demo, Agent } from 'components';
 
-
 const AgentPage = () => {
   return (
     <Demo
-      basePath='/demo'
+      basePath="/"
       crumbs={{
-        'Superstore Analytics': {
-          path: '/superstore',
+        eBikes: {
+          path: '/',
           child: {
-            'Agent': {
+            Agent: {
               path: '/agent',
-              child: null
-            }
-          }
-        }
+              child: null,
+            },
+          },
+        },
       }}
     >
       <Agent />
     </Demo>
-  )
-}
+  );
+};
 
 export default AgentPage;
