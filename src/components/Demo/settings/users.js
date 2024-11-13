@@ -15,7 +15,7 @@ const users = {
     },
     B: {
       name: "Justin Chen",
-      email: "jchen@mail.com",
+      email: "pacifica@demo.com",
       picture: "/img/users/justin_chen.png",
       role: 2,
       vector_store: 'superstore_jchen',
@@ -23,7 +23,7 @@ const users = {
     },
     C: {
       name: "Sofia Lopez",
-      email: "slopez@mail.com",
+      email: "pacifica@demo.com",
       picture: "/img/users/sofia_lopez.png",
       role: 1,
       vector_store: 'superstore_slopez',

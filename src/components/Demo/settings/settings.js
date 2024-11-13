@@ -35,7 +35,7 @@ export const settings = {
       name: 'Pay',
       icon: <HandCoins className="h-5 w-5"/>,
       path: '/pay',
-      min_role: 1,
+      min_role: 2,
       description: 'Pay Forecaster'
     },
     {
