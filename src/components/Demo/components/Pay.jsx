@@ -17,51 +17,43 @@ import { ProductsTable, TableauEmbed } from "components";
 
 export const description = "An products dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. It displays a list of products in a table with actions."
 
-export const Products = (props) => {
+export const Pay = (props) => {
   const { } = props;
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-      <Tabs defaultValue="products">
+      <Tabs defaultValue="forecaster">
         <TabsList className="mb-2 sm:mb-0">
-          <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="segment">Segments</TabsTrigger>
+          <TabsTrigger value="forecaster">Forecast</TabsTrigger>
           <TabsTrigger value="category">Categories</TabsTrigger>
+          <TabsTrigger value="products">Products</TabsTrigger>
         </TabsList>
         <TabsContent value="products">
           <ProductsTable />
         </TabsContent>
-        <TabsContent value="segment">
+        <TabsContent value="forecaster">
           <Card className="dark:bg-stone-900 shadow-xl">
             <CardHeader>
-              <CardTitle>Segment Analysis</CardTitle>
+              <CardTitle>Pay Forecaster</CardTitle>
               <CardDescription>
                 A comparison of product sales and profitability by segment and category
               </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center px-1">
               <TableauEmbed
-                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
-                width={1260}
-                height={516}
+                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/cpq_optimization/Fullscreen'
                 hideTabs={true}
-                device='default'
                 toolbar='hidden'
                 className='
-                min-w-[300px] min-h-[500px]
-                sm:min-w-[490px] sm:min-h-[500px]
-                md:min-w-[620px] md:min-h-[500px]
-                lg:min-w-[800px] lg:min-h-[500px]
-                xl:min-w-[1000px] xl:min-h-[700px]
-                2xl:min-w-[1200px] 2xl:min-h-[800px]
+                min-w-[1200px] min-h-[1100px]
+                sm:min-w-[1200px] sm:min-h-[1100px]
+                md:min-w-[1200px] md:min-h-[1100px]
+                lg:min-w-[1200px] lg:min-h-[1100px]
+                xl:min-w-[1200px] xl:min-h-[1100px]
+                2xl:min-w-[1200px] 2xl:min-h-[1100px]
                 '
                 layouts = {{
-                  'xs': { 'device': 'default' },
-                  'sm': { 'device': 'default' },
-                  'md': { 'device': 'default' },
-                  'lg': { 'device': 'default' },
-                  'xl': { 'device': 'default' },
-                  'xl2': { 'device': 'default' },
+                  '*': { 'device': 'default' }
                 }}
               />
             </CardContent>
@@ -78,26 +70,19 @@ export const Products = (props) => {
             <CardContent className="flex items-center justify-center">
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
-                width={1260}
-                height={516}
                 hideTabs={true}
                 device='default'
                 toolbar='hidden'
                 className='
-                min-w-[300px] min-h-[500px]
-                sm:min-w-[490px] sm:min-h-[500px]
-                md:min-w-[620px] md:min-h-[500px]
-                lg:min-w-[800px] lg:min-h-[500px]
-                xl:min-w-[1000px] xl:min-h-[700px]
-                2xl:min-w-[1200px] 2xl:min-h-[800px]
+                min-w-[1260px] min-h-[1100px]
+                sm:min-w-[1260px] sm:min-h-[1100px]
+                md:min-w-[1260px] md:min-h-[1100px]
+                lg:min-w-[1260px] lg:min-h-[1100px]
+                xl:min-w-[1260px] xl:min-h-[1100px]
+                2xl:min-w-[1260px] 2xl:min-h-[1100px]
                 '
                 layouts = {{
-                  'xs': { 'device': 'default' },
-                  'sm': { 'device': 'default' },
-                  'md': { 'device': 'default' },
-                  'lg': { 'device': 'default' },
-                  'xl': { 'device': 'default' },
-                  'xl2': { 'device': 'default' },
+                  '*': { 'device': 'default' }
                 }}
               />
             </CardContent>

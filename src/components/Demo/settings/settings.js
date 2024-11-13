@@ -36,7 +36,7 @@ export const settings = {
       icon: <HandCoins className="h-5 w-5"/>,
       path: '/pay',
       min_role: 1,
-      description: 'Pacifica Pay Forecaster'
+      description: 'Pay Forecaster'
     },
     {
       name: 'Reports',

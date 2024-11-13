@@ -2,7 +2,7 @@ export {
   Demo,
   Home,
   Orders,
-  Products,
+  Pay,
   Customers,
   NavigationMd,
   NavigationSm,

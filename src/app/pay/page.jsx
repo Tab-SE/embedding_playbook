@@ -1,9 +1,9 @@
-import { Demo, Products, FloatingAssistant } from 'components';
+import { Demo, Pay, FloatingAssistant } from 'components';
 
 import { settings } from 'components/Demo/settings';
 
 
-const ProductsPage = () => {
+const PayPage = () => {
   return (
     <Demo
       basePath={settings.base_path}
@@ -11,20 +11,20 @@ const ProductsPage = () => {
         'Pacifica CPQ': {
           path: '/',
           child: {
-            'Products': {
-              path: 'products',
+            'Pay Forecaster': {
+              path: 'pay',
               child: null
             }
           }
         }
       }}
     >
-      <Products />
+      <Pay />
       <FloatingAssistant />
     </Demo>
   )
 }
 
-export default ProductsPage;
+export default PayPage;
 
 
