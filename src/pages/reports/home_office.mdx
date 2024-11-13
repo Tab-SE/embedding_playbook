@@ -9,15 +9,24 @@ import { TableauEmbed } from 'components';
 
 Emphasize the smart home capabilities of your appliances, allowing seamless integration with other smart devices and home automation systems. This can appeal to tech-savvy home office users who value convenience and connectivity.
 
-{/*
+
 <TableauEmbed
   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/CPQ_misc_17182505736430/ProductDetails'
-  width={800}
-  height={800}
   hideTabs={true}
   toolbar={'hidden'}
   device='default'
-/> */}
+  className='
+  min-w-[800px] min-h-[800px]
+  sm:min-w-[800px] sm:min-h-[800px]
+  md:min-w-[800px] md:min-h-[800px]
+  lg:min-w-[800px] lg:min-h-[800px]
+  xl:min-w-[800px] xl:min-h-[800px]
+  2xl:min-w-[800px] 2xl:min-h-[800px]
+  '
+  layouts = {{
+    '*': { 'device': 'default' }
+  }}
+/>
 
 ### Space-saving and Multifunctional Designs
 

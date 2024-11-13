@@ -9,14 +9,23 @@ import { TableauEmbed } from 'components';
 
 Offer comprehensive fleet management solutions for corporate clients with large-scale appliance needs, such as hotels, restaurants, or institutional facilities. This can include bulk purchasing, centralized maintenance, and asset tracking.
 
-{/* <TableauEmbed
+<TableauEmbed
   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/CPQ_misc_17182505736430/Shipping'
-  width={800}
-  height={800}
   hideTabs={true}
   toolbar={'hidden'}
   device='default'
-/> */}
+  className='
+  min-w-[800px] min-h-[800px]
+  sm:min-w-[800px] sm:min-h-[800px]
+  md:min-w-[800px] md:min-h-[800px]
+  lg:min-w-[800px] lg:min-h-[800px]
+  xl:min-w-[800px] xl:min-h-[800px]
+  2xl:min-w-[800px] 2xl:min-h-[800px]
+  '
+  layouts = {{
+    '*': { 'device': 'default' }
+  }}
+/>
 
 ### Energy Efficiency and Sustainability
 
