@@ -107,12 +107,12 @@ const ConnectionTab = ({
               variant="outline"
               role="combobox"
               aria-expanded={activeTooltip === 'tableauUrl'}
-              className="w-[400px] justify-between"
+              className="w-full justify-between"
               id="tableauUrl"
             >
               {tableauUrlSubDomain
-                ? tableauUrls.find((_tableauUrl) => _tableauUrl.value === tableauUrlSubDomain)?.label
-                : 'Select location...'}
+              ? tableauUrls.find((_tableauUrl) => _tableauUrl.value === tableauUrlSubDomain)?.label
+              : 'Select location...'}
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -1127,8 +1127,8 @@ export const PulseExtensionDialog = (props: any) => {
   );
   const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState('connection');
-  const [positiveSentimentColor, setPositiveSentimentColor] = useState<string>('#00FF00');
-  const [negativeSentimentColor, setNegativeSentimentColor] = useState<string>('#FF0000');
+  const [positiveSentimentColor, setPositiveSentimentColor] = useState<string>('#1ea562');
+  const [negativeSentimentColor, setNegativeSentimentColor] = useState<string>('#f81a5c');
   const [cardBackgroundColor, setCardBackgroundColor] = useState<string>('#FFFFFF');
   const [backgroundColor, setBackgroundColor] = useState<string>('#FFFFFF'); // New attribute
   const [cardTitleFontFamily, setCardTitleFontFamily] = useState<string>('');

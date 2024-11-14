@@ -5,7 +5,7 @@ import {
   IconTrendingDown,
   IconArrowNarrowRight,
 } from '@tabler/icons-react';
-import { Filters } from 'components';
+import { Filters, FontSelector } from 'components';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../../../ui';
 import { Skeleton } from '../../../ui';
@@ -137,6 +137,8 @@ export const MetricDetail: React.FC<{
   // fully loaded state
   return (
     <>
+{/*       <FontSelector selectedFont={contextData.options.cardTitleText.fontFamily.split(',')[0].replace(/'/g, '')} font/> */}
+      <FontSelector selectedFont={'Markazi+Text'}/>
       {contextData.companionMode !== 'target' ? (
         <Card
           className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white shadow dark:border-stone-800 min-h-[111px] min-w-[240px] max-w-[350px]"

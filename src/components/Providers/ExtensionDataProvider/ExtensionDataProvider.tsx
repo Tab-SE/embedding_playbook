@@ -30,8 +30,8 @@ export const ExtensionDataContext = createContext<ContextDataWrapper>({
       caSecretValue: '',
       isDashboardExtension: 'true',
     },
-    positiveSentimentColor: '#00FF00',
-    negativeSentimentColor: '#FF0000',
+    positiveSentimentColor: '#1ea562',
+    negativeSentimentColor: '#f81a5c',
     cardBackgroundColor: '#FFFFFF',
     backgroundColor: '#FFFFFF', 
     options: {
@@ -83,8 +83,8 @@ export const ExtensionDataProvider: React.FC<any> = ({ children }) => {
       caSecretValue: '',
       isDashboardExtension: 'true',
     },
-    positiveSentimentColor: '#00FF00',
-    negativeSentimentColor: '#FF0000',
+    positiveSentimentColor: '#1ea562',
+    negativeSentimentColor: '#f81a5c',
     cardBackgroundColor: '#FFFFFF',
     backgroundColor: '#FFFFFF', 
     options: {

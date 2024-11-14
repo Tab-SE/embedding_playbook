@@ -166,11 +166,17 @@ const Stats: React.FC<StatsProps> = (props) => {
   if (isSuccess && insights && insights.length) {
     return (
       <div className="" key={metric.specification_id}>
-        <div className="bg-white border border-blue-100 rounded-xl shadow-md p-8 mb-4 hover:shadow-lg cursor-pointer  flex flex-col h-full">
+        <div className="bg-white border border-blue-100 rounded-xl shadow-md p-8 mb-4 hover:shadow-lg cursor-pointer  flex flex-col h-full"
+        style={Object.assign({}, contextData.options.cardText, {backgroundColor: contextData.cardBackgroundColor})}
+        >
           {/* Card Header */}
-          <div className="mb-4">
+          <div className="mb-4"
+              style={contextData.options.cardTitleText}
+          >
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-medium truncate">{metric.name}</h2>
+              <h2 className="text-lg font-medium truncate"
+              style={{'lineHeight':`calc(${contextData.options.cardTitleText.fontSize}*1.2)`}}
+              >{metric.name}</h2>
               <button className="text-gray-500 hover:text-gray-700 bg-white" aria-label="More Actions">
                 {/* More actions button */}
                 •••
@@ -186,13 +192,22 @@ const Stats: React.FC<StatsProps> = (props) => {
             {/* Flex container to align the stats and relative values */}
             <div className="flex justify-center items-center">
               <div className="flex flex-col items-center">
-                <span className="font-normal mr-3 text-[2.625rem] leading-[3rem]">
+                <span className="font-normal mr-3 leading-[3rem]"
+                style={contextData.options.cardBANText}
+                >
                   {stats.value}&nbsp;
                 </span>
                 <span className="font-normal text-[1rem]">{stats.units}&nbsp;</span>
               </div>
               {contextData.timeComparisonMode !== 'text' && (
-                <div className={`${stats?.comparisons?.[0].color}`}>
+                <div          style={{
+                  color:
+                    stats?.comparisons?.[0]?.sentiment === 'positive'
+                      ? contextData.positiveSentimentColor
+                      : stats?.comparisons?.[0]?.sentiment === 'negative'
+                      ? contextData.negativeSentimentColor
+                      : contextData?.options?.cardText?.color,
+                }}>
                   <div className="text-xs">{stats?.comparisons?.[0].comparison}</div>
                   <div>{stats?.comparisons?.[0].directionIcon}</div>
                   <div>
@@ -215,7 +230,16 @@ const Stats: React.FC<StatsProps> = (props) => {
                   />
                 </div>
               ) : (
-                <div className={`${stats?.comparisons?.[1]?.color} ml-3`}>
+                <div className={`ml-3`}
+                style={{
+                  color:
+                    stats?.comparisons?.[1]?.sentiment === 'positive'
+                      ? contextData.positiveSentimentColor
+                      : stats?.comparisons?.[1]?.sentiment === 'negative'
+                      ? contextData.negativeSentimentColor
+                      : contextData?.options?.cardText?.color,
+                }}
+                >
                   <div className="text-xs">{stats?.comparisons?.[1].comparison}</div>
                   <div>{stats?.comparisons?.[1].directionIcon}</div>
                   <div>
@@ -326,8 +350,16 @@ const Stats: React.FC<StatsProps> = (props) => {
                 }}
               >
                 <Badge
-                  className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`} 
+                  className={`max-h-6 my-auto ml-6`} 
                   variant="default"
+                  style={{
+                    backgroundColor:
+                      stats?.sentiment === 'positive'
+                        ? contextData.positiveSentimentColor
+                        : stats?.sentiment === 'negative'
+                        ? contextData.negativeSentimentColor
+                        : contextData?.options?.cardText?.color,
+                  }}
                 >
                   <IconSparkles width={15} height={15} className="mr-1" />
                   Insights: {bundleCount}
