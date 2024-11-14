@@ -9,6 +9,8 @@ import { SendHorizontalIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { TooltipIconButton, MarkdownText } from ".";
 
+import { settings } from 'components/Demo/settings';
+
 
 export const MiniThread = (props) => {
   const { } = props;
@@ -37,7 +39,7 @@ export const MiniThread = (props) => {
 };
 
 const WelcomeMessage = () => {
-  const src = "/img/tableau/tableau_logo.png";
+  const src = settings.ai_avatar;
 
   return (
     (<ThreadPrimitive.Empty>
@@ -95,7 +97,7 @@ const DemoUserMessage = () => {
 };
 
 const AgentMessage = () => {
-  const src = "/img/tableau/tableau_logo.png";
+  const src = settings.ai_avatar;
 
   return (
     (<MessagePrimitive.Root
