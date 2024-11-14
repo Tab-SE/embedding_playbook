@@ -20,7 +20,7 @@ interface ContextData {
   showPulseAnchorChart: 'true' | 'false';
   showPulseTopInsight: 'true' | 'false';
   companionMode: 'none' | 'source' | 'popup' | 'target';
-  displayMode: 'original' | 'singlePane' | 'salesforce' | 'tableau';
+  displayMode: 'original' | 'carousel' | 'singlepane' | 'salesforce' | 'tableau';
   currentFiltersDisplayMode: 'top' | 'bottom';
   timeComparisonMode: 'primary' | 'both' | 'text';
   handleSetVal: (metricId: string) => void;
@@ -33,7 +33,28 @@ interface ContextData {
   showPulseFilters: 'true' | 'false';
   datasourceCollection: DatasourceModelCollection;
   metricCollection: MetricCollection;
-  loginData: LoginData
+  loginData: LoginData;
+  positiveSentimentColor: string;
+  negativeSentimentColor: string;
+  cardBackgroundColor: string;
+  backgroundColor: string;
+  options: {
+    cardTitleText: {
+      fontFamily: string;
+      fontSize: string;
+      color: string;
+    };
+    cardBANText: {
+      fontFamily: string;
+      fontSize: string;
+      color: string;
+    };
+    cardText: {
+      fontFamily: string;
+      fontSize: string;
+      color: string;
+    };
+  };
 }
 
 interface LoginData {
@@ -155,6 +176,7 @@ interface StatsProps {
     markup?: string;
     comparisons?: any[]
     target_time_period_range?: string;
+    sentiment: 'positive'| 'negative' | 'neutral';
   };
   bundleCount: number | null;
   metric: Metric;

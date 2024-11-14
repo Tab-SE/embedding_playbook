@@ -47,6 +47,7 @@ export const httpPost = async (endpoint, body, config) => {
       throw new Error(`ERROR: Cannot POST for endpoint: ${endpoint}`);
     }
   } catch (error) {
+    if (error.response.data.error) return error.response.data.error;  // tableau se
     return formatError(error);
   }
 };

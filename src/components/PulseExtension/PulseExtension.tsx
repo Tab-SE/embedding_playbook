@@ -1,3 +1,4 @@
+'use client';
 // eslint-disable-next-line no-unused-vars
 
 import { useEffect, useState, useRef, forwardRef, useContext, useCallback, useMemo } from 'react';
@@ -75,7 +76,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     updateContextData({ handleSetVal });
   }, []);
 
-  const debounce = (): boolean => {
+  const debounce = useCallback((): boolean => {
     const newDt = new Date().valueOf();
     console.log(
       `time: ${newDt}; lastUpdated.current: ${lastUpdated.current}; diff: ${
@@ -88,7 +89,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
     lastUpdated.current = newDt;
     return true;
-  };
+  }, []);
 
   const updateAllSettings = async (settings: Partial<ContextData>) => {
     if (saveRunningRef.current) {
@@ -121,6 +122,17 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         'metricOptions',
         JSON.stringify(settings.metricCollection.metricOptions)
       );
+    if (typeof settings.options !== 'undefined')
+      tableau.extensions.settings.set('options', JSON.stringify(settings.options));
+
+    if (typeof settings.positiveSentimentColor !== 'undefined')
+      tableau.extensions.settings.set('positiveSentimentColor', settings.positiveSentimentColor);
+    if (typeof settings.negativeSentimentColor !== 'undefined')
+      tableau.extensions.settings.set('negativeSentimentColor', settings.negativeSentimentColor);
+    if (typeof settings.cardBackgroundColor !== 'undefined')
+      tableau.extensions.settings.set('cardBackgroundColor', settings.cardBackgroundColor);
+    if (typeof settings.backgroundColor !== 'undefined')
+      tableau.extensions.settings.set('backgroundColor', settings.backgroundColor);
 
     try {
       await tableau.extensions.settings.saveAsync();
@@ -150,11 +162,12 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     }
     console.log(`INITIALIZING CONFIGURE...`);
     configureOpenRef.current = true;
+
     const popupUrl = `${basePath}/pulseExtensionDialog`;
     let passedSettings = {
       loginData: contextDataRef.current.loginData,
       metricCollection: {
-        metrics: [],
+        metrics: contextDataRef.current.metricCollection.metrics,
         metricOptions: contextDataRef.current.metricCollection.metricOptions,
       },
       companionMode: contextDataRef.current.companionMode,
@@ -165,16 +178,12 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       debug: contextDataRef.current.debug,
       showPulseFilters: contextDataRef.current.showPulseFilters,
       timeComparisonMode: contextDataRef.current.timeComparisonMode,
+      options: contextDataRef.current.options,
+      positiveSentimentColor: contextDataRef.current.positiveSentimentColor,
+      negativeSentimentColor: contextDataRef.current.negativeSentimentColor,
+      cardBackgroundColor: contextDataRef.current.cardBackgroundColor,
+      backgroundColor: contextDataRef.current.backgroundColor,
     };
-    console.log(`opening configure dialog with ${JSON.stringify(passedSettings)}`);
-    console.log(passedSettings);
-    console.log(`and contextDataRef.current:`);
-    console.log(contextDataRef.current);
-    console.log(`contextData`);
-    console.log(contextData);
-    console.log(`contextData.showPulseAnchorChart: ${contextData.showPulseAnchorChart}`);
-    console.log(`contextdata dynamic function...`);
-    console.log(() => console.log(contextData));
     tableau.extensions.ui
       .displayDialogAsync(popupUrl, JSON.stringify(passedSettings, null, 2), {
         height: 600,
@@ -184,13 +193,14 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         console.log(`closePayload: ${closePayload}`);
         let settings = JSON.parse(closePayload);
         let currContextData = contextDataRef.current;
-        currContextData = { ...currContextData, ...settings }; // This function has an empty contextData because of how initializeAsync works;  but we can grab the current contextData from the ref
+        currContextData = { ...currContextData, ...settings }; 
         await updateAllSettings(currContextData);
       })
-      .catch((error) => {
+      .catch(async (error) => {
         switch (error.errorCode) {
           case tableau.ErrorCodes.DialogClosedByUser:
             console.log('Dialog was closed by user without save');
+            await updateAllSettings(contextDataRef.current); // need this or configureOpenRef doesn't update UI
             break;
           default:
             console.error(error.message);
@@ -305,6 +315,31 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           }
 
           try {
+            if (settings.options) {
+              settings.options = JSON.parse(settings.options);
+            }
+          } catch (error) {
+            settings.options = {
+              cardTitleText: {
+                fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
+                fontSize: "18pt",
+                color: "#333333"
+              },
+              cardBANText: {
+                fontFamily: "'Tableau Light','Tableau',Arial,sans-serif",
+                fontSize: "15pt",
+                color: "#333333"
+              },
+              cardText: {
+                fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
+                fontSize: "9pt",
+                color: "#666666"
+              },
+            };
+            console.log(`No options found in settings: ${settings.options}`);
+          }
+
+          try {
             let m = new MetricCollection([]);
             m.metricOptions = JSON.parse(settings.metricOptions);
             settings.metricCollection = m;
@@ -324,15 +359,6 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         console.error('Error during Tableau initialization:', error);
       });
   }, []); // Only run on component mount
-
-  const filterHandlerDebounce = async () => {
-    if (!debounce()) {
-      return;
-    }
-    setTimeout(() => {
-      getAllFiltersCallback();
-    }, 250);
-  };
 
   /* This code will listen for the data sources to be populated, and then run grab the filters. */
   useEffect(() => {
@@ -397,7 +423,16 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     updateContextData({ dashboardFilters });
     console.log(`ending getAllFilters`);
     updatingFilters.current = false;
-  }, [tableauInitialized, contextData]);
+  }, [tableauInitialized, updateContextData]);
+
+  const filterHandlerDebounce = useCallback(async () => {
+    if (!debounce()) {
+      return;
+    }
+    setTimeout(() => {
+      getAllFiltersCallback();
+    }, 250);
+  }, [debounce, getAllFiltersCallback]);
 
   const handleLogout = async () => {
     console.log('Signing Out...');
@@ -408,15 +443,24 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   };
   const handleLogin = async () => {};
 
+  useEffect(() => {
+    document.body.style.backgroundColor = contextData.backgroundColor;
+
+    // Cleanup function to reset when component unmounts or bgColor changes
+    return () => {
+      document.body.style.backgroundColor = 'white';
+    };
+  }, [contextData.backgroundColor]);
+
   return (
     <div
-      className={`${
-        contextData.displayMode === 'singlePane'
-          ? 'w-[93vw]'
-          : contextData.displayMode === 'salesforce'
-          ? 'w-[85vw]'
-          : 'w-[93vw]'
-      }`}
+    // className={`${
+    //   contextData.displayMode === 'singlepane'
+    //     ? 'w-[93vw]'
+    //     : contextData.displayMode === 'salesforce'
+    //     ? 'w-[85vw]'
+    //     : 'w-[93vw]'
+    // }`}
     >
       {contextData.debug === 'true' && (
         <div>
@@ -440,11 +484,13 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           SessionVal: {sessionVal}
         </div>
       )}
-      {!configureOpenRef.current && contextData.companionMode !== 'target' ? (
+      {!configureOpenRef.current && contextData.companionMode !== 'target' && tableauInitialized ? (
         <>
           <Metrics />
         </>
-      ) : !configureOpenRef.current && contextData.companionMode === 'target' ? (
+      ) : !configureOpenRef.current &&
+        contextData.companionMode === 'target' &&
+        tableauInitialized ? (
         <InsightsOnly />
       ) : null}
 

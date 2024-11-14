@@ -44,6 +44,7 @@ type ButtonProps = {
   disabled?: boolean;
   onClick?: () => void;
   children?: React.ReactNode;
+  role?: string;
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant, size, asChild = false, ...props }, ref) => {

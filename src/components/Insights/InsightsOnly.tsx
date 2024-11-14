@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect, useContext } from 'react';
 import { useSession } from 'next-auth/react';
 import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';

@@ -13,7 +13,7 @@ import { Dialog, DialogTrigger } from '../../../ui';
 import { useInsights } from '../../../../hooks';
 import { parseInsights } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
-import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -166,12 +166,18 @@ const Stats: React.FC<StatsProps> = (props) => {
   if (isSuccess && insights && insights.length) {
     return (
       <div className="" key={metric.specification_id}>
-        <div className="bg-white border border-blue-100 rounded-xl shadow-md p-8 mb-4 hover:shadow-lg cursor-pointer  flex flex-col h-full">
+        <div className="bg-white border border-blue-100 rounded-xl shadow-md p-8 mb-4 hover:shadow-lg cursor-pointer  flex flex-col h-full"
+        style={Object.assign({}, contextData.options.cardText, {backgroundColor: contextData.cardBackgroundColor})}
+        >
           {/* Card Header */}
-          <div className="mb-4">
+          <div className="mb-4"
+              style={contextData.options.cardTitleText}
+          >
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-medium truncate">{metric.name}</h2>
-              <button className="text-gray-500 hover:text-gray-700" aria-label="More Actions">
+              <h2 className="text-lg font-medium truncate"
+              style={{'lineHeight':`calc(${contextData.options.cardTitleText.fontSize}*1.2)`}}
+              >{metric.name}</h2>
+              <button className="text-gray-500 hover:text-gray-700 bg-white" aria-label="More Actions">
                 {/* More actions button */}
                 •••
               </button>
@@ -186,13 +192,22 @@ const Stats: React.FC<StatsProps> = (props) => {
             {/* Flex container to align the stats and relative values */}
             <div className="flex justify-center items-center">
               <div className="flex flex-col items-center">
-                <span className="font-normal mr-3 text-[2.625rem] leading-[3rem]">
+                <span className="font-normal mr-3 leading-[3rem]"
+                style={contextData.options.cardBANText}
+                >
                   {stats.value}&nbsp;
                 </span>
                 <span className="font-normal text-[1rem]">{stats.units}&nbsp;</span>
               </div>
               {contextData.timeComparisonMode !== 'text' && (
-                <div className={`${stats?.comparisons?.[0].color}`}>
+                <div          style={{
+                  color:
+                    stats?.comparisons?.[0]?.sentiment === 'positive'
+                      ? contextData.positiveSentimentColor
+                      : stats?.comparisons?.[0]?.sentiment === 'negative'
+                      ? contextData.negativeSentimentColor
+                      : contextData?.options?.cardText?.color,
+                }}>
                   <div className="text-xs">{stats?.comparisons?.[0].comparison}</div>
                   <div>{stats?.comparisons?.[0].directionIcon}</div>
                   <div>
@@ -205,8 +220,26 @@ const Stats: React.FC<StatsProps> = (props) => {
                   </div>
                 </div>
               )}
-              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
-                <div className={`${stats?.comparisons?.[1]?.color} ml-3`}>
+              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] &&
+              (stats?.comparisons[1].is_nan ? (
+                <div className="text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: stats?.comparisons[1].markup,
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className={`ml-3`}
+                style={{
+                  color:
+                    stats?.comparisons?.[1]?.sentiment === 'positive'
+                      ? contextData.positiveSentimentColor
+                      : stats?.comparisons?.[1]?.sentiment === 'negative'
+                      ? contextData.negativeSentimentColor
+                      : contextData?.options?.cardText?.color,
+                }}
+                >
                   <div className="text-xs">{stats?.comparisons?.[1].comparison}</div>
                   <div>{stats?.comparisons?.[1].directionIcon}</div>
                   <div>
@@ -218,11 +251,10 @@ const Stats: React.FC<StatsProps> = (props) => {
                     △ {stats?.comparisons?.[1].absolute}
                   </div>
                 </div>
-              )}
+              ))}
             </div>
             {contextData.timeComparisonMode === 'text' && (
               <div className="pl-3 text-sm text-muted-foreground text-stone-500 dark:text-stone-300">
-                <br />
                 <span
                   dangerouslySetInnerHTML={{
                     __html:
@@ -290,12 +322,7 @@ const Stats: React.FC<StatsProps> = (props) => {
 
           <div className="flex flex-row mt-3">
             <Dialog>
-              <DialogTrigger
-                // onClick={() => {
-                //   console.log(`calling handleSetVal with ${(metric as any).specification_id}`);
-                //   // handleSetVal(metric.id);
-                //   contextData.companionMode === 'source' ? contextData.handleSetVal((metric as any).specification_id) : null;
-                // }}
+              <DialogTrigger className='bg-white'
                 onClick={() => {
                   const metricId = (metric as any).specification_id;
                   console.log(`calling handleSetVal with ${metricId}`);
@@ -304,7 +331,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                     contextData.handleSetVal(metricId);
                   } else if (contextData.companionMode === 'popup') {
                     // Define the popup URL
-                    const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
+                    const popupUrl = `/pulseExtensionInsightsPopup?metricId=${metricId}`;
 
                     // Check if the popup window is already open and valid
                     if (!popupWindowRef || popupWindowRef.closed) {
@@ -323,8 +350,16 @@ const Stats: React.FC<StatsProps> = (props) => {
                 }}
               >
                 <Badge
-                  className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6`}
-                  variant="undefined"
+                  className={`max-h-6 my-auto ml-6`} 
+                  variant="default"
+                  style={{
+                    backgroundColor:
+                      stats?.sentiment === 'positive'
+                        ? contextData.positiveSentimentColor
+                        : stats?.sentiment === 'negative'
+                        ? contextData.negativeSentimentColor
+                        : contextData?.options?.cardText?.color,
+                  }}
                 >
                   <IconSparkles width={15} height={15} className="mr-1" />
                   Insights: {bundleCount}

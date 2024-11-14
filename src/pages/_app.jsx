@@ -25,7 +25,7 @@ export default function App({
   // Session Provider: https://next-auth.js.org/getting-started/client#sessionprovider
   // Query Client Provider: https://tanstack.com/query/v4/docs/react/reference/QueryClientProvider
   return (
-    <SessionProvider session={session} basePath='/pulseExtension/api/auth'>
+    <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <ExtensionDataProvider>
           <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>

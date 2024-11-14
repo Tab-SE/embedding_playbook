@@ -101,9 +101,10 @@ export const MetricsPlusFiltersPlusDSFilters = (props: { metrics: InsightsModel[
     },
     [applyFilters, selectedValues]
   );
-  if (typeof contextData.displayMode === 'undefined' || contextData.displayMode === 'original') {
+
+  if (typeof contextData.displayMode === 'undefined' || contextData.displayMode === 'carousel' || contextData.displayMode === 'original') {
      return (<Metric metrics={metrics} propogateMetricFilter={propogateMetricFilter} selectedValues={selectedValues} />);
-  } else if (contextData.displayMode === 'singlePane') {
+  } else if (contextData.displayMode === 'singlepane') {
     return (<MetricSinglePane metrics={metrics} propogateMetricFilter={propogateMetricFilter} selectedValues={selectedValues} />);
   } else if (contextData.displayMode === 'salesforce') {
     return (<MetricSalesforce metrics={metrics} propogateMetricFilter={propogateMetricFilter} selectedValues={selectedValues} />);

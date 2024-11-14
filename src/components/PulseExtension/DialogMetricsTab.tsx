@@ -43,7 +43,7 @@ export const MetricsTab = ({
             handleAllCheckboxChange(e);
           }}
           checked={Object.values(metricCollection.metricOptions).every(
-            (metric: MetricOptions) => metric.show
+            (metric: MetricOptions) => metric.show.toString() === 'true'
           )}
         />
         <label htmlFor="showAll">Show All</label>

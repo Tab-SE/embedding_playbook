@@ -73,12 +73,7 @@ export const MetricsPlusFilters = (props) => {
       setFieldResultsLoaded(true);
     }
   }, [fieldResults, memoizedDatasources]);
-
-
-
-
-
-
+  
   useEffect(() => {
     if (metricFilterResults.data && !_.isEqual(filteredMetrics, metricFilterResults.data)) {
       setFilteredMetrics(metricFilterResults.data);
