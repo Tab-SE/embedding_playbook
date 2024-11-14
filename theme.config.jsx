@@ -7,16 +7,22 @@ const description = "This playbook teaches you how to compose Tableau's varied p
 
 export default {
   darkMode: false,
-  primaryHue: 201,
-  primarySaturation: 100,
+  color: {
+    hue: 201,
+    saturation: 100,
+    lightness: {
+      dark: 100,
+      light: 50
+    }
+  },
   logo:
   <Logo
-    src="/img/tableau/tableau_logo.png"
+    src='/img/tableau/tableau_logo.png'
     width='33'
     text='Embed Tableau'
   />,
   footer: {
-    text:
+    content:
     <Logo
       src="/img/tableau/logo_text.png"
       width='300'
