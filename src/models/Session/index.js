@@ -81,7 +81,6 @@ export class Session {
 
   // JSON Web Token authentication
   jwt = async (sub, jwt_options, scopes, claims) => {
-    console.log("claims src models", claims)
     const { credentials, embed_token } = await handleJWT(sub, jwt_options, scopes, claims);
     this._authorize(credentials, embed_token);
   }

@@ -63,7 +63,6 @@ export const authOptions = {
             jwt_client_id
           };
           const rest_session = new Session(user.name);
-          ("UserStore demo entry:", UserStore[credentials.demo]);
           await rest_session.jwt(user.email, rest_options, rest_scopes, user.uaf);
           if (embed_session.authorized && rest_session.authorized) {
             const {
