@@ -24,6 +24,9 @@ import {
 import { MarkdownText, TooltipIconButton } from "./ui";
 import { cn } from "utils";
 
+import { settings } from 'components/Demo/settings';
+
+
 export const Thread = () => {
   return (
     (<ThreadPrimitive.Root className="bg-white h-full dark:bg-stone-950">
@@ -64,7 +67,7 @@ const MyThreadScrollToBottom = () => {
 };
 
 const MyThreadWelcome = () => {
-  const src = "/img/tableau/tableau_logo.png";
+  const src = settings.ai_avatar;
 
   return (
     (<ThreadPrimitive.Empty>
@@ -179,7 +182,7 @@ const MyEditComposer = () => {
 };
 
 const AgentMessage = () => {
-  const src = "/img/tableau/tableau_logo.png";
+  const src = settings.ai_avatar;
 
   return (
     (<MessagePrimitive.Root
@@ -280,5 +283,3 @@ const CircleStopIcon = () => {
     </svg>)
   );
 };
-
-

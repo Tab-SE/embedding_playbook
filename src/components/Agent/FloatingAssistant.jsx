@@ -6,6 +6,8 @@ import { AssistantModalPrimitive } from "@assistant-ui/react";
 
 import { MiniThread, TooltipIconButton } from "./ui";
 
+import { settings } from 'components/Demo/settings';
+
 export const FloatingAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,7 +41,7 @@ const FloatingAssistantButton = forwardRef(({ "data-state": state, ...rest }, re
       ref={ref}
       >
       <Image
-        src="/img/themes/superstore/superstore.png"
+        src={settings.ai_avatar}
         alt="Assistant"
         width={24}
         height={24}
