@@ -4,7 +4,7 @@ import { Demo, Settings, FloatingAssistant } from 'components';
 const SettingsPage = () => {
   return (
     <Demo
-      basePath='/demos'
+      basePath='/demo'
       crumbs={{
         'Superstore Analytics': {
           path: '/superstore',
