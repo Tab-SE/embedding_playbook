@@ -22,6 +22,8 @@ import {
 
 import { useTableauSession } from 'hooks';
 
+import { settings } from '../../settings';
+
 
 export function UserMenu(props) {
   const { } = props;
@@ -46,7 +48,7 @@ export function UserMenu(props) {
         <DropdownMenu>
           <Trigger src={user.picture} />
           <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-            <Label app_name={''} email={user.email} />
+            <Label app_name={settings.app_name} email={user.email} />
             <Group />
             <Logout status={status} />
           </DropdownMenuContent>
@@ -138,11 +140,7 @@ const Group = (props) => {
     <div>
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
-        <DropdownMenuItem>
-          Billing
-          <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <Link href="/demos/superstore/settings">
+        <Link href={settings.base_path + '/settings'}>
           <DropdownMenuItem className='hover:cursor-pointer'>
             Settings
             <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
