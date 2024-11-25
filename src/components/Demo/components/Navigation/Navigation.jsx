@@ -14,8 +14,9 @@ export const Navigation = (props) => {
         <Image
           src={settings.logo_large}
           alt="Logo"
-          width={150}
-          height={34}
+          width={240}
+          height={68}
+          className='m-9'
         />
         <div className="relative ml-auto flex-1 md:grow-0"/>
         <UserMenu />
