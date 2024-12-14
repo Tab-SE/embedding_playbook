@@ -9,6 +9,7 @@ interface MetricOption {
   nameFilters?: string;
   show: boolean;
   specification_id: string;
+  order?: number;
 }
 
 interface ContextDataWrapper {
@@ -20,7 +21,7 @@ interface ContextData {
   showPulseAnchorChart: 'true' | 'false';
   showPulseTopInsight: 'true' | 'false';
   companionMode: 'none' | 'source' | 'popup' | 'target';
-  displayMode: 'original' | 'singlePane' | 'salesforce' | 'tableau';
+  displayMode: 'original' | 'carousel' | 'singlepane' | 'salesforce' | 'tableau';
   currentFiltersDisplayMode: 'top' | 'bottom';
   timeComparisonMode: 'primary' | 'both' | 'text';
   handleSetVal: (metricId: string) => void;
@@ -33,7 +34,57 @@ interface ContextData {
   showPulseFilters: 'true' | 'false';
   datasourceCollection: DatasourceModelCollection;
   metricCollection: MetricCollection;
-  loginData: LoginData
+  loginData: LoginData;
+  options: {
+    positiveSentimentColor: string;
+    neutralSentimentColor: string;
+    negativeSentimentColor: string;
+    cardBackgroundColor: string;
+    backgroundColor: string;
+    cardTitleText: {
+      fontFamily: string;
+      fontSize: string;
+      color: string;
+    };
+    cardBANText: {
+      fontFamily: string;
+      fontSize: string;
+      color: string;
+    };
+    cardText: {
+      fontFamily: string;
+      fontSize: string;
+      color: string;
+    };
+    googleFont: {
+      fontFamily: string;
+      fontWeight: string;
+    };
+    chart: {
+      axis: string;
+      axisLabels: string;
+      primary: string;
+      primaryLabel: string;
+      average: string;
+      averageLabel: string;
+      cumulative: string;
+      cumulativeLabel: string;
+      favorable: string;
+      favorableLabel: string;
+      unfavorable: string;
+      unfavorableLabel: string;
+      unspecified: string;
+      unspecifiedLabel: string;
+      sum: string;
+      projection: string;
+      range: string;
+      currentValueDotBorder: string;
+      dotBorder: string;
+      hoverDot: string;
+      hoverLine: string;
+    }
+  };
+
 }
 
 interface LoginData {
@@ -155,6 +206,7 @@ interface StatsProps {
     markup?: string;
     comparisons?: any[]
     target_time_period_range?: string;
+    sentiment: 'positive'| 'negative' | 'neutral';
   };
   bundleCount: number | null;
   metric: Metric;
