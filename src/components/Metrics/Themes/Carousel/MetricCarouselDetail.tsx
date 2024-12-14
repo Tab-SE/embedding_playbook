@@ -13,7 +13,6 @@ import { Badge } from '../../../ui';
 import { Dialog, DialogTrigger } from '../../../ui';
 
 import { useInsights } from '../../../../hooks';
-import { parseInsights } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
 import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
@@ -21,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { InsightsModel } from 'models';
-import { applyVizFormatting, parseStats } from 'utils';
+import { applyVizFormatting, parseStats, adjustLightness, parseInsights } from 'utils';
 
 export const MetricDetail: React.FC<{
   metric: InsightsModel;
@@ -122,7 +121,7 @@ export const MetricDetail: React.FC<{
     }
 
     viz = data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz;
-    applyVizFormatting(viz, contextData);
+    viz = applyVizFormatting(viz, contextData);
   }
 
   const myIcon: IconProp = faFilter;
@@ -137,27 +136,30 @@ export const MetricDetail: React.FC<{
   // fully loaded state
   return (
     <>
-{/*       <FontSelector selectedFont={contextData.options.cardTitleText.fontFamily.split(',')[0].replace(/'/g, '')} font/> */}
-      <FontSelector selectedFont={'Markazi+Text'}/>
       {contextData.companionMode !== 'target' ? (
         <Card
           className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white shadow dark:border-stone-800 min-h-[111px] min-w-[240px] max-w-[350px]"
-          style={Object.assign({}, contextData.options.cardText, {backgroundColor: contextData.cardBackgroundColor})}
+          style={Object.assign({}, contextData.options.cardText, {
+            backgroundColor: contextData.options.cardBackgroundColor,
+          })}
         >
           <CardHeader
             className="flex flex-column items-left justify-between space-y-0 p-1 pt-2"
             style={contextData.options.cardTitleText}
           >
-            <CardTitle className={`font-bold pl-3 overflow-hidden`} style={{'lineHeight':`calc(${contextData.options.cardTitleText.fontSize}*1.2)`}}> 
+            <CardTitle
+              className={`font-bold pl-3 overflow-hidden`}
+              style={{ lineHeight: `calc(${contextData.options.cardTitleText.fontSize}*1.2)` }}
+            >
               {metric.name}
             </CardTitle>
-                <span className="font-normal text-xs block pl-3">
-                  {metric.namePeriod} ({stats?.target_time_period_range})
-                  <br />
-                  {contextData.currentFiltersDisplayMode === 'top' &&
-                    metric.nameFilters &&
-                    `${metric.nameFilters}`}
-                </span>
+            <span className="font-normal text-xs block pl-3">
+              {metric.namePeriod} ({stats?.target_time_period_range})
+              <br />
+              {contextData.currentFiltersDisplayMode === 'top' &&
+                metric.nameFilters &&
+                `${metric.nameFilters}`}
+            </span>
           </CardHeader>
           <CardContent className="p-3 pt-0">
             <Stats
@@ -209,10 +211,16 @@ const Stats: React.FC<StatsProps> = (props) => {
               <div className="font-bold" style={contextData.options.cardBANText}>
                 {stats.value ? stats.value : null}
               </div>
-              <div className="text-xs text-muted-foreground -mt-2">{stats.units}</div>
+              <div
+                className="text-xs text-muted-foreground -mt-2"
+                style={{ fontFamily: contextData.options.cardBANText.fontFamily, color: contextData.options.cardBANText.color }}
+              >
+                {stats.units}
+              </div>
               <div className="mt-2">
                 <Dialog>
                   <DialogTrigger
+                    style={{ backgroundColor: contextData.options.cardBackgroundColor }}
                     onClick={() => {
                       const metricId = (metric as any).specification_id;
                       console.log(`calling handleSetVal with ${metricId}`);
@@ -236,16 +244,21 @@ const Stats: React.FC<StatsProps> = (props) => {
                     }}
                   >
                     <Badge
-                      className={`text-stone-50 h-6 flex items-center justify-center whitespace-nowrap w-min px-2`}
+                      className={`h-6 flex items-center justify-center whitespace-nowrap w-min px-2`}
                       style={{
                         backgroundColor:
                           stats?.sentiment === 'positive'
-                            ? contextData.positiveSentimentColor
+                            ? contextData.options.positiveSentimentColor
                             : stats?.sentiment === 'negative'
-                            ? contextData.negativeSentimentColor
-                            : contextData?.options?.cardText?.color,
+                            ? contextData.options.negativeSentimentColor
+                            : contextData?.options?.neutralSentimentColor,
+                        color: adjustLightness(stats?.sentiment === 'positive'
+                          ? contextData.options.positiveSentimentColor
+                          : stats?.sentiment === 'negative'
+                          ? contextData.options.negativeSentimentColor
+                          : contextData?.options?.neutralSentimentColor) ?? 'initial'
                       }}
-                      variant={undefined}
+                      variant="default"
                     >
                       <IconSparkles width={15} height={15} className="mr-1" />
                       <span className="inline-block">{bundleCount}</span>
@@ -261,18 +274,20 @@ const Stats: React.FC<StatsProps> = (props) => {
           </div>
           <div
             className="flex flex-col flex-grow items-start text-xs text-muted-foreground mx-1"
-            style={{
-              color:
-                stats?.comparisons?.[0]?.sentiment === 'positive'
-                  ? contextData.positiveSentimentColor
-                  : stats?.comparisons?.[0]?.sentiment === 'negative'
-                  ? contextData.negativeSentimentColor
-                  : contextData?.options?.cardText?.color,
-            }}
+
           >
             {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
               <>
-                <div className={`flex space-x-2 items-center`}>
+                <div className={`flex space-x-2 items-center`}
+                 style={{
+                  color:
+                    stats?.comparisons?.[0]?.sentiment === 'positive'
+                      ? contextData.options.positiveSentimentColor
+                      : stats?.comparisons?.[0]?.sentiment === 'negative'
+                      ? contextData.options.negativeSentimentColor
+                      : contextData?.options?.neutralSentimentColor,
+                }}
+                >
                   <div>{stats.comparisons[0].directionIcon}</div>
                   <div>{stats.comparisons[0].absolute}</div>
                   <div>
@@ -287,7 +302,16 @@ const Stats: React.FC<StatsProps> = (props) => {
             {contextData.timeComparisonMode === 'both' &&
               stats?.comparisons?.[1] &&
               (stats?.comparisons[1].is_nan ? (
-                <div className="ml-10 text-xs text-muted-foreground">
+                <div className="ml-10 text-xs text-muted-foreground"
+                style={{
+                  color:
+                    stats?.comparisons?.[1]?.sentiment === 'positive'
+                      ? contextData.options.positiveSentimentColor
+                      : stats?.comparisons?.[1]?.sentiment === 'negative'
+                      ? contextData.options.negativeSentimentColor
+                      : contextData?.options?.neutralSentimentColor,
+                }}
+                >
                   <span
                     dangerouslySetInnerHTML={{
                       __html: stats?.comparisons[1].markup,
@@ -301,10 +325,10 @@ const Stats: React.FC<StatsProps> = (props) => {
                     style={{
                       color:
                         stats?.comparisons?.[1]?.sentiment === 'positive'
-                          ? contextData.positiveSentimentColor
+                          ? contextData.options.positiveSentimentColor
                           : stats?.comparisons?.[1]?.sentiment === 'negative'
-                          ? contextData.negativeSentimentColor
-                          : contextData?.options?.cardText?.color,
+                          ? contextData.options.negativeSentimentColor
+                          : contextData?.options?.neutralSentimentColor,
                     }}
                   >
                     <div>{stats?.comparisons[1].directionIcon}</div>
@@ -345,13 +369,14 @@ const Stats: React.FC<StatsProps> = (props) => {
 
         {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
           <div className="flex flex-col mt-2">
-            <div className="inline-block text-white py-0 px-2 rounded-full bg-metricsNeutral text-[0.8rem] self-start">
+            <div className="inline-block py-0 px-2 rounded-full bg-metricsNeutral text-[0.8rem] self-start"
+              style={{color: contextData.options.cardText.color,
+                backgroundColor: contextData.options.cardText.color ? adjustLightness(contextData.options.cardText.color) : 'initial'}}
+              >
               {insights[0].typeText}
             </div>
-            <div className="text-stone-500 mt-1 text-[0.9rem] font-medium">
-              {insights[0].question}
-            </div>
-            <div className="text-stone-500 mt-1 text-[0.9rem] font-medium">
+            <div className="mt-1 text-[0.9rem] font-medium">{insights[0].question}</div>
+            <div className="mt-1 text-[0.9rem] font-medium">
               {insights[0].markup.includes('<span') ? (
                 <p dangerouslySetInnerHTML={{ __html: insights[0].markup }} />
               ) : (
@@ -367,7 +392,7 @@ const Stats: React.FC<StatsProps> = (props) => {
   return (
     <div className="grid grid-cols-12">
       <div className="col-span-8 grid grid-rows-3">
-        <div className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
+        <div className="leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
           <Skeleton className="h-5 w-28" />
         </div>
         <div className="flex items-center justify-end col-span-7 text-2xl font-bold text-right mr-1">

@@ -7,9 +7,10 @@ export const tab_embed = typeof window !== 'undefined' ? require("./tableau.embe
 export const tab_extension = typeof window !== 'undefined' ? require("./tableau.extensions.1.latest.min.js") : null;
 
 
-export { 
-  tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications, 
-  getDefinitions, getMetrics, getMetricPrivate, getFilter, getUser, getInsights, getMetadata, getDatasourcePrivate, getDatasourceFieldsPrivate, getMetricFiltersPrivate
+export {
+  tabAuthJWT, tabAuthPAT, tabSignOut, getSubscriptions, getSpecifications,
+  getDefinitions, getMetrics, getMetricPrivate, getFilter, getUser, getInsights, getMetadata, getDatasourcePrivate, getDatasourceFieldsPrivate, getMetricFiltersPrivate,
+  fetchFont
 } from './requests';
 
 export { serverJWT, serverPAT } from './responses.js';

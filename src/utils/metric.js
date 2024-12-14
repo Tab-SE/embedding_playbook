@@ -36,3 +36,15 @@ export const sortPayloadByIds = (payload, sortOrder) => {
 
   return sortedJson;
 }
+
+export const getOrderedAndVisibleMetrics = (metrics, metricOptions) => {
+  return metrics
+    .filter(metric => metricOptions[metric.original_specification_id ?? metric.specification_id]?.show.toString() === 'true')
+    .sort((a, b) => {
+      const orderA = metricOptions[a.original_specification_id ?? a.specification_id]?.order?.toFixed(0) ?? Number.MAX_SAFE_INTEGER;
+      const orderB = metricOptions[b.original_specification_id ?? b.specification_id]?.order?.toFixed(0) ?? Number.MAX_SAFE_INTEGER;
+      return Number(orderA) - Number(orderB);
+    });
+}
+
+

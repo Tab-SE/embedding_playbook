@@ -31,13 +31,13 @@ export const makePayload = async (rest_key, metric, tableauUrl) => {
 const getInsightBundle = async (apiKey, metric, resource, tableauUrl) => {
   let _domain = tableau_domain;
   if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
-  
+
   // create a request body (standard for all Pulse bundle requests)
   const body = makeBundleBody(metric);
 
   // if we are requesting the BAN, it is because we want the 2nd PoPc type
   // eg if the /insights/detail request is for TIME_COMPARISON_YEAR_AGO_PERIOD, then we flip it to TIME_COMPARISON_PREVIOUS_PERIOD
-  if (resource === '/ban'){
+if (resource === '/ban'){
     if (body.bundle_request.input.metric.metric_specification.comparison.comparison === 'TIME_COMPARISON_YEAR_AGO_PERIOD') {
       body.bundle_request.input.metric.metric_specification.comparison.comparison = 'TIME_COMPARISON_PREVIOUS_PERIOD';
     } else if (body.bundle_request.input.metric.metric_specification.comparison.comparison === 'TIME_COMPARISON_PREVIOUS_PERIOD') {

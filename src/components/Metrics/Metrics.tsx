@@ -1,5 +1,5 @@
-"use client"
-/* 
+'use client';
+/*
 This is the carousel metrics page from embed tableau.  It fetches the SUBSCRIBED metrics for the user.
 */
 
@@ -12,7 +12,7 @@ import { ExtensionDataContext } from '../Providers';
 import { MetricCollection } from 'models';
 import { sortPayloadByIds } from '.';
 import { useMetricsExtension } from 'hooks/useMetricsExtension';
-import { InsightsOnly, LoadDatasources } from '..';
+import { FontSelector, InsightsOnly, LoadDatasources } from '..';
 
 export const Metrics = (props) => {
   const { theme, showMetrics, showInsights, metricOptions, sortOrder } = props;
@@ -58,6 +58,12 @@ export const Metrics = (props) => {
         <div className="alert alert-danger" role="alert">
           {signInError || 'There was an error signing in. Please try again later.'}
         </div>
+      )}
+      {data && contextData.options.googleFont?.fontFamily && contextData.options.googleFont?.fontWeight && (
+        <FontSelector
+          fontName={contextData.options.googleFont.fontFamily}
+          weight={contextData.options.googleFont.fontWeight}
+        />
       )}
       <LoadDatasources />
       {!isError && !signInError && <MetricsPlusFilters />}

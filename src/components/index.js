@@ -60,3 +60,5 @@ export { SessionProvider, AgentRuntimeProvider, ExtensionDataProvider, Extension
 export { FloatingAssistant, Thread, Agent } from './Agent';
 
 export { FontSelector } from './FontSelector';
+
+export { ConfigureImagesPage } from './PulseExtension/Configure/ConfigureImagesPage';

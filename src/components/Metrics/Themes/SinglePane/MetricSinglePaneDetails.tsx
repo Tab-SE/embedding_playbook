@@ -12,7 +12,6 @@ import { Badge } from '../../../ui';
 import { Dialog, DialogTrigger } from '../../../ui';
 
 import { useInsights } from '../../../../hooks';
-import { parseInsights } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
 import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
@@ -20,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { InsightsModel } from 'models';
-import { applyVizFormatting, parseStats } from 'utils';
+import { applyVizFormatting, parseStats, adjustLightness, parseInsights } from 'utils';
 
 export const MetricSinglePaneDetails: React.FC<{
   metric: InsightsModel;
@@ -137,7 +136,7 @@ export const MetricSinglePaneDetails: React.FC<{
     // tslint: disable-next-line
     <div
       style={Object.assign({}, contextData.options.cardText, {
-        backgroundColor: contextData.cardBackgroundColor,
+        backgroundColor: contextData.options.cardBackgroundColor,
       })}
     >
       <div
@@ -164,10 +163,10 @@ export const MetricSinglePaneDetails: React.FC<{
           style={{
             color:
               stats?.sentiment === 'positive'
-                ? contextData.positiveSentimentColor
+                ? contextData.options.positiveSentimentColor
                 : stats?.sentiment === 'negative'
-                ? contextData.negativeSentimentColor
-                : contextData?.options?.cardText?.color,
+                ? contextData.options.negativeSentimentColor
+                : contextData?.options?.neutralSentimentColor,
           }}
         >
           {stats.direction}
@@ -180,7 +179,7 @@ export const MetricSinglePaneDetails: React.FC<{
           bundleCount={bundleCount}
           metric={metric}
           insights={insights}
-          viz={data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz}
+          viz={viz}
         />
         {metric.description && (
           <div className="text-gray-500 mt-[0.5px] text-[0.7rem]">
@@ -240,7 +239,9 @@ const Stats: React.FC<StatsProps> = (props) => {
     return (
       <>
         <div className="grid auto-rows-auto">
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center"
+            style={{ fontFamily: contextData.options.cardBANText.fontFamily, color: contextData.options.cardBANText.color }}
+            >
             <div className="font-extrabold text-right mr-1" style={contextData.options.cardBANText}>
               <div>{stats.value ? stats.value : null}</div>
             </div>
@@ -250,10 +251,10 @@ const Stats: React.FC<StatsProps> = (props) => {
             style={{
               color:
                 stats?.comparisons?.[0]?.sentiment === 'positive'
-                  ? contextData.positiveSentimentColor
+                  ? contextData.options.positiveSentimentColor
                   : stats?.comparisons?.[0]?.sentiment === 'negative'
-                  ? contextData.negativeSentimentColor
-                  : contextData?.options?.cardText?.color,
+                  ? contextData.options.negativeSentimentColor
+                  : contextData?.options?.neutralSentimentColor,
             }}
           />
 
@@ -321,13 +322,16 @@ const Stats: React.FC<StatsProps> = (props) => {
         <div className="flex flex-row flex-grow-0 mt-2">
           {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
             <div className="w-full h-full">
-              <div className="inline-block text-white py-0 px-2 rounded-full bg-[#003a6ae0] ml-1 text-[0.8rem]">
+              <div className="inline-block text-white py-0 px-2 rounded-full ml-1 text-[0.8rem]"
+              style={{color: contextData.options.cardText.color,
+                backgroundColor: contextData.options.cardText.color ? adjustLightness(contextData.options.cardText.color) : 'initial'}}
+              >
                 {insights[0].typeText}
               </div>
-              <div className="text-[#030303e0] mt-0 mx-1 text-[0.9rem] font-medium">
+              <div className="mt-0 mx-1 text-[0.9rem] font-medium">
                 {insights[0].question}
               </div>
-              <div className="text-[#003a6ae0] mt-0 mx-2 mb-1 text-[0.9rem] font-medium">
+              <div className="mt-0 mx-2 mb-1 text-[0.9rem] font-medium">
                 {insights[0].markup.includes('<span') ? (
                   <p dangerouslySetInnerHTML={{ __html: insights[0].markup }} />
                 ) : (
@@ -374,13 +378,18 @@ const Stats: React.FC<StatsProps> = (props) => {
               <Badge
                 className={`text-stone-50 max-h-6 my-auto ml-6`}
                 style={{
-                  backgroundColor:
-                    stats?.sentiment === 'positive'
-                      ? contextData.positiveSentimentColor
-                      : stats?.sentiment === 'negative'
-                      ? contextData.negativeSentimentColor
-                      : contextData?.options?.cardText?.color,
-                }}
+                        backgroundColor:
+                          stats?.sentiment === 'positive'
+                            ? contextData.options.positiveSentimentColor
+                            : stats?.sentiment === 'negative'
+                            ? contextData.options.negativeSentimentColor
+                            : contextData?.options?.neutralSentimentColor,
+                        color: adjustLightness(stats?.sentiment === 'positive'
+                          ? contextData.options.positiveSentimentColor
+                          : stats?.sentiment === 'negative'
+                          ? contextData.options.negativeSentimentColor
+                          : contextData?.options?.neutralSentimentColor) ?? 'initial'
+                      }}
                 variant="undefined"
               >
                 <IconSparkles width={15} height={15} className="mr-1" />

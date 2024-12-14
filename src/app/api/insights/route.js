@@ -20,7 +20,14 @@ export async function POST(req) {
 
   // Check if token is defined
   if (token?.tableau) {
-    const requestBody = await req.json();
+    let requestBody;
+    try {
+      requestBody = await req.json();
+    } catch (error) {
+      const msg = '400: Bad Request - Invalid JSON';
+      console.debug(msg, error);
+      return NextResponse.json({ error: msg }, { status: 400 });
+    }
     // only responds with data to authorized users
     const payload = await makePayload(token.tableau.rest_key, requestBody.metric, token.tableau.tableauUrl);
     if (payload) {

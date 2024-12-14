@@ -31,7 +31,7 @@ export class MetricCollection {
     else {
       this.metrics.forEach((metric) => {
         if (!metricOptions[metric.specification_id]) {
-          this.metricOptions[metric.specification_id] = { name: metric.name, nameFilters: metric.nameFilters, show: true, specification_id: metric.specification_id  };
+          this.metricOptions[metric.specification_id] = { name: metric.name, nameFilters: metric.nameFilters, show: true, specification_id: metric.specification_id };
         }
         else {
           this.metricOptions[metric.specification_id] = metricOptions[metric.specification_id];
@@ -53,20 +53,47 @@ export class MetricCollection {
 
   public getUniqueDatasourceIds() {
     const datasourceIds = this.metrics
-        .map((m) => m.definition.datasource.id)
-        .reduce((acc: string[], id: string) => {
-          if (!acc.includes(id)) {
-            acc.push(id);
-          }
-          return acc;
-        }, []);
+      .map((m) => m.definition.datasource.id)
+      .reduce((acc: string[], id: string) => {
+        if (!acc.includes(id)) {
+          acc.push(id);
+        }
+        return acc;
+      }, []);
     return datasourceIds;
+  }
+
+  public updateMetricOrder(newOrder: string[]) {
+    newOrder.forEach((specification_id, index) => {
+      if (this.metricOptions[specification_id]) {
+      this.metricOptions[specification_id].order = index;
+      }
+    });
+  }
+
+  public getOrderedAndVisibleMetrics() {
+    return this.metrics
+      .filter(metric => this.metricOptions[metric.original_specification_id ?? metric.specification_id]?.show.toString() === 'true')
+      .sort((a, b) => {
+        const orderA = this.metricOptions[a.original_specification_id ?? a.specification_id]?.order?.toFixed(0) ?? Number.MAX_SAFE_INTEGER;
+        const orderB = this.metricOptions[b.original_specification_id ?? b.specification_id]?.order?.toFixed(0) ?? Number.MAX_SAFE_INTEGER;
+        return Number(orderA) - Number(orderB);
+      });
+  }
+
+  public getOrderedMetrics() {
+    return this.metrics
+      .sort((a, b) => {
+        const orderA = this.metricOptions[a.original_specification_id ?? a.specification_id]?.order?.toFixed(0) ?? Number.MAX_SAFE_INTEGER;
+        const orderB = this.metricOptions[b.original_specification_id ?? b.specification_id]?.order?.toFixed(0) ?? Number.MAX_SAFE_INTEGER;
+        return Number(orderA) - Number(orderB);
+      });
   }
 
 }
 
 
-/* 
+/*
 Metrics Factory
 Stores user subscriptions from Tableau Pulse in a metrics model
 used to generate individual metric objects for storing data insights
@@ -77,9 +104,9 @@ export class MetricsModel {
   constructor(userId: any = '', tableauUrl: String = '') {
     this.user_id = userId;
     this.metrics = [];
-    this.subscriptions =  {};
-    this.specifications =   {};
-    this.definitions =  {};
+    this.subscriptions = {};
+    this.specifications = {};
+    this.definitions = {};
     this.tableauUrl = tableauUrl;
   }
   private user_id: string;
@@ -87,7 +114,7 @@ export class MetricsModel {
   private subscriptions: SubscriptionObjects;
   private specifications: SpecificationObjects;
   private definitions: MetricObjects;
-  
+
   Objects;
   private tableauUrl: String;
   // private filters: DatasourceFieldData[];
@@ -100,8 +127,8 @@ export class MetricsModel {
     this.definitions = await handleDefinitions(apiKey, this.specifications, this.tableauUrl);
 
     /*     console.log(`--------this.subscriptions--------`);
-        console.log(this.subscriptions);  
-        console.log(`--------this.specifications--------`); 
+        console.log(this.subscriptions);
+        console.log(`--------this.specifications--------`);
         console.log(this.specifications);
         console.log(`--------this.definitions--------`);
         console.log(this.definitions); */
@@ -117,25 +144,27 @@ export class MetricsModel {
   // async methods defined in controller/
   async syncMetric(apiKey, specification_id: string) {
     // HTTP requests
-    this.subscriptions = {"0":{
-      metric_id: specification_id,
-      subscription_id: '',
-      create_time: '',
-      update_time: ''
-    }};
+    this.subscriptions = {
+      "0": {
+        metric_id: specification_id,
+        subscription_id: '',
+        create_time: '',
+        update_time: ''
+      }
+    };
     this.specifications = await handleSpecifications(apiKey, this.subscriptions, this.tableauUrl);
     this.definitions = await handleDefinitions(apiKey, this.specifications, this.tableauUrl);
 
     /*     console.log(`--------this.subscriptions--------`);
-        console.log(this.subscriptions);  
-        console.log(`--------this.specifications--------`); 
+        console.log(this.subscriptions);
+        console.log(`--------this.specifications--------`);
         console.log(this.specifications);
         console.log(`--------this.definitions--------`);
         console.log(this.definitions); */
 
     // make a metrics object
     this.makeMetrics();
-// console.log(`--------this.metrics--------`);
+    // console.log(`--------this.metrics--------`);
     /*     let m = JSON.parse(JSON.stringify(this.metrics));
         console.log(JSON.stringify(m, null, 2));  */
 
@@ -251,16 +280,13 @@ export class MetricsModel {
 
   makeMetrics = () => {
 
-  for (const [key, specification] of Object.entries(this.specifications)) {
+    for (const [key, specification] of Object.entries(this.specifications)) {
       const Metric = new InsightsModel(this.user_id, this.definitions, specification, this.subscriptions);
       this.metrics.push(Metric);
     }
-    /* for (const [key, definition] of Object.entries(this.definitions)) {
-      const Metric = new InsightsModel(this.user_id, definition, this.specifications, this.subscriptions);
-      this.metrics.push(Metric);
-     */}
   }
+}
 
-  
+
 
 

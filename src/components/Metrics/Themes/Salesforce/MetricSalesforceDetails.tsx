@@ -12,7 +12,7 @@ import { Badge } from '../../../ui';
 import { Dialog, DialogTrigger } from '../../../ui';
 
 import { useInsights } from '../../../../hooks';
-import { parseInsights } from '../../../../utils';
+import { parseInsights, adjustLightness, applyVizFormatting } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
 import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
@@ -85,6 +85,7 @@ export const MetricSalesforceDetails: React.FC<{
   if (isError) {
     console.debug(error);
   }
+  let viz;
   if (isSuccess) {
     stats = parseStats(data, metric);
     if (stats.dir === 'up') {
@@ -114,6 +115,8 @@ export const MetricSalesforceDetails: React.FC<{
         stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
       }
     }
+        viz = data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz;
+        viz = applyVizFormatting(viz, contextData);
   }
 
   const myIcon: IconProp = faFilter;
@@ -126,32 +129,15 @@ export const MetricSalesforceDetails: React.FC<{
   }
 
   return (
-    <div className="p-4 h-full flex flex-col bg-white border border-gray-200 shadow-sm"
-    style={Object.assign({}, contextData.options.cardText, {backgroundColor: contextData.cardBackgroundColor})}
+    <div
+      className="p-4 h-full flex flex-col bg-white border border-gray-200 shadow-sm"
+      style={Object.assign({}, contextData.options.cardText, {
+        backgroundColor: contextData.options.cardBackgroundColor,
+      })}
     >
       {/* Mimic SLDS box and theme */}
-      <div className="flex items-end"
-      style={contextData.options.cardTitleText}
-      >
-        <div>
-          <div className="w-full">
-            <div className="border-b border-gray-200 pb-1">
-              <ul className="flex flex-wrap -mb-px text-sm text-center">
-                <li className="mr-2" style={{'lineHeight':`calc(${contextData.options.cardTitleText.fontSize}*1.2)`}}>{metric.name}</li>
-                {/*               <li className="mr-2">
-                <a href="#" className="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300">
-                Insights
-                </a>
-              </li>
-              <li className="mr-2">
-                <a href="#" className="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300">
-                Filters
-                </a>
-              </li> */}
-              </ul>
-            </div>
-          </div>
-        </div>
+      <div className="mr-2" style={contextData.options.cardTitleText}>
+        {metric.name}
       </div>
 
       <div className="flex flex-col pt-2">
@@ -180,12 +166,21 @@ export const MetricSalesforceDetails: React.FC<{
           bundleCount={bundleCount}
           metric={metric}
           insights={insights}
-          viz={data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz}
+          viz={viz}
         />
         {metric.description && metric.description.length > 0 && (
           <div className="pl-2">
-            <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
-              Metric Description
+            <div
+              className="bg-gray-100
+             px-2 py-1 mb-2 font-semibold"
+             style={{
+              color: contextData.options.cardText.color,
+              backgroundColor: contextData.options.cardText.color
+                ? adjustLightness(contextData.options.cardText.color)
+                : 'initial',
+            }}
+            >
+              Details
             </div>
             <div className="text-xs font-normal">Metric Description</div>
             <div className="text-muted-foreground">{metric.description}</div>
@@ -204,7 +199,7 @@ export const MetricSalesforceDetails: React.FC<{
         )}
 
         {filterReady && contextData.showPulseFilters === 'true' && (
-          <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">Filters</div>
+          <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold">Filters</div>
         )}
         {filterReady &&
           contextData.showPulseFilters === 'true' &&
@@ -233,7 +228,15 @@ const Stats: React.FC<StatsProps> = (props) => {
       <div className="block">
         <div className="flex flex-row flex-grow-0 mt-2">
           <div className="w-full h-full">
-            <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+            <div
+              className="bg-gray-100 px-2 py-1 mb-2 font-semibold"
+              style={{
+                color: contextData.options.cardText.color,
+                backgroundColor: contextData.options.cardText.color
+                  ? adjustLightness(contextData.options.cardText.color)
+                  : 'initial',
+              }}
+            >
               Metric Value
             </div>
             <div className="text-muted-foreground" style={contextData.options.cardBANText}>
@@ -242,37 +245,45 @@ const Stats: React.FC<StatsProps> = (props) => {
             <hr className="my-2 border-gray-300" />
             {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
               <>
-                <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold"
+                              style={{
+                                color: contextData.options.cardText.color,
+                                backgroundColor: contextData.options.cardText.color
+                                  ? adjustLightness(contextData.options.cardText.color)
+                                  : 'initial',
+                              }}
+                >
                   Comparison {stats?.comparisons[0].comparison}
                 </div>
 
-                <div className="flex items-end mb-2"
-                            style={{
-                              color:
-                                stats?.comparisons?.[0]?.sentiment === 'positive'
-                                  ? contextData.positiveSentimentColor
-                                  : stats?.comparisons?.[0]?.sentiment === 'negative'
-                                  ? contextData.negativeSentimentColor
-                                  : contextData?.options?.cardText?.color,
-                            }}
-                            >
+                <div
+                  className="flex items-end mb-2"
+                  style={{
+                    color:
+                      stats?.comparisons?.[0]?.sentiment === 'positive'
+                        ? contextData.options.positiveSentimentColor
+                        : stats?.comparisons?.[0]?.sentiment === 'negative'
+                        ? contextData.options.negativeSentimentColor
+                        : contextData?.options?.neutralSentimentColor,
+                  }}
+                >
                   <div className="w-1/4 pl-2">
                     <div className="text-xs font-normal">Metric Ind.</div>
-                    <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                    <div className={`text-muted-foreground text-3xl`}>
                       {stats.comparisons[0].directionIcon}
                     </div>
                     <hr className="my-2 border-gray-300" />
                   </div>
                   <div className="w-1/2 pl-2">
                     <div className="text-xs font-normal">Relative Change</div>
-                    <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                    <div className={`text-muted-foreground text-3xl`}>
                       {stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}
                     </div>
                     <hr className="my-2 border-gray-300" />
                   </div>
                   <div className="w-1/2 pl-2">
                     <div className="text-xs font-normal">Abs. Change</div>
-                    <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                    <div className={`text-muted-foreground text-3xl`}>
                       △ {stats.comparisons[0].absolute}
                     </div>
                     <hr className="my-2 border-gray-300" />
@@ -283,15 +294,16 @@ const Stats: React.FC<StatsProps> = (props) => {
             {contextData.timeComparisonMode === 'both' &&
               stats?.comparisons?.[1] &&
               (stats?.comparisons[1].is_nan ? (
-                <div className="pl-2"
-                style={{
-                  color:
-                    stats?.comparisons?.[1]?.sentiment === 'positive'
-                      ? contextData.positiveSentimentColor
-                      : stats?.comparisons?.[1]?.sentiment === 'negative'
-                      ? contextData.negativeSentimentColor
-                      : contextData?.options?.cardText?.color,
-                }}
+                <div
+                  className="pl-2"
+                  style={{
+                    color:
+                      stats?.comparisons?.[1]?.sentiment === 'positive'
+                        ? contextData.options.positiveSentimentColor
+                        : stats?.comparisons?.[1]?.sentiment === 'negative'
+                        ? contextData.options.negativeSentimentColor
+                        : contextData?.options?.neutralSentimentColor,
+                  }}
                 >
                   <div className="text-xs font-normal">Metric Ind.</div>
                   <div className={`text-muted-foreground text-xl ${stats.color}`}>
@@ -305,7 +317,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                 </div>
               ) : (
                 <>
-                  <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                  <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold">
                     Comparison {stats?.comparisons[1].comparison}
                   </div>
 
@@ -337,7 +349,7 @@ const Stats: React.FC<StatsProps> = (props) => {
             {contextData.timeComparisonMode === 'text' && (
               <>
                 <div className="w-full h-full">
-                  <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                  <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold">
                     Comparisons
                   </div>
                   <div className="text-muted-foreground">
@@ -371,7 +383,14 @@ const Stats: React.FC<StatsProps> = (props) => {
         <div className="flex flex-row flex-grow-0 mt-2">
           {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
             <div className="w-full h-full">
-              <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">Insights</div>
+              <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold"
+                            style={{
+                              color: contextData.options.cardText.color,
+                              backgroundColor: contextData.options.cardText.color
+                                ? adjustLightness(contextData.options.cardText.color)
+                                : 'initial',
+                            }}
+              >Insights</div>
               <div className="text-xs font-normal">Insight Type</div>
               <div className="text-muted-foreground">{insights[0].typeText}</div>
               <hr className="my-2 border-gray-300" />
@@ -429,15 +448,25 @@ const Stats: React.FC<StatsProps> = (props) => {
                 }
               }}
             >
-              <Badge className={`${stats.badge} text-stone-50 max-h-6`} variant="undefined"
-              style={{
-                backgroundColor:
-                  stats?.sentiment === 'positive'
-                    ? contextData.positiveSentimentColor
-                    : stats?.sentiment === 'negative'
-                    ? contextData.negativeSentimentColor
-                    : contextData?.options?.cardText?.color,
-              }}
+              <Badge
+                className={`${stats.badge} text-stone-50 max-h-6`}
+                variant="undefined"
+                style={{
+                  backgroundColor:
+                    stats?.sentiment === 'positive'
+                      ? contextData.options.positiveSentimentColor
+                      : stats?.sentiment === 'negative'
+                      ? contextData.options.negativeSentimentColor
+                      : contextData?.options?.neutralSentimentColor,
+                  color:
+                    adjustLightness(
+                      stats?.sentiment === 'positive'
+                        ? contextData.options.positiveSentimentColor
+                        : stats?.sentiment === 'negative'
+                        ? contextData.options.negativeSentimentColor
+                        : contextData?.options?.neutralSentimentColor
+                    ) ?? 'initial',
+                }}
               >
                 <IconSparkles width={15} height={15} className="mr-1" />
                 Insights: {bundleCount}

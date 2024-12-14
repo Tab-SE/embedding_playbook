@@ -22,7 +22,7 @@ export const MetricSalesforce: React.FC<{
   }, [contextData.metricCollection.metricOptions]);
 
   return (
-<div className="flex flex-wrap -m-2">
+<div className="flex flex-wrap m-1">
   {Array.isArray(metrics) ? (
     <ul className="flex flex-wrap -m-2 w-full">
       {metrics.map((metric) => {

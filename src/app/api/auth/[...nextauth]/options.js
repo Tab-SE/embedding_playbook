@@ -67,12 +67,12 @@ export const authOptions = {
       },
       async authorize(credentials, req) {
         let user = null;
-
-        console.log(`Starting [...nextAuth].js flow.`)
-
-        console.log(`starting initialize session for dashboard extension...${JSON.stringify(credentials)}`);
+        if (process.env?.DEBUG || process.env?.DEBUG?.toLowerCase() === 'true') {
+          console.log(`Starting [...nextAuth].js flow.`)
+          console.log(`starting initialize session for dashboard extension...${JSON.stringify(credentials)}`);
+        }
         const rest_session = await initializeSession(credentials.userName, credentials, 'rest');
-        console.log(`returning from initializeSession - rest_session: ${JSON.stringify(rest_session)}`);
+
 
         if (rest_session.authorized) {
           user = {
@@ -85,7 +85,9 @@ export const authOptions = {
               site: credentials.site_id,
             }
           };
-          console.log(`user... ${JSON.stringify(user)}`)
+          if (process.env.DEBUG || process.env?.DEBUG?.toLowerCase() === 'true') {
+            console.log(`user... ${JSON.stringify(user)}`)
+          }
         }
 
         // Return false to display a default error message
@@ -207,8 +209,9 @@ async function initializeSession(username, credentials, type = 'rest', method = 
     jwt_secret_id: secretId,
     jwt_client_id: clientId
   };
-
-  console.log(`creating new session in initialize session...${JSON.stringify(username)}.  credentials: ${JSON.stringify(credentials)}.  scopes: ${JSON.stringify(scopes)}`);
+  if (process.env?.DEBUG || process.env?.DEBUG?.toLowerCase() === 'true') {
+    console.log(`creating new session in initialize session...${JSON.stringify(username)}.  credentials: ${JSON.stringify(credentials)}.  scopes: ${JSON.stringify(scopes)}`);
+  }
   const session = new Session(username, credentials);
   if (method === 'orig') {
     await session.jwt(username, options, scopes);

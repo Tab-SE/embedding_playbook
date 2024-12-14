@@ -10,7 +10,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSession, signOut } from 'next-auth/react';
 import { MetricCollection } from 'models';
 import _, { update } from 'lodash';
-import { Insights, InsightsOnly, Metrics } from 'components';
+import { FontSelector, Insights, InsightsOnly, Metrics } from 'components';
 
 export const PulseExtension = forwardRef(function Extension(props, ref) {
   const basePath = process.env.NEXT_PUBLIC_BASE_URL;
@@ -125,14 +125,6 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     if (typeof settings.options !== 'undefined')
       tableau.extensions.settings.set('options', JSON.stringify(settings.options));
 
-    if (typeof settings.positiveSentimentColor !== 'undefined')
-      tableau.extensions.settings.set('positiveSentimentColor', settings.positiveSentimentColor);
-    if (typeof settings.negativeSentimentColor !== 'undefined')
-      tableau.extensions.settings.set('negativeSentimentColor', settings.negativeSentimentColor);
-    if (typeof settings.cardBackgroundColor !== 'undefined')
-      tableau.extensions.settings.set('cardBackgroundColor', settings.cardBackgroundColor);
-    if (typeof settings.backgroundColor !== 'undefined')
-      tableau.extensions.settings.set('backgroundColor', settings.backgroundColor);
 
     try {
       await tableau.extensions.settings.saveAsync();
@@ -179,21 +171,17 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       showPulseFilters: contextDataRef.current.showPulseFilters,
       timeComparisonMode: contextDataRef.current.timeComparisonMode,
       options: contextDataRef.current.options,
-      positiveSentimentColor: contextDataRef.current.positiveSentimentColor,
-      negativeSentimentColor: contextDataRef.current.negativeSentimentColor,
-      cardBackgroundColor: contextDataRef.current.cardBackgroundColor,
-      backgroundColor: contextDataRef.current.backgroundColor,
     };
     tableau.extensions.ui
       .displayDialogAsync(popupUrl, JSON.stringify(passedSettings, null, 2), {
         height: 600,
-        width: 500,
+        width: 800,
       })
       .then(async (closePayload) => {
         console.log(`closePayload: ${closePayload}`);
         let settings = JSON.parse(closePayload);
         let currContextData = contextDataRef.current;
-        currContextData = { ...currContextData, ...settings }; 
+        currContextData = { ...currContextData, ...settings };
         await updateAllSettings(currContextData);
       })
       .catch(async (error) => {
@@ -274,9 +262,9 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   }, [contextData]);
 
   useEffect(() => {
-    tableau.extensions
-      .initializeAsync({ configure })
-      .then(async () => {
+    const initializeTableau = async () => {
+      try {
+        await tableau.extensions.initializeAsync({ configure });
         console.log(`Tableau initialized`);
 
         await signOut({ redirect: false });
@@ -315,11 +303,53 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           }
 
           try {
+            const sentimentColors = ['positiveSentimentColor', 'neutralSentimentColor', 'negativeSentimentColor', 'cardBackgroundColor', 'backgroundColor'];
+            sentimentColors.forEach(color => {
+              if (typeof settings[color] !== 'undefined') {
+                if (!settings.options) {
+                  settings.options = {};
+                }
+                settings.options[color] = settings[color];
+                tableau.extensions.settings.erase(color);
+              }
+            });
+
+            if (typeof settings.googleFontFamily !== 'undefined') {
+              if (!settings.options) {
+                settings.options = {};
+              }
+              if (!settings.options.googleFont) {
+                settings.options.googleFont = {};
+              }
+              settings.options.googleFont.fontFamily = settings.googleFontFamily;
+              tableau.extensions.settings.erase('googleFontFamily');
+            }
+
+            if (typeof settings.googleFontWeight !== 'undefined') {
+              if (!settings.options) {
+                settings.options = {};
+              }
+              if (!settings.options.googleFont) {
+                settings.options.googleFont = {};
+              }
+              settings.options.googleFont.fontWeight = settings.googleFontWeight;
+              tableau.extensions.settings.erase('googleFontWeight');
+            }
+          } catch (err) {
+            console.error(`Error converting sentiment colors or google font settings: ${err}`);
+          }
+
+          try {
             if (settings.options) {
               settings.options = JSON.parse(settings.options);
             }
           } catch (error) {
             settings.options = {
+              positiveSentimentColor: '#1ea562',
+              neutralSentimentColor: '#6d6d6d',
+              negativeSentimentColor: '#f81a5c',
+              cardBackgroundColor: '#FFFFFF',
+              backgroundColor: '#FFFFFF',
               cardTitleText: {
                 fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
                 fontSize: "18pt",
@@ -335,6 +365,33 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
                 fontSize: "9pt",
                 color: "#666666"
               },
+              googleFont: {
+                fontFamily: '',
+                fontWeight: ''
+              },
+              chart: {
+                axis: '#343A3F',
+                axisLabels: '#343A3F',
+                primary: '#5FB5FF',
+                primaryLabel: '#1678CC',
+                average: '#A3A9B5',
+                averageLabel: '#343A3F',
+                cumulative: '#FFF1EA',
+                cumulativeLabel: '#A96404',
+                favorable: '#25CE7B',
+                favorableLabel: '#1EA562',
+                unfavorable: '#F81A5C',
+                unfavorableLabel: '#C6154A',
+                unspecified: '#5FB5FF',
+                unspecifiedLabel: '#1678CC',
+                sum: '#C8CED8',
+                projection: '#A3A9B5',
+                range: '#E3F2FF',
+                currentValueDotBorder: '#FFF',
+                dotBorder: '#FFF',
+                hoverDot: '#040507',
+                hoverLine: '#040507'
+              }
             };
             console.log(`No options found in settings: ${settings.options}`);
           }
@@ -351,13 +408,14 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
           await updateAllSettings(settings);
         }
-        // dashboardRef.current = tableau.extensions.dashboardContent.dashboard; // store as a ref for the
+
         setTableauInitialized(true);
-        //  getAllFiltersCallback(); // this runs too earrly here; datasources aren't yet loaded
-      })
-      .catch((error) => {
+      } catch (error: any) {
         console.error('Error during Tableau initialization:', error);
-      });
+      }
+    };
+
+    initializeTableau();
   }, []); // Only run on component mount
 
   /* This code will listen for the data sources to be populated, and then run grab the filters. */
@@ -444,24 +502,17 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   const handleLogin = async () => {};
 
   useEffect(() => {
-    document.body.style.backgroundColor = contextData.backgroundColor;
+    document.body.style.backgroundColor = contextData.options.backgroundColor;
 
     // Cleanup function to reset when component unmounts or bgColor changes
     return () => {
       document.body.style.backgroundColor = 'white';
     };
-  }, [contextData.backgroundColor]);
+  }, [contextData.options.backgroundColor]);
 
   return (
-    <div
-    // className={`${
-    //   contextData.displayMode === 'singlepane'
-    //     ? 'w-[93vw]'
-    //     : contextData.displayMode === 'salesforce'
-    //     ? 'w-[85vw]'
-    //     : 'w-[93vw]'
-    // }`}
-    >
+    <div className="pr-1 pl-1" >
+
       {contextData.debug === 'true' && (
         <div>
           pulseExtension.jsx

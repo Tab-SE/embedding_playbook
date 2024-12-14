@@ -10,7 +10,7 @@ export const httpGet = async (endpoint, config) => {
     // call pattern: axios.get(url[, config])
     const response = await axios.get(endpoint, config);
     const status = response.status;
-    if (status === 200){
+    if (status === 200) {
       return response.data;
     } else if (status === 504) {
       // gateway timeout response from serverless / edge functions
@@ -53,9 +53,16 @@ export const httpPost = async (endpoint, body, config) => {
 };
 
 const formatError = (error) => {
-  const errMessage = new Error(
-    `HTTP - ${error.config.method} ${error.response.status} ${error.code}: ${error.response.data.message}`
-  );
-  console.debug(errMessage);
-  return errMessage;
+  try {
+    const errMessage = new Error(
+      `HTTP - ${error.config.method} ${error.response.status} ${error.code}: ${error.response.data.message}`
+    );
+    console.debug(errMessage);
+    return errMessage;
+
+  } catch (error) {
+    console.error(`Error formatting error:`)
+    console.error(error);
+    return error;
+  }
 }

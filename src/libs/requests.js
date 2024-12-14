@@ -436,3 +436,25 @@ const isServerlessTimeout = (res) => {
     return false;
   }
 }
+
+
+export const fetchFont = async (fontName, weight) => {
+  try {
+    const response = await fetch(`${basePath}/api/font`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ fontName, weight }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch font: ${response.statusText}`);
+    }
+
+    const fontCss = await response.text();
+    return fontCss;
+  } catch (error) {
+    console.error(error);
+  }
+};

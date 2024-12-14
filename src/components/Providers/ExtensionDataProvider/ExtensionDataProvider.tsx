@@ -30,11 +30,12 @@ export const ExtensionDataContext = createContext<ContextDataWrapper>({
       caSecretValue: '',
       isDashboardExtension: 'true',
     },
-    positiveSentimentColor: '#1ea562',
-    negativeSentimentColor: '#f81a5c',
-    cardBackgroundColor: '#FFFFFF',
-    backgroundColor: '#FFFFFF', 
     options: {
+      positiveSentimentColor: '#1ea562',
+      neutralSentimentColor: '#6d6d6d',
+      negativeSentimentColor: '#f81a5c',
+      cardBackgroundColor: '#FFFFFF',
+      backgroundColor: '#FFFFFF',
       cardTitleText: {
         fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
         fontSize: "18pt",
@@ -50,6 +51,33 @@ export const ExtensionDataContext = createContext<ContextDataWrapper>({
         fontSize: "9pt",
         color: "#666666"
       },
+      googleFont: {
+        fontFamily: '',
+        fontWeight: ''
+      },
+      chart: {
+        axis: '#343A3F',
+        axisLabels: '#343A3F',
+        primary: '#5FB5FF',
+        primaryLabel: '#1678CC',
+        average: '#A3A9B5',
+        averageLabel: '#343A3F',
+        cumulative: '#FFF1EA',
+        cumulativeLabel: '#A96404',
+        favorable: '#25CE7B',
+        favorableLabel: '#1EA562',
+        unfavorable: '#F81A5C',
+        unfavorableLabel: '#C6154A',
+        unspecified: '#5FB5FF',
+        unspecifiedLabel: '#1678CC',
+        sum: '#C8CED8',
+        projection: '#A3A9B5',
+        range: '#E3F2FF',
+        currentValueDotBorder: '#FFF',
+        dotBorder: '#FFF',
+        hoverDot: '#040507',
+        hoverLine: '#040507'
+      }
     },
   },
   updateContextData: () => {},
@@ -83,11 +111,12 @@ export const ExtensionDataProvider: React.FC<any> = ({ children }) => {
       caSecretValue: '',
       isDashboardExtension: 'true',
     },
-    positiveSentimentColor: '#1ea562',
-    negativeSentimentColor: '#f81a5c',
-    cardBackgroundColor: '#FFFFFF',
-    backgroundColor: '#FFFFFF', 
     options: {
+      positiveSentimentColor: '#1ea562',
+      neutralSentimentColor: '#6d6d6d',
+      negativeSentimentColor: '#f81a5c',
+      cardBackgroundColor: '#FFFFFF',
+      backgroundColor: '#FFFFFF',
       cardTitleText: {
         fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
         fontSize: "18pt",
@@ -103,6 +132,33 @@ export const ExtensionDataProvider: React.FC<any> = ({ children }) => {
         fontSize: "9pt",
         color: "#666666"
       },
+      googleFont: {
+        fontFamily: '',
+        fontWeight: ''
+      },
+      chart: {
+        axis: '#343A3F',
+        axisLabels: '#343A3F',
+        primary: '#5FB5FF',
+        primaryLabel: '#1678CC',
+        average: '#A3A9B5',
+        averageLabel: '#343A3F',
+        cumulative: '#FFF1EA',
+        cumulativeLabel: '#A96404',
+        favorable: '#25CE7B',
+        favorableLabel: '#1EA562',
+        unfavorable: '#F81A5C',
+        unfavorableLabel: '#C6154A',
+        unspecified: '#5FB5FF',
+        unspecifiedLabel: '#1678CC',
+        sum: '#C8CED8',
+        projection: '#A3A9B5',
+        range: '#E3F2FF',
+        currentValueDotBorder: '#FFF',
+        dotBorder: '#FFF',
+        hoverDot: '#040507',
+        hoverLine: '#040507'
+      }
     },
   });
 

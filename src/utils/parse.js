@@ -187,7 +187,7 @@ export const parseStats = (data, metric) => {
     insight_groups.forEach((insight) => {
       // uses the ban insight to generate stats
       if (insight.type === 'ban') {
-        // BAN responses only have 1 insight_groups and 2 insights; 2nd insight group is requested separately 
+        // BAN responses only have 1 insight_groups and 2 insights; 2nd insight group is requested separately
         // for time comparison purposes
         result = data?.bundle_response?.result.insight_groups[0].insights[0].result;
         facts = result?.facts;
@@ -255,7 +255,7 @@ const parseTimeComparisons = (data, metric) => {
       const { target_period_value, comparison_period_value, comparison_time_period, sentiment } = ban.result.facts;
       const { markup } = ban.result;
 
-      // if the value of is_nan in true, that means there was no data for that period available. 
+      // if the value of is_nan in true, that means there was no data for that period available.
       if (absolute.is_nan) {
         comparison.absolute = '';
         comparison.relative = '';
@@ -545,23 +545,131 @@ const parseDataSources = (rawMetadata) => {
   return dataSourceProjects;
 }
 
-export const applyVizFormatting = (viz, contextData) =>{
-  if (viz?.config) {
-    if (typeof contextData?.cardBackgroundColor !== 'undefined')
-      viz.config.background = contextData.cardBackgroundColor;
-    if (typeof contextData?.options?.cardText?.fontFamily !== 'undefined')
-      viz.config.font = contextData.options.cardText.fontFamily;
-    if (!viz.title) viz.title = {};
-    if (typeof contextData?.options?.cardText?.color !== 'undefined')
-      viz.title.color = contextData.options.cardText.color;
-    if (!viz.config.axis) viz.config.axis = {};
-    if (typeof contextData?.options?.cardText?.fontFamily !== 'undefined')
-      viz.config.axis.labelFont = contextData.options.cardText.fontFamily;
-    if (typeof contextData?.options?.cardText?.fontFamily !== 'undefined')
-      viz.config.axis.titleFont = contextData.options.cardText.fontFamily;
-    if (typeof contextData?.options?.cardText?.color !== 'undefined')
-      viz.config.labelColor = contextData.options.cardText.color;
-    if (typeof contextData?.options?.cardText?.color !== 'undefined')
-      viz.config.titleColor = contextData.options.cardText.color;
+export const applyVizFormatting = (viz, contextData) => {
+  if (!viz || Object.keys(viz).length === 0) {
+    return {};
   }
+
+    const setVizParam = (paramName, value) => {
+      if (viz.params) {
+        const param = viz.params.find(param => param.name === paramName);
+        if (param) {
+          param.value = value;
+        }
+      }
+    };
+  if (!viz?.config) {
+    viz.config = {};
+  }
+  if (contextData?.options?.cardBackgroundColor) {
+    viz.config.background = contextData.options.cardBackgroundColor;
+  }
+/*   if (contextData?.options?.cardText?.fontFamily) {
+    setVizParam('font', contextData.options.cardText.fontFamily);
+  }
+  if (!viz.title) viz.title = {};
+  if (contextData?.options?.cardText?.color) {
+    setVizParam('titleColor', contextData.options.cardText.color);
+  }
+  if (!viz.config.axis) viz.config.axis = {};
+  if (contextData?.options?.cardText?.fontFamily) {
+    setVizParam('axisLabelFont', contextData.options.cardText.fontFamily);
+  } */
+  if (contextData?.options?.cardText?.fontFamily) {
+    setVizParam('axisTitleFont', contextData.options.cardText.fontFamily);
+    setVizParam('barValueLabelFontFace', contextData.options.cardText.fontFamily);
+    setVizParam('contributorAxisLabelFontFace', contextData.options.cardText.fontFamily);
+    setVizParam('axisLabelFontFace', contextData.options.cardText.fontFamily);
+    setVizParam('currentValueFontFace', contextData.options.cardText.fontFamily);
+  }
+  if (contextData?.options?.cardText?.color) {
+    setVizParam('labelColor', contextData.options.cardText.color);
+  }
+  if (contextData?.options?.cardText?.color) {
+    setVizParam('titleColor', contextData.options.cardText.color);
+  }
+
+
+
+  if (contextData?.options?.chart?.axis) {
+    setVizParam('xAxisGridColorDefault', contextData.options.chart.axis);
+    setVizParam('xAxisGridColorActive', contextData.options.chart.axis);
+    setVizParam('contributorAxisColor', contextData.options.chart.axis);
+    setVizParam('contributorAxisDomainColor', contextData.options.chart.axis);
+  }
+  if (contextData?.options?.chart?.axisLabels) {
+    setVizParam('axisLabelColor', contextData.options.chart.axisLabels);
+    setVizParam('contributorAxisLabelColor', contextData.options.chart.axisLabels);
+  }
+  if (contextData?.options?.chart?.primary) {
+    setVizParam('contributorBarColor', contextData.options.chart.primary);
+    setVizParam('currentValueCircleColor2', contextData.options.chart.primary);
+    setVizParam('lineColor', contextData.options.chart.primary);
+    setVizParam('colorDefault', contextData.options.chart.primary);
+  }
+  if (contextData?.options?.chart?.primaryLabel) {
+    setVizParam('barValueLabelColor', contextData.options.chart.primaryLabel);
+    setVizParam('currentValueColor', contextData.options.chart.primaryLabel);
+  }
+  if (contextData?.options?.chart?.average) {
+    setVizParam('averageBarColor', contextData.options.chart.average);
+    setVizParam('contributorBarColorAverage', contextData.options.chart.average);
+  }
+  if (contextData?.options?.chart?.averageLabel) {
+    setVizParam('barValueLabelColorAverage', contextData.options.chart.averageLabel);
+  }
+  if (contextData?.options?.chart?.cumulative) {
+    setVizParam('cumulativeBarColor', contextData.options.chart.cumulative);
+  }
+  if (contextData?.options?.chart?.cumulativeLabel) {
+    setVizParam('cumulativeValueLabelColor', contextData.options.chart.cumulativeLabel);
+  }
+  if (contextData?.options?.chart?.favorable) {
+    setVizParam('contributorBarColorFavorable', contextData.options.chart.favorable);
+    setVizParam('colorDesiredTrend', contextData.options.chart.favorable);
+    setVizParam('colorDesiredChange', contextData.options.chart.favorable);
+  }
+  if (contextData?.options?.chart?.favorableLabel) {
+    setVizParam('barValueLabelColorFavorable', contextData.options.chart.favorableLabel);
+    setVizParam('barValueLabelColorPositive', contextData.options.chart.favorableLabel);
+  }
+  if (contextData?.options?.chart?.unfavorable) {
+    setVizParam('contributorBarColorUnfavorable', contextData.options.chart.unfavorable);
+    setVizParam('colorUndesiredTrend', contextData.options.chart.unfavorable);
+    setVizParam('colorUndersiredChange', contextData.options.chart.unfavorable);
+  }
+  if (contextData?.options?.chart?.unfavorableLabel) {
+    setVizParam('barValueLabelColorUnfavorable', contextData.options.chart.unfavorableLabel);
+    setVizParam('barValueLabelColorNegative', contextData.options.chart.unfavorableLabel);
+  }
+  if (contextData?.options?.chart?.unspecified) {
+    setVizParam('contributorBarColorUnspecified', contextData.options.chart.unspecified);
+  }
+  if (contextData?.options?.chart?.unspecifiedLabel) {
+    setVizParam('barValueLabelColorUnspecified', contextData.options.chart.unspecifiedLabel);
+  }
+  if (contextData?.options?.chart?.sum) {
+    setVizParam('sumBarColor', contextData.options.chart.sum);
+  }
+  if (contextData?.options?.chart?.projection) {
+    setVizParam('colorProjection', contextData.options.chart.projection);
+  }
+  if (contextData?.options?.chart?.range) {
+    setVizParam('normalRangeColor', contextData.options.chart.range);
+  }
+  if (contextData?.options?.chart?.currentValueDotBorder) {
+    setVizParam('currentValueCircleColor1', contextData.options.chart.currentValueDotBorder);
+  }
+  if (contextData?.options?.chart?.dotBorder) {
+    setVizParam('pointStrokeColor', contextData.options.chart.dotBorder);
+  }
+  if (contextData?.options?.chart?.hoverDot) {
+    setVizParam('hoverDotColor', contextData.options.chart.hoverDot);
+  }
+  if (contextData?.options?.chart?.hoverLine) {
+    setVizParam('hoverVerticalLineColor', contextData.options.chart.hoverLine);
+  }
+
+  return viz;
+
 }
