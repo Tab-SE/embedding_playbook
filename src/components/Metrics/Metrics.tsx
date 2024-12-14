@@ -1,18 +1,18 @@
-"use client";
+'use client';
 /*
-This is the original metrics page from embed tableau.  It fetches the SUBSCRIBED metrics for the user.
+This is the carousel metrics page from embed tableau.  It fetches the SUBSCRIBED metrics for the user.
 */
 
 import { useState, useEffect, useContext } from 'react';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 import { useMetrics } from '../../hooks';
 import { MetricsPlusFilters } from './MetricsPlusFilters';
-import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
+import { ExtensionDataContext } from '../Providers';
 import { MetricCollection } from 'models';
 import { sortPayloadByIds } from '.';
 import { useMetricsExtension } from 'hooks/useMetricsExtension';
-import { InsightsOnly, LoadDatasources } from '..';
+import { FontSelector, InsightsOnly, LoadDatasources } from '..';
 
 export const Metrics = (props) => {
   const { theme, showMetrics, showInsights, metricOptions, sortOrder } = props;
@@ -20,7 +20,7 @@ export const Metrics = (props) => {
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
   const { status: session_status, data: session_data } = useSession();
   // syncs with user metrics, only fires query when user is defined -> controlled query
-  const { status, data, error, isError, isSuccess } = useMetricsExtension(
+  const { status, data, error, isError, isSuccess, signInError } = useMetricsExtension(
     contextData.loginData.userName,
     contextData.loginData
   );
@@ -33,7 +33,7 @@ export const Metrics = (props) => {
   // }, [session_status, session_data]);
 
   useEffect(() => {
-    if (data && data.length > 0 && !isError) {
+    if (data && data.length > 0 && !isError && !signInError) {
       // extract metrics if data is available
       let metrics = sortPayloadByIds(data, sortOrder);
       let metricCollection = new MetricCollection(metrics);
@@ -41,6 +41,7 @@ export const Metrics = (props) => {
       updateContextData({ metricCollection: metricCollection });
     }
   }, [data]);
+  // }, [data, updateContextData, sortOrder, isError, contextData.metricCollection.metricOptions, signInError]);
 
   if (isError) {
     console.debug(error);
@@ -48,8 +49,24 @@ export const Metrics = (props) => {
 
   return (
     <>
+      {isError && (
+        <div className="alert alert-danger" role="alert">
+          {error.message || 'There was an error fetching the metrics. Please try again later.'}
+        </div>
+      )}
+      {signInError && (
+        <div className="alert alert-danger" role="alert">
+          {signInError || 'There was an error signing in. Please try again later.'}
+        </div>
+      )}
+      {data && contextData.options.googleFont?.fontFamily && contextData.options.googleFont?.fontWeight && (
+        <FontSelector
+          fontName={contextData.options.googleFont.fontFamily}
+          weight={contextData.options.googleFont.fontWeight}
+        />
+      )}
       <LoadDatasources />
-      <MetricsPlusFilters />
+      {!isError && !signInError && <MetricsPlusFilters />}
     </>
   );
 };

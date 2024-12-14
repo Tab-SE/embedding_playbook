@@ -1,3 +1,4 @@
+"use client"
 /*
 
 This SHOULD be rationalized with the InsightsOnly, but there was some issue with setting currentMetric

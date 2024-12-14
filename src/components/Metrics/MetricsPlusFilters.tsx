@@ -74,20 +74,15 @@ export const MetricsPlusFilters = (props) => {
     }
   }, [fieldResults, memoizedDatasources]);
 
-
-
-
-
-
   useEffect(() => {
-    if (metricFilterResults.data && !_.isEqual(filteredMetrics, metricFilterResults.data)) {
-      setFilteredMetrics(metricFilterResults.data);
-    } else if (!metricFilterResults.data && metrics && !_.isEqual(filteredMetrics, metrics)) {
-      if (!metricFilterResults.isLoading) {
+    if (!metricFilterResults.isLoading) {
+      if (metricFilterResults.data && !_.isEqual(filteredMetrics, metricFilterResults.data)) {
+        setFilteredMetrics(metricFilterResults.data);
+      } else if (!metricFilterResults.data && metrics && !_.isEqual(filteredMetrics, metrics)) {
         setFilteredMetrics(metrics);
       }
     }
-  }, [metricFilterResults.data, metrics]);
+  }, [metricFilterResults.data, metricFilterResults.isLoading, metrics]);
 
   useEffect(() => {
     // this method will apply to the "showPulseFilters" option

@@ -1,3 +1,147 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the text */
+  left: 50%;
+  margin-left: -100px; /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: blue;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  margin-left: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 16px;
+  position: relative;
+}
+
+.tooltip-content {
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  width: 400px;
+  z-index: 100;
+  font-size: 12px;
+  top: 20px; /* Adjust this value as needed to control the tooltip's vertical position */
+  left: -50%;
+  transform: translateX(-50%);
+}
+
+.tooltip-content::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #333 transparent;
+}
+
+/* .nx-max-w-\[90rem\]{
+  max-width: 98vw !important;
+} */
+
+/* .nx-flex {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+} */
+
+.grid-container {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+}
+
+/************************/
+/*  Tableau formatting  */
+/************************/
+
+/*  Card Header         */
+span.MuiCardHeader-title{
+  font-size: larger;
+}
+/*  Card Footer         */
+div.extra {
+  font-size: small;
+  color: gray;
+}
+div.MuiGrid-item {
+  min-width: 26em;;
+}
+
+/*  Bold some text from insights  */
+span[data-type="entity"] {
+  font-weight: 700;
+}
+span[data-type="value"] {
+  font-weight: 700;
+}
+span[data-type="insight-type-keyword"] {
+  font-weight: 700;
+}
+
+/*  Color text based on the sentitment */
+span[data-sentiment="positive"]{
+  color: green;
+}
+span[data-sentiment="negative"]{
+  color: red;
+}
+
+
+/*  Sidebar formatting  */
+@layer base {
+  :root {
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 100% 50%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}

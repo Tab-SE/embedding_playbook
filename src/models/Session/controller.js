@@ -26,13 +26,17 @@ export const handleRestJWT = async (user, jwt_options, scopes) => {
   const valid_rest = jwtVerify(rest_token, user.username, jwt_secret, jwt_client_id);
 
   if (valid_rest) {
-    console.log(`retrieving credentials for ${user.username} in handleRestJWT...`);
+    if (process.env?.DEBUG || process.env?.DEBUG?.toLowerCase() === 'true'){
+      console.log(`retrieving credentials for ${user.username} in handleRestJWT...`);
+    }
     // only return credentials if JWT meets requirements
     const credentials = await tabAuthJWT(rest_token, user.tableauUrl, user.site_id);
     // JWT library automatically calculates session life
     credentials.created = valid_rest.iat;
     credentials.expiration = valid_rest.exp;
-    console.log(`returning credentials for ${user.username} in handleRestJWT... ${JSON.stringify(credentials)}`);
+    if (process.env?.DEBUG || process.env?.DEBUG?.toLowerCase() === 'true'){
+      console.log(`returning credentials for ${user.username} in handleRestJWT... ${JSON.stringify(credentials)}`);
+    }
     return { credentials };
   } else {
     throw new Error('JWT is not valid');
@@ -69,7 +73,7 @@ export const handleJWT = async (sub, jwt_options, scopes, user) => {
   // verify the JWT against the same parameters
   const valid_embed = jwtVerify(embed_token, sub, jwt_secret, jwt_client_id);
   const valid_rest = jwtVerify(rest_token, sub, jwt_secret, jwt_client_id);
-  
+
   if (valid_embed && valid_rest) {
     // only return credentials if JWT meets requirements
     const credentials = await tabAuthJWT(rest_token, user.tableauUrl, user.site);

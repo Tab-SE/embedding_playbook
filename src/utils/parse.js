@@ -187,7 +187,7 @@ export const parseStats = (data, metric) => {
     insight_groups.forEach((insight) => {
       // uses the ban insight to generate stats
       if (insight.type === 'ban') {
-        // BAN responses only have 1 insight_groups and 2 insights; 2nd insight group is requested separately 
+        // BAN responses only have 1 insight_groups and 2 insights; 2nd insight group is requested separately
         // for time comparison purposes
         result = data?.bundle_response?.result.insight_groups[0].insights[0].result;
         facts = result?.facts;
@@ -222,17 +222,18 @@ export const parseStats = (data, metric) => {
 
         // direction of the arrow icon -- new Logical/sentimental version dschober
         const dir = facts?.difference.direction;
-        const sent = facts?.sentiment;
+        const sentiment = facts?.sentiment;
 
         stats.dir = dir; // need to add react icon back in jsx/tsx files
+        stats.sentiment = sentiment;
 
-        if (sent === 'positive') {
+        if (sentiment === 'positive') {
           stats.color = 'text-metricsPositive';
           stats.badge = 'bg-metricsPositive';
-        } else if (sent === 'neutral') {
+        } else if (sentiment === 'neutral') {
           stats.color = 'text-metricsNeutral';
           stats.badge = 'bg-metricsNeutral';
-        } else if (sent === 'negative') {
+        } else if (sentiment === 'negative') {
           stats.color = 'text-metricsNegative';
           stats.badge = 'bg-metricsNegative';
         }
@@ -246,50 +247,83 @@ export const parseStats = (data, metric) => {
 
 const parseTimeComparisons = (data, metric) => {
   const insights = data.bundle_response.result.insight_groups.filter(group => group.type === 'ban')[0].insights;
-  
+
   const formatComparison = (comparison, ban) => {
-    const { absolute, relative, direction } = ban.result.facts.difference;
-    const { target_period_value, comparison_period_value, comparison_time_period, sentiment } = ban.result.facts;
-    const { markup } = ban.result;
+    // if (!ban.result.)
+    try {
+      const { absolute, relative, direction } = ban.result.facts.difference;
+      const { target_period_value, comparison_period_value, comparison_time_period, sentiment } = ban.result.facts;
+      const { markup } = ban.result;
 
-    comparison.absolute = absolute.formatted;
-    comparison.relative = relative.formatted;
+      // if the value of is_nan in true, that means there was no data for that period available.
+      if (absolute.is_nan) {
+        comparison.absolute = '';
+        comparison.relative = '';
+        comparison.direction = '';
+        comparison.range = '';
+        comparison.markup = `No data for prior ${comparison.comparison_name}`;
+        comparison.target_period_value = '';
+        comparison.comparison_period_value = '';
+        comparison.color = 'text-metricsNeutral';
+        comparison.badge = 'bg-metricsNeutral';
+        comparison.text = `No data for prior ${comparison.comparison_name}`;
+        comparison.is_nan = true;
+        comparison.sentiment = sentiment;
+      }
+      else {
+        comparison.absolute = absolute.formatted;
+        comparison.relative = relative.formatted;
+        // Add plus sign for increments
+        if (absolute.formatted && !absolute.formatted.startsWith('-')) {
+          comparison.absolute = `+${absolute.formatted}`;
+          comparison.relative = `+${relative.formatted}`;
+        }
+        comparison.range = comparison_time_period.range;
+        comparison.target_period_value = target_period_value.formatted;
+        comparison.comparison_period_value = comparison_period_value.formatted;
+        comparison.markup = markup;
+        comparison.direction = direction;
+        comparison.sentiment = sentiment;
+        if (sentiment === 'positive') {
+          comparison.color = 'text-metricsPositive';
+          comparison.badge = 'bg-metricsPositive';
+        } else if (sentiment === 'neutral') {
+          comparison.color = 'text-metricsNeutral';
+          comparison.badge = 'bg-metricsNeutral';
+        } else if (sentiment === 'negative') {
+          comparison.color = 'text-metricsNegative';
+          comparison.badge = 'bg-metricsNegative';
+        }
+        if (absolute.formatted.includes('%')) {
+          const directionText = target_period_value.raw > comparison_period_value.raw ? 'Up' : 'Down';
+          comparison.text = `${directionText} from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`;
+          comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${directionText}\u003c/span\u003e from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`
+        } else {
+          comparison.text = `${comparison.relative} (${comparison.absolute}) ${comparison.comparison} (${comparison.range})`;
+          comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${comparison.relative}\u003c/span\u003e (${comparison.absolute}) \u003c/span\u003e ${comparison.comparison} (${comparison.range})`;
+        }
+      }
+    } catch (error) {
 
-    // Add plus sign for increments
-    if (absolute.formatted && !absolute.formatted.startsWith('-')) {
-      comparison.absolute = `+${absolute.formatted}`;
-      comparison.relative = `+${relative.formatted}`;
-    }
-
-    comparison.range = comparison_time_period.range;
-    comparison.markup = markup;
-    comparison.target_period_value = target_period_value.formatted;
-    comparison.comparison_period_value = comparison_period_value.formatted;
-    comparison.direction = direction;
-
-    if (sentiment === 'positive') {
-      comparison.color = 'text-metricsPositive';
-      comparison.badge = 'bg-metricsPositive';
-    } else if (sentiment === 'neutral') {
-      comparison.color = 'text-metricsNeutral';
-      comparison.badge = 'bg-metricsNeutral';
-    } else if (sentiment === 'negative') {
-      comparison.color = 'text-metricsNegative';
-      comparison.badge = 'bg-metricsNegative';
-    }
-
-    if (absolute.formatted.includes('%')) {
-      const directionText = target_period_value.raw > comparison_period_value.raw ? 'Up' : 'Down';
-      comparison.text = `${directionText} from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`;
-      comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${directionText}\u003c/span\u003e from ${comparison.comparison_period_value} ${comparison.comparison} (${comparison.range})`
-    } else {
-      comparison.text = `${comparison.relative} (${comparison.absolute}) ${comparison.comparison} (${comparison.range})`;
-      comparison.markup = `\u003cspan data-direction\u003d\"${direction}\" data-sentiment\u003d\"${sentiment}\" className=\"${comparison.color} ${comparison.badge}\"\u003e${comparison.relative}\u003c/span\u003e (${comparison.absolute}) \u003c/span\u003e ${comparison.comparison} (${comparison.range})`;
+      comparison = {
+        absolute: '',
+        relative: '',
+        direction: '',
+        range: '',
+        markup: '',
+        target_period_value: '',
+        comparison_period_value: '',
+        color: 'text-metricsNeutral',
+        badge: 'bg-metricsNeutral',
+        text: '',
+        sentiment: 'neutral',
+      };
     }
   };
 
   let comparisons = metric.comparisons.comparisons[0].map(item => ({
-    comparison: item.compare_config.comparison.includes('YEAR')?'vs. prior year':'vs. prior period',
+    comparison: item.compare_config.comparison.includes('YEAR') ? 'vs. prior year' : 'vs. prior period',
+    comparison_name: item.compare_config.comparison.includes('YEAR') ? 'year' : 'period',
   }));
 
   // Format the first comparison
@@ -509,4 +543,133 @@ const parseDataSources = (rawMetadata) => {
   }
 
   return dataSourceProjects;
+}
+
+export const applyVizFormatting = (viz, contextData) => {
+  if (!viz || Object.keys(viz).length === 0) {
+    return {};
+  }
+
+    const setVizParam = (paramName, value) => {
+      if (viz.params) {
+        const param = viz.params.find(param => param.name === paramName);
+        if (param) {
+          param.value = value;
+        }
+      }
+    };
+  if (!viz?.config) {
+    viz.config = {};
+  }
+  if (contextData?.options?.cardBackgroundColor) {
+    viz.config.background = contextData.options.cardBackgroundColor;
+  }
+/*   if (contextData?.options?.cardText?.fontFamily) {
+    setVizParam('font', contextData.options.cardText.fontFamily);
+  }
+  if (!viz.title) viz.title = {};
+  if (contextData?.options?.cardText?.color) {
+    setVizParam('titleColor', contextData.options.cardText.color);
+  }
+  if (!viz.config.axis) viz.config.axis = {};
+  if (contextData?.options?.cardText?.fontFamily) {
+    setVizParam('axisLabelFont', contextData.options.cardText.fontFamily);
+  } */
+  if (contextData?.options?.cardText?.fontFamily) {
+    setVizParam('axisTitleFont', contextData.options.cardText.fontFamily);
+    setVizParam('barValueLabelFontFace', contextData.options.cardText.fontFamily);
+    setVizParam('contributorAxisLabelFontFace', contextData.options.cardText.fontFamily);
+    setVizParam('axisLabelFontFace', contextData.options.cardText.fontFamily);
+    setVizParam('currentValueFontFace', contextData.options.cardText.fontFamily);
+  }
+  if (contextData?.options?.cardText?.color) {
+    setVizParam('labelColor', contextData.options.cardText.color);
+  }
+  if (contextData?.options?.cardText?.color) {
+    setVizParam('titleColor', contextData.options.cardText.color);
+  }
+
+
+
+  if (contextData?.options?.chart?.axis) {
+    setVizParam('xAxisGridColorDefault', contextData.options.chart.axis);
+    setVizParam('xAxisGridColorActive', contextData.options.chart.axis);
+    setVizParam('contributorAxisColor', contextData.options.chart.axis);
+    setVizParam('contributorAxisDomainColor', contextData.options.chart.axis);
+  }
+  if (contextData?.options?.chart?.axisLabels) {
+    setVizParam('axisLabelColor', contextData.options.chart.axisLabels);
+    setVizParam('contributorAxisLabelColor', contextData.options.chart.axisLabels);
+  }
+  if (contextData?.options?.chart?.primary) {
+    setVizParam('contributorBarColor', contextData.options.chart.primary);
+    setVizParam('currentValueCircleColor2', contextData.options.chart.primary);
+    setVizParam('lineColor', contextData.options.chart.primary);
+    setVizParam('colorDefault', contextData.options.chart.primary);
+  }
+  if (contextData?.options?.chart?.primaryLabel) {
+    setVizParam('barValueLabelColor', contextData.options.chart.primaryLabel);
+    setVizParam('currentValueColor', contextData.options.chart.primaryLabel);
+  }
+  if (contextData?.options?.chart?.average) {
+    setVizParam('averageBarColor', contextData.options.chart.average);
+    setVizParam('contributorBarColorAverage', contextData.options.chart.average);
+  }
+  if (contextData?.options?.chart?.averageLabel) {
+    setVizParam('barValueLabelColorAverage', contextData.options.chart.averageLabel);
+  }
+  if (contextData?.options?.chart?.cumulative) {
+    setVizParam('cumulativeBarColor', contextData.options.chart.cumulative);
+  }
+  if (contextData?.options?.chart?.cumulativeLabel) {
+    setVizParam('cumulativeValueLabelColor', contextData.options.chart.cumulativeLabel);
+  }
+  if (contextData?.options?.chart?.favorable) {
+    setVizParam('contributorBarColorFavorable', contextData.options.chart.favorable);
+    setVizParam('colorDesiredTrend', contextData.options.chart.favorable);
+    setVizParam('colorDesiredChange', contextData.options.chart.favorable);
+  }
+  if (contextData?.options?.chart?.favorableLabel) {
+    setVizParam('barValueLabelColorFavorable', contextData.options.chart.favorableLabel);
+    setVizParam('barValueLabelColorPositive', contextData.options.chart.favorableLabel);
+  }
+  if (contextData?.options?.chart?.unfavorable) {
+    setVizParam('contributorBarColorUnfavorable', contextData.options.chart.unfavorable);
+    setVizParam('colorUndesiredTrend', contextData.options.chart.unfavorable);
+    setVizParam('colorUndersiredChange', contextData.options.chart.unfavorable);
+  }
+  if (contextData?.options?.chart?.unfavorableLabel) {
+    setVizParam('barValueLabelColorUnfavorable', contextData.options.chart.unfavorableLabel);
+    setVizParam('barValueLabelColorNegative', contextData.options.chart.unfavorableLabel);
+  }
+  if (contextData?.options?.chart?.unspecified) {
+    setVizParam('contributorBarColorUnspecified', contextData.options.chart.unspecified);
+  }
+  if (contextData?.options?.chart?.unspecifiedLabel) {
+    setVizParam('barValueLabelColorUnspecified', contextData.options.chart.unspecifiedLabel);
+  }
+  if (contextData?.options?.chart?.sum) {
+    setVizParam('sumBarColor', contextData.options.chart.sum);
+  }
+  if (contextData?.options?.chart?.projection) {
+    setVizParam('colorProjection', contextData.options.chart.projection);
+  }
+  if (contextData?.options?.chart?.range) {
+    setVizParam('normalRangeColor', contextData.options.chart.range);
+  }
+  if (contextData?.options?.chart?.currentValueDotBorder) {
+    setVizParam('currentValueCircleColor1', contextData.options.chart.currentValueDotBorder);
+  }
+  if (contextData?.options?.chart?.dotBorder) {
+    setVizParam('pointStrokeColor', contextData.options.chart.dotBorder);
+  }
+  if (contextData?.options?.chart?.hoverDot) {
+    setVizParam('hoverDotColor', contextData.options.chart.hoverDot);
+  }
+  if (contextData?.options?.chart?.hoverLine) {
+    setVizParam('hoverVerticalLineColor', contextData.options.chart.hoverLine);
+  }
+
+  return viz;
+
 }

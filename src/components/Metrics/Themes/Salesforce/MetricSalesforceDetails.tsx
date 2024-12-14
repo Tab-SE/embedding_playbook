@@ -12,9 +12,9 @@ import { Badge } from '../../../ui';
 import { Dialog, DialogTrigger } from '../../../ui';
 
 import { useInsights } from '../../../../hooks';
-import { parseInsights } from '../../../../utils';
+import { parseInsights, adjustLightness, applyVizFormatting } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
-import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
@@ -36,7 +36,6 @@ export const MetricSalesforceDetails: React.FC<{
   };
   // distinct count of insights
   const [bundleCount, setBundleCount] = useState<number | null>(null);
-  // const [datasourceIds, setDatasourceIds] = useState<DatasourceFieldData[]>([]);
   let result; // contains question, markup and facts
   let facts; // contains values, absolute and relative changes
   let stats: any = { sentiment: undefined }; // prop storing key facts
@@ -45,8 +44,6 @@ export const MetricSalesforceDetails: React.FC<{
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
   const [filterReady, setFilterReady] = useState<boolean>(false);
   const [appliedFilters, setAppliedFilters] = useState<React.ReactNode>(() => <div></div>);
-  // const [mergedFieldData, setMergedFieldData] = useState<FieldResult[]>([]);
-  // const [currDatasourceFilterFields, setCurrDatasourceFilterFields] = useState<any[]>([]);
   const [filtersApplied, setFiltersApplied] = useState<'flex' | 'hidden'>('hidden');
   const currDatasourceFilterFields = extension_options.allowed_dimensions;
   const [insights, setInsights] = useState<InsightsModel[]>([]);
@@ -88,6 +85,7 @@ export const MetricSalesforceDetails: React.FC<{
   if (isError) {
     console.debug(error);
   }
+  let viz;
   if (isSuccess) {
     stats = parseStats(data, metric);
     if (stats.dir === 'up') {
@@ -117,6 +115,8 @@ export const MetricSalesforceDetails: React.FC<{
         stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
       }
     }
+        viz = data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz;
+        viz = applyVizFormatting(viz, contextData);
   }
 
   const myIcon: IconProp = faFilter;
@@ -129,28 +129,15 @@ export const MetricSalesforceDetails: React.FC<{
   }
 
   return (
-    <div className="p-4 h-full flex flex-col bg-white border border-gray-200 shadow-sm">
+    <div
+      className="p-4 h-full flex flex-col bg-white border border-gray-200 shadow-sm"
+      style={Object.assign({}, contextData.options.cardText, {
+        backgroundColor: contextData.options.cardBackgroundColor,
+      })}
+    >
       {/* Mimic SLDS box and theme */}
-      <div className="flex items-end">
-        <div>
-          <div className="w-full">
-            <div className="border-b border-gray-200 pb-1">
-              <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
-                <li className="mr-2 text-2xl">{metric.name}</li>
-                {/*               <li className="mr-2">
-                <a href="#" className="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300">
-                Insights
-                </a>
-              </li>
-              <li className="mr-2">
-                <a href="#" className="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300">
-                Filters
-                </a>
-              </li> */}
-              </ul>
-            </div>
-          </div>
-        </div>
+      <div className="mr-2" style={contextData.options.cardTitleText}>
+        {metric.name}
       </div>
 
       <div className="flex flex-col pt-2">
@@ -179,12 +166,21 @@ export const MetricSalesforceDetails: React.FC<{
           bundleCount={bundleCount}
           metric={metric}
           insights={insights}
-          viz={data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz}
+          viz={viz}
         />
         {metric.description && metric.description.length > 0 && (
-          <div>
-            <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
-              Metric Description
+          <div className="pl-2">
+            <div
+              className="bg-gray-100
+             px-2 py-1 mb-2 font-semibold"
+             style={{
+              color: contextData.options.cardText.color,
+              backgroundColor: contextData.options.cardText.color
+                ? adjustLightness(contextData.options.cardText.color)
+                : 'initial',
+            }}
+            >
+              Details
             </div>
             <div className="text-xs font-normal">Metric Description</div>
             <div className="text-muted-foreground">{metric.description}</div>
@@ -203,7 +199,7 @@ export const MetricSalesforceDetails: React.FC<{
         )}
 
         {filterReady && contextData.showPulseFilters === 'true' && (
-          <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">Filters</div>
+          <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold">Filters</div>
         )}
         {filterReady &&
           contextData.showPulseFilters === 'true' &&
@@ -231,49 +227,97 @@ const Stats: React.FC<StatsProps> = (props) => {
     return (
       <div className="block">
         <div className="flex flex-row flex-grow-0 mt-2">
-          {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
-            <div className="w-full h-full">
-              <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
-                Metric Value
-              </div>
-              <div className="text-muted-foreground text-3xl">
-                {stats.value ? stats.value : null} {stats.units}
-              </div>
-              <hr className="my-2 border-gray-300" />
-              {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
-                <>
-                  <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
-                    Comparison {stats?.comparisons[0].comparison}
-                  </div>
+          <div className="w-full h-full">
+            <div
+              className="bg-gray-100 px-2 py-1 mb-2 font-semibold"
+              style={{
+                color: contextData.options.cardText.color,
+                backgroundColor: contextData.options.cardText.color
+                  ? adjustLightness(contextData.options.cardText.color)
+                  : 'initial',
+              }}
+            >
+              Metric Value
+            </div>
+            <div className="text-muted-foreground" style={contextData.options.cardBANText}>
+              {stats.value ? stats.value : null} {stats.units}
+            </div>
+            <hr className="my-2 border-gray-300" />
+            {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
+              <>
+                <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold"
+                              style={{
+                                color: contextData.options.cardText.color,
+                                backgroundColor: contextData.options.cardText.color
+                                  ? adjustLightness(contextData.options.cardText.color)
+                                  : 'initial',
+                              }}
+                >
+                  Comparison {stats?.comparisons[0].comparison}
+                </div>
 
-                  <div className="flex items-end mb-2">
-                    <div className="w-1/4 pl-2">
-                      <div className="text-xs font-normal">Metric Ind.</div>
-                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
-                        {stats.comparisons[0].directionIcon}
-                      </div>
-                      <hr className="my-2 border-gray-300" />
+                <div
+                  className="flex items-end mb-2"
+                  style={{
+                    color:
+                      stats?.comparisons?.[0]?.sentiment === 'positive'
+                        ? contextData.options.positiveSentimentColor
+                        : stats?.comparisons?.[0]?.sentiment === 'negative'
+                        ? contextData.options.negativeSentimentColor
+                        : contextData?.options?.neutralSentimentColor,
+                  }}
+                >
+                  <div className="w-1/4 pl-2">
+                    <div className="text-xs font-normal">Metric Ind.</div>
+                    <div className={`text-muted-foreground text-3xl`}>
+                      {stats.comparisons[0].directionIcon}
                     </div>
-                    <div className="w-1/2 pl-2">
-                      <div className="text-xs font-normal">Relative Change</div>
-                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
-                        {stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}
-                      </div>
-                      <hr className="my-2 border-gray-300" />
-                    </div>
-                    <div className="w-1/2 pl-2">
-                      <div className="text-xs font-normal">Abs. Change</div>
-                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
-                        △ {stats.comparisons[0].absolute}
-                      </div>
-                      <hr className="my-2 border-gray-300" />
-                    </div>
+                    <hr className="my-2 border-gray-300" />
                   </div>
-                </>
-              )}
-              {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
+                  <div className="w-1/2 pl-2">
+                    <div className="text-xs font-normal">Relative Change</div>
+                    <div className={`text-muted-foreground text-3xl`}>
+                      {stats.comparisons[0].relative ? `${stats.comparisons[0].relative}` : null}
+                    </div>
+                    <hr className="my-2 border-gray-300" />
+                  </div>
+                  <div className="w-1/2 pl-2">
+                    <div className="text-xs font-normal">Abs. Change</div>
+                    <div className={`text-muted-foreground text-3xl`}>
+                      △ {stats.comparisons[0].absolute}
+                    </div>
+                    <hr className="my-2 border-gray-300" />
+                  </div>
+                </div>
+              </>
+            )}
+            {contextData.timeComparisonMode === 'both' &&
+              stats?.comparisons?.[1] &&
+              (stats?.comparisons[1].is_nan ? (
+                <div
+                  className="pl-2"
+                  style={{
+                    color:
+                      stats?.comparisons?.[1]?.sentiment === 'positive'
+                        ? contextData.options.positiveSentimentColor
+                        : stats?.comparisons?.[1]?.sentiment === 'negative'
+                        ? contextData.options.negativeSentimentColor
+                        : contextData?.options?.neutralSentimentColor,
+                  }}
+                >
+                  <div className="text-xs font-normal">Metric Ind.</div>
+                  <div className={`text-muted-foreground text-xl ${stats.color}`}>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: stats?.comparisons[1].markup,
+                      }}
+                    />
+                  </div>
+                  <hr className="my-2 border-gray-300" />
+                </div>
+              ) : (
                 <>
-                  <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
+                  <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold">
                     Comparison {stats?.comparisons[1].comparison}
                   </div>
 
@@ -287,7 +331,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                     </div>
                     <div className="w-1/2 pl-2">
                       <div className="text-xs font-normal">Relative Change</div>
-                      <div className={`text-muted-foreground text-3xl ${stats.color}`}>
+                      <div className={`text-muted-foregroundF text-3xl ${stats.color}`}>
                         {stats.comparisons[1].relative ? `${stats.comparisons[1].relative}` : null}
                       </div>
                       <hr className="my-2 border-gray-300" />
@@ -301,46 +345,52 @@ const Stats: React.FC<StatsProps> = (props) => {
                     </div>
                   </div>
                 </>
-              )}
-              {contextData.timeComparisonMode === 'text' && (
-                <>
-                  <div className="w-full h-full">
-                    <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">
-                      Comparisons
-                    </div>
-                    <div className="text-muted-foreground">
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            stats?.comparisons &&
-                            stats?.comparisons[0] &&
-                            stats?.comparisons[0].markup,
-                        }}
-                      />
-                    </div>
-                      <hr className="my-2 border-gray-300" />
-                    <div className="text-muted-foreground">
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            stats.comparisons &&
-                            stats?.comparisons[1] &&
-                            stats?.comparisons[1].markup,
-                        }}
-                      />
-                    </div>
-                    <hr className="my-2 border-gray-300" />
+              ))}
+            {contextData.timeComparisonMode === 'text' && (
+              <>
+                <div className="w-full h-full">
+                  <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold">
+                    Comparisons
                   </div>
-                </>
-              )}
-            </div>
-          )}
+                  <div className="text-muted-foreground">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          stats?.comparisons &&
+                          stats?.comparisons[0] &&
+                          stats?.comparisons[0].markup,
+                      }}
+                    />
+                  </div>
+                  <hr className="my-2 border-gray-300" />
+                  <div className="text-muted-foreground">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          stats.comparisons &&
+                          stats?.comparisons[1] &&
+                          stats?.comparisons[1].markup,
+                      }}
+                    />
+                  </div>
+                  <hr className="my-2 border-gray-300" />
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-row flex-grow-0 mt-2">
           {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
             <div className="w-full h-full">
-              <div className="bg-gray-100 text-gray-700 px-2 py-1 mb-2 font-semibold">Insights</div>
+              <div className="bg-gray-100 px-2 py-1 mb-2 font-semibold"
+                            style={{
+                              color: contextData.options.cardText.color,
+                              backgroundColor: contextData.options.cardText.color
+                                ? adjustLightness(contextData.options.cardText.color)
+                                : 'initial',
+                            }}
+              >Insights</div>
               <div className="text-xs font-normal">Insight Type</div>
               <div className="text-muted-foreground">{insights[0].typeText}</div>
               <hr className="my-2 border-gray-300" />
@@ -367,46 +417,67 @@ const Stats: React.FC<StatsProps> = (props) => {
           </div>
         )}
 
-        <div className="text-xs font-normal">All Insights</div>
-        <Dialog>
-          <DialogTrigger
-            // onClick={() => {
-            //   console.log(`calling handleSetVal with ${(metric as any).specification_id}`);
-            //   // handleSetVal(metric.id);
-            //   contextData.companionMode === 'source' ? contextData.handleSetVal((metric as any).specification_id) : null;
-            // }}
-            onClick={() => {
-              const metricId = (metric as any).specification_id;
-              console.log(`calling handleSetVal with ${metricId}`);
+        <div className="text-xs font-normal pl-2">All Insights</div>
+        <div className="pl-2">
+          <Dialog>
+            <DialogTrigger
+              className="bg-white"
+              onClick={() => {
+                const metricId = (metric as any).specification_id;
+                console.log(`calling handleSetVal with ${metricId}`);
 
-              if (contextData.companionMode === 'source') {
-                contextData.handleSetVal(metricId);
-              } else if (contextData.companionMode === 'popup') {
-                // Define the popup URL
-                const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
+                if (contextData.companionMode === 'source') {
+                  contextData.handleSetVal(metricId);
+                } else if (contextData.companionMode === 'popup') {
+                  // Define the popup URL
+                  const popupUrl = `/pulseExtensionInsightsPopup?metricId=${metricId}`;
 
-                // Check if the popup window is already open and valid
-                if (!popupWindowRef || popupWindowRef.closed) {
-                  // Open a new popup window and store the reference
-                  popupWindowRef = window.open(popupUrl, 'insightsPopup', 'width=1225,height=645');
-                } else {
-                  // If the popup is already open, just update the URL and bring it to focus
-                  popupWindowRef.location.href = popupUrl;
-                  popupWindowRef.focus();
+                  // Check if the popup window is already open and valid
+                  if (!popupWindowRef || popupWindowRef.closed) {
+                    // Open a new popup window and store the reference
+                    popupWindowRef = window.open(
+                      popupUrl,
+                      'insightsPopup',
+                      'width=1225,height=645'
+                    );
+                  } else {
+                    // If the popup is already open, just update the URL and bring it to focus
+                    popupWindowRef.location.href = popupUrl;
+                    popupWindowRef.focus();
+                  }
                 }
-              }
-            }}
-          >
-            <Badge className={`${stats.badge} text-stone-50 max-h-6`} variant="undefined">
-              <IconSparkles width={15} height={15} className="mr-1" />
-              Insights: {bundleCount}
-            </Badge>
-          </DialogTrigger>
-          {contextData.companionMode === 'none' || contextData.companionMode === 'target' ? (
-            <InsightsModal metric={metric} stats={stats} />
-          ) : null}
-        </Dialog>
-        <hr className="my-2 border-gray-300" />
+              }}
+            >
+              <Badge
+                className={`${stats.badge} text-stone-50 max-h-6`}
+                variant="undefined"
+                style={{
+                  backgroundColor:
+                    stats?.sentiment === 'positive'
+                      ? contextData.options.positiveSentimentColor
+                      : stats?.sentiment === 'negative'
+                      ? contextData.options.negativeSentimentColor
+                      : contextData?.options?.neutralSentimentColor,
+                  color:
+                    adjustLightness(
+                      stats?.sentiment === 'positive'
+                        ? contextData.options.positiveSentimentColor
+                        : stats?.sentiment === 'negative'
+                        ? contextData.options.negativeSentimentColor
+                        : contextData?.options?.neutralSentimentColor
+                    ) ?? 'initial',
+                }}
+              >
+                <IconSparkles width={15} height={15} className="mr-1" />
+                Insights: {bundleCount}
+              </Badge>
+            </DialogTrigger>
+            {contextData.companionMode === 'none' || contextData.companionMode === 'target' ? (
+              <InsightsModal metric={metric} stats={stats} />
+            ) : null}
+          </Dialog>
+          <hr className="my-2 border-gray-300" />
+        </div>
       </div>
     );
   }

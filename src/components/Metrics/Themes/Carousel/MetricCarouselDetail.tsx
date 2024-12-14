@@ -5,7 +5,7 @@ import {
   IconTrendingDown,
   IconArrowNarrowRight,
 } from '@tabler/icons-react';
-import { Filters } from 'components';
+import { Filters, FontSelector } from 'components';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../../../ui';
 import { Skeleton } from '../../../ui';
@@ -13,15 +13,14 @@ import { Badge } from '../../../ui';
 import { Dialog, DialogTrigger } from '../../../ui';
 
 import { useInsights } from '../../../../hooks';
-import { parseInsights } from '../../../../utils';
 import { InsightsModal, VegaLiteViz } from '../../..';
-import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { InsightsModel } from 'models';
-import { parseStats } from 'utils/parse';
+import { applyVizFormatting, parseStats, adjustLightness, parseInsights } from 'utils';
 
 export const MetricDetail: React.FC<{
   metric: InsightsModel;
@@ -90,6 +89,7 @@ export const MetricDetail: React.FC<{
     console.debug(error);
   }
 
+  let viz;
   if (isSuccess) {
     stats = parseStats(data, metric);
     if (stats.dir === 'up') {
@@ -119,6 +119,9 @@ export const MetricDetail: React.FC<{
         stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
       }
     }
+
+    viz = data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz;
+    viz = applyVizFormatting(viz, contextData);
   }
 
   const myIcon: IconProp = faFilter;
@@ -133,56 +136,64 @@ export const MetricDetail: React.FC<{
   // fully loaded state
   return (
     <>
-    {contextData.companionMode !== 'target' ? (
-
-      <Card className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white text-stone-950 shadow dark:border-stone-800 dark:text-stone-50 min-h-[111px] max-w-[350px] dark:bg-stone-900">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
-        <CardTitle className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 overflow-hidden">
-          {metric.name}
-          <span className="font-normal text-xs block">
-            {metric.namePeriod} ({stats?.target_time_period_range})
-            <br />
-            {contextData.currentFiltersDisplayMode === 'top' &&
-              metric.nameFilters &&
-              `${metric.nameFilters}`}
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-3 pt-0">
-        <Stats
-          isSuccess={isSuccess}
-          stats={stats}
-          bundleCount={bundleCount}
-          metric={metric}
-          insights={insights}
-          viz={data?.bundle_response?.result?.insight_groups[1]?.summaries[0]?.result?.viz}
-          />
-        {contextData.currentFiltersDisplayMode === 'bottom' && (
-          <div
-          className={`text-stone-500 dark:text-stone-300 leading-5 pl-3 overflow-hidden ${filtersApplied}`}
-          >
-            <FontAwesomeIcon icon={myIcon} />
-            {appliedFilters}
-          </div>
-        )}
-        {filterReady &&
-          contextData.showPulseFilters === 'true' &&
-          currDatasourceFilterFields.map((filter: string) => {
-            return (
-              <Filters
-              key={datasourceId + '-' + metric.id + '-' + filter}
-              datasourceId={datasourceId}
-              filterId={filter}
-              handleMetricFilter={handleMetricFilter}
-              passedValues={selectedValues}
-              metric={metric}
-              />
-            );
+      {contextData.companionMode !== 'target' ? (
+        <Card
+          className="flex flex-col flex-grow rounded-xl border border-stone-200 bg-white shadow dark:border-stone-800 min-h-[111px] min-w-[240px] max-w-[350px]"
+          style={Object.assign({}, contextData.options.cardText, {
+            backgroundColor: contextData.options.cardBackgroundColor,
           })}
-      </CardContent>
-    </Card>
-        ) : null}
-          </>
+        >
+          <CardHeader
+            className="flex flex-column items-left justify-between space-y-0 p-1 pt-2"
+            style={contextData.options.cardTitleText}
+          >
+            <CardTitle
+              className={`font-bold pl-3 overflow-hidden`}
+              style={{ lineHeight: `calc(${contextData.options.cardTitleText.fontSize}*1.2)` }}
+            >
+              {metric.name}
+            </CardTitle>
+            <span className="font-normal text-xs block pl-3">
+              {metric.namePeriod} ({stats?.target_time_period_range})
+              <br />
+              {contextData.currentFiltersDisplayMode === 'top' &&
+                metric.nameFilters &&
+                `${metric.nameFilters}`}
+            </span>
+          </CardHeader>
+          <CardContent className="p-3 pt-0">
+            <Stats
+              isSuccess={isSuccess}
+              stats={stats}
+              bundleCount={bundleCount}
+              metric={metric}
+              insights={insights}
+              viz={viz}
+            />
+            {contextData.currentFiltersDisplayMode === 'bottom' && (
+              <div className={`leading-5 pl-3 overflow-hidden ${filtersApplied}`}>
+                <FontAwesomeIcon icon={myIcon} />
+                {appliedFilters}
+              </div>
+            )}
+            {filterReady &&
+              contextData.showPulseFilters === 'true' &&
+              currDatasourceFilterFields.map((filter: string) => {
+                return (
+                  <Filters
+                    key={datasourceId + '-' + metric.id + '-' + filter}
+                    datasourceId={datasourceId}
+                    filterId={filter}
+                    handleMetricFilter={handleMetricFilter}
+                    passedValues={selectedValues}
+                    metric={metric}
+                  />
+                );
+              })}
+          </CardContent>
+        </Card>
+      ) : null}
+    </>
   );
 };
 
@@ -197,11 +208,19 @@ const Stats: React.FC<StatsProps> = (props) => {
         <div className="flex justify-between items-center">
           <div className="pl-1">
             <div className="flex flex-col">
-              <div className="text-2xl font-bold">{stats.value ? stats.value : null}</div>
-              <div className="text-xs text-muted-foreground -mt-2">{stats.units}</div>
+              <div className="font-bold" style={contextData.options.cardBANText}>
+                {stats.value ? stats.value : null}
+              </div>
+              <div
+                className="text-xs text-muted-foreground -mt-2"
+                style={{ fontFamily: contextData.options.cardBANText.fontFamily, color: contextData.options.cardBANText.color }}
+              >
+                {stats.units}
+              </div>
               <div className="mt-2">
                 <Dialog>
                   <DialogTrigger
+                    style={{ backgroundColor: contextData.options.cardBackgroundColor }}
                     onClick={() => {
                       const metricId = (metric as any).specification_id;
                       console.log(`calling handleSetVal with ${metricId}`);
@@ -209,7 +228,7 @@ const Stats: React.FC<StatsProps> = (props) => {
                       if (contextData.companionMode === 'source') {
                         contextData.handleSetVal(metricId);
                       } else if (contextData.companionMode === 'popup') {
-                        const popupUrl = `/pulseExtension/pulseExtensionInsightsPopup?metricId=${metricId}`;
+                        const popupUrl = `/pulseExtensionInsightsPopup?metricId=${metricId}`;
 
                         if (!popupWindowRef || popupWindowRef.closed) {
                           popupWindowRef = window.open(
@@ -225,8 +244,21 @@ const Stats: React.FC<StatsProps> = (props) => {
                     }}
                   >
                     <Badge
-                      className={`${stats.badge} text-stone-50 h-6 flex items-center justify-center whitespace-nowrap w-min px-2`}
-                      variant={undefined}
+                      className={`h-6 flex items-center justify-center whitespace-nowrap w-min px-2`}
+                      style={{
+                        backgroundColor:
+                          stats?.sentiment === 'positive'
+                            ? contextData.options.positiveSentimentColor
+                            : stats?.sentiment === 'negative'
+                            ? contextData.options.negativeSentimentColor
+                            : contextData?.options?.neutralSentimentColor,
+                        color: adjustLightness(stats?.sentiment === 'positive'
+                          ? contextData.options.positiveSentimentColor
+                          : stats?.sentiment === 'negative'
+                          ? contextData.options.negativeSentimentColor
+                          : contextData?.options?.neutralSentimentColor) ?? 'initial'
+                      }}
+                      variant="default"
                     >
                       <IconSparkles width={15} height={15} className="mr-1" />
                       <span className="inline-block">{bundleCount}</span>
@@ -240,39 +272,82 @@ const Stats: React.FC<StatsProps> = (props) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col flex-grow items-start text-xs text-muted-foreground mx-1">
+          <div
+            className="flex flex-col flex-grow items-start text-xs text-muted-foreground mx-1"
+
+          >
             {contextData.timeComparisonMode !== 'text' && stats?.comparisons?.[0] && (
               <>
-                <div className={`flex space-x-2 items-center ${stats.color}`}>
+                <div className={`flex space-x-2 items-center`}
+                 style={{
+                  color:
+                    stats?.comparisons?.[0]?.sentiment === 'positive'
+                      ? contextData.options.positiveSentimentColor
+                      : stats?.comparisons?.[0]?.sentiment === 'negative'
+                      ? contextData.options.negativeSentimentColor
+                      : contextData?.options?.neutralSentimentColor,
+                }}
+                >
                   <div>{stats.comparisons[0].directionIcon}</div>
                   <div>{stats.comparisons[0].absolute}</div>
                   <div>
                     {stats.comparisons[0].relative ? `${stats.comparisons[0].relative} △` : null}
                   </div>
                 </div>
-                <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
+                <div className="text-xs text-muted-foreground -mt-2 ml-10">
                   {stats.comparisons[0].comparison}
                 </div>
               </>
             )}
-            {contextData.timeComparisonMode === 'both' && stats?.comparisons?.[1] && (
-              <>
-                <div className={`flex space-x-2 items-center ${stats?.comparisons[1].color} -mt-1`}>
-                  <div>{stats?.comparisons[1].directionIcon}</div>
-                  <div>{stats?.comparisons[1].absolute}</div>
-                  <div>
-                    {stats?.comparisons[1].relative ? `${stats?.comparisons[1].relative} △` : null}
+            {contextData.timeComparisonMode === 'both' &&
+              stats?.comparisons?.[1] &&
+              (stats?.comparisons[1].is_nan ? (
+                <div className="ml-10 text-xs text-muted-foreground"
+                style={{
+                  color:
+                    stats?.comparisons?.[1]?.sentiment === 'positive'
+                      ? contextData.options.positiveSentimentColor
+                      : stats?.comparisons?.[1]?.sentiment === 'negative'
+                      ? contextData.options.negativeSentimentColor
+                      : contextData?.options?.neutralSentimentColor,
+                }}
+                >
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: stats?.comparisons[1].markup,
+                    }}
+                  />
+                </div>
+              ) : (
+                <>
+                  <div
+                    className={`flex space-x-2 items-center -mt-1`}
+                    style={{
+                      color:
+                        stats?.comparisons?.[1]?.sentiment === 'positive'
+                          ? contextData.options.positiveSentimentColor
+                          : stats?.comparisons?.[1]?.sentiment === 'negative'
+                          ? contextData.options.negativeSentimentColor
+                          : contextData?.options?.neutralSentimentColor,
+                    }}
+                  >
+                    <div>{stats?.comparisons[1].directionIcon}</div>
+                    <div>{stats?.comparisons[1].absolute}</div>
+                    <div>
+                      {stats?.comparisons[1].relative
+                        ? `${stats?.comparisons[1].relative} △`
+                        : null}
+                    </div>
                   </div>
-                </div>
-                <div className="text-stone-500 dark:text-stone-300 text-xs text-muted-foreground -mt-2 ml-10">
-                  {stats?.comparisons[1].comparison}
-                </div>
-              </>
-            )}
+                  <div className="text-xs text-muted-foreground -mt-2 ml-10">
+                    {stats?.comparisons[1].comparison}
+                  </div>
+                </>
+              ))}
           </div>
         </div>
         {contextData.timeComparisonMode === 'text' && (
-          <div className="pl-3 text-xs text-muted-foreground text-stone-500 dark:text-stone-300">
+          <div className="pl-3 text-xs text-muted-foreground">
             <br />
             <span
               dangerouslySetInnerHTML={{
@@ -294,13 +369,14 @@ const Stats: React.FC<StatsProps> = (props) => {
 
         {insights && insights.length > 0 && contextData.showPulseTopInsight === 'true' && (
           <div className="flex flex-col mt-2">
-            <div className="inline-block text-white py-0 px-2 rounded-full bg-metricsNeutral text-[0.8rem] self-start">
+            <div className="inline-block py-0 px-2 rounded-full bg-metricsNeutral text-[0.8rem] self-start"
+              style={{color: contextData.options.cardText.color,
+                backgroundColor: contextData.options.cardText.color ? adjustLightness(contextData.options.cardText.color) : 'initial'}}
+              >
               {insights[0].typeText}
             </div>
-            <div className="text-stone-500 mt-1 text-[0.9rem] font-medium">
-              {insights[0].question}
-            </div>
-            <div className="text-stone-500 mt-1 text-[0.9rem] font-medium">
+            <div className="mt-1 text-[0.9rem] font-medium">{insights[0].question}</div>
+            <div className="mt-1 text-[0.9rem] font-medium">
               {insights[0].markup.includes('<span') ? (
                 <p dangerouslySetInnerHTML={{ __html: insights[0].markup }} />
               ) : (
@@ -316,7 +392,7 @@ const Stats: React.FC<StatsProps> = (props) => {
   return (
     <div className="grid grid-cols-12">
       <div className="col-span-8 grid grid-rows-3">
-        <div className="text-stone-500 dark:text-stone-300 leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
+        <div className="leading-5 font-bold pl-3 whitespace-nowrap overflow-hidden p-3 pb-0">
           <Skeleton className="h-5 w-28" />
         </div>
         <div className="flex items-center justify-end col-span-7 text-2xl font-bold text-right mr-1">

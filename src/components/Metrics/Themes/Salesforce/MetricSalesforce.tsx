@@ -1,6 +1,7 @@
+"use client"
 import { useState, useEffect, useContext } from 'react';
 
-import { ExtensionDataContext } from '../../../Providers/ExtensionDataProvider';
+import { ExtensionDataContext } from '../../../Providers';
 import React from 'react';
 import { MetricSalesforceDetails } from './MetricSalesforceDetails';
 // import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css';
@@ -21,7 +22,7 @@ export const MetricSalesforce: React.FC<{
   }, [contextData.metricCollection.metricOptions]);
 
   return (
-<div className="flex flex-wrap -m-2">
+<div className="flex flex-wrap m-1">
   {Array.isArray(metrics) ? (
     <ul className="flex flex-wrap -m-2 w-full">
       {metrics.map((metric) => {

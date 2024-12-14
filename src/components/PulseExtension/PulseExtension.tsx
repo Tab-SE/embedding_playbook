@@ -1,3 +1,4 @@
+'use client';
 // eslint-disable-next-line no-unused-vars
 
 import { useEffect, useState, useRef, forwardRef, useContext, useCallback, useMemo } from 'react';
@@ -9,7 +10,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSession, signOut } from 'next-auth/react';
 import { MetricCollection } from 'models';
 import _, { update } from 'lodash';
-import { Insights, InsightsOnly, Metrics } from 'components';
+import { FontSelector, Insights, InsightsOnly, Metrics } from 'components';
 
 export const PulseExtension = forwardRef(function Extension(props, ref) {
   const basePath = process.env.NEXT_PUBLIC_BASE_URL;
@@ -75,7 +76,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     updateContextData({ handleSetVal });
   }, []);
 
-  const debounce = (): boolean => {
+  const debounce = useCallback((): boolean => {
     const newDt = new Date().valueOf();
     console.log(
       `time: ${newDt}; lastUpdated.current: ${lastUpdated.current}; diff: ${
@@ -88,7 +89,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
     lastUpdated.current = newDt;
     return true;
-  };
+  }, []);
 
   const updateAllSettings = async (settings: Partial<ContextData>) => {
     if (saveRunningRef.current) {
@@ -121,6 +122,9 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         'metricOptions',
         JSON.stringify(settings.metricCollection.metricOptions)
       );
+    if (typeof settings.options !== 'undefined')
+      tableau.extensions.settings.set('options', JSON.stringify(settings.options));
+
 
     try {
       await tableau.extensions.settings.saveAsync();
@@ -150,11 +154,12 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     }
     console.log(`INITIALIZING CONFIGURE...`);
     configureOpenRef.current = true;
+
     const popupUrl = `${basePath}/pulseExtensionDialog`;
     let passedSettings = {
       loginData: contextDataRef.current.loginData,
       metricCollection: {
-        metrics: [],
+        metrics: contextDataRef.current.metricCollection.metrics,
         metricOptions: contextDataRef.current.metricCollection.metricOptions,
       },
       companionMode: contextDataRef.current.companionMode,
@@ -165,32 +170,25 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       debug: contextDataRef.current.debug,
       showPulseFilters: contextDataRef.current.showPulseFilters,
       timeComparisonMode: contextDataRef.current.timeComparisonMode,
+      options: contextDataRef.current.options,
     };
-    console.log(`opening configure dialog with ${JSON.stringify(passedSettings)}`);
-    console.log(passedSettings);
-    console.log(`and contextDataRef.current:`);
-    console.log(contextDataRef.current);
-    console.log(`contextData`);
-    console.log(contextData);
-    console.log(`contextData.showPulseAnchorChart: ${contextData.showPulseAnchorChart}`);
-    console.log(`contextdata dynamic function...`);
-    console.log(() => console.log(contextData));
     tableau.extensions.ui
       .displayDialogAsync(popupUrl, JSON.stringify(passedSettings, null, 2), {
         height: 600,
-        width: 500,
+        width: 800,
       })
       .then(async (closePayload) => {
         console.log(`closePayload: ${closePayload}`);
         let settings = JSON.parse(closePayload);
         let currContextData = contextDataRef.current;
-        currContextData = { ...currContextData, ...settings }; // This function has an empty contextData because of how initializeAsync works;  but we can grab the current contextData from the ref
+        currContextData = { ...currContextData, ...settings };
         await updateAllSettings(currContextData);
       })
-      .catch((error) => {
+      .catch(async (error) => {
         switch (error.errorCode) {
           case tableau.ErrorCodes.DialogClosedByUser:
             console.log('Dialog was closed by user without save');
+            await updateAllSettings(contextDataRef.current); // need this or configureOpenRef doesn't update UI
             break;
           default:
             console.error(error.message);
@@ -264,9 +262,9 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   }, [contextData]);
 
   useEffect(() => {
-    tableau.extensions
-      .initializeAsync({ configure })
-      .then(async () => {
+    const initializeTableau = async () => {
+      try {
+        await tableau.extensions.initializeAsync({ configure });
         console.log(`Tableau initialized`);
 
         await signOut({ redirect: false });
@@ -305,6 +303,100 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           }
 
           try {
+            const sentimentColors = ['positiveSentimentColor', 'neutralSentimentColor', 'negativeSentimentColor', 'cardBackgroundColor', 'backgroundColor'];
+            sentimentColors.forEach(color => {
+              if (typeof settings[color] !== 'undefined') {
+                if (!settings.options) {
+                  settings.options = {};
+                }
+                settings.options[color] = settings[color];
+                tableau.extensions.settings.erase(color);
+              }
+            });
+
+            if (typeof settings.googleFontFamily !== 'undefined') {
+              if (!settings.options) {
+                settings.options = {};
+              }
+              if (!settings.options.googleFont) {
+                settings.options.googleFont = {};
+              }
+              settings.options.googleFont.fontFamily = settings.googleFontFamily;
+              tableau.extensions.settings.erase('googleFontFamily');
+            }
+
+            if (typeof settings.googleFontWeight !== 'undefined') {
+              if (!settings.options) {
+                settings.options = {};
+              }
+              if (!settings.options.googleFont) {
+                settings.options.googleFont = {};
+              }
+              settings.options.googleFont.fontWeight = settings.googleFontWeight;
+              tableau.extensions.settings.erase('googleFontWeight');
+            }
+          } catch (err) {
+            console.error(`Error converting sentiment colors or google font settings: ${err}`);
+          }
+
+          try {
+            if (settings.options) {
+              settings.options = JSON.parse(settings.options);
+            }
+          } catch (error) {
+            settings.options = {
+              positiveSentimentColor: '#1ea562',
+              neutralSentimentColor: '#6d6d6d',
+              negativeSentimentColor: '#f81a5c',
+              cardBackgroundColor: '#FFFFFF',
+              backgroundColor: '#FFFFFF',
+              cardTitleText: {
+                fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
+                fontSize: "18pt",
+                color: "#333333"
+              },
+              cardBANText: {
+                fontFamily: "'Tableau Light','Tableau',Arial,sans-serif",
+                fontSize: "15pt",
+                color: "#333333"
+              },
+              cardText: {
+                fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
+                fontSize: "9pt",
+                color: "#666666"
+              },
+              googleFont: {
+                fontFamily: '',
+                fontWeight: ''
+              },
+              chart: {
+                axis: '#343A3F',
+                axisLabels: '#343A3F',
+                primary: '#5FB5FF',
+                primaryLabel: '#1678CC',
+                average: '#A3A9B5',
+                averageLabel: '#343A3F',
+                cumulative: '#FFF1EA',
+                cumulativeLabel: '#A96404',
+                favorable: '#25CE7B',
+                favorableLabel: '#1EA562',
+                unfavorable: '#F81A5C',
+                unfavorableLabel: '#C6154A',
+                unspecified: '#5FB5FF',
+                unspecifiedLabel: '#1678CC',
+                sum: '#C8CED8',
+                projection: '#A3A9B5',
+                range: '#E3F2FF',
+                currentValueDotBorder: '#FFF',
+                dotBorder: '#FFF',
+                hoverDot: '#040507',
+                hoverLine: '#040507'
+              }
+            };
+            console.log(`No options found in settings: ${settings.options}`);
+          }
+
+          try {
             let m = new MetricCollection([]);
             m.metricOptions = JSON.parse(settings.metricOptions);
             settings.metricCollection = m;
@@ -316,23 +408,15 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
           await updateAllSettings(settings);
         }
-        // dashboardRef.current = tableau.extensions.dashboardContent.dashboard; // store as a ref for the
-        setTableauInitialized(true);
-        //  getAllFiltersCallback(); // this runs too earrly here; datasources aren't yet loaded
-      })
-      .catch((error) => {
-        console.error('Error during Tableau initialization:', error);
-      });
-  }, []); // Only run on component mount
 
-  const filterHandlerDebounce = async () => {
-    if (!debounce()) {
-      return;
-    }
-    setTimeout(() => {
-      getAllFiltersCallback();
-    }, 250);
-  };
+        setTableauInitialized(true);
+      } catch (error: any) {
+        console.error('Error during Tableau initialization:', error);
+      }
+    };
+
+    initializeTableau();
+  }, []); // Only run on component mount
 
   /* This code will listen for the data sources to be populated, and then run grab the filters. */
   useEffect(() => {
@@ -397,7 +481,16 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     updateContextData({ dashboardFilters });
     console.log(`ending getAllFilters`);
     updatingFilters.current = false;
-  }, [tableauInitialized, contextData]);
+  }, [tableauInitialized, updateContextData]);
+
+  const filterHandlerDebounce = useCallback(async () => {
+    if (!debounce()) {
+      return;
+    }
+    setTimeout(() => {
+      getAllFiltersCallback();
+    }, 250);
+  }, [debounce, getAllFiltersCallback]);
 
   const handleLogout = async () => {
     console.log('Signing Out...');
@@ -408,16 +501,18 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   };
   const handleLogin = async () => {};
 
+  useEffect(() => {
+    document.body.style.backgroundColor = contextData.options.backgroundColor;
+
+    // Cleanup function to reset when component unmounts or bgColor changes
+    return () => {
+      document.body.style.backgroundColor = 'white';
+    };
+  }, [contextData.options.backgroundColor]);
+
   return (
-    <div
-      className={`${
-        contextData.displayMode === 'singlePane'
-          ? 'w-[93vw]'
-          : contextData.displayMode === 'salesforce'
-          ? 'w-[85vw]'
-          : 'w-[93vw]'
-      }`}
-    >
+    <div className="pr-1 pl-1" >
+
       {contextData.debug === 'true' && (
         <div>
           pulseExtension.jsx
@@ -440,11 +535,13 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           SessionVal: {sessionVal}
         </div>
       )}
-      {!configureOpenRef.current && contextData.companionMode !== 'target' ? (
+      {!configureOpenRef.current && contextData.companionMode !== 'target' && tableauInitialized ? (
         <>
           <Metrics />
         </>
-      ) : !configureOpenRef.current && contextData.companionMode === 'target' ? (
+      ) : !configureOpenRef.current &&
+        contextData.companionMode === 'target' &&
+        tableauInitialized ? (
         <InsightsOnly />
       ) : null}
 

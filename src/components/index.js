@@ -22,7 +22,6 @@ export {
 
 export { PulseExtension, PulseExtensionDialog, PulseExtensionInsightsPopup } from 'components/PulseExtension';
 export { InsightsOnly } from './Insights';
-export { ExtensionDataProvider, ExtensionDataContext } from './Providers/ExtensionDataProvider';
 
 export { Explore } from './Explore';
 
@@ -59,3 +58,7 @@ export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './R
 export { SessionProvider, AgentRuntimeProvider, ExtensionDataProvider, ExtensionDataContext } from './Providers';
 
 export { FloatingAssistant, Thread, Agent } from './Agent';
+
+export { FontSelector } from './FontSelector';
+
+export { ConfigureImagesPage } from './PulseExtension/Configure/ConfigureImagesPage';

@@ -6,11 +6,10 @@ import { useQuery, } from "@tanstack/react-query";
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
 
-export const useFilters = async (activeSheet, id) => {
+export const useFilters = (activeSheet, id) => {
   const active = !activeSheet ? false : true;
 
   async function syncFilters() {
-    // For more information, see https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html
     if (activeSheet) {
       try {
         return await activeSheet.getFiltersAsync();
@@ -20,13 +19,9 @@ export const useFilters = async (activeSheet, id) => {
     }
   };
 
-  // show # and names of categorical filters in the Console
-  // categoricalFilters = dashFilters.filter((df) => df.filterType === FilterType.Categorical);
-  // nonCategoricalFilters = dashFilters.filter((df) => df.filterType !== FilterType.Categorical);
-
   return useQuery({
     queryKey: ['tableau', 'viz', 'filters', id],
-    queryFn: async () => await syncFilters(),
+    queryFn: syncFilters,
     enabled: active,
   });
 }

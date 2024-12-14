@@ -6,9 +6,9 @@ import { getMetricPrivate } from "libs"
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
 
-export const useMetricPopup = ( specification_id: string) => {
+export const useMetricPopup = ( specification_id = "") => {
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = typeof specification_id !== 'undefined' ? ["tableau", "metric", "specification_id", specification_id] : []; 
+  const queryKey = ["tableau", "metric", "specification_id", specification_id] ; 
 
 
   return useQuery({

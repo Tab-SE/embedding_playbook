@@ -2,6 +2,10 @@ import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { Session } from "models"
 import { UserStore } from "settings"
+import NextAuth from "next-auth"
+
+const basePath = process.env.NEXT_PUBLIC_BASE_URL;
+const domain = '.' + basePath.replace(/(^\w+:|^)\/\//, '');
 
 let cookies = null;
 if (process.env.NODE_ENV === 'production') {
@@ -13,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
         sameSite: 'none',
         path: '/',
         secure: true,
-        domain: '.embedding-playbook-navy.vercel.app',
+        domain,
       }
     },
     callbackUrl: {
@@ -22,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
         sameSite: 'none',
         path: '/',
         secure: true,
-        domain: '.embedding-playbook-navy.vercel.app',
+        domain,
       }
     },
     csrfToken: {
@@ -44,14 +48,15 @@ export const authOptions = {
     strategy: "jwt",
     maxAge: 2 * 60 * 60,
   },
+  jwt: {
+    maxAge: 2 * 60 * 60,  // 2 mins
+  },
   providers: [
     CredentialsProvider({
       type: 'credentials',
-      id: 'demo-user',
-      name: 'Demo User',
+      id: 'extension-user',
+      name: 'Extension User',
       credentials: {
-        ID: { label: "ID", type: "text", placeholder: "a, b, c, d or e" },
-        demo: { label: "Demo", type: "text" },
         tableauUrl: { label: "Tableau URL", type: "text" },
         userName: { label: "User Name", type: "text" },
         email: { label: "email", type: "text" },
@@ -59,60 +64,75 @@ export const authOptions = {
         caClientId: { label: "Client ID", type: "text" },
         caSecretId: { label: "Secret ID", type: "text" },
         caSecretValue: { label: "Secret Value", type: "text" },
-        isDashboardExtension: { label: "Dashboard Extension", type: "text" },
       },
       async authorize(credentials, req) {
         let user = null;
-
-        console.log(`Starting [...nextAuth].js flow.`)
-
-        if (credentials.isDashboardExtension === 'true') {
+        if (process.env?.DEBUG || process.env?.DEBUG?.toLowerCase() === 'true') {
+          console.log(`Starting [...nextAuth].js flow.`)
           console.log(`starting initialize session for dashboard extension...${JSON.stringify(credentials)}`);
-          const rest_session = await initializeSession(credentials.userName, credentials, 'rest');
-          console.log(`returning from initializeSession - rest_session: ${JSON.stringify(rest_session)}`);
+        }
+        const rest_session = await initializeSession(credentials.userName, credentials, 'rest');
 
-          if (rest_session.authorized) {
-            user = {
-              name: credentials.userName,
-              email: credentials.userName,
-              tableau: {
-                ...rest_session,
-                tableauUrl: credentials.tableauUrl,
-                username: credentials.userName,
-                site: credentials.site_id,
-              }
-            };
+
+        if (rest_session.authorized) {
+          user = {
+            name: credentials.userName,
+            email: credentials.userName,
+            tableau: {
+              ...rest_session,
+              tableauUrl: credentials.tableauUrl,
+              username: credentials.userName,
+              site: credentials.site_id,
+            }
+          };
+          if (process.env.DEBUG || process.env?.DEBUG?.toLowerCase() === 'true') {
             console.log(`user... ${JSON.stringify(user)}`)
           }
-        } else {
-          // maps logins to specific demos so non-demo sessions can be logged out
-          const demo = UserStore[credentials.demo]
-          // check all keys in user store
-          for (const [key, value] of Object.entries(demo.users)) {
-            // find keys that match credential
-            if (key.toUpperCase() === credentials.ID.toUpperCase()) {
-              // if a match is found store value as user
-              user = value;
-            }
-          }
-          // add the demo to the user object to see it on the client
-          user.demo = credentials.demo;
-          const embed_session = await initializeSession(user, {}, 'embed', 'orig');
-          const rest_session = await initializeSession(user, {}, 'rest', 'orig');
-
-
-          if (embed_session.authorized && rest_session.authorized) {
-            // frontend requires user_id & embed_token
-            const {
-              username, user_id, embed_token, site_id, site, created, expires,
-            } = embed_session;
-            const { user_id: rest_id, rest_key } = rest_session;
-            user.tableau = {
-              username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires,
-            };
-          }
-
         }
+
+        // Return false to display a default error message
+        if (!user) {
+          throw new Error('Invalid credentials');
+        }
+        return user.tableau ? user : false;
+      }
+    }),
+    CredentialsProvider({
+      type: 'credentials',
+      id: 'demo-user',
+      name: 'Demo User',
+      credentials: {
+        ID: { label: "ID", type: "text", placeholder: "a, b, c, d or e" },
+        demo: { label: "Demo", type: "text" },
+      },
+      async authorize(credentials, req) {
+        let user = null;
+        // maps logins to specific demos so non-demo sessions can be logged out
+        const demo = UserStore[credentials.demo]
+        // check all keys in user store
+        for (const [key, value] of Object.entries(demo.users)) {
+          // find keys that match credential
+          if (key.toUpperCase() === credentials.ID.toUpperCase()) {
+            // if a match is found store value as user
+            user = value;
+          }
+        }
+        // add the demo to the user object to see it on the client
+        user.demo = credentials.demo;
+        const embed_session = await initializeSession(user, {}, 'embed', 'orig');
+        const rest_session = await initializeSession(user, {}, 'rest', 'orig');
+
+        if (embed_session.authorized && rest_session.authorized) {
+          // frontend requires user_id & embed_token
+          const {
+            username, user_id, embed_token, site_id, site, created, expires,
+          } = embed_session;
+          const { user_id: rest_id, rest_key } = rest_session;
+          user.tableau = {
+            username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires,
+          };
+        }
+
         // Return false to display a default error message
         if (!user) {
           throw new Error('Invalid credentials');
@@ -189,8 +209,9 @@ async function initializeSession(username, credentials, type = 'rest', method = 
     jwt_secret_id: secretId,
     jwt_client_id: clientId
   };
-
-  console.log(`creating new session in initialize session...${JSON.stringify(username)}.  credentials: ${JSON.stringify(credentials)}.  scopes: ${JSON.stringify(scopes)}`);
+  if (process.env?.DEBUG || process.env?.DEBUG?.toLowerCase() === 'true') {
+    console.log(`creating new session in initialize session...${JSON.stringify(username)}.  credentials: ${JSON.stringify(credentials)}.  scopes: ${JSON.stringify(scopes)}`);
+  }
   const session = new Session(username, credentials);
   if (method === 'orig') {
     await session.jwt(username, options, scopes);
@@ -203,4 +224,6 @@ async function initializeSession(username, credentials, type = 'rest', method = 
   }
   return session;
 }
+
+
 export default NextAuth(authOptions);
