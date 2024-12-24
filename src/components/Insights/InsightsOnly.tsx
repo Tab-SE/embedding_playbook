@@ -16,10 +16,8 @@ import { parseStats } from 'utils/parse';
 
 export const InsightsOnly = (props) => {
 
-  const [user, setUser] = useState<null | string | undefined>(null);
   const [metric, setMetric] = useState<Metric | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [specification_id, setSpecification_id] = useState<string | undefined>(undefined);
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
   const { data, error } = useMetricsExtensionSingle(contextData.loginData.userName, contextData.loginData, contextData.currentMetric);
 
@@ -86,7 +84,9 @@ export const MetricShell = (props) => {
     }
   }, [isSuccess, data]);
   if (isSuccess) {
+    console.log(`0`);
     stats = parseStats(data, metric);
+    console.log(`1 - stats: ${JSON.stringify(stats, null, 2)}`);
     if (stats.dir === 'up') {
       stats.direction = <IconTrendingUp />;
     } else if (stats.dir === 'down') {

@@ -3,16 +3,15 @@
 This is the carousel metrics page from embed tableau.  It fetches the SUBSCRIBED metrics for the user.
 */
 
-import { useState, useEffect, useContext } from 'react';
-import { signIn, useSession } from 'next-auth/react';
+import { useEffect, useContext } from 'react';
+import { useSession } from 'next-auth/react';
 
-import { useMetrics } from '../../hooks';
 import { MetricsPlusFilters } from './MetricsPlusFilters';
 import { ExtensionDataContext } from '../Providers';
 import { MetricCollection } from 'models';
 import { sortPayloadByIds } from '.';
 import { useMetricsExtension } from 'hooks/useMetricsExtension';
-import { FontSelector, InsightsOnly, LoadDatasources } from '..';
+import { FontSelector, LoadDatasources } from '..';
 
 export const Metrics = (props) => {
   const { theme, showMetrics, showInsights, metricOptions, sortOrder } = props;
