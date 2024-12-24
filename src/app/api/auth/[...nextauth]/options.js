@@ -7,9 +7,6 @@ import NextAuth from "next-auth"
 const basePath = process.env.NEXT_PUBLIC_BASE_URL;
 const domain = '.' + basePath.replace(/(^\w+:|^)\/\//, '');
 
-console.log(`next_public_base_url: ${process.env.NEXT_PUBLIC_BASE_URL}`);
-console.log(`base_url: ${process.env.BASE_URL}`);
-
 let cookies = null;
 if (process.env.NODE_ENV === 'production') {
   cookies = {

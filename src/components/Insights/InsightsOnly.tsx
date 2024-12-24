@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useSession } from 'next-auth/react';
 import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 
-import { useMetric } from '../../hooks';
+import { useMetricsExtension } from '../../hooks';
 import { InsightsModal } from '..';
 import { useInsights } from '../../hooks';
 import { parseInsights } from '../../utils';
@@ -22,15 +22,7 @@ export const InsightsOnly = (props) => {
   const { status: session_status, data: session_data } = useSession();
   const [specification_id, setSpecification_id] = useState<string | undefined>(undefined);
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
-  const { data, error } = useMetric(contextData.loginData.userName, contextData.loginData, contextData.currentMetric);
-  // syncs with user metrics, only fires query when user is defined -> controlled query
-  //const { data } = useMetric(contextData.loginData.userName, contextData.loginData, metric.specification_id);
-  // useEffect(() => {
-  //   if (session_status === 'authenticated') {
-  //     setUser(session_data?.user?.name); // value used for controlled queries
-  //   }
-  //   console.log(`session user name: ${session_data?.user?.name}`);
-  // }, [session_status, session_data]);
+  const { data, error } = useMetricsExtension(contextData.loginData.userName, contextData.loginData);
 
   useEffect(() => {
     if (contextData.debug === "true") console.log(`contextData in InsightsOnly: ${JSON.stringify(contextData, null, 2)}`)
@@ -47,12 +39,6 @@ export const InsightsOnly = (props) => {
     console.log(`insights only data...`);
     console.log(data);
   }, [data])
-
-/*   useEffect(() => {
-    if (contextData.currentMetric !== "" && contextData.currentMetric !== specification_id) {
-      setSpecification_id(contextData.currentMetric);
-    }
-  }, [contextData.currentMetric]); */
 
   useEffect(() => {
     if (metric) {
@@ -129,8 +115,10 @@ export const MetricShell = (props) => {
     }
   }
   return (
-    <div>
+    isSuccess && (
+      <div>
       <InsightsModal metric={metric} stats={stats} />
-    </div>
+      </div>
+    )
   );
 };

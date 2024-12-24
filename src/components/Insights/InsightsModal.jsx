@@ -23,28 +23,28 @@ export const InsightsModal = (props) => {
             <div className={`flex space-x-2 text-lg`}>
               <div className="flex space-x-2 items-center">
                 <div className={`flex space-x-2 items-center ${stats.color}`}></div>
-                <div>{stats.comparisons[0].directionIcon}</div>
-                <div>{stats.comparisons[0].absolute}</div>
+                <div>{stats?.comparisons?.[0]?.directionIcon}</div>
+                <div>{stats?.comparisons?.[0]?.absolute}</div>
                 <div>
-                  {stats.comparisons[0].relative ? `${stats.comparisons[0].relative} △` : null}
+                  {stats?.comparisons?.[0]?.relative ? `${stats?.comparisons?.[0]?.relative} △` : null}
                 </div>
                 <div className="text-stone-500 dark:text-stone-300 text-muted-foreground ml-10">
-                  {stats.comparisons[0].comparison}
+                  {stats?.comparisons?.[0]?.comparison}
                 </div>
               </div>
-              {stats?.comparisons?.[1] && !stats?.comparisons[1].is_nan &&
+              {stats?.comparisons?.[1] && !stats?.comparisons?.[1].is_nan &&
                 <div className="flex space-x-2 items-center ml-3">
-                  <div className={`flex space-x-2 items-center ${stats?.comparisons[1].color}`}>
-                    <div>{stats?.comparisons[1].directionIcon}</div>
-                    <div>{stats?.comparisons[1].absolute}</div>
+                  <div className={`flex space-x-2 items-center ${stats?.comparisons?.[1].color}`}>
+                    <div>{stats?.comparisons?.[1]?.directionIcon}</div>
+                    <div>{stats?.comparisons?.[1]?.absolute}</div>
                     <div>
-                      {stats?.comparisons[1].relative
-                        ? `${stats?.comparisons[1].relative} △`
+                      {stats?.comparisons?.[1]?.relative
+                        ? `${stats?.comparisons?.[1]?.relative} △`
                         : null}
                     </div>
                   </div>
                   <div className="text-stone-500 dark:text-stone-300 text-muted-foreground ml-10">
-                    {stats?.comparisons[1].comparison}
+                    {stats?.comparisons?.[1]?.comparison}
                   </div>
                 </div>
               }

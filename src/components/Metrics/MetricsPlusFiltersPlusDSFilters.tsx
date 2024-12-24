@@ -5,7 +5,7 @@ Todo: Many options and variations can exist here.  Do we want to show all the fi
 import { useState, useEffect, useCallback, useContext } from 'react';
 import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 
-import { Metric, MetricSalesforce, MetricSinglePane, MetricTableau } from '.';
+import { MetricCarousel, MetricSalesforce, MetricSinglePane, MetricTableau } from '.';
 import { InsightsModel } from 'models';
 import _ from 'lodash';
 
@@ -103,7 +103,7 @@ export const MetricsPlusFiltersPlusDSFilters = (props: { metrics: InsightsModel[
   );
 
   if (typeof contextData.displayMode === 'undefined' || contextData.displayMode === 'carousel' || contextData.displayMode === 'original') {
-     return (<Metric metrics={metrics} propogateMetricFilter={propogateMetricFilter} selectedValues={selectedValues} />);
+     return (<MetricCarousel metrics={metrics} propogateMetricFilter={propogateMetricFilter} selectedValues={selectedValues} />);
   } else if (contextData.displayMode === 'singlepane') {
     return (<MetricSinglePane metrics={metrics} propogateMetricFilter={propogateMetricFilter} selectedValues={selectedValues} />);
   } else if (contextData.displayMode === 'salesforce') {

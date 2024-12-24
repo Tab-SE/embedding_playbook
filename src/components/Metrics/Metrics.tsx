@@ -24,13 +24,6 @@ export const Metrics = (props) => {
     contextData.loginData.userName,
     contextData.loginData
   );
-  // updates user for authenticated components
-  // useEffect(() => {
-  //   if (session_status === 'authenticated' && typeof session_data?.user?.name !== 'undefined') {
-  //     setUser(session_data.user.name); // value used for controlled queries
-  //     console.log(`session user name: ${session_data.user.name}`);
-  //   }
-  // }, [session_status, session_data]);
 
   useEffect(() => {
     if (data && data.length > 0 && !isError && !signInError) {
@@ -41,7 +34,6 @@ export const Metrics = (props) => {
       updateContextData({ metricCollection: metricCollection });
     }
   }, [data]);
-  // }, [data, updateContextData, sortOrder, isError, contextData.metricCollection.metricOptions, signInError]);
 
   if (isError) {
     console.debug(error);
