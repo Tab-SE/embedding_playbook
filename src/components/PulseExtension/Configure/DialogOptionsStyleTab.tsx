@@ -39,7 +39,7 @@ export const OptionsStyleTab = ({
 
   const applyWorkbookFormatting = useCallback(() => {
     if (!updateContextOption) {
-      console.log('Props are not yet available.');
+      if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Props are not yet available.');
       return;
     }
 
@@ -72,7 +72,7 @@ export const OptionsStyleTab = ({
         color: rgbToHex(worksheet.color),
       });
     } else {
-      console.log('Workbook formatting is not available.');
+      if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Workbook formatting is not available.');
     }
   }, [updateContextOption]);
 

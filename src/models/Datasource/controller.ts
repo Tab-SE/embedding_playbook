@@ -36,7 +36,7 @@ export const handleDatasourceField = async(apiKey: string, datasourceId: string,
   let _domain = tableau_domain;
   if (typeof tableauUrl !== 'undefined') _domain = tableauUrl;
   const endpoint = _domain + pulse_path + '/datasources/' + datasourceId + '/fields/' + fieldName + ':getValues?search_term=&page_size=1000';  // Tableau defaults to 100, but simplifying for now so we don't have to deal with paging.
-  console.log(`handleDatasourceField: ${endpoint}`);
+  if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`handleDatasourceField: ${endpoint}`);
   const config = {
     tableau_domain: _domain,
     headers: {

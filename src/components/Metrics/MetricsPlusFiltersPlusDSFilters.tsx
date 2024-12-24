@@ -32,7 +32,7 @@ export const MetricsPlusFiltersPlusDSFilters = (props: { metrics: InsightsModel[
   // TODO: Optimize this and applyFilters function
   const propogateMetricFilter = useCallback(
     (datasourceId: string, filterId: string, fields: string[]) => {
-      console.log(
+      if (process.env.DEBUG?.toLowerCase() === 'true') console.log(
         `field passed to handleMetricFilter: ${datasourceId} ${filterId} ${fields} in MetricsWithFilterValues`
       );
 
@@ -43,7 +43,7 @@ export const MetricsPlusFiltersPlusDSFilters = (props: { metrics: InsightsModel[
         const existingDatasourceIndex = _values.findIndex(
           (_value) => _value.datasourceId === datasourceId
         );
-        console.log(`existingDatasourceIndex: ${existingDatasourceIndex}`);
+        if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`existingDatasourceIndex: ${existingDatasourceIndex}`);
 
         if (existingDatasourceIndex === -1) {
           // Add new datasource with fields
@@ -60,7 +60,7 @@ export const MetricsPlusFiltersPlusDSFilters = (props: { metrics: InsightsModel[
           const existingFieldIndex = _values[existingDatasourceIndex].fields.findIndex(
             (field) => field.field === filterId
           );
-          console.log(`existingFieldIndex: ${existingFieldIndex}`);
+          if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`existingFieldIndex: ${existingFieldIndex}`);
 
           if (fields.length === 0) {
             // Remove field if no values
@@ -86,7 +86,7 @@ export const MetricsPlusFiltersPlusDSFilters = (props: { metrics: InsightsModel[
         }
 
         if (JSON.stringify(prevSelectedValues) !== JSON.stringify(_values)) {
-          console.log(`Updating selectedValues and applying filters.`);
+          if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Updating selectedValues and applying filters.`);
           applyFilters(_values);
           return _values; // Return the new state
         }
@@ -94,9 +94,11 @@ export const MetricsPlusFiltersPlusDSFilters = (props: { metrics: InsightsModel[
         return prevSelectedValues; // Return the old state if no change
       });
 
-      console.log(`------START values set in MetricsWithFilterValues------`);
-      console.log(JSON.stringify(selectedValues, null, 2));
-      console.log(`------END values set in MetricsWithFilterValues------`);
+      if (process.env.DEBUG?.toLowerCase() === 'true') {
+        console.log(`------START values set in MetricsWithFilterValues------`);
+        console.log(JSON.stringify(selectedValues, null, 2));
+        console.log(`------END values set in MetricsWithFilterValues------`);
+      }
       return {};
     },
     [applyFilters, selectedValues]

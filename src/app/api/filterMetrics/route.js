@@ -12,11 +12,8 @@ export async function POST(req) {
     return NextResponse.json({ error: '400: Bad Request' }, { status: 400 });
   }
 
-  // const { searchParams } = new URL(req.url);P
-  // const datasourceId = searchParams.get('datasourceId');
   // Extract extension_options from request body
   const body = await req.json();
-  // console.log(`filterMetrics: body ${JSON.stringify(body)}`);
 
   // session token specific to each user
   const token = await getToken({ req });

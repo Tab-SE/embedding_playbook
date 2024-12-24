@@ -25,7 +25,7 @@ export const MetricsTab = ({ metricCollection, setMetricCollection }) => {
 
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, metric: InsightsModel) => {
-    console.log(`e.target.checked: ${e.target.checked} for ${metric.name}${metric.nameFilters}`);
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`e.target.checked: ${e.target.checked} for ${metric.name}${metric.nameFilters}`);
     let m = new MetricCollection(metrics);
     m.setMetricOptions(metricCollection.metricOptions);
     m.setMetricOptionShowOrHideSingle(metric.specification_id, e.target.checked);
@@ -33,7 +33,7 @@ export const MetricsTab = ({ metricCollection, setMetricCollection }) => {
   };
 
   const handleAllCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`e.target.checked: ${e.target.checked}`);
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`e.target.checked: ${e.target.checked}`);
     let m = new MetricCollection(metrics);
     m.setMetricOptions(metricCollection.metricOptions);
     m.setMetricOptionsShowOrHideAll(e.target.checked);

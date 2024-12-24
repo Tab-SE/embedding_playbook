@@ -42,8 +42,10 @@ export const httpPost = async (endpoint, body, config) => {
       err.code = 504;
       throw err;
     } else {
-      console.log('status', status);
-      console.log('response', response.data);
+      if (process.env.DEBUG?.toLowerCase() === 'true') {
+        console.log('status', status);
+        console.log('response', response.data);
+      }
       throw new Error(`ERROR: Cannot POST for endpoint: ${endpoint}`);
     }
   } catch (error) {

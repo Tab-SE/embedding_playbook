@@ -22,22 +22,13 @@ export const InsightsOnly = (props) => {
   const { data, error } = useMetricsExtensionSingle(contextData.loginData.userName, contextData.loginData, contextData.currentMetric);
 
   useEffect(() => {
-    if (contextData.debug === "true") console.log(`contextData in InsightsOnly: ${JSON.stringify(contextData, null, 2)}`)
     if (typeof contextData.currentMetric !== 'undefined' && typeof data !== 'undefined') {
       setMetric(data[0]);
-      // if (contextData.debug) console.log(`metric: ${JSON.stringify(metric, null, 2)}`);
     }
     else if (typeof contextData.currentMetric === 'undefined'){
       setMetric(null);
     }
   }, [data, contextData]);
-
-  useEffect(() => {
-    if (typeof data !== 'undefined'){
-      console.log(`insights only data...`);
-      console.log(data);
-    }
-  }, [data])
 
   useEffect(() => {
     if (metric) {
@@ -46,14 +37,13 @@ export const InsightsOnly = (props) => {
   }, [metric]);
 
   const handleOpenChange = (open:boolean) => {
-    console.log(`calling handleOpenChange with ${open}`);
     if (!open){
       contextData.handleSetVal('');
       setIsDialogOpen(open);
     }
   };
 
-  console.log(`in insightsonly calling MetricShell with metric: ${(metric as any)?.name} `);
+  if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`in insightsonly calling MetricShell with metric: ${(metric as any)?.name} `);
   return (
     <div>
       {typeof metric !== 'undefined' && metric !== null && contextData.metricIdParamIsValid ? (
@@ -84,9 +74,7 @@ export const MetricShell = (props) => {
     }
   }, [isSuccess, data]);
   if (isSuccess) {
-    console.log(`0`);
     stats = parseStats(data, metric);
-    console.log(`1 - stats: ${JSON.stringify(stats, null, 2)}`);
     if (stats.dir === 'up') {
       stats.direction = <IconTrendingUp />;
     } else if (stats.dir === 'down') {

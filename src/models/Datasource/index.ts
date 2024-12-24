@@ -51,7 +51,7 @@ export class DatasourceModelCollection {
     fieldResults.forEach((field) => {
       let datasource = this.getDatasource(field.data.datasourceId);
       if (!datasource) {
-        console.log(`datasource not found: ${field.data.datasourceId}`);
+        if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`datasource not found: ${field.data.datasourceId}`);
         return;
       }
       let dsF = datasource.metricFilterFields.find(f => f.field === field.data.field);
@@ -95,42 +95,39 @@ export class DatasourceModelCollection {
     }
 
     // due to Promise.all in PulseExtension.tsx#getAllFilters() setting the datasourceFilterFields in random order, we need to examine each level of the object individually
-    let process = false;
+    let processing = false;
     for (let i = 0; i < fieldResult.length; i++) {
-      console.log(`key: ${fieldResult[i].data.datasourceId}`);
+      if (process.env.DEBUG?.toLowerCase() === 'true')  console.log(`key: ${fieldResult[i].data.datasourceId}`);
 
       let dsmatch = this.getDatasource(fieldResult[i].data.datasourceId);
       if (dsmatch) {
-        console.log(`dsFF includes ${fieldResult[i].data.datasourceId}`);
         for (let j = 0; j < fieldResult[i].data.categorical_values.values.length; j++) {
-          console.log(`analyzing field: ${fieldResult[i].data.categorical_values[j]}`);
           let fieldMatch = dsmatch.metricFilterFields.find(
             (element) => element.field === fieldResult[i].data.field
           );
           if (fieldMatch) {
-            console.log(`fieldMatch: ${fieldMatch.field}`);
             let fieldValueMatch = fieldMatch.values.every((element) =>
             (console.log(`element: ${element.value}`))
               // fieldResult[i].data.categorical_values.values.includes(element.value)
             );
             if (!fieldValueMatch) {
               console.log(`ERROR 3!!! error on field values;`);
-              process = true;
+              processing = true;
               break;
             }
           } else {
             console.log(`ERROR 2!!! error on field names`);
-            process = true;
+            processing = true;
             break;
           }
         }
       } else {
         console.log(`ERROR 1!!! mismatch on datasourceId`);
-        process = true;
+        processing = true;
         break;
       }
     }
-    return process;
+    return processing;
   }
 }
 

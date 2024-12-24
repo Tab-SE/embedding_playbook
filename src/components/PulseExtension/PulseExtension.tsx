@@ -25,14 +25,14 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   const [tableauInitialized, setTableauInitialized] = useState(false);
   const [handlersRegistered, setHandlersRegistered] = useState(false);
   const [initialFiltersRun, setInitialFiltersRun] = useState(false);
-  // const dashboardRef = useRef(null);
+
   useEffect(() => {
     if (tableauInitialized && !handlersRegistered) {
-      console.log(`Registering event listeners for FilterChanged and SettingsChanged`);
+      if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Registering event listeners for FilterChanged and SettingsChanged`);
       let unregFilterChanges: any = [];
       tableau.extensions.dashboardContent.dashboard.worksheets.forEach((worksheet) => {
         let unreg = worksheet.addEventListener(tableau.TableauEventType.FilterChanged, () => {
-          console.log(`Filter changed event triggered`);
+          if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Filter changed event triggered`);
           filterHandlerDebounce();
         });
         unregFilterChanges.push(unreg);
@@ -51,7 +51,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       // );
       setHandlersRegistered(true);
       return () => {
-        console.log('Cleaning up event listeners');
+        if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Cleaning up event listeners');
         // unregEventSettingsHandler();
         unregFilterChanges.forEach((unreg) => unreg());
       };
@@ -65,7 +65,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
   useEffect(() => {
     const handleSetVal = (metric_id) => {
-      console.log(`handleSetVal called with metric_id: ${metric_id}`);
+      if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`handleSetVal called with metric_id: ${metric_id}`);
       tableau.extensions.dashboardContent.dashboard.getParametersAsync().then((parameters) => {
         const metricIdParameter = parameters.find((param) => param.name === 'MetricId');
         if (metricIdParameter) {
@@ -78,11 +78,6 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
   const debounce = useCallback((): boolean => {
     const newDt = new Date().valueOf();
-    console.log(
-      `time: ${newDt}; lastUpdated.current: ${lastUpdated.current}; diff: ${
-        newDt - lastUpdated.current
-      }`
-    );
     if (newDt - lastUpdated.current < 250) {
       return false;
     }
@@ -178,7 +173,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         width: 800,
       })
       .then(async (closePayload) => {
-        console.log(`closePayload: ${closePayload}`);
+        if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`closePayload: ${closePayload}`);
         let settings = JSON.parse(closePayload);
         let currContextData = contextDataRef.current;
         currContextData = { ...currContextData, ...settings };
@@ -187,7 +182,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       .catch(async (error) => {
         switch (error.errorCode) {
           case tableau.ErrorCodes.DialogClosedByUser:
-            console.log('Dialog was closed by user without save');
+            if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Dialog was closed by user without save');
             await updateAllSettings(contextDataRef.current); // need this or configureOpenRef doesn't update UI
             break;
           default:
@@ -208,11 +203,11 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           .then((metricIdParam) => {
             if (metricIdParam && metricIdParam.currentValue && metricIdParam.currentValue.value) {
               const metricId = metricIdParam.currentValue.value;
-              console.log(`MetricId changed to: ${metricId}`);
+              if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`MetricId changed to: ${metricId}`);
               // setCurrMetricId(metricId);
               updateContextData({ currentMetric: metricId });
             } else {
-              console.log(`Received undefined metricIdParam or currentValue:`, metricIdParam);
+              if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Received undefined metricIdParam or currentValue:`, metricIdParam);
             }
           })
           .catch((error) => {
@@ -228,7 +223,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
           metricIdParameter = parameters.find((param) => param.name === 'MetricId') || null;
           if (metricIdParameter) {
             if (contextData.companionMode === 'target') {
-              console.log(`Adding event listener for MetricId parameter.`);
+              if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Adding event listener for MetricId parameter.`);
               metricIdParameter.addEventListener(
                 tableau.TableauEventType.ParameterChanged,
                 handleParameterChange
@@ -236,7 +231,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
             }
             updateContextData({ metricIdParamIsValid: true });
           } else {
-            console.log(`MetricId parameter not found.`);
+            if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`MetricId parameter not found.`);
             updateContextData({ metricIdParamIsValid: false });
           }
         })
@@ -247,7 +242,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
 
       return () => {
         if (metricIdParameter && contextData.companionMode === 'target') {
-          console.log(`Removing event listener for MetricId parameter.`);
+          if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Removing event listener for MetricId parameter.`);
           metricIdParameter.removeEventListener(
             tableau.TableauEventType.ParameterChanged,
             handleParameterChange
@@ -256,10 +251,6 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
       };
     }
   }, [contextData.companionMode]);
-
-  const test = useCallback(() => {
-    console.log(`IN TEST: contextData.increment... ${JSON.stringify(contextData.increment)}`);
-  }, [contextData]);
 
   useEffect(() => {
     const initializeTableau = async () => {
@@ -273,7 +264,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         let settings = tableau.extensions.settings.getAll();
         if (Object.keys(settings).length === 0) {
           // Call configure if loginData is empty
-          console.log('Login data is missing, invoking configure');
+          if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Login data is missing, invoking configure');
           configure();
         } else {
           if (
@@ -393,7 +384,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
                 hoverLine: '#040507'
               }
             };
-            console.log(`No options found in settings: ${settings.options}`);
+            if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`No options found in settings: ${settings.options}`);
           }
 
           try {
@@ -404,7 +395,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
             console.error(`Error parsing metricOptions: ${settings.metricOptions}`, error);
             settings.metricCollection = { metrics: [], metricOptions: {} };
           }
-          console.log('Settings after initialization:', settings);
+          if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Settings after initialization:', settings);
 
           await updateAllSettings(settings);
         }
@@ -435,11 +426,11 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     }
     // even with the debounce, the event is called simultaneously for all filters.
     if (updatingFilters.current) {
-      console.log(`getAllFilters already running`);
+      if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`getAllFilters already running`);
       return;
     }
     updatingFilters.current = true;
-    console.log(`starting getAllFilters`);
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`starting getAllFilters`);
     // List of all filters in a dashboard.
     const dashboardFilters: CategoricalFilter[] = [];
     const filterFetchPromises: any[] = [];
@@ -465,7 +456,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
     });
     // sort to reduce re-renders downstream
     dashboardFilters.sort((a, b) => a.fieldName.localeCompare(b.fieldName));
-    console.log(`Number of filters: ${dashboardFilters.length}`);
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Number of filters: ${dashboardFilters.length}`);
     if (dashboardFilters) {
       dashboardFilters.forEach((filter) => {
         let filterValues = '';
@@ -474,12 +465,12 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
             filterValues += value.formattedValue + ', ';
           });
         }
-        console.log(`Filter: ${filter.worksheetName} ${filter.fieldName}: ${filterValues}`);
+        if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Filter: ${filter.worksheetName} ${filter.fieldName}: ${filterValues}`);
       });
     }
     // setDashboardFilters(dashboardFilters); // needed?
     updateContextData({ dashboardFilters });
-    console.log(`ending getAllFilters`);
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`ending getAllFilters`);
     updatingFilters.current = false;
   }, [tableauInitialized, updateContextData]);
 
@@ -493,7 +484,7 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
   }, [debounce, getAllFiltersCallback]);
 
   const handleLogout = async () => {
-    console.log('Signing Out...');
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Signing Out...');
     await signOut({ redirect: false });
     let m = new MetricCollection([]);
     m.metricOptions = contextData.metricCollection.metricOptions;

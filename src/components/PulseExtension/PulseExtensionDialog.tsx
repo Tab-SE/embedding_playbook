@@ -93,7 +93,7 @@ export const PulseExtensionDialog = ({ children }: { children: React.ReactNode }
 
   const updateContextOption = (option: keyof ContextData['options'], value: any) => {
     setContextOptions((prevOptions) => {
-      console.log('Updating context option:', option, value);
+      if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Updating context option:', option, value);
       let newObj = {
         ...prevOptions,
         [option]: value,
@@ -124,7 +124,7 @@ export const PulseExtensionDialog = ({ children }: { children: React.ReactNode }
   };
 
   useEffect(() => {
-    console.log('Login Data Updated:', loginData);
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Login Data Updated:', loginData);
   }, [loginData]);
 
   /**
@@ -132,7 +132,7 @@ export const PulseExtensionDialog = ({ children }: { children: React.ReactNode }
    * closes the dialog, and sends a payload back to the parent.
    */
   const closeDialog = () => {
-    console.log('Closing dialog...');
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Closing dialog...');
 
     let returnValues = {
       loginData,
@@ -261,10 +261,6 @@ export const PulseExtensionDialog = ({ children }: { children: React.ReactNode }
 
   function handleLogin() {
     setLoginEnabled(true);
-    // saveSettings().then(() => {
-    //   console.log(`settings saved`);
-    //   setLoginEnabled(true);
-    // });
   }
   function handleSample() {
     setLoginData({
@@ -280,7 +276,7 @@ export const PulseExtensionDialog = ({ children }: { children: React.ReactNode }
   }
 
   const handleLogout = async () => {
-    console.log('Signing Out...');
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log('Signing Out...');
     setLoginEnabled(false);
     await signOut({ redirect: false });
     let m = new MetricCollection([]);

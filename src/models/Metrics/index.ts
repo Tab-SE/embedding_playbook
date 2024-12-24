@@ -233,7 +233,7 @@ export class MetricsModel {
       filter.fields.forEach((field) => {
         if ((metric.definition.datasource.id === filter.datasourceId)) {
           if (!metric.extension_options.allowed_dimensions.includes(field.field)) {
-            console.log(`Field ${field.field} not allowed for metric ${metric.id}`);
+            if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Field ${field.field} not allowed for metric ${metric.id}`);
             return;
           }
           if (field.values.length === 0) {

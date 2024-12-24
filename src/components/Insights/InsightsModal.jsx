@@ -5,7 +5,6 @@ import { Insights, TableauEmbed, Chat } from "components";
 
 export const InsightsModal = (props) => {
   const { metric, stats } = props;
-  console.log(`insightsModal. `);
   return (
     <DialogContent className="max-w-[93vw] h-[93vh] dark:bg-stone-900">
       <Tabs defaultValue="insights">

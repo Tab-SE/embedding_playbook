@@ -55,7 +55,7 @@ export const MetricsPlusFilters = (props) => {
       memoizedDatasources.setPulseMetricFilterFields(metrics);
       let _metricFields = memoizedDatasources.createDatasourceFieldsObject();
       if (!_.isEqual(consolidatedMetricFilterFields, _metricFields)) {
-        console.log(`metricFields: ${JSON.stringify(_metricFields)}`);
+        if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`metricFields: ${JSON.stringify(_metricFields)}`);
         setConsolidatedMetricFilterFields(_metricFields);
         // updateContextData({ datasourceCollection: memoizedDatasources });  // necessary??
       }
@@ -132,7 +132,7 @@ export const MetricsPlusFilters = (props) => {
 
   const applyFilters = (passedFilters) => {
     if (!_.isEqual(passedFilters, filters)) {
-      console.log(`appliedFilters: ${JSON.stringify(passedFilters)}`);
+      if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`appliedFilters: ${JSON.stringify(passedFilters)}`);
       setFilters(passedFilters);
     }
   };

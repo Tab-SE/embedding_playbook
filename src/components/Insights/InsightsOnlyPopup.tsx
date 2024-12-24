@@ -7,9 +7,7 @@ from the PulseExtensionInsightsPopup.tsx file.  This is a work in progress.
 
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-
-import { useMetric, useMetricPopup } from '../../hooks';
+import { useMetricPopup } from '../../hooks';
 import { InsightsModal } from '..';
 import { useInsights } from '../../hooks';
 import {
@@ -21,17 +19,9 @@ import { parseStats } from 'utils/parse';
 
 export const InsightsOnlyPopup = (props) => {
   const {metricId} = props;
-  const [user, setUser] = useState<null | string | undefined>(null);
   const [metric, setMetric] = useState<Metric | null>(null);
-  // const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { status: session_status, data: session_data } = useSession();
-  const [specification_id, setSpecification_id] = useState<string | undefined>(undefined);
   const [currentMetric, setCurrentMetric] = useState<string>("");
-  // const { contextData, updateContextData } = useContext(ExtensionDataContext);
-  // syncs with user metrics, only fires query when user is defined -> controlled query
-  // const { status, data, error, isError, isSuccess } = useMetric(user || "", {}, currentMetric);
   const { status, data, error, isError, isSuccess } = useMetricPopup(currentMetric);
-
 
 useEffect(() => {
 if (metricId !== null){
@@ -39,23 +29,13 @@ if (metricId !== null){
 }
 }, [metricId]);
 
-/*   useEffect(() => {
-    if (session_status === 'authenticated') {
-      setUser(session_data?.user?.name); // value used for controlled queries
-    }
-    console.log(`session user name: ${session_data?.user?.name}`);
-  }, [session_status, session_data]); */
-
   useEffect(() => {
-    // console.log(`contextData in InsightsOnly: ${JSON.stringify(contextData, null, 2)}`)
     if (typeof currentMetric !== 'undefined' && typeof data !== 'undefined' && data[0]) {
-      console.log(`data[0]: ${JSON.stringify(data[0], null, 2)}`);
       setMetric(data[0]);
-      // if (contextData.debug) console.log(`metric: ${JSON.stringify(metric, null, 2)}`);
     }
   }, [currentMetric, data, metric]);
 
-  console.log(`in insightsonly calling MetricShell with metric: ${(metric as any)?.name} `);
+  if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`in insightsonly calling MetricShell with metric: ${(metric as any)?.name} `);
   return (
     <div>
       {metric && (
@@ -69,15 +49,12 @@ if (metricId !== null){
 };
 
 export const MetricShell = (props) => {
-  console.log(`in metricShell with metric: ${JSON.stringify(props.metric, null, 2)}`);
   const { metric } = props;
   let stats: any = { sentiment: undefined };
   const { data, error, isError, isSuccess, failureCount, failureReason } = useInsights(metric);
 
   if (isSuccess) {
-    if (process?.env?.DEBUG?.toLowerCase() === 'true' )console.log(`parsing stats...`);
     stats = parseStats(data, metric);
-    console.log(`stats: ${JSON.stringify(stats, null, 2)}`);
     if (stats.dir === 'up') {
       stats.direction = <IconTrendingUp />;
     } else if (stats.dir === 'down') {
@@ -105,13 +82,10 @@ export const MetricShell = (props) => {
         stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
       }
     }
-    if (process?.env?.DEBUG?.toLowerCase() === 'true' )console.log(`end parsing stats...`);
   }
 
   return (
     <div>
-      {/* <StatsShell isSuccess={isSuccess} stats={stats} bundleCount={bundleCount} metric={metric} />
-       */}
       <InsightsModal metric={metric} stats={stats} />
     </div>
   );

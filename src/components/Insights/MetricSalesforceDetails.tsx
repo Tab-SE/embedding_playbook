@@ -119,7 +119,7 @@ export const MetricSalesforceDetails: React.FC<{
   const myIcon: IconProp = faFilter;
 
   async function handleMetricFilter(datasourceId: string, filterId: string, fields: string[]) {
-    console.log(
+    if (process.env.DEBUG?.toLowerCase() === 'true') console.log(
       `field passed to handleMetricFilter: ${datasourceId} ${filterId} ${fields} in metric ${metric.name}${metric.nameFilters}`
     );
     propogateMetricFilter(datasourceId, filterId, fields);
@@ -383,7 +383,6 @@ const Stats: React.FC<StatsProps> = (props) => {
               className="bg-white"
               onClick={() => {
                 const metricId = (metric as any).specification_id;
-                console.log(`calling handleSetVal with ${metricId}`);
 
                 if (contextData.companionMode === 'source') {
                   contextData.handleSetVal(metricId);

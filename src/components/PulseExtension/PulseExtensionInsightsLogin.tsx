@@ -30,9 +30,6 @@ import { InsightsOnly } from '..';
 export const PulseExtensionInsightsLogin
  = function Extension(props: any, ref) {
 
-  console.log(`test`);
-
-  const basePath = process.env.NEXT_PUBLIC_BASE_URL;
   const { status: session_status, data: session_data } = useSession();
   
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
