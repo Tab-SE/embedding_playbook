@@ -49,6 +49,7 @@ if (metricId !== null){
   useEffect(() => {
     // console.log(`contextData in InsightsOnly: ${JSON.stringify(contextData, null, 2)}`)
     if (typeof currentMetric !== 'undefined' && typeof data !== 'undefined') {
+      console.log(`data[0]: ${JSON.stringify(data[0], null, 2)}`);
       setMetric(data[0]);
       // if (contextData.debug) console.log(`metric: ${JSON.stringify(metric, null, 2)}`);
     }
@@ -68,6 +69,7 @@ if (metricId !== null){
 };
 
 export const MetricShell = (props) => {
+  console.log(`in metricShell with metric: ${JSON.stringify(props.metric, null, 2)}`);
   const { metric } = props;
   let result;
   let facts;
@@ -75,6 +77,7 @@ export const MetricShell = (props) => {
   const { data, error, isError, isSuccess, failureCount, failureReason } = useInsights(metric);
 
   if (isSuccess) {
+    if (process?.env?.DEBUG?.toLowerCase() === 'true' )console.log(`parsing stats...`);
     stats = parseStats(data, metric);
     if (stats.dir === 'up') {
       stats.direction = <IconTrendingUp />;
@@ -103,6 +106,7 @@ export const MetricShell = (props) => {
         stats.comparisons[1].directionIcon = <IconArrowNarrowRight />;
       }
     }
+    if (process?.env?.DEBUG?.toLowerCase() === 'true' )console.log(`end parsing stats...`);
   }
 
   return (

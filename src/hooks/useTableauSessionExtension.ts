@@ -30,8 +30,10 @@ export const useTableauSessionExtension = (userName: string, loginData: any) => 
         else {
           setSignInError(null);
         }
-        console.log(`sign in response in onUnauthenticated: ${JSON.stringify(res, null, 2)}`);
-        console.log(`...session status in onUnauthenticated: ${session_status} and session_data ${JSON.stringify(session_data, null, 2)}`);
+        if (process?.env?.DEBUG?.toLowerCase() === "true") {
+          console.log(`sign in response in onUnauthenticated: ${JSON.stringify(res, null, 2)}`);
+          console.log(`...session status in onUnauthenticated: ${session_status} and session_data ${JSON.stringify(session_data, null, 2)}`);
+        }
       } catch (error) {
         setSignInError('Sign-in failed. Please check your credentials and try again.');
       }
@@ -39,8 +41,9 @@ export const useTableauSessionExtension = (userName: string, loginData: any) => 
   });
 
   const signedIn = session_status === "authenticated";
-  console.log(`session status in signedIn: ${session_status} and session_data ${JSON.stringify(session_data, null, 2)}`);
-
+  if (process?.env?.DEBUG?.toLowerCase() === "true") {
+    console.log(`session status in signedIn: ${session_status} and session_data ${JSON.stringify(session_data, null, 2)}`);
+  }
   const query = useQuery({
     queryKey: ["tableau", "embed", userName, session_data?.user?.email || (session_data && session_data.user && session_data.user.email)],
     queryFn: () => {
@@ -48,9 +51,6 @@ export const useTableauSessionExtension = (userName: string, loginData: any) => 
     },
     enabled: signedIn,
     staleTime: Infinity,
-    // onError: (error) => {
-    //   console.log(`error in tanstack query: ${error}`);
-    // },
   });
 
   return { ...query, signInError };

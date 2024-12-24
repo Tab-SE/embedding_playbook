@@ -35,8 +35,10 @@ export const InsightsOnly = (props) => {
   }, [data, contextData]);
 
   useEffect(() => {
-    console.log(`insights only data...`);
-    console.log(data);
+    if (typeof data !== 'undefined'){
+      console.log(`insights only data...`);
+      console.log(data);
+    }
   }, [data])
 
   useEffect(() => {
