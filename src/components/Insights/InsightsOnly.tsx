@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useSession } from 'next-auth/react';
 import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 
-import { useMetricsExtension } from '../../hooks';
+import { useMetricsExtensionSingle } from '../../hooks';
 import { InsightsModal } from '..';
 import { useInsights } from '../../hooks';
 import { parseInsights } from '../../utils';
@@ -19,10 +19,9 @@ export const InsightsOnly = (props) => {
   const [user, setUser] = useState<null | string | undefined>(null);
   const [metric, setMetric] = useState<Metric | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { status: session_status, data: session_data } = useSession();
   const [specification_id, setSpecification_id] = useState<string | undefined>(undefined);
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
-  const { data, error } = useMetricsExtension(contextData.loginData.userName, contextData.loginData);
+  const { data, error } = useMetricsExtensionSingle(contextData.loginData.userName, contextData.loginData, contextData.currentMetric);
 
   useEffect(() => {
     if (contextData.debug === "true") console.log(`contextData in InsightsOnly: ${JSON.stringify(contextData, null, 2)}`)

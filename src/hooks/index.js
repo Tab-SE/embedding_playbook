@@ -1,6 +1,7 @@
 export { useTableauSession } from './useTableauSession';
 export { useTableauSessionExtension } from './useTableauSessionExtension';
 export { useMetricsExtension } from './useMetricsExtension';
+export { useMetricsExtensionSingle } from './useMetricsExtensionSingle';
 export { useMetrics } from './useMetrics';
 export { useMetric } from './useMetric';
 export { useInsights } from './useInsights';
