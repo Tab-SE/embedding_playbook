@@ -24,8 +24,9 @@ export const InsightsOnly = (props) => {
   useEffect(() => {
     if (typeof contextData.currentMetric !== 'undefined' && typeof data !== 'undefined') {
       setMetric(data[0]);
+      setIsDialogOpen(true);
     }
-    else if (typeof contextData.currentMetric === 'undefined'){
+    else if (typeof contextData.currentMetric === 'undefined' || contextData.currentMetric === '') {
       setMetric(null);
     }
   }, [data, contextData]);
@@ -52,9 +53,8 @@ export const InsightsOnly = (props) => {
         </Dialog>
       ) : (
         <div>
-          Error: {contextData.metricIdParamIsValid ? null : 'MetricId parameter not found'}
-        {metric?.specification_id && 'metric has no id'}
-        {typeof metric !== 'undefined' && 'Select a Metric in the Source Extension'}
+          {contextData.metricIdParamIsValid ? null : 'Error: MetricId parameter not found. If the parameter exists, reload this component (desktop) or the page (browser).'}
+        {typeof metric !== 'undefined' && contextData.metricIdParamIsValid !== null && 'Select a Metric in the Source Extension'}
         </div>
       )}
     </div>
