@@ -30,12 +30,15 @@ export const useTableauSessionExtension = (userName: string, loginData: any) => 
         else {
           setSignInError(null);
         }
-        if (process?.env?.DEBUG?.toLowerCase() === "true") {
+        /*
+        // this used to work, but now process isn't available
+        if (process && process.env?.NEXT_PUBLIC_DEBUG || process.env?.NEXT_PUBLIC_DEBUG?.toLowerCase() === 'true') {
           console.log(`sign in response in onUnauthenticated: ${JSON.stringify(res, null, 2)}`);
           console.log(`...session status in onUnauthenticated: ${session_status} and session_data ${JSON.stringify(session_data, null, 2)}`);
         }
+          */
       } catch (error) {
-        setSignInError('Sign-in failed. Please check your credentials and try again.');
+        setSignInError(`Sign-in failed. Please check your credentials and try again. \r\r ${error}`);
       }
     },
   });

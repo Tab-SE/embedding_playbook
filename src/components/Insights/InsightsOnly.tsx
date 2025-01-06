@@ -43,7 +43,6 @@ export const InsightsOnly = (props) => {
     }
   };
 
-  if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`in insightsonly calling MetricShell with metric: ${(metric as any)?.name} `);
   return (
     <div>
       {typeof metric !== 'undefined' && metric !== null && contextData.metricIdParamIsValid ? (

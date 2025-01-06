@@ -12,7 +12,7 @@ export const InsightsModal = (props) => {
           <DialogTitle className="text-3xl">
             <span className="text-stone-600 dark:text-stone-300">
               {metric.name}:
-              <span className="font-bold ml-3">{stats.value}</span>
+              <span className="font-bold ml-3">{stats?.value}</span>
               <span className="text-xl ml-3">
                 {metric.namePeriod}  {metric.nameFilters && `- ` + metric.nameFilters}
               </span>
@@ -21,7 +21,7 @@ export const InsightsModal = (props) => {
           <DialogDescription className='pt-1'>
             <div className={`flex space-x-2 text-lg`}>
               <div className="flex space-x-2 items-center">
-                <div className={`flex space-x-2 items-center ${stats.color}`}></div>
+                <div className={`flex space-x-2 items-center ${stats?.color}`}></div>
                 <div>{stats?.comparisons?.[0]?.directionIcon}</div>
                 <div>{stats?.comparisons?.[0]?.absolute}</div>
                 <div>

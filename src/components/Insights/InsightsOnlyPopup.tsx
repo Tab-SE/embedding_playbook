@@ -53,6 +53,7 @@ export const MetricShell = (props) => {
   let stats: any = { sentiment: undefined };
   const { data, error, isError, isSuccess, failureCount, failureReason } = useInsights(metric);
 
+  let viz;
   if (isSuccess) {
     stats = parseStats(data, metric);
     if (stats.dir === 'up') {

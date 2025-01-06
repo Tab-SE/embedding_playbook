@@ -21,7 +21,7 @@ useEffect(() => {
     setMetricOptions(contextData.metricCollection.metricOptions);
   }
 }, [contextData.metricCollection.metricOptions]);
-  
+
 return (
   <div className="min-h-[111px] px-16">
     <div className="grid-container" >
@@ -35,7 +35,8 @@ return (
               return (
                 <li
                   key={metric.specification_id}
-                  className="bg-white border border-[#e9f2fe] rounded-xl shadow-sm hover:shadow-lg hover:cursor-pointer active:shadow-none focus:outline-none focus:ring-2 focus:ring-[#3277d9] p-2.5 max-w-[28.5rem] flex flex-col list-none"
+                  style={{ backgroundColor: contextData.options.cardBackgroundColor }}
+                  className="border border-[#e9f2fe] rounded-xl shadow-sm hover:shadow-lg hover:cursor-pointer active:shadow-none focus:outline-none focus:ring-2 focus:ring-[#3277d9] p-2.5 max-w-[28.5rem] flex flex-col list-none"
                 >
                   <MetricSinglePaneDetails
                     key={metric.specification_id}

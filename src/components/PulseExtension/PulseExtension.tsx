@@ -201,13 +201,12 @@ export const PulseExtension = forwardRef(function Extension(props, ref) {
         event
           .getParameterAsync()
           .then((metricIdParam) => {
-            if (metricIdParam && metricIdParam.currentValue && metricIdParam.currentValue.value) {
-              const metricId = metricIdParam.currentValue.value;
-              if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`MetricId changed to: ${metricId}`);
-              // setCurrMetricId(metricId);
+            if (metricIdParam) {
+              const metricId = metricIdParam.currentValue?.value;
+              console.log(`MetricId changed to: ${metricId}`);
               updateContextData({ currentMetric: metricId });
             } else {
-              if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`Received undefined metricIdParam or currentValue:`, metricIdParam);
+              console.log(`Received undefined metricIdParam:`, metricIdParam);
             }
           })
           .catch((error) => {

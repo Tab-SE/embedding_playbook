@@ -1,10 +1,20 @@
-import { PulseExtensionInsightsPopup } from 'components';
-import { useSearchParams } from "next/navigation";
+'use client';
 
+import { PulseExtensionInsightsPopup } from 'components';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 export default function InsightsPopupPage() {
-  const searchParams = useSearchParams();
-  let metricId = searchParams.get("metricId");
-  if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`metricId: ${metricId}`);
-  return <PulseExtensionInsightsPopup metricId={metricId} />;
+  const router = useRouter();
+  const [metricId, setMetricId] = useState(null);
+
+  useEffect(() => {
+    if (router.isReady) {
+      const { metricId } = router.query;
+      setMetricId(metricId);
+      console.log(`metricId: ${metricId}`);
+    }
+  }, [router.isReady, router.query]);
+
+  return metricId ? <PulseExtensionInsightsPopup metricId={metricId} /> : null;
 }

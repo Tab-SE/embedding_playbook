@@ -348,7 +348,7 @@ const Stats: React.FC<StatsProps> = (props) => {
         <div className="flex flex-row">
           <Dialog>
             <DialogTrigger
-              className="bg-white"
+              style={{ backgroundColor: contextData.options.cardBackgroundColor }}
               onClick={() => {
                 const metricId = (metric as any).specification_id;
                 if (process.env.DEBUG?.toLowerCase() === 'true') console.log(`calling handleSetVal with ${metricId}`);
