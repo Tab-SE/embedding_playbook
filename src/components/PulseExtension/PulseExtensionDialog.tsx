@@ -28,7 +28,7 @@ export const PulseExtensionDialog = ({ children }: { children: React.ReactNode }
 
   const [contextOptions, setContextOptions] = useState<ContextData['options']>({
     positiveSentimentColor: '#1ea562',
-    neutralSentimentColor: '#1ea562',
+    neutralSentimentColor: '#6d6d6d',
     negativeSentimentColor: '#f81a5c',
     cardBackgroundColor: '#FFFFFF',
     backgroundColor: '#FFFFFF',
