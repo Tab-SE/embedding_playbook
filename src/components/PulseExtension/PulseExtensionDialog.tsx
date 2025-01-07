@@ -33,23 +33,23 @@ export const PulseExtensionDialog = ({ children }: { children: React.ReactNode }
     cardBackgroundColor: '#FFFFFF',
     backgroundColor: '#FFFFFF',
     cardTitleText: {
-      fontFamily: '',
-      fontSize: 'text-base',
-      color: '#000000',
+      fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
+      fontSize: "18pt",
+      color: "#333333"
     },
     cardBANText: {
-      fontFamily: '',
-      fontSize: 'text-base',
-      color: '#000000',
+      fontFamily: "'Tableau Light','Tableau',Arial,sans-serif",
+      fontSize: "15pt",
+      color: "#333333"
     },
     cardText: {
-      fontFamily: '',
-      fontSize: 'text-base',
-      color: '#000000',
+      fontFamily: "'Tableau Book','Tableau',Arial,sans-serif",
+      fontSize: "9pt",
+      color: "#666666"
     },
     googleFont: {
-      fontFamily: 'Doto',
-      fontWeight: '500',
+      fontFamily: '',
+      fontWeight: ''
     },
     chart: {
       axis: '#343A3F',
