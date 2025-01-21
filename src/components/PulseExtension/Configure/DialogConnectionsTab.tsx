@@ -31,7 +31,7 @@ export const ConnectionTab = ({
     { value: 'dub01', label: 'Europe - Ireland - (DUB01)' },
     { value: 'ew1a', label: 'Europe - Ireland - (EW1A)' },
     { value: 'prod-uk-a', label: 'Europe - UK - (prod-uk-a)' },
-    { value: 'useast-1', label: 'United States - East - (useast-1)' },
+    { value: 'us-east-1', label: 'United States - East - (us-east-1)' },
     { value: 'prod-useast-a', label: 'United States - East - (prod-useast-a)' },
     { value: 'prod-useast-b', label: 'United States - East - (prod-useast-b)' },
     { value: '10ax', label: 'United States - West - (10AX)' },
