@@ -6,7 +6,7 @@ import { ExtensionDataProvider } from '@/components/Providers/ExtensionDataProvi
 
 
 import '../global.css';
-import { SessionProvider, AgentRuntimeProvider, FloatingAssistant } from 'components';
+import { SessionProvider, FloatingAssistant } from 'components';
 
 export default function App({
   Component,
@@ -52,10 +52,10 @@ export default function App({
         <ExtensionDataProvider>
           <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
           <ThemeProvider attribute="class" forcedTheme='light'>
-            <AgentRuntimeProvider>
+            {/* <AgentRuntimeProvider> */}
               <Component {...pageProps} />
-              <FloatingAssistant />
-            </AgentRuntimeProvider>
+              {/* <FloatingAssistant /> */}
+            {/* </AgentRuntimeProvider> */}
           </ThemeProvider>
         </ExtensionDataProvider>
       </QueryClientProvider>

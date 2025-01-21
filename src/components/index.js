@@ -55,7 +55,7 @@ export { ActionCard } from './ActionCard';
 
 export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './ResponsiveLayouts';
 
-export { SessionProvider, AgentRuntimeProvider, ExtensionDataProvider, ExtensionDataContext } from './Providers';
+export { SessionProvider, ExtensionDataProvider, ExtensionDataContext } from './Providers';
 
 export { FloatingAssistant, Thread, Agent } from './Agent';
 
