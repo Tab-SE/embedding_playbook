@@ -7,7 +7,6 @@ import { ThemeProvider } from 'next-themes'
 import { SessionProvider } from 'next-auth/react'
 
 import './global.css'
-// import { AgentRuntimeProvider } from '../components'
 
 export default function RootLayout({
   children,
@@ -28,9 +27,7 @@ export default function RootLayout({
           <QueryClientProvider client={queryClient}>
             <ReactQueryDevtools initialIsOpen={false} buttonPosition='bottom-left'/>
             <ThemeProvider attribute="class" forcedTheme='light'>
-              {/* <AgentRuntimeProvider> */}
                 {children}
-              {/* </AgentRuntimeProvider> */}
             </ThemeProvider>
           </QueryClientProvider>
         </SessionProvider>

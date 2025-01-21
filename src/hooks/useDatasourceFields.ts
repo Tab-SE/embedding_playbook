@@ -9,7 +9,7 @@ import { endianness } from "os";
 
 
 
-export const useDatasourceFields = (datasourceFields: { datasourceId: string, fields: string[] }[]) => {
+export const useDatasourceFields = (datasourceFields: { datasourceId: string, fields: string[] }[], showPulseFilters: 'true'|'false') => {
 
   const flatMap = datasourceFields.length ? datasourceFields?.map(({ datasourceId, fields }) =>
     fields.map(field => ({
@@ -17,7 +17,7 @@ export const useDatasourceFields = (datasourceFields: { datasourceId: string, fi
       field,
     })
     )).flat() || [] : [];
-    
+
 
   const queries =
     datasourceFields.length ? datasourceFields?.map(({ datasourceId, fields }) =>
@@ -30,7 +30,7 @@ export const useDatasourceFields = (datasourceFields: { datasourceId: string, fi
           data.datasourceId = datasourceId;
           return data;
         },
-        enabled: !!datasourceId && !!field,
+        enabled: !!datasourceId && !!field && showPulseFilters === 'true',
         retry: 3,
         retryDelay: (attemptIndex) => Math.min(30 * 1.5 ** attemptIndex, 3000),
         staleTime: 30 * 60 * 1000, // 30 minutes
@@ -50,7 +50,7 @@ export const useDatasourceFields = (datasourceFields: { datasourceId: string, fi
     error: result.error,
   }));
 
-  
+
 
   return resultsMap;
 }

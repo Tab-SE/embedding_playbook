@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, act } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '../ui';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -264,15 +264,15 @@ export const PulseExtensionDialog = ({ children }: { children: React.ReactNode }
   }
   function handleSample() {
     setLoginData({
-      tableauUrl: 'https://10az.online.tableau.com',
-      site_id: 'rgdemosite',
-      userName: 'rgoldin@salesforce.com',
-      caClientId: '6b828aa5-dd31-4c35-9be9-fddf7e0b7933',
-      caSecretId: 'd7949278-f28e-48cf-8313-765c17972961',
-      caSecretValue: 'dwPRgqnLDAO4G5GOrgmnylkAK5ODXxKfS/hEhTyZtzA=',
+      tableauUrl: 'https://10ax.online.tableau.com',
+      site_id: 'rgtableauonlinebetasite',
+      userName: 'rgoldin+pulse@salesforce.com',
+      caClientId: 'b3f08bd1-033d-4dc9-ae50-0e718898a992',
+      caSecretId: 'aac3e653-29ba-4b26-bde1-b0ec52e3f0a0',
+      caSecretValue: 'k+YzRh9ZKa8SKwMNYl2L7oOvA8vqsexBR0KQYC2+Azo=',
       isDashboardExtension: 'true',
     });
-    setTableauUrlSubDomain('10az');
+    setTableauUrlSubDomain('10ax');
   }
 
   const handleLogout = async () => {

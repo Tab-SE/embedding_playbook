@@ -1,16 +1,14 @@
 'use client';
 // eslint-disable-next-line no-unused-vars
 
-import { useEffect, useState, useRef, forwardRef, useContext, useCallback, useMemo } from 'react';
-import { Worksheet, Filter, CategoricalFilter } from '@tableau/extensions-api-types';
+import { useEffect, useState, useRef, forwardRef, useContext, useCallback } from 'react';
+import { Worksheet, CategoricalFilter } from '@tableau/extensions-api-types';
 
 import { ExtensionDataContext } from '../Providers/ExtensionDataProvider';
 // import { TableauExtension } from '../TableauExtension';
-import { useQueryClient } from '@tanstack/react-query';
 import { useSession, signOut } from 'next-auth/react';
 import { MetricCollection } from 'models';
-import _, { update } from 'lodash';
-import { FontSelector, Insights, InsightsOnly, Metrics } from 'components';
+import { InsightsOnly, Metrics } from 'components';
 
 export const PulseExtension = forwardRef(function Extension(props, ref) {
   const basePath = process.env.NEXT_PUBLIC_BASE_URL;

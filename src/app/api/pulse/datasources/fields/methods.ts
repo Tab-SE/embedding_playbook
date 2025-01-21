@@ -2,9 +2,6 @@ import { httpGet, httpPost } from "utils";
 
 
 const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
-const contentUrl = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
-// const tableau_domain = 'https://10az.online.tableau.com'; // URL for Tableau environment
-// const contentUrl = 'rgdemosite'; // Tableau site name
 const pulse_path = '/api/-/pulse'; // path to resource
 const api = process.env.TABLEAU_API; // Tableau API version (classic resources)
 
@@ -16,7 +13,7 @@ export const makePayload = async (tableau, datasourceId: string, fieldName: stri
     try {
 
       let fields = handleDatasourceField(rest_key, datasourceId, fieldName, tableauUrl);
-      
+
       return fields;
 
     } catch (error) {

@@ -1,1 +1,0 @@
-export { generateBreadcrumbs } from './generateBreadcrumbs';

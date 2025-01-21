@@ -27,7 +27,7 @@ export const MetricsPlusFilters = (props) => {
   { datasourceId: string; fields: string[] }[]
   >([]);
   const metricFilterResults = useMetricFilters(metrics, filters);
-  const fieldResults: FieldResult[] = useDatasourceFields(consolidatedMetricFilterFields);
+  const fieldResults: FieldResult[] = useDatasourceFields(consolidatedMetricFilterFields, contextData.showPulseFilters);
   const [fieldResultsLoaded, setFieldResultsLoaded] = useState(false);
 
   // Memoize datasources to avoid unnecessary re-renders

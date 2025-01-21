@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 export const LoadMetricsOnly = (props: any) => {
   const {loginData, metricCollection, setMetricCollection} = props;
-  const { status, data, error, isError, isSuccess } = useMetricsExtension(loginData.userName, loginData);
+  const { status, data, error, isError, isSuccess, signInError } = useMetricsExtension(loginData.userName, loginData);
 
   useEffect(() => {
     if ( data && data.length > 0 && !_.isEqual(data, metricCollection.metrics) && !isError ) {
@@ -21,15 +21,15 @@ export const LoadMetricsOnly = (props: any) => {
   let debug = 'false';
   return (
     <div>
-      {debug === 'true' && (
-        <div>
-          Load Metrics
-          <br />
-          ----------------
-          <br />
-        </div>
+      {status === 'pending' && !signInError && <Skeleton className="h-6 w-1/3">Loading</Skeleton>}
+      {isSuccess && metricCollection.metrics && metricCollection.metrics.length > 0 && (
+      <div>Number of metrics loaded: {metricCollection.metrics.length}</div>
       )}
-      {metricCollection.metrics && metricCollection.metrics.length ? `Number of metrics loaded: ${metricCollection.metrics.length}` : <Skeleton className="h-6 w-1/3" />}
+      {signInError && (
+      <div className="alert alert-danger" role="alert">
+        {signInError || 'There was an error signing in. Please try again later.'}
+      </div>
+      )}
     </div>
   );
 };

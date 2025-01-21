@@ -1,5 +1,5 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "components/ui";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "components/ui";
+import { Tabs, TabsContent } from "components/ui";
 
 import { Insights, TableauEmbed, Chat } from "components";
 
@@ -82,22 +82,4 @@ const InsightsChat = (props) => {
   )
 }
 
-const Dashboards = (props) => {
-  const { src } = props;
-  return (
-    <TabsContent value="dashboard" className="space-y-4">
-      <TableauEmbed
-        src={src}
-        width={1300}
-        height={540}
-        hideTabs={true}
-        device='default'
-        toolbar='hidden'
-        customToolbar={false}
-        layouts={{
-          '*': { 'device': 'default', 'width': 1300, 'height': 540 }
-        }}
-      />
-    </TabsContent>
-  )
-}
+

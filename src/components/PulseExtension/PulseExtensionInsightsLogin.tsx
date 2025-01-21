@@ -4,25 +4,11 @@
 */
 
 // eslint-disable-next-line no-unused-vars
-import { tab_extension } from '../../libs';
-import { useEffect, useState, useRef, forwardRef, useContext, useCallback } from 'react';
-import { Button } from '../ui';
-import { Demo, Metric } from '..';
-import {
-  Dashboard,
-  Parameter,
-  Worksheet,
-  Filter,
-  TableauEvent,
-  CategoricalFilter,
-  FilterChangedEvent,
-} from '@tableau/extensions-api-types';
+import { useContext } from 'react';
 
 import { ExtensionDataContext } from 'components';
 import { LoadMetricsOnly } from 'components';
-import { useQueryClient } from '@tanstack/react-query';
-import { useSession, getSession, signOut } from 'next-auth/react';
-import { InsightsOnly } from '..';
+import { useSession } from 'next-auth/react';
 
 
 
@@ -31,7 +17,7 @@ export const PulseExtensionInsightsLogin
  = function Extension(props: any, ref) {
 
   const { status: session_status, data: session_data } = useSession();
-  
+
   const { contextData, updateContextData } = useContext(ExtensionDataContext);
   let loginData = {
     tableauUrl: 'https://10az.online.tableau.com',
@@ -58,9 +44,9 @@ export const PulseExtensionInsightsLogin
           <br />
           session data: {JSON.stringify(session_data)}
           <br />
-          contextData: Too big to display. {/* {JSON.stringify(contextData, null, 2)} 
+          contextData: Too big to display. {/* {JSON.stringify(contextData, null, 2)}
           */}
-          
+
         </div>
       )}
         <LoadMetricsOnly
