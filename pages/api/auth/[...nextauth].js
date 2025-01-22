@@ -23,8 +23,8 @@ export const authOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        ID: { label: "ID", type: "text", placeholder: "Ewa or Justin" },
-        demo: { label: "Demo", type: "text" }
+        ID: { label: "ID", type: "text", placeholder: "Allison or James" },
+        demo: { label: "Demo", type: "text", placeholder: "superstore" }
       },
       async authorize(credentials, req) {
         // You need to provide your own logic here that takes the credentials
@@ -52,7 +52,7 @@ export const authOptions = {
         if (user) {
           // add the demo to the user object to see it on the client
           user.demo = credentials.demo;
-          user.uaf = user.uaf || {}; 
+          user.uaf = user.uaf || {};
           // server-side env vars
           const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
           const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
@@ -106,7 +106,7 @@ export const authOptions = {
 
           // Return false to display a default error message
           return user.tableau ? user : false;
-          
+
         } else {
           return false;
         }
@@ -147,7 +147,7 @@ export const authOptions = {
         token.vector_store = user.vector_store; // tableau session object
         token.uaf = user.uaf || {}; // Ensure uaf is set, even if it's empty
         token.tableau = user.tableau; // tableau session object
-        
+
       }
       return token;
     },

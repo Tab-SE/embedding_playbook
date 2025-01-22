@@ -2,9 +2,9 @@ export const Head = (props) => {
   const { imgHost, title, description } = props;
   const url = imgHost;
   const previewImage = imgHost + "/img/opengraph/embed_tableau.png";
-  let formattedTitle = title + ' ✨ Simplify VMS';
+  let formattedTitle = title + ' ✨ Tableau Embedded';
   if (title === 'Index') {
-    formattedTitle = 'Simplify VMS ✨';
+    formattedTitle = 'Tableau Embedded ✨';
   }
 
   return (
@@ -31,7 +31,6 @@ export const Head = (props) => {
       <meta name="apple-mobile-web-app-title" content={formattedTitle} />
 
       <link rel="canonical" href={url} />
-      <link rel="icon" href={imgHost + "/svg/simplifyvms/logo-4.svg?h=32&w=32"} type="image/svg+xml" />
       <link rel="icon" href={imgHost + "/img/tableau/tableau.ico?h=32&w=32"} type="image/ico" />
       <link rel="icon" href={imgHost + "/img.tableau/tableau_logo.png?h=32&w=32"} type="image/png" />
       <link

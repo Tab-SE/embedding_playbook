@@ -6,25 +6,20 @@ import { HeroDemo } from 'components';
 const Intro = () => {
   return (
     <div>
-      <h1 className='text-5xl font-bold mb-9' style={{color: "#1B211F"}}>Simplify VMS</h1>
+      <h1 className='text-5xl font-bold mb-9'>Embed Tableau</h1>
         <div className='leading-loose space-y-9'>
-          <p>In a world that is changing rapidly and unpredictably, businesses need advanced technology solutions to manage their contingent workforce with ease and efficiency.</p>
-          <b/>
-          <p>Simplify’s Direct Sourcing technology solution enables contingent worker sourcing, engagement and management without staffing suppliers.</p>
+          <p>Tableau is the world's leading end-to-end data and analytics platform.</p>
           <Image
-            src='/svg/simplifyvms/best-talent-private-talent-pools-simplify-marketing-img-2.svg'
+            src='/img/tableau/stock/showcase.png'
             width='750'
             height='500'
             alt='stock photo'
           />
-        <div><strong>Source Without Staffing Suppliers</strong>
-        <ul style={{listStyleType: 'disc', marginLeft: '20px'}}>
-            <li>Avoid costly agency mark-ups while taking control of candidate experience and vetting</li>
-            <li>Slash recruitment spend by 10% and vacancy aging rates by half</li>
-            <li>Get full visibility across the entire req-to-check process and optimize on your own terms</li>
-            <li>Design your own social recruitment marketing campaigns and engagement strategies</li>
-        </ul>
-        </div>
+          <p>
+            Leverage the analytical powerhouse of Tableau to analyze and visualize data.
+            This site teaches you how to compose Tableau's varied product capabilities
+            into applications that thrill customers, coworkers, and friends!
+          </p>
         </div>
     </div>
   )
@@ -34,19 +29,17 @@ const Outro = () => {
   return (
     <div className='overflow-hidden leading-loose space-y-9'>
       <Image
-        src='/svg/simplifyvms/source-without-staffing-suppliers-simplify-markerting-img-1.svg'
+        src='/img/tableau/stock/embed_samples.png'
         width='750'
         height='500'
         alt='stock photo'
       />
-       <div><strong>Re-engage Your Best Talent</strong>
-        <ul style={{listStyleType: 'disc', marginLeft: '20px'}}>
-            <li>Don’t allow your best contingent talent to disappear after they worked for you – develop a relationship</li>
-            <li>Maintain your own curated private talent pools of preferred contingent workers to re-engage and redeploy to new assignments</li>
-            <li>Leverage chatbot capabilities to continuously engage and communicate with talent members</li>
-            <li>Build your brand and a talent community that grows by word of mouth</li>
-        </ul>
-        </div>
+      <p>
+        Beyond creating visual representations of data, Tableau provides
+        the greatest benefits as it helps people discover what information is valuable to others.
+        It enables users to analyze data and build the interfaces that represent them with unmatched speed
+        and flexibility resulting in a springboarding of ideas into value.
+      </p>
     </div>
   )
 }

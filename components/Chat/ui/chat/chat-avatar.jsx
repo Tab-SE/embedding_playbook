@@ -20,8 +20,8 @@ export default function ChatAvatar({ role }) {
   return (
     <div className="flex h-9 w-9 shrink-0 select-none items-center justify-center rounded-full bg-background shadow-xl">
       <Avatar className='h-9 w-9'>
-        <AvatarImage src="svg/simplifyvms/logo-4.svg" alt="AI User" />
-        <AvatarFallback>AI</AvatarFallback>
+      <AvatarImage src="/img/tableau/tableau_logo.png" alt="AI Demo" />
+      <AvatarFallback>AI</AvatarFallback>
       </Avatar>
     </div>
   );

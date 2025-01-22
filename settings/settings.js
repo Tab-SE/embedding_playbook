@@ -10,14 +10,14 @@ export const settings = {
   custom_metrics: true,
   themes: [
     {
-      label: "Simplify VMS",
-      name: "simplify",
-      component: Simplify,
+      label: "Superstore Analytics",
+      name: "superstore",
+      component: Superstore,
       type: "default",
-      logo: "svg/simplifyvms/logo-4.svg",
+      logo: "/img/tableau/tableau_logo.png",
       styles: "",
       project: {
-        name: "Simplify VMS",
+        name: "superstore",
         workbooks: [],
         data_sources: []
       }

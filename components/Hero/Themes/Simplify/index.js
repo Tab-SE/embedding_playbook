@@ -18,7 +18,7 @@ export const Simplify = () => {
   // Manage visibility and default tab based on session_data
   useEffect(() => {
     if (status === 'authenticated' && session_data) {
-      const isEwa = session_data.user.email === "ewa.przywara@mail.com";
+      const isEwa = session_data.user.email === "jmorris@mail.com";
       const isJustin = session_data.user.email === "jchen@mail.com";
 
       setShowContract(isEwa);
