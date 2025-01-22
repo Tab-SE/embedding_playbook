@@ -123,9 +123,11 @@ export class MetricsModel {
   async syncMetrics(apiKey) {
     // HTTP requests
     this.subscriptions = await handleSubscriptions(apiKey, this.user_id, this.tableauUrl);
+    if (typeof this.subscriptions === 'undefined'){
+      return [];
+    }
     this.specifications = await handleSpecifications(apiKey, this.subscriptions, this.tableauUrl);
     this.definitions = await handleDefinitions(apiKey, this.specifications, this.tableauUrl);
-
     /*     console.log(`--------this.subscriptions--------`);
         console.log(this.subscriptions);
         console.log(`--------this.specifications--------`);
@@ -135,10 +137,6 @@ export class MetricsModel {
 
     // make a metrics object
     this.makeMetrics();
-    /*     console.log(`--------this.metrics--------`);
-             let m = JSON.parse(JSON.stringify(this.metrics));
-            console.log(JSON.stringify(m, null, 2));   */
-
     return this.metrics;
   }
   // async methods defined in controller/

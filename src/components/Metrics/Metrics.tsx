@@ -25,14 +25,21 @@ export const Metrics = (props) => {
   );
 
   useEffect(() => {
-    if (data && data.length > 0 && !isError && !signInError) {
-      // extract metrics if data is available
-      let metrics = sortPayloadByIds(data, sortOrder);
-      let metricCollection = new MetricCollection(metrics);
-      metricCollection.setMetricOptions(contextData.metricCollection.metricOptions);
-      updateContextData({ metricCollection: metricCollection });
+    if (!isError && !signInError) {
+      if (typeof data !== 'undefined' && data.length > 0) {
+        // extract metrics if data is available
+        let metrics = sortPayloadByIds(data, sortOrder);
+        let metricCollection = new MetricCollection(metrics);
+        metricCollection.setMetricOptions(contextData.metricCollection.metricOptions);
+        updateContextData({ metricCollection: metricCollection });
+      }
+      else {
+        let metricCollection = new MetricCollection([]);
+        metricCollection.setMetricOptions(contextData.metricCollection.metricOptions);
+        updateContextData({ metricCollection: metricCollection });
+      }
     }
-  }, [data]);
+  }, [data, isError, signInError]);
 
   if (isError) {
     console.debug(error);
@@ -50,13 +57,13 @@ export const Metrics = (props) => {
           {signInError || 'There was an error signing in. Please try again later.'}
         </div>
       )}
-      {data && contextData.options.googleFont?.fontFamily && contextData.options.googleFont?.fontWeight && (
+      {contextData.options.googleFont?.fontFamily && contextData.options.googleFont?.fontWeight && (
         <FontSelector
           fontName={contextData.options.googleFont.fontFamily}
           weight={contextData.options.googleFont.fontWeight}
         />
       )}
-      <LoadDatasources />
+      {!isError && !signInError &&<LoadDatasources /> }
       {!isError && !signInError && <MetricsPlusFilters />}
     </>
   );

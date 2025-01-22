@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 
@@ -47,7 +49,6 @@ if (resource === '/ban'){
 
 
   const endpoint = _domain + pulse_path + '/insights' + resource;
-
   const request = new Request(endpoint, {
     method: 'POST',
     headers: {
@@ -58,18 +59,50 @@ if (resource === '/ban'){
     body: JSON.stringify(body),
   });
 
+  // RSG 2025.01.22 - us-east-1 account was failing with the native
+  // Request, so we are using axios.  Can't explain why...
+  try {
+    const res = await axios.post(endpoint, body, {
+      headers: {
+        'X-Tableau-Auth': apiKey,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    isServerlessTimeout(res);
+
+    if (res.status !== 200 && res.status !== 201) {
+      throw new Error(`Request failed with status ${res.status}: ${res.statusText}`);
+    }
+
+    const contentType = res.headers['content-type'];
+
+    if (contentType && contentType.includes('application/json')) {
+      return res.data;
+    } else {
+      throw new Error(`Unexpected content type: ${contentType}, response: ${res.data}`);
+    }
+  } catch (error) {
+    throw new Error(`Request failed: ${error.message}`);
+  }
   const res = await fetch(request);
 
   isServerlessTimeout(res);
 
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Request failed with status ${res.status}: ${errorText}`);
+  }
+
   const contentType = res.headers.get('content-type');
 
-  if (contentType === 'text/html') {
-    const txt = await res.text();
-    throw new Error(txt);
-  } else if (contentType === 'application/json') {
+  if (contentType && contentType.includes('application/json')) {
     const jsonData = await res.json();
     return jsonData;
+  } else {
+    const textData = await res.text();
+    throw new Error(`Unexpected content type: ${contentType}, response: ${textData}`);
   }
 }
 

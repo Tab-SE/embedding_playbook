@@ -44,6 +44,9 @@ export const MetricsPlusFilters = (props) => {
         setMetrics(visibleMetrics);
       }
     }
+    else if (contextData?.metricCollection?.metrics?.length === 0){
+      setMetrics([]);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contextData.metricCollection.metrics, contextData.metricCollection.metricOptions]);
 
@@ -137,5 +140,13 @@ export const MetricsPlusFilters = (props) => {
     }
   };
 
-  return <MetricsPlusFiltersPlusDSFilters metrics={filteredMetrics} applyFilters={applyFilters} />;
+  return (
+    <>
+      {filteredMetrics.length === 0 ? (
+        <div>No metrics available</div>
+      ) : (
+        <MetricsPlusFiltersPlusDSFilters metrics={filteredMetrics} applyFilters={applyFilters} />
+      )}
+    </>
+  );
 };

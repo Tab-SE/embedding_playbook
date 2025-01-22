@@ -10,8 +10,10 @@ export const handleSubscriptions = async (apiKey, userId, tableauUrl) => {
   try {
     const response = await getSubscriptions(apiKey, userId, 20, tableauUrl);
     responseHandler(response); // output any errors returned from Tableau Pulse request
-    const parsedData = parseSubscriptions(response);
-    return parsedData;
+    if (response.subscriptions.length > 0) {
+      const parsedData = parseSubscriptions(response);
+      return parsedData;
+    }
   } catch(err) {
     console.error(err);
     return err;
@@ -24,8 +26,10 @@ export const handleSpecifications = async (apiKey, subscriptions: any, tableauUr
     const metric_ids = Object.values(subscriptions).map((obj: any) => obj.metric_id).join(',');
     const response = await getSpecifications(apiKey, metric_ids, tableauUrl);
     responseHandler(response); // output any errors returned from Tableau Pulse request
-    const parsedData = parseSpecifications(response);
-    return parsedData;
+    if (response.metrics.length > 0) {
+      const parsedData = parseSpecifications(response);
+      return parsedData;
+    }
   } catch(err) {
     console.debug(err);
     return err;

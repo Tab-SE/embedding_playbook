@@ -190,9 +190,10 @@ export const getMetrics = async () => {
   if (!res) {
     throw new Error('Unexpected response');
   }
-  if (res.length <= 0) {
-    throw new Error('Empty array');
-  }
+  // RSG 2025.01.22 - Not really an error if the user doesn't have any subscribed metrics
+  // if (res.length <= 0) {
+  //   throw new Error('Empty array');
+  // }
 
   return res;
 }
