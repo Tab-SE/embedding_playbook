@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import { DisplayContextProvider } from 'components/context';
 import { HeroDemo } from 'components';
+console.log()
 
 const Intro = () => {
   return (
