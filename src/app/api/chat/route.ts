@@ -1,107 +1,159 @@
-import { StreamingTextResponse } from 'ai';
-import { ChatMessage, MessageContent, OpenAI } from 'llamaindex';
-import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from "next/server";
+import { Message as VercelChatMessage, LangChainAdapter } from "ai";
 
-import { createChatEngine } from './engine';
-import { LlamaIndexStream } from './llamaindex-stream';
-import { newContextSystemPrompt } from './engine';
+import { Pinecone } from "@pinecone-database/pinecone";
+import { PineconeStore } from "@langchain/pinecone";
 
-// vercel AI SDK sets the runtime to edge but llamaindex requires nodejs
-// https://ts.llamaindex.ai/getting_started/environments#nextjs-app-router
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+import {
+  AIMessage,
+  BaseMessage,
+  ChatMessage,
+  HumanMessage,
+  SystemMessage,
+} from "@langchain/core/messages";
+import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
+import { createRetrieverTool } from "langchain/tools/retriever";
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
 
-// helper handles formatting for text and optional image URL
-const convertMessageContent = (
-  textMessage: string,
-  imageUrl: string | undefined,
-): MessageContent => {
-  if (!imageUrl) return textMessage;
-  return [
-    {
-      type: "text",
-      text: textMessage,
-    },
-    {
-      type: "image_url",
-      image_url: {
-        url: imageUrl,
-      },
-    },
-  ];
+export const runtime = "edge";
+
+const convertVercelMessageToLangChainMessage = (message: VercelChatMessage) => {
+  if (message.role === "user") {
+    return new HumanMessage(message.content);
+  } else if (message.role === "assistant") {
+    return new AIMessage(message.content);
+  } else {
+    return new ChatMessage(message.content, message.role);
+  }
 };
 
-export async function POST(req: NextRequest) {
-  // session token specific to each user
-  const token = await getToken({ req });
-
-  // Check if req is defined
-  if (!req) {
-    return NextResponse.json({ error: '400: Bad Request' }, { status: 400 });
+const convertLangChainMessageToVercelMessage = (message: BaseMessage) => {
+  if (message._getType() === "human") {
+    return { content: message.content, role: "user" };
+  } else if (message._getType() === "ai") {
+    return {
+      content: message.content,
+      role: "assistant",
+      tool_calls: (message as AIMessage).tool_calls,
+    };
+  } else {
+    return { content: message.content, role: message._getType() };
   }
+};
+
+const AGENT_SYSTEM_TEMPLATE = `You are a stereotypical robot named Robbie and must answer all questions like a stereotypical robot. Use lots of interjections like "BEEP" and "BOOP".
+
+If you don't know how to answer a question, use the available tools to look up relevant information. You should particularly do this for questions about LangChain.`;
+
+const bootstrapAgent = async () => {
+  const chatModel = new ChatOpenAI({
+    model: process.env.AGENT_MODEL || "gpt-4o-mini",
+    temperature: 0.2,
+  });
+
+  // Pinecone initialization
+  const pinecone = new Pinecone({
+    apiKey: process.env.PINECONE_API_KEY!
+  });
+
+  const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX_NAME!);
+
+  const vectorstore = await PineconeStore.fromExistingIndex(
+    new OpenAIEmbeddings(),
+    { pineconeIndex }
+  );
+
+  const retriever = vectorstore.asRetriever();
+
+  /**
+   * Wrap the retriever in a tool to present it to the agent in a
+   * usable form.
+   */
+  const tool = createRetrieverTool(retriever, {
+    name: "search_latest_knowledge",
+    description: "Searches and returns up-to-date general information.",
+  });
+
+  /**
+   * Use a prebuilt LangGraph agent.
+   */
+  const agent = await createReactAgent({
+    llm: chatModel,
+    tools: [tool],
+    /**
+     * Modify the stock prompt in the prebuilt agent. See docs
+     * for how to customize your agent:
+     *
+     * https://langchain-ai.github.io/langgraphjs/tutorials/quickstart/
+     */
+    messageModifier: new SystemMessage(AGENT_SYSTEM_TEMPLATE),
+  });
+
+  return agent;
+}
+
+
+/**
+ * This handler initializes and calls a tool caling ReAct agent.
+ * See the docs for more information:
+ *
+ * https://langchain-ai.github.io/langgraphjs/tutorials/quickstart/
+ * https://js.langchain.com/docs/use_cases/question_answering/conversational_retrieval_agents
+ */
+export async function POST(req: NextRequest) {
   try {
-    // Check for session token & OpenAI key
-    if (token?.tableau) {
-      const body = await req.json();
-      const { messages, data }: { messages: ChatMessage[]; data: any } = body;
-      const userMessage = messages.pop();
-      if (!messages || !userMessage || userMessage.role !== "user") {
-        return NextResponse.json(
-          {
-            error:
-              "messages are required in the request body and the last message must be from the user",
-          },
-          { status: 400 },
-        );
-      }
+    const body = await req.json();
+    /**
+     * We represent intermediate steps as system messages for display purposes,
+     * but don't want them in the chat history.
+     */
+    const messages = (body.messages ?? [])
+      .filter(
+        (message: VercelChatMessage) =>
+          message.role === "user" || message.role === "assistant",
+      )
+      .map(convertVercelMessageToLangChainMessage);
+    const returnIntermediateSteps = body.show_intermediate_steps;
 
-      const llm = new OpenAI({
-        model: (process.env.AGENT_MODEL as any) ?? "gpt-4o-mini",
-        maxTokens: 512,
-      });
+    const agent = await bootstrapAgent();
 
-      const chatEngine = await createChatEngine(llm);
-
-      // list of prompts for the query engine
-      // const prompts = chatEngine.getPrompts();
-
-      // override the default prompt so the AI does not perform undesired tasks
-      chatEngine.updatePrompts({
-        "contextGenerator:contextSystemPrompt": newContextSystemPrompt,
-      });
-
-      // Convert message content from Vercel/AI format to LlamaIndex/OpenAI format
-      const userMessageContent = convertMessageContent(
-        userMessage.content,
-        data?.imageUrl,
+    if (!returnIntermediateSteps) {
+      /**
+       * Stream back all generated tokens and steps from their runs.
+       *
+       * We do some filtering of the generated events and only stream back
+       * the final response as a string.
+       *
+       * For this specific type of tool calling ReAct agents with OpenAI, we can tell when
+       * the agent is ready to stream back final output when it no longer calls
+       * a tool and instead streams back content.
+       *
+       * See: https://langchain-ai.github.io/langgraphjs/how-tos/stream-tokens/
+       */
+      const eventStream = await agent.streamEvents(
+        {
+          messages,
+        },
+        { version: "v2" },
       );
 
-      // Calling LlamaIndex's ChatEngine to get a streamed response
-      const response = await chatEngine.chat({
-        message: userMessageContent,
-        chatHistory: messages,
-        stream: true,
-      });
+      return LangChainAdapter.toDataStreamResponse(eventStream);
 
-      // Transform LlamaIndex stream to Vercel/AI format
-      const { stream, data: streamData } = LlamaIndexStream(response, {
-        parserOptions: {
-          image_url: data?.imageUrl,
-        },
-      });
-
-      // Return a StreamingTextResponse, which can be consumed by the Vercel/AI client
-      return new StreamingTextResponse(stream, {}, streamData);
     } else {
-      // unauthorized on account of lack of session token (prevents scripted attacks)
-      return NextResponse.json({ error: '401: Unauthorized Session Token' }, { status: 401 });
+      /**
+       * We could also pick intermediate steps out from `streamEvents` chunks, but
+       * they are generated as JSON objects, so streaming and displaying them with
+       * the AI SDK is more complicated.
+       */
+      const result = await agent.invoke({ messages });
+      return NextResponse.json(
+        {
+          messages: result.messages.map(convertLangChainMessageToVercelMessage),
+        },
+        { status: 200 },
+      );
     }
-  } catch (error) {
-    console.error("[LlamaIndex]", error);
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 },
-    );
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
   }
 }
