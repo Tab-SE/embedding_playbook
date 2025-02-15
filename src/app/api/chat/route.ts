@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Message as VercelChatMessage, LangChainAdapter } from "ai";
 
-import { bootstrapAgent, convertVercelMessageToLangChainMessage, convertLangChainMessageToVercelMessage } from "./agent"
+import { bootstrapAgent } from "./agent";
+import { convertVercelMessageToLangChainMessage, convertLangChainMessageToVercelMessage } from "./utils";
 
 export const runtime = "edge";
 
