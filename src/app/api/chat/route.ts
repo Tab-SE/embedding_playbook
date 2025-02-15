@@ -48,7 +48,10 @@ export async function POST(req: NextRequest) {
         {
           messages,
         },
-        { version: "v2" },
+        {
+          streamMode: ["updates", "custom"],
+          version: "v2"
+        },
       );
 
       return LangChainAdapter.toDataStreamResponse(eventStream);
