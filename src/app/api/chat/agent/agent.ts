@@ -7,11 +7,12 @@ import { createRetrieverTool } from "langchain/tools/retriever";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 
 import { AGENT_SYSTEM_TEMPLATE } from "./prompt";
+import { initializeMetricsTool, tableauMetrics } from "./tools";
 
 
 export const bootstrapAgent = async () => {
   const chatModel = new ChatOpenAI({
-    model: process.env.AGENT_MODEL || "gpt-4o-mini",
+    model: process.env.AGENT_MODEL!,
     temperature: 0.2,
   });
 
@@ -53,7 +54,7 @@ export const bootstrapAgent = async () => {
    */
   const agent = await createReactAgent({
     llm: chatModel,
-    tools: [tool],
+    tools: [ tableauMetrics ],
     /**
      * Modify the stock prompt in the prebuilt agent. See docs
      * for how to customize your agent:
