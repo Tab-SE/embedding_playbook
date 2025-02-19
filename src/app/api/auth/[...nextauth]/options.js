@@ -47,13 +47,15 @@ export const authOptions = {
           await embed_session.jwt(user.email, embed_options, embed_scopes);
 
           const rest_scopes = [
+            "tableau:content:read",
             "tableau:datasources:read",
             "tableau:workbooks:read",
             "tableau:projects:read",
-            "tableau:insight_definitions_metrics:read",
-            "tableau:insight_metrics:read",
             "tableau:insights:read",
             "tableau:metric_subscriptions:read",
+            "tableau:insight_definitions_metrics:read",
+            "tableau:insight_metrics:read",
+            "tableau:metrics:download",
           ];
           const rest_options = {
             jwt_secret: rest_secret,
