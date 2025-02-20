@@ -92,7 +92,7 @@ export const tableauAnalytics = await initializeRAGTool(
 
   Examples:
   User: I want to know more about discounts
-  Input: 'discounts, pricing, sales strategy, discount tiers"`,
+  Input: 'discounts, pricing, sales strategy, discount tier'"`,
   5
 );
 
@@ -108,7 +108,7 @@ export const tableauDatasources = await initializeRAGTool(
 
   Examples:
   User: I want to know more about discounts
-  Input: 'discounts, pricing, sales strategy, discount tiers"`,
+  Input: 'discounts, pricing, sales strategy, discount tiers'`,
   5
 );
 
