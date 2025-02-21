@@ -65,7 +65,8 @@ export const tableauMetrics = await initializeRAGTool(
   - contributors
   - detractors
 
-  Not for precise data values. Use a data source query tool for specific values.
+  NOT for precise data values. Use a data source query tool for specific values.
+  NOT for fetching data values on specific dates
 
   Examples:
   User: give me an update on my KPIs
