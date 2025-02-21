@@ -16,7 +16,7 @@ export function selectModel(provider: ModelProvider = "openai", modelName: strin
       return new AzureChatOpenAI({
         azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
         azureOpenAIApiInstanceName: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
-        azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
+        azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_AGENT_DEPLOYMENT_NAME,
         azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION,
         modelName: modelName,
         temperature: temperature,
@@ -36,9 +36,9 @@ export function selectEmbeddings(provider: EmbeddingProvider = "openai", modelNa
     case "azure":
       return new AzureOpenAIEmbeddings({
         verbose: true,
-        apiKey: process.env.AZURE_OPENAI_API_KEY,
-        deploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
-        openAIApiVersion: process.env.AZURE_OPENAI_API_VERSION,
+        azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
+        azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME,
+        azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION,
         modelName: modelName
       });
     case "openai":
