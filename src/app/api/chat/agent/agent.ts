@@ -18,6 +18,7 @@ export const bootstrapAgent = async () => {
    * Use a prebuilt LangGraph agent.
    */
   const agent = await createReactAgent({
+    name: 'Customer Service Agent',
     llm: chatModel,
     tools: [ tableauMetrics, tableauAnalytics, tableauDatasources, tableauLiterature, analyticsAgent ],
     /**

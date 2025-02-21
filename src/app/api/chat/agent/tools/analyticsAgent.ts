@@ -1,5 +1,6 @@
 import { Client } from "@langchain/langgraph-sdk";
 import { DynamicTool } from "langchain/tools";
+import { z } from "zod";
 
 // Define a type for the stream chunk
 interface StreamChunk {
@@ -14,8 +15,7 @@ const client = new Client({
 export const analyticsAgent = new DynamicTool({
   name: "analytics_agent",
   description: `Command an Analytics Agent to perform ad-hoc analysis. Use this tool if neither metrics
-  nor workbooks provide answers to the query or the user explicitly wants analysis from data queried
-  directly
+  nor workbooks provide answers to the query.
 
   When users want specific fields of data, filters, sorting and calculations by being explicit and
   straightforward then your input should be verbatim
@@ -68,34 +68,3 @@ export const analyticsAgent = new DynamicTool({
     }
   }
 });
-  // func: async (input) => {
-  //   console.log('*** input ***', input);
-  //   try {
-  //     const streamResponse = client.runs.stream(
-  //       null, // Threadless run
-  //       "fe096781-5601-53d2-b2f6-0d3403f7e9ca", // Assuming "agent" is the name of your assistant defined in langgraph.json
-  //       {
-  //         input: {
-  //           messages: [{ role: "assistant", content: input }]
-  //         }
-  //       }
-  //     );
-
-  //     // return streamResponse;
-  //     let fullResponse = '';
-  //     for await (const chunk of streamResponse) {
-  //       console.log('*** chunk ***', chunk);
-  //       if (chunk.event === 'data') {
-  //         fullResponse += chunk.data;
-  //       }
-  //     }
-
-  //     console.log('*** fullResponse ***', fullResponse);
-
-  //     return fullResponse;
-  //   } catch (error) {
-  //     console.error('Error communicating with Analytics Agent:', error);
-  //     return 'Failed to communicate with Analytics Agent';
-  //   }
-  // }
-// });
