@@ -111,8 +111,8 @@ User: I want to know which region is unprofitable this year
 Agent:
 This year regions performed this way:
 North: 9,848
-South: 3,097
 West: 6,012
+South: 3,097
 
 Analysis:
 The worst performing region is the South
