@@ -14,7 +14,7 @@ export async function POST(req) {
 
   // Check if token is defined
   if (token?.tableau) {
-    const { name, demo, email, picture, role, vector_store, uaf, tableau } = token;
+    const { name, demo, email, picture, role, vectors, uaf, tableau } = token;
 
     // form a payload to safely represent the user on the client
     const clientSafeUser = {
@@ -23,9 +23,10 @@ export async function POST(req) {
       email,
       picture,
       role,
-      vector_store,
+      vectors,
       uaf,
       embed_token: tableau.embed_token,
+      // rest_token: tableau.rest_token, // only for debugging the JWT on the client
       user_id: tableau.user_id,
       site: tableau.site,
       created: tableau.created,

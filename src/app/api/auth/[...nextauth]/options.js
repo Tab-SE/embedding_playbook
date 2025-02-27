@@ -67,11 +67,11 @@ export const authOptions = {
 
           if (session.authorized) {
             const {
-              username, user_id, embed_token, rest_key, site_id, site, created, expires,
+              username, user_id, embed_token, rest_token, rest_key, site_id, site, created, expires,
             } = session;
 
             user.tableau = {
-              username, user_id, embed_token, rest_key, site_id, site, created, expires,
+              username, user_id, embed_token, rest_token, rest_key, site_id, site, created, expires,
             };
           }
 
@@ -105,15 +105,19 @@ export const authOptions = {
         token.picture = user.picture;
         token.demo = user.demo;
         token.role = user.role;
-        token.vector_store = user.vector_store;
+        const vectors = {
+          metrics: user.vector_store,
+          workbooks: user.vector_store,
+          datasources: user.vector_store,
+        };
+        token.vectors = vectors;
         token.uaf = user.uaf;
         token.tableau = user.tableau;
+        token.rest_token =  user.rest_token;
       }
       return token;
     },
     async session({ session, token, user }) {
-      session.user.vector_store = token.vector_store;
-      session.accessToken = token.accessToken;
       return session;
     }
   },

@@ -33,7 +33,8 @@ export const handleJWT = async (sub: string, embed_options: JWTOptions, embed_sc
     // JWT library automatically calculates session life
     credentials.created = valid_rest.iat;
     credentials.expiration = valid_rest.exp;
-    return { credentials, embed_token };
+
+    return { credentials, rest_token,  embed_token };
   } else {
     throw new Error('One or more JWTs are not valid!');
   }

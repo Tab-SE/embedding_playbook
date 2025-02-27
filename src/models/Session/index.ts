@@ -16,6 +16,7 @@ export class Session {
   private username: string;
   private user_id: string | null;
   private embed_token: string | null;
+  private rest_token: string | null;
   private rest_key: string | null;
   private site_id: string | null;
   private site: string | null;
@@ -52,11 +53,12 @@ export class Session {
   }
 
   // set class members and authorized status
-  _authorize = (credentials: Credentials, embed_token?: string) => {
+  _authorize = (credentials: Credentials, rest_token?:string, embed_token?: string) => {
     // set data store
     this.site_id = credentials?.site_id ?? null;
     this.site = credentials?.site ?? null;
     this.user_id = credentials?.user_id ?? null;
+    rest_token ? this.rest_token = rest_token : null;
     // API key from the REST API credentials response
     credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
     // JWT token used for embedding on the frontend
@@ -100,8 +102,8 @@ export class Session {
 
   // JSON Web Token authentication
   jwt = async (sub: string, embed_options: JWTOptions, embed_scopes: string[], rest_options: JWTOptions, rest_scopes: string[]) => {
-    const { credentials, embed_token } = await handleJWT(sub, embed_options, embed_scopes, rest_options, rest_scopes);
-    this._authorize(credentials, embed_token);
+    const { credentials, rest_token, embed_token } = await handleJWT(sub, embed_options, embed_scopes, rest_options, rest_scopes);
+    this._authorize(credentials, rest_token, embed_token);
   }
 
 }

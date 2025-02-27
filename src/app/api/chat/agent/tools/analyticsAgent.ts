@@ -31,7 +31,6 @@ export const analyticsAgent = new DynamicTool({
   Input: 'home office category sales, profit, orders by month of the year for the last 10 years. Include additional
   fields that can help answer "why is the home office category not doing well?"'`,
   func: async (input) => {
-    console.log('*** input ***', input);
     try {
       const streamResponse = client.runs.stream(
         null,

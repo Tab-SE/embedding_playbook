@@ -38,22 +38,17 @@ const getInsightBundle = async (apiKey, metric, resource) => {
     body: JSON.stringify(body),
   });
 
-  console.log('*** request ***', request);
-
   const res = await fetch(request);
 
   isServerlessTimeout(res);
 
   const contentType = res.headers.get('content-type');
-  console.log('*** res text/html ***', res);
 
 
   if (contentType === 'text/html; charset=UTF-8') {
-    console.log('*** res text/html ***', res);
     const txt = await res.text();
     throw new Error(txt);
   } else if (contentType === 'application/json') {
-    console.log('*** res application/json ***', res);
     const jsonData = await res.json();
     return jsonData;
   }
