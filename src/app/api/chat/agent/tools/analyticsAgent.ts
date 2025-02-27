@@ -14,22 +14,22 @@ const client = new Client({
 
 export const analyticsAgent = new DynamicTool({
   name: "analytics_agent",
-  description: `Command an Analytics Agent to perform ad-hoc analysis. Use this tool if neither metrics
-  nor workbooks provide answers to the query.
+  description: `AI Analyst performing ad-hoc analysis. Prioritize this tool for analytics and data queries.
+  Describe the user query thoroughly in natural language. You can ask for relative dates such as last week,
+  3 days ago, current year, previous 3 quarters or specific dates like March 12 1980
 
-  When users want specific fields of data, filters, sorting and calculations by being explicit and
-  straightforward then your input should be verbatim
-
-  When users ask vague or more complex questions suggesting that you must identify "why's" or relationships
-  between data this requires additional fields to help draw conclusions
-
-  Examples:
+  Data Fetching:
   User: show me the total sales, profits and average discount by region and category
-  Input: 'total sales, profits and average discount by region and category
+  Input: 'the user wants to see total sales, profits and average discount broken down by region and category
 
+  User: what were conects and disconnects for jan 15th 2025?
+  Input: 'the user wants to see connects & disconnects for January 15 2025'
+
+  Analysis:
   User: why is the home office category not doing well?
-  Input: 'home office category sales, profit, orders by month of the year for the last 10 years. Include additional
-  fields that can help answer "why is the home office category not doing well?"'`,
+  Agent: 'can you clarify what you mean by not doing well? does that mean with regards to sales or profits?'
+  User: yes this category is the least profitable
+  Input: 'the user wants to understand why the home office category is not profitable, look at sales, orders and other data to understand the issue'`,
   func: async (input) => {
     try {
       const streamResponse = client.runs.stream(
