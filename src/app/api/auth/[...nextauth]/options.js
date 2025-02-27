@@ -33,6 +33,7 @@ export const authOptions = {
           const rest_secret = process.env.TABLEAU_REST_JWT_SECRET;
           const rest_secret_id = process.env.TABLEAU_REST_JWT_SECRET_ID;
 
+          // Client-safe Connected App scopes
           const embed_scopes = [
             "tableau:views:embed",
             "tableau:views:embed_authoring",
@@ -43,9 +44,7 @@ export const authOptions = {
             jwt_secret_id: embed_secret_id,
             jwt_client_id
           };
-          const embed_session = new Session(user.name);
-          await embed_session.jwt(user.email, embed_options, embed_scopes);
-
+          // Backend secured Connected App scopes
           const rest_scopes = [
             "tableau:content:read",
             "tableau:datasources:read",
@@ -62,15 +61,17 @@ export const authOptions = {
             jwt_secret_id: rest_secret_id,
             jwt_client_id
           };
-          const rest_session = new Session(user.name);
-          await rest_session.jwt(user.email, rest_options, rest_scopes);
-          if (embed_session.authorized && rest_session.authorized) {
+
+          const session = new Session(user.name);
+          await session.jwt(user.email, embed_options, embed_scopes, rest_options, rest_scopes);
+
+          if (session.authorized) {
             const {
-              username, user_id, embed_token, site_id, site, created, expires,
-            } = embed_session;
-            const { user_id: rest_id, rest_key } = rest_session;
+              username, user_id, embed_token, rest_key, site_id, site, created, expires,
+            } = session;
+
             user.tableau = {
-              username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires,
+              username, user_id, embed_token, rest_key, site_id, site, created, expires,
             };
           }
 

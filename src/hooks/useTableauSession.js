@@ -18,7 +18,7 @@ export const useTableauSession = (userName, demo) => {
   const { status: session_status, data: session_data } = useSession({
     required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
     async onUnauthenticated() {
-      // The user is not authenticated, handle it here.
+      // The user is not authenticated, handle it here
       const { error, status, ok } = await signIn('demo-user', { redirect: false, ID: userName, demo: demo });
     }
   });
