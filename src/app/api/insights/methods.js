@@ -24,7 +24,8 @@ export const makePayload = async (rest_key, metric) => {
 // requests insight bundles for all supported types given a metric (params)
 const getInsightBundle = async (apiKey, metric, resource) => {
   // create a request body (standard for all Pulse bundle requests)
-  const body = makeBundleBody(metric);
+  const bundles = makeBundleBody(metric);
+  const body = JSON.stringify(bundles);
 
   const endpoint = tableau_domain + pulse_path + '/insights' + resource;
 
@@ -35,7 +36,7 @@ const getInsightBundle = async (apiKey, metric, resource) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
+    body: body,
   });
 
   const res = await fetch(request);

@@ -41,7 +41,7 @@ export const handleJWT = async (sub: string, embed_options: JWTOptions, embed_sc
 };
 
 // Tableau REST API authentication via Personal Access Token
-export const handlePAT = async (pat_name, pat_secret) => {
+export const handlePAT = async (pat_name: string, pat_secret: string) => {
   const credentials = await tabAuthPAT(pat_name, pat_secret);
   return credentials;
 };

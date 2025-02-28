@@ -1,6 +1,10 @@
 import { lifespan, handlePAT, handleJWT, JWTOptions } from "./controller";
 import { tabSignOut } from "libs";
 
+interface UAF {
+  [key: string]: string[];
+}
+
 interface Credentials {
   site_id?: string;
   site?: string;
@@ -8,7 +12,9 @@ interface Credentials {
   rest_key?: string;
   created?: number;
   expiration?: number;
+  uaf?: UAF;
 }
+
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
@@ -18,6 +24,7 @@ export class Session {
   private embed_token: string | null;
   private rest_token: string | null;
   private rest_key: string | null;
+  private uaf: UAF | null;
   private site_id: string | null;
   private site: string | null;
   private created: Date | null;
@@ -33,6 +40,7 @@ export class Session {
     this.site = null; // site name
     this.created = null; // Get the current time in seconds since the epoch
     this.expires = null; // estimated future expiry date
+    this.uaf = null; // RLS with UAF
   }
 
   // securely return session data
@@ -46,6 +54,7 @@ export class Session {
        site: this.site,
        created: this.created,
        expires: this.expires,
+       uaf: this.uaf,
      };
    } else {
     return null;
@@ -58,6 +67,7 @@ export class Session {
     this.site_id = credentials?.site_id ?? null;
     this.site = credentials?.site ?? null;
     this.user_id = credentials?.user_id ?? null;
+    this.uaf = credentials?.uaf || null;
     rest_token ? this.rest_token = rest_token : null;
     // API key from the REST API credentials response
     credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
@@ -105,5 +115,4 @@ export class Session {
     const { credentials, rest_token, embed_token } = await handleJWT(sub, embed_options, embed_scopes, rest_options, rest_scopes);
     this._authorize(credentials, rest_token, embed_token);
   }
-
 }

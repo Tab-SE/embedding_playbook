@@ -11,7 +11,7 @@ const users = {
       picture: "/img/users/mackenzie_day.png",
       role: 3,
       vector_store: 'superstore_jmorris',
-      uaf: {}
+      uaf: {"Region": ["South"]}
     },
     B: {
       name: "Justin Chen",
@@ -19,7 +19,7 @@ const users = {
       picture: "/img/users/justin_chen.png",
       role: 2,
       vector_store: 'superstore_jchen',
-      uaf: {}
+      uaf: {"Region": ["West"]}
     },
     C: {
       name: "Sofia Lopez",
@@ -27,7 +27,7 @@ const users = {
       picture: "/img/users/sofia_lopez.png",
       role: 1,
       vector_store: 'superstore_slopez',
-      uaf: {}
+      uaf: {"Region": ["East","South","Central"]}
     }
   }
 }

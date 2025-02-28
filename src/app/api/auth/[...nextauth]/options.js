@@ -27,6 +27,7 @@ export const authOptions = {
         }
         if (user) {
           user.demo = credentials.demo;
+          user.uaf = user.uaf || {};
           const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
           const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
           const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID;
@@ -63,7 +64,7 @@ export const authOptions = {
           };
 
           const session = new Session(user.name);
-          await session.jwt(user.email, embed_options, embed_scopes, rest_options, rest_scopes);
+          await session.jwt(user.email, embed_options, embed_scopes, rest_options, rest_scopes, user.uaf);
 
           if (session.authorized) {
             const {
@@ -111,7 +112,7 @@ export const authOptions = {
           datasources: user.vector_store,
         };
         token.vectors = vectors;
-        token.uaf = user.uaf;
+        token.uaf = user.uaf || {};
         token.tableau = user.tableau;
         token.rest_token =  user.rest_token;
       }
