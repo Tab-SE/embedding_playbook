@@ -1,9 +1,22 @@
-import GithubProvider from "next-auth/providers/github"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { Session } from "models"
-import { UserStore } from "settings"
+import { AuthOptions, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import GithubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { Session } from "models";
+import { UserStore } from "settings";
 
-export const authOptions = {
+interface DemoUser extends User {
+  picture?: string;
+  demo?: string;
+  role?: string;
+  vector_store?: any;
+  uaf?: any;
+  tableau?: any;
+  rest_token?: string;
+}
+
+
+export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 2 * 60 * 60,
@@ -17,12 +30,13 @@ export const authOptions = {
         ID: { label: "ID", type: "text", placeholder: "a, b, c, d or e" },
         demo: { label: "Demo", type: "text" }
       },
-      async authorize(credentials, req) {
-        let user = null;
+      async authorize(credentials: any, req) {
+        let user: any = null;
         const demo = UserStore[credentials.demo]
         for (const [key, value] of Object.entries(demo.users)) {
           if (key.toUpperCase() === credentials.ID.toUpperCase()) {
             user = value;
+            break;
           }
         }
         if (user) {
@@ -76,15 +90,15 @@ export const authOptions = {
             };
           }
 
-          return user.tableau ? user : false;
+          return user.tableau ? user : null;
         } else {
-          return false;
+          return null;
         }
       }
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: process.env.GITHUB_ID || '',
+      clientSecret: process.env.GITHUB_SECRET || '',
     }),
   ],
   callbacks: {
@@ -101,7 +115,7 @@ export const authOptions = {
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
-    async jwt({ token, account, profile, user }) {
+    async jwt({ token, user }: { token: JWT; user?: DemoUser }) {
       if (user) {
         token.picture = user.picture;
         token.demo = user.demo;

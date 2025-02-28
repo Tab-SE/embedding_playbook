@@ -1,5 +1,8 @@
 import { tabAuthPAT, tabAuthJWT, jwtSign, jwtVerify } from "libs";
 
+export interface UAF {
+  [key: string]: string[];
+}
 
 export interface JWTOptions {
   jwt_secret?: string;
@@ -19,10 +22,17 @@ export const lifespan = (estimatedTimeToExpiration: number) => {
 
 
 // Tableau Embed and REST API authentication via JWT
-export const handleJWT = async (sub: string, embed_options: JWTOptions, embed_scopes: string[], rest_options: JWTOptions, rest_scopes: string[]) => {
+export const handleJWT = async (
+  sub: string,
+  embed_options: JWTOptions,
+  embed_scopes: string[],
+  rest_options: JWTOptions,
+  rest_scopes: string[],
+  uaf: UAF
+) => {
   // encode and sign new JWTs for Embed and REST APIs
-  const embed_token = jwtSign(sub, embed_options, embed_scopes);
-  const rest_token = jwtSign(sub, rest_options, rest_scopes);
+  const embed_token = jwtSign(sub, embed_options, embed_scopes, uaf);
+  const rest_token = jwtSign(sub, rest_options, rest_scopes, uaf);
   // verify the JWT against the same parameters
   const valid_embed = jwtVerify(embed_token, sub, embed_options.jwt_secret, embed_options.jwt_client_id);
   const valid_rest = jwtVerify(rest_token, sub, rest_options.jwt_secret, rest_options.jwt_client_id);

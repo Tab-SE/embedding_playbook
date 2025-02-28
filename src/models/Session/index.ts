@@ -1,11 +1,7 @@
-import { lifespan, handlePAT, handleJWT, JWTOptions } from "./controller";
+import { lifespan, handlePAT, handleJWT, JWTOptions, UAF } from "./controller";
 import { tabSignOut } from "libs";
 
-interface UAF {
-  [key: string]: string[];
-}
-
-interface Credentials {
+export interface Credentials {
   site_id?: string;
   site?: string;
   user_id?: string;
@@ -18,17 +14,17 @@ interface Credentials {
 
 // Session designed to securely authorize users server-side PRIVATE routes
 export class Session {
-  private authorized: boolean;
-  private username: string;
-  private user_id: string | null;
-  private embed_token: string | null;
-  private rest_token: string | null;
-  private rest_key: string | null;
-  private uaf: UAF | null;
-  private site_id: string | null;
-  private site: string | null;
-  private created: Date | null;
-  private expires: Date | null;
+  public authorized: boolean;
+  public username: string;
+  public user_id: string | null;
+  public embed_token: string | null;
+  public rest_token: string | null;
+  public rest_key: string | null;
+  public uaf: UAF | null;
+  public site_id: string | null;
+  public site: string | null;
+  public created: Date | null;
+  public expires: Date | null;
 
   constructor(username) {
     this.authorized = false; // flag controlling access to authenticated operations
@@ -111,8 +107,8 @@ export class Session {
   }
 
   // JSON Web Token authentication
-  jwt = async (sub: string, embed_options: JWTOptions, embed_scopes: string[], rest_options: JWTOptions, rest_scopes: string[]) => {
-    const { credentials, rest_token, embed_token } = await handleJWT(sub, embed_options, embed_scopes, rest_options, rest_scopes);
+  jwt = async (sub: string, embed_options: JWTOptions, embed_scopes: string[], rest_options: JWTOptions, rest_scopes: string[], uaf: UAF) => {
+    const { credentials, rest_token, embed_token } = await handleJWT(sub, embed_options, embed_scopes, rest_options, rest_scopes, uaf);
     this._authorize(credentials, rest_token, embed_token);
   }
 }
