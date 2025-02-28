@@ -2,7 +2,7 @@ import { AuthOptions, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { Session } from "models";
+import { SessionModel } from "models";
 import { UserStore } from "settings";
 
 interface DemoUser extends User {
@@ -77,7 +77,7 @@ export const authOptions: AuthOptions = {
             jwt_client_id
           };
 
-          const session = new Session(user.name);
+          const session = new SessionModel(user.name);
           await session.jwt(user.email, embed_options, embed_scopes, rest_options, rest_scopes, user.uaf);
 
           if (session.authorized) {

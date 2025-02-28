@@ -1,7 +1,7 @@
 import { lifespan, handlePAT, handleJWT, JWTOptions, UAF } from "./controller";
 import { tabSignOut } from "libs";
 
-export interface Credentials {
+interface Credentials {
   site_id?: string;
   site?: string;
   user_id?: string;
@@ -13,7 +13,7 @@ export interface Credentials {
 
 
 // Session designed to securely authorize users server-side PRIVATE routes
-export class Session {
+export class SessionModel {
   public authorized: boolean;
   public username: string;
   public user_id: string | null;
