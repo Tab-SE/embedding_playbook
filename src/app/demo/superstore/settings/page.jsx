@@ -1,21 +1,31 @@
 import { Demo, Settings, FloatingAssistant } from 'components';
+import { settings } from '../demo';
 
+const Page = () => {
+  const { app_name, app_logo, base_path, ai_chat, ai_avatar, sections } = settings;
 
-const SettingsPage = () => {
+  // for the most part, only the pageName and child components for <Demo/> should be modified to make new pages
+  const pageName = 'Settings';
+
   return (
     <Demo
-      basePath='/demos'
+      app_name={app_name}
+      base_path={base_path}
       crumbs={{
-        'Superstore Analytics': {
-          path: '/superstore',
+        [app_name]: {
+          path: '/',
           child: {
-            'Settings': {
-              path: '/settings',
+            [pageName]: {
+              path: `${pageName.toLowerCase()}`,
               child: null
             }
           }
         }
       }}
+      app_logo={app_logo}
+      ai_chat={ai_chat}
+      ai_avatar={ai_avatar}
+      sections={sections}
     >
       <Settings />
       <FloatingAssistant />
@@ -23,4 +33,5 @@ const SettingsPage = () => {
   )
 }
 
-export default SettingsPage;
+export default Page;
+
