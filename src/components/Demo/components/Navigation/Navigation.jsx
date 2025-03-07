@@ -5,6 +5,7 @@ export const Navigation = (props) => {
     base_path,
     crumbs,
     app_name,
+    app_logo,
     ai_chat,
     ai_avatar,
     sections,
@@ -13,7 +14,13 @@ export const Navigation = (props) => {
   return (
     <header className="sticky top-0 z-30 flex h-20 mt-6 items-center gap-4 border-b bg-background px-4 sm:static sm:border-0 sm:bg-transparent sm:px-6">
       <NavigationSm
-
+        base_path={base_path}
+        crumbs={crumbs}
+        app_name={app_name}
+        app_logo={app_logo}
+        ai_chat={ai_chat}
+        ai_avatar={ai_avatar}
+        sections={sections}
       />
       <Breadcrumbs
         base_path={base_path}
