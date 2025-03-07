@@ -1,16 +1,23 @@
 import { Demo, Home, FloatingAssistant } from 'components';
+import { settings } from './demo';
 
 
-const Superstore = () => {
+const Page = () => {
+  const { app_name, base_path, ai_chat, ai_avatar, sections } = settings;
+
   return (
     <Demo
-      basePath='/demo'
+      app_name={app_name}
+      base_path={base_path}
       crumbs={{
-        'Superstore Analytics': {
-          path: '/superstore',
+        [app_name]: {
+          path: '/',
           child: null
         }
       }}
+      ai_chat={ai_chat}
+      ai_avatar={ai_avatar}
+      sections={sections}
     >
       <Home/>
       <FloatingAssistant />
@@ -18,4 +25,4 @@ const Superstore = () => {
   )
 }
 
-export default Superstore;
+export default Page;
