@@ -12,8 +12,8 @@ const AuthenticatedUserContext = createContext({
 
 const AuthenticatedUserContextProvider = ({ children }) => {
   const [authenticatedUser, setAuthenticatedUser] = useState({
-    user_id: null,
-    demo: null
+    user_id: 'a',
+    demo: 'superstore'
   });
 
   return (
