@@ -1,8 +1,9 @@
 "use client";
 
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 
 import { useTableauSession } from 'hooks';
+import { AuthenticatedUserContext } from 'context';
 import { TableauViz, TableauWebAuthor } from 'components';
 
 // handles rendering logic during authentication
@@ -20,6 +21,9 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     layouts
   } = props;
 
+  const { authenticatedUser, setAuthenticatedUser } = useContext(AuthenticatedUserContext);
+  const { user_id, demo } =  authenticatedUser;
+
   let embed_token;
 
   // tanstack query hook to manage embed sessions
@@ -30,7 +34,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession('a', 'superstore');
+  } = useTableauSession(user_id, demo);
 
   if (isSessionError || !user) {
     console.debug(sessionError);
