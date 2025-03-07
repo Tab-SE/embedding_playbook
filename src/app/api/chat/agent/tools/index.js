@@ -1,2 +1,2 @@
-export { tableauMetrics, tableauAnalytics, tableauDatasources, tableauLiterature } from "./retrievers";
+export { initializeRetrievers } from "./retrievers";
 export { analyticsAgent  } from "./analyticsAgent";
