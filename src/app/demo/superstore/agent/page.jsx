@@ -17,7 +17,7 @@ const Page = () => {
           path: '/',
           child: {
             [pageName]: {
-              path: `${pageName.toLowerCase()}`,
+              path: `${pageName ? pageName.toLowerCase() : ''}`,
               child: null
             }
           }

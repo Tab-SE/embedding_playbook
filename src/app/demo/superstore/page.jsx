@@ -1,9 +1,13 @@
-import { Demo, Home, FloatingAssistant } from 'components';
+import { Demo, FloatingAssistant } from 'components';
+import { Home } from './Home';
 import { settings } from './demo';
 
 
 const Page = () => {
   const { app_name, app_logo, base_path, ai_chat, ai_avatar, sections } = settings;
+
+  // for the most part, only the pageName and child components for <Demo/> should be modified to make new pages
+  const pageName = null;
 
   return (
     <Demo
@@ -12,7 +16,12 @@ const Page = () => {
       crumbs={{
         [app_name]: {
           path: '/',
-          child: null
+          child: {
+            [pageName]: {
+              path: `${pageName ? pageName.toLowerCase() : ''}`,
+              child: null
+            }
+          }
         }
       }}
       app_logo={app_logo}

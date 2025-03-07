@@ -1,4 +1,5 @@
-import { Demo, Products, FloatingAssistant } from 'components';
+import { Demo, FloatingAssistant } from 'components';
+import { Products } from './Products';
 import { settings } from '../demo';
 
 const Page = () => {
@@ -16,7 +17,7 @@ const Page = () => {
           path: '/',
           child: {
             [pageName]: {
-              path: `${pageName.toLowerCase()}`,
+              path: `${pageName ? pageName.toLowerCase() : ''}`,
               child: null
             }
           }

@@ -1,16 +1,33 @@
-import { Demo, Home, FloatingAssistant } from 'components';
+import { Demo, FloatingAssistant } from 'components';
+import { Home } from './Home';
+import { settings } from './demo';
 
 
-const Grants = () => {
+const Page = () => {
+  const { app_name, app_logo, base_path, ai_chat, ai_avatar, sections } = settings;
+
+  // for the most part, only the pageName and child components for <Demo/> should be modified to make new pages
+  const pageName = null;
+
   return (
     <Demo
-      basePath='/demo'
+      app_name={app_name}
+      base_path={base_path}
       crumbs={{
-        'Grants': {
-          path: '/grants',
-          child: null
+        [app_name]: {
+          path: '/',
+          child: {
+            [pageName]: {
+              path: `${pageName ? pageName.toLowerCase() : ''}`,
+              child: null
+            }
+          }
         }
       }}
+      app_logo={app_logo}
+      ai_chat={ai_chat}
+      ai_avatar={ai_avatar}
+      sections={sections}
     >
       <Home/>
       <FloatingAssistant />
@@ -18,4 +35,4 @@ const Grants = () => {
   )
 }
 
-export default Grants;
+export default Page;
