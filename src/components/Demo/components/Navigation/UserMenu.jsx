@@ -1,5 +1,7 @@
 "use client";
 
+import React, { useContext } from 'react';
+
 import { signIn, signOut } from "next-auth/react";
 import Link from 'next/link';
 
@@ -21,10 +23,14 @@ import {
 } from "components/ui";
 
 import { useTableauSession } from 'hooks';
+import { AuthenticatedUserContext } from 'context';
 
 
 export function UserMenu(props) {
-  const { } = props;
+  const { app_name } = props;
+
+  const { authenticatedUser, setAuthenticatedUser } = useContext(AuthenticatedUserContext);
+  const { user_id, demo } =  authenticatedUser;
 
   // tanstack query hook to manage embed sessions
   const {
@@ -34,7 +40,7 @@ export function UserMenu(props) {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession('a', 'superstore');
+  } = useTableauSession(user_id, demo);
 
   if (isSessionError) {
     console.debug(sessionError);
@@ -46,7 +52,7 @@ export function UserMenu(props) {
         <DropdownMenu>
           <Trigger src={user.picture} />
           <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-            <Label app_name={''} email={user.email} />
+            <Label app_name={app_name} email={user.email} />
             <Group />
             <Logout status={status} />
           </DropdownMenuContent>
@@ -56,7 +62,7 @@ export function UserMenu(props) {
         <DropdownMenu>
           <Trigger src='' />
           <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-            <Label app_name='' email='' />
+            <Label app_name={app_name} email='' />
             <Group />
             <Logout status={status} />
           </DropdownMenuContent>

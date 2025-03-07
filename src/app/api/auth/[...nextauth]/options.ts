@@ -1,9 +1,22 @@
-import GithubProvider from "next-auth/providers/github"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { Session } from "models"
-import { UserStore } from "settings"
+import { AuthOptions, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import GithubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { SessionModel } from "models";
+import { UserStore } from "settings";
 
-export const authOptions = {
+interface DemoUser extends User {
+  picture?: string;
+  demo?: string;
+  role?: string;
+  vector_store?: any;
+  uaf?: any;
+  tableau?: any;
+  rest_token?: string;
+}
+
+
+export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 2 * 60 * 60,
@@ -17,22 +30,25 @@ export const authOptions = {
         ID: { label: "ID", type: "text", placeholder: "a, b, c, d or e" },
         demo: { label: "Demo", type: "text" }
       },
-      async authorize(credentials, req) {
-        let user = null;
+      async authorize(credentials: any, req) {
+        let user: any = null;
         const demo = UserStore[credentials.demo]
         for (const [key, value] of Object.entries(demo.users)) {
           if (key.toUpperCase() === credentials.ID.toUpperCase()) {
             user = value;
+            break;
           }
         }
         if (user) {
           user.demo = credentials.demo;
+          user.uaf = user.uaf || {};
           const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
           const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
           const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID;
           const rest_secret = process.env.TABLEAU_REST_JWT_SECRET;
           const rest_secret_id = process.env.TABLEAU_REST_JWT_SECRET_ID;
 
+          // Client-safe Connected App scopes
           const embed_scopes = [
             "tableau:views:embed",
             "tableau:views:embed_authoring",
@@ -43,44 +59,46 @@ export const authOptions = {
             jwt_secret_id: embed_secret_id,
             jwt_client_id
           };
-          const embed_session = new Session(user.name);
-          await embed_session.jwt(user.email, embed_options, embed_scopes);
-
+          // Backend secured Connected App scopes
           const rest_scopes = [
+            "tableau:content:read",
             "tableau:datasources:read",
             "tableau:workbooks:read",
             "tableau:projects:read",
-            "tableau:insight_definitions_metrics:read",
-            "tableau:insight_metrics:read",
             "tableau:insights:read",
             "tableau:metric_subscriptions:read",
+            "tableau:insight_definitions_metrics:read",
+            "tableau:insight_metrics:read",
+            "tableau:metrics:download",
           ];
           const rest_options = {
             jwt_secret: rest_secret,
             jwt_secret_id: rest_secret_id,
             jwt_client_id
           };
-          const rest_session = new Session(user.name);
-          await rest_session.jwt(user.email, rest_options, rest_scopes);
-          if (embed_session.authorized && rest_session.authorized) {
+
+          const session = new SessionModel(user.name);
+          await session.jwt(user.email, embed_options, embed_scopes, rest_options, rest_scopes, user.uaf);
+
+          if (session.authorized) {
             const {
-              username, user_id, embed_token, site_id, site, created, expires,
-            } = embed_session;
-            const { user_id: rest_id, rest_key } = rest_session;
+              username, user_id, embed_token, rest_token, rest_key, site_id, site, created, expires,
+            } = session;
+
             user.tableau = {
-              username, user_id, embed_token, rest_id, rest_key, site_id, site, created, expires,
+              username, user_id, embed_token, rest_token, rest_key, site_id, site, created, expires,
             };
           }
 
-          return user.tableau ? user : false;
+          return user.tableau ? user : null;
         } else {
-          return false;
+          return null;
         }
       }
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: process.env.GITHUB_ID || '',
+      clientSecret: process.env.GITHUB_SECRET || '',
     }),
   ],
   callbacks: {
@@ -97,20 +115,24 @@ export const authOptions = {
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
-    async jwt({ token, account, profile, user }) {
+    async jwt({ token, user }: { token: JWT; user?: DemoUser }) {
       if (user) {
         token.picture = user.picture;
         token.demo = user.demo;
         token.role = user.role;
-        token.vector_store = user.vector_store;
-        token.uaf = user.uaf;
+        const vectors = {
+          metrics: user.vector_store,
+          workbooks: user.vector_store,
+          datasources: user.vector_store,
+        };
+        token.vectors = vectors;
+        token.uaf = user.uaf || {};
         token.tableau = user.tableau;
+        token.rest_token =  user.rest_token;
       }
       return token;
     },
     async session({ session, token, user }) {
-      session.user.vector_store = token.vector_store;
-      session.accessToken = token.accessToken;
       return session;
     }
   },

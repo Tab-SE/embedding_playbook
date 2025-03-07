@@ -1,6 +1,5 @@
 import Image from 'next/image';
 
-import { DisplayContextProvider } from 'components/context';
 import { HeroDemo } from 'components';
 
 const Intro = () => {
@@ -74,12 +73,10 @@ export const Hero = (props) => {
   const { children, hideMetrics, hideSheets } = props;
 
   return (
-    <DisplayContextProvider>
-      <HeroContent
-        hideMetrics={hideMetrics}
-        hideSheets={hideSheets}
-        snippet={children}
-      />
-    </DisplayContextProvider>
+    <HeroContent
+      hideMetrics={hideMetrics}
+      hideSheets={hideSheets}
+      snippet={children}
+    />
   );
 }

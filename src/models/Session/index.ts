@@ -1,8 +1,31 @@
-import { lifespan, handlePAT, handleJWT } from "./controller";
-import { tabSignOut } from "../../libs";
+import { lifespan, handlePAT, handleJWT, JWTOptions, UAF } from "./controller";
+import { tabSignOut } from "libs";
+
+interface Credentials {
+  site_id?: string;
+  site?: string;
+  user_id?: string;
+  rest_key?: string;
+  created?: number;
+  expiration?: number;
+  uaf?: UAF;
+}
+
 
 // Session designed to securely authorize users server-side PRIVATE routes
-export class Session {
+export class SessionModel {
+  public authorized: boolean;
+  public username: string;
+  public user_id: string | null;
+  public embed_token: string | null;
+  public rest_token: string | null;
+  public rest_key: string | null;
+  public uaf: UAF | null;
+  public site_id: string | null;
+  public site: string | null;
+  public created: Date | null;
+  public expires: Date | null;
+
   constructor(username) {
     this.authorized = false; // flag controlling access to authenticated operations
     this.username = username;
@@ -13,19 +36,21 @@ export class Session {
     this.site = null; // site name
     this.created = null; // Get the current time in seconds since the epoch
     this.expires = null; // estimated future expiry date
+    this.uaf = null; // RLS with UAF
   }
 
   // securely return session data
   _returnSession = () => {
     if (this.authorized) {
-      return { 
+      return {
        username: this.username,
-       user_id: this.user_id, 
-       rest_key: this.rest_key, 
-       site_id: this.site_id, 
-       site: this.site, 
-       created: this.created, 
+       user_id: this.user_id,
+       rest_key: this.rest_key,
+       site_id: this.site_id,
+       site: this.site,
+       created: this.created,
        expires: this.expires,
+       uaf: this.uaf,
      };
    } else {
     return null;
@@ -33,11 +58,13 @@ export class Session {
   }
 
   // set class members and authorized status
-  _authorize = (credentials, embed_token) => {
+  _authorize = (credentials: Credentials, rest_token?:string, embed_token?: string) => {
     // set data store
-    this.site_id = credentials?.site_id;
-    this.site = credentials?.site;
-    this.user_id = credentials?.user_id;
+    this.site_id = credentials?.site_id ?? null;
+    this.site = credentials?.site ?? null;
+    this.user_id = credentials?.user_id ?? null;
+    this.uaf = credentials?.uaf || null;
+    rest_token ? this.rest_token = rest_token : null;
     // API key from the REST API credentials response
     credentials?.rest_key ? this.rest_key = credentials.rest_key : null;
     // JWT token used for embedding on the frontend
@@ -46,21 +73,24 @@ export class Session {
     if (credentials?.created && credentials?.expiration) {
       // if session life is available, set local variables
       this.created = new Date(credentials.created * 1000); // convert the timestamps back to a Date objects
-      this.expires = new Date(credentials.expiration * 1000); 
+      this.expires = new Date(credentials.expiration * 1000);
     } else if (credentials?.expiration) {
       // if only expiration is available, calculate created
       const { created, expires } = lifespan(credentials.expiration); // calculate useful timestamps as Date objects
-      this.created = created; 
+      this.created = created;
       this.expires = expires;
+    } else {
+      this.created = null;
+      this.expires = null;
     }
 
     if (this.rest_key || this.embed_token) {
       // allows authenticated operations to proceed
-      this.authorized = true; 
+      this.authorized = true;
       return this._returnSession();
     } else {
       // no keys, no session
-      this.authorized = false; 
+      this.authorized = false;
       throw new Error('Cannot authorize user')
     }
   }
@@ -77,9 +107,8 @@ export class Session {
   }
 
   // JSON Web Token authentication
-  jwt = async (sub, jwt_options, scopes) => {
-    const { credentials, embed_token } = await handleJWT(sub, jwt_options, scopes);
-    this._authorize(credentials, embed_token);
+  jwt = async (sub: string, embed_options: JWTOptions, embed_scopes: string[], rest_options: JWTOptions, rest_scopes: string[], uaf: UAF) => {
+    const { credentials, rest_token, embed_token } = await handleJWT(sub, embed_options, embed_scopes, rest_options, rest_scopes, uaf);
+    this._authorize(credentials, rest_token, embed_token);
   }
-  
 }

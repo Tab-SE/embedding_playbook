@@ -16,7 +16,6 @@ import {
 
 export const VizContextMenu = (props) => {
   const { } = props;
-  console.log('')
 
   return (
     <ContextMenuContent className="w-64">

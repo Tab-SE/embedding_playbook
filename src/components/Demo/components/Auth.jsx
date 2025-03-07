@@ -1,7 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
 
-
 import { Button } from "components/ui";
 import { RadioGroup, RadioGroupItem } from "components/ui";
 import {
@@ -16,12 +15,16 @@ import {
   CardHeader,
   CardTitle,
 } from "components/ui";
-import { settings } from '../settings';
 
 export const description = "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image";
 
 export const Auth = (props) => {
-  const { } = props;
+  const {
+    app_name,
+    app_logo,
+    auth_hero,
+    users
+  } = props;
 
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-12 xl:min-h-[800px]">
@@ -29,22 +32,22 @@ export const Auth = (props) => {
         <div className="mx-auto grid w-[420px] gap-6">
           <div className="flex justify-center">
             <Avatar className="flex items-center justify-center min-h-12 min-w-12">
-              <AvatarImage src={settings.app_logo} className="object-cover rounded-full" />
+              <AvatarImage src={app_logo} className="object-cover rounded-full" />
               <AvatarFallback>APP</AvatarFallback>
             </Avatar>
           </div>
           <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">{settings.app_name}</h1>
+            <h1 className="text-3xl font-bold">{app_name}</h1>
             <p className="text-balance text-muted-foreground">
               Select a user to login
             </p>
           </div>
-          <DemoTeamMembers config={settings} />
+          <DemoTeamMembers users={users} />
         </div>
       </div>
       <div className="hidden bg-muted lg:block lg:col-span-8">
         <Image
-          src={settings.auth_hero}
+          src={auth_hero}
           alt="Image"
           width="1920"
           height="1080"
@@ -58,7 +61,7 @@ export const Auth = (props) => {
 
 
 const DemoTeamMembers = (props) => {
-  const { config } = props;
+  const { users } = props;
 
   return (
     <Card>

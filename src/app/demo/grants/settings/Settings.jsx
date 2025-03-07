@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui";
 import { GeneralSettings } from 'components';
 

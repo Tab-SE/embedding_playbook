@@ -11,9 +11,12 @@ import Link from 'next/link';
 import { generateBreadcrumbs } from '../../utils';
 
 export const Breadcrumbs = (props) => {
-  const { basePath, crumbs } = props;
+  const {
+    base_path,
+    crumbs
+  } = props;
 
-  const breadcrumbItems = generateBreadcrumbs(basePath, crumbs);
+  const breadcrumbItems = generateBreadcrumbs(base_path, crumbs);
 
   return (
     <Breadcrumb className="hidden md:flex">

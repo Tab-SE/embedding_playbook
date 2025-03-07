@@ -1,5 +1,7 @@
 "use client";
 
+import { useContext } from 'react';
+
 import {
   Carousel,
   CarouselContent,
@@ -9,13 +11,17 @@ import {
 } from "components/ui";
 
 import { useMetrics } from 'hooks';
+import { AuthenticatedUserContext } from 'context';
 import { Metric } from "components";
 import { sortPayloadByIds } from './utils';
 
 export const Metrics = (props) => {
   const { basis, sortOrder } = props;
+
+  const { authenticatedUser, setAuthenticatedUser } = useContext(AuthenticatedUserContext);
+  const { user_id, demo } =  authenticatedUser;
   // syncs with user metrics, only fires query when user is defined -> controlled query
-  const { status, data, error, isError, isSuccess } = useMetrics();
+  const { status, data, error, isError, isSuccess } = useMetrics(user_id, demo);
 
   let metrics;
 
