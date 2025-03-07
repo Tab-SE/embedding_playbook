@@ -3,7 +3,7 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 
 import { selectModel, ModelProvider } from "./models";
 import { AGENT_SYSTEM_TEMPLATE } from "./prompt";
-import { tableauMetrics, tableauAnalytics, tableauDatasources, tableauLiterature, analyticsAgent } from "./tools";
+import { initializeRetrievers, analyticsAgent } from "./tools";
 
 
 export const bootstrapAgent = async () => {
@@ -14,13 +14,16 @@ export const bootstrapAgent = async () => {
     0.2
   );
 
+  // get RAG tools
+  const { metricsTool, workbooksTool, datasourcesTool, literatureTool } = await initializeRetrievers();
+
   /**
    * Use a prebuilt LangGraph agent.
    */
   const agent = await createReactAgent({
     name: 'Customer Service Agent',
     llm: chatModel,
-    tools: [ tableauMetrics, tableauAnalytics, tableauDatasources, tableauLiterature, analyticsAgent ],
+    tools: [ metricsTool, workbooksTool, datasourcesTool, literatureTool,  analyticsAgent ],
     /**
      * Modify the stock prompt in the prebuilt agent. See docs
      * for how to customize your agent:
