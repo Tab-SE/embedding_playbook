@@ -7,6 +7,7 @@ export const Demo = (props) => {
     base_path,
     crumbs,
     app_name,
+    app_logo,
     ai_chat,
     ai_avatar,
     sections,
@@ -19,13 +20,13 @@ export const Demo = (props) => {
         base_path={base_path}
         crumbs={crumbs}
         app_name={app_name}
+        app_logo={app_logo}
         ai_chat={ai_chat}
         ai_avatar={ai_avatar}
         sections={sections}
       />
       <main className="flex flex-col sm:pl-14 bg-demoBackground flex-grow">
         <Navigation
-          basePath={basePath}
           base_path={base_path}
           crumbs={crumbs}
           app_name={app_name}

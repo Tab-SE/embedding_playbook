@@ -2,14 +2,10 @@ export const generateBreadcrumbs = (basePath, crumbs) => {
   const breadcrumbItems = [];
   let currentPath = basePath;
 
-  console.log('*** basePath ***', basePath);
-
   const traverse = (obj) => {
     for (const key in obj) {
       if (obj[key].path) {
         currentPath += obj[key].path;
-
-        console.log('*** currentPath ***', currentPath);
 
         // Push the breadcrumb item with title and path
         breadcrumbItems.push({
@@ -29,7 +25,5 @@ export const generateBreadcrumbs = (basePath, crumbs) => {
   };
 
   traverse(crumbs);
-
-  console.log('*** breadcrumbItems ***', breadcrumbItems);
   return breadcrumbItems;
 };

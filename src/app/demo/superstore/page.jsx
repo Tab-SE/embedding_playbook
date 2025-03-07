@@ -3,7 +3,7 @@ import { settings } from './demo';
 
 
 const Page = () => {
-  const { app_name, base_path, ai_chat, ai_avatar, sections } = settings;
+  const { app_name, app_logo, base_path, ai_chat, ai_avatar, sections } = settings;
 
   return (
     <Demo
@@ -15,6 +15,7 @@ const Page = () => {
           child: null
         }
       }}
+      app_logo={app_logo}
       ai_chat={ai_chat}
       ai_avatar={ai_avatar}
       sections={sections}

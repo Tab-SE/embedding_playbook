@@ -15,27 +15,33 @@ import {
   AvatarImage,
 } from "components/ui";
 
-import { settings } from '../../settings';
-
 
 export const NavigationMd = (props) => {
-  const { } = props;
+  const {
+    base_path,
+    crumbs,
+    app_name,
+    app_logo,
+    ai_chat,
+    ai_avatar,
+    sections,
+  } = props;
 
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-navigationBackground sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <Link
-          href={settings.base_path ? settings.base_path : '/'}
+          href={base_path ? base_path : '/'}
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Avatar className="h-8 w-8 p-1 transition-all group-hover:scale-110 bg-iconBackground">
-            <AvatarImage src={settings.app_logo} alt="demo brand logo" />
+            <AvatarImage src={app_logo} alt="demo brand logo" />
             <AvatarFallback>APP</AvatarFallback>
           </Avatar>
-          <span className="sr-only">{settings.app_name}</span>
+          <span className="sr-only">{app_name}</span>
         </Link>
-        {settings.sections ? settings.sections.map((section) => {
-          return <NavBarItem key={section.name} section={section} />
+        {sections ? sections.map((section) => {
+          return <NavBarItem key={section.name} section={section} base_path={base_path} />
         }): null}
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -43,7 +49,7 @@ export const NavigationMd = (props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href={settings.base_path + '/settings'}
+                href={base_path + '/settings'}
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <Settings className="h-5 w-5 text-navigationIcons"/>
@@ -59,7 +65,7 @@ export const NavigationMd = (props) => {
 }
 
 const NavBarItem = (props) => {
-  const { section } = props;
+  const { section, base_path } = props;
   const { name, icon, path, min_role, description} = section;
 
   return (
@@ -67,7 +73,7 @@ const NavBarItem = (props) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <Link
-            href={settings.base_path + path}
+            href={base_path + path}
             className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 text-navigationIcons bg-iconBackground hover:scale-110"
           >
             {icon}

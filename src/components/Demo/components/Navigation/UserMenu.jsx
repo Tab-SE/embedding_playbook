@@ -24,7 +24,7 @@ import { useTableauSession } from 'hooks';
 
 
 export function UserMenu(props) {
-  const { } = props;
+  const { app_name } = props;
 
   // tanstack query hook to manage embed sessions
   const {
@@ -46,7 +46,7 @@ export function UserMenu(props) {
         <DropdownMenu>
           <Trigger src={user.picture} />
           <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-            <Label app_name={''} email={user.email} />
+            <Label app_name={app_name} email={user.email} />
             <Group />
             <Logout status={status} />
           </DropdownMenuContent>
@@ -56,7 +56,7 @@ export function UserMenu(props) {
         <DropdownMenu>
           <Trigger src='' />
           <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-            <Label app_name='' email='' />
+            <Label app_name={app_name} email='' />
             <Group />
             <Logout status={status} />
           </DropdownMenuContent>
