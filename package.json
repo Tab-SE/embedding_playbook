@@ -62,6 +62,7 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "ai": "^4.1.54",
     "axios": "^1.6.2",
+    "canvas": "^3.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
@@ -89,10 +90,10 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1",
-    "vega": "^5.26.1",
-    "vega-interpreter": "^1.0.5",
-    "vega-lite": "^5.16.3",
-    "vega-tooltip": "^0.34.0",
+    "vega": "^5.32.0",
+    "vega-interpreter": "^1.2.0",
+    "vega-lite": "^5.23.0",
+    "vega-tooltip": "^0.35.2",
     "zod": "^3.24.2"
   },
   "devDependencies": {

@@ -1,10 +1,12 @@
 "use client";
-import { useEffect, useRef } from 'react';
-import { View, parse, expressionFunction } from 'vega';
+import { useRef, useEffect } from 'react';
+import { View, parse } from 'vega';
+import { compile, TopLevelSpec } from 'vega-lite';
+import { expressionFunction } from 'vega';
 import { expressionInterpreter } from 'vega-interpreter';
-import { compile } from 'vega-lite';
 import { Handler } from 'vega-tooltip';
 import { v4 as uuid } from 'uuid';
+
 
 // Register custom expression functions & manipulate spec configuration to activate formatting
 const applyFormatConfig = (spec) => {
@@ -44,27 +46,25 @@ function _applyFormatConfig(obj, formatterFunctionName) {
   }
 }
 
-//  Define the VegaLite Viz function
-export const VegaLiteViz = ({ height, spec, testId, width, }) => {
-  const containerRef = useRef(null);
+export const VegaLiteViz = ({ spec, width, height, testId }: { spec: TopLevelSpec, width: string, height: string, testId?: string }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const style = {
-    width: width ? `${width}px` : '100%',
-    height: `${height}px`,
+    width: width || '100%',
+    height: height,
   };
 
   // Apply custom formatting config & expression functions
   useEffect(() => {
     applyFormatConfig(spec);
-  }, [height, spec, width]);
+  }, [spec]);
 
-  // Generate vega spec & render viz to DOM
   useEffect(() => {
     if (!containerRef.current) return;
-    var tooltip = new Handler({
+
+    const tooltip = new Handler({
       theme: 'custom',
-      // TODO: Customize tooltip's inner content verbiage / layout:
-      // formatTooltip: (value, sanitize) => `<b>My custom</b> tooltip and ${sanitize(value)}.`
     });
+
     const vegaSpec = compile(spec).spec;
     const runtimeSpec = parse(vegaSpec, undefined, { ast: true });
     const view = new View(runtimeSpec, {
@@ -73,9 +73,14 @@ export const VegaLiteViz = ({ height, spec, testId, width, }) => {
       container: containerRef.current,
       hover: true,
     });
+
     view.tooltip(tooltip.call);
     view.runAsync();
-  }, [containerRef, spec]);
+
+    return () => {
+      view.finalize();
+    };
+  }, [spec]);
 
   return <div ref={containerRef} style={style} data-tb-test-id={testId} />;
 };
