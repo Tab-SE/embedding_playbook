@@ -20,7 +20,7 @@ export const HeroDemo = (props) => {
   }, [session_status, session_data]);
 
   // if (isError) {
-  //   console.debug(error);
+  //   console.debug('Hero Error:', error);
   // }
 
   return (

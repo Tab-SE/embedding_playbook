@@ -55,6 +55,6 @@ const formatError = (error) => {
   const errMessage = new Error(
     `HTTP - ${error.config.method} ${error.response.status} ${error.code}: ${error.response.data.message}`
   );
-  console.debug(errMessage);
+  console.debug('Format Error:', errMessage);
   return errMessage;
 }

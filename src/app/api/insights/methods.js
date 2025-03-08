@@ -11,14 +11,14 @@ export const makePayload = async (rest_key, metric) => {
       // request insights
       bundle = await getInsightBundle(rest_key, metric, '/detail');
     } catch (err) {
-      console.debug(err);
+      console.debug('makePayload Error:', err);
       return null;
     }
     return bundle;
   } else {
     // errors resolve to false
     const err = new Error('Cannot perform operation without required params');
-    console.debug(err);
+    console.debug('makePayload Error:', err);
     return err;
   }
 }

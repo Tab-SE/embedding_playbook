@@ -37,7 +37,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
   } = useTableauSession(user_id, demo);
 
   if (isSessionError || !user) {
-    console.debug(sessionError);
+    console.debug('Tableau Auth Error:', sessionError);
   }
 
   if (isSessionSuccess) {

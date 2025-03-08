@@ -13,7 +13,7 @@ export const handleSubscriptions = async (apiKey, userId) => {
     const parsedData = parseSubscriptions(response);
     return parsedData;
   } catch(err) {
-    console.error(err);
+    console.error('Metric Subscriptions Error:', err);
     return parsedData;
   }
 }
@@ -27,7 +27,7 @@ export const handleSpecifications = async (apiKey, subscriptions) => {
     const parsedData = parseSpecifications(response);
     return parsedData;
   } catch(err) {
-    console.debug(err);
+    console.debug('Metric Specification Error:', err);
     return parsedData;
   }
 }
@@ -41,7 +41,7 @@ export const handleDefinitions = async (apiKey, specifications) => {
     const parsedData = parseDefinitions(response);
     return parsedData;
   } catch(err) {
-    console.debug(err);
+    console.debug('Metric Definition Error:', err);
     return parsedData;
   }
 }

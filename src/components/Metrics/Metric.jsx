@@ -31,7 +31,7 @@ export const Metric = (props) => {
   }, [isSuccess, data]);
 
   if (isError) {
-    console.debug(error);
+    console.debug('Metric Error:', error);
   }
 
   if (isSuccess) {

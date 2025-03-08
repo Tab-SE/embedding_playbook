@@ -11,7 +11,7 @@ export async function POST(req) {
   // Check if req is defined
   if (!req) {
     const msg = '400: Bad Request';
-    console.debug(msg);
+    console.debug('Server Error:', msg);
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 
@@ -27,13 +27,13 @@ export async function POST(req) {
       return NextResponse.json(payload, { status: 200 });
     } else {
       const msg = '500: Internal error: cannot generate payload';
-      console.debug(msg);
+      console.debug('Server Error:', msg);
       return NextResponse.json({ error: msg }, { status: 500 });
     }
   } else {
     // Not Signed in
     const msg = '401: Unauthorized';
-    console.debug(msg);
+    console.debug('Server Error:', msg);
     return NextResponse.json({ error: msg }, { status: 401 });
   }
 };

@@ -169,7 +169,7 @@ const handleVizEventListeners = (viz, setInteractive) => {
     setInteractive(true); // update state to indicate that the Tableau viz is interactive
   }
   const handleVizLoadError = async (event) => {
-    console.error('vizloaderror', event);
+    console.error('Viz Load Error:', event);
   }
 
    // event listeners can only be added after component mounts

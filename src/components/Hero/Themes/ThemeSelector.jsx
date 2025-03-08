@@ -37,7 +37,7 @@ export const ThemeSelector = (props) => {
       try {
         return findDefaultTheme(settings);
       } catch (error) {
-        console.error(error.message);
+        console.error('Theme Error:', error.message);
       }
     }
   );
