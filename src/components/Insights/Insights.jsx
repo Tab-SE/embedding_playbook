@@ -15,7 +15,7 @@ export const Insights = (props) => {
   const { status, data, error, isError, isSuccess } = useInsights(metric);
 
   if (isError) {
-    console.debug(error);
+    console.debug('Insights Error:', error);
   }
   if (isSuccess) {
     // main data found in insight groups

@@ -14,7 +14,7 @@ export const handleInsights = async (metric) => {
       return false;
     }
   } catch(err) {
-    console.error(err);
+    console.error('Insights Model Error:', err);
     return err;
   }
 }

@@ -36,6 +36,9 @@ export default withNextra({
       ...config.resolve.alias,
       "onnxruntime-node$": false,
     };
+    config.externals.push({
+      canvas: 'commonjs canvas'
+    });
     return config
   }
 });

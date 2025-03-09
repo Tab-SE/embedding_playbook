@@ -43,7 +43,7 @@ export function UserMenu(props) {
   } = useTableauSession(user_id, demo);
 
   if (isSessionError) {
-    console.debug(sessionError);
+    console.debug('Session Error:', sessionError);
   }
 
   return (
