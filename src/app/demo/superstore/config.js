@@ -30,7 +30,7 @@ export const settings = {
       icon: <BrainCircuit className="h-5 w-5"/>,
       path: '/agent',
       min_role: 1,
-      description: 'a fully tooled superstore agent ready to assist you'
+      description: 'a fully tooled agent ready to assist you'
     },
     {
       name: 'Orders',
