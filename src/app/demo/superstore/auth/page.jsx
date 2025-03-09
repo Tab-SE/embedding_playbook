@@ -1,5 +1,5 @@
 import { Auth } from 'components';
-import { settings } from '../demo';
+import { settings } from '../config';
 
 
 const AuthPage = () => {

@@ -1,5 +1,5 @@
 import { Demo, Agent } from 'components';
-import { settings } from '../demo';
+import { settings } from '../config';
 
 const Page = () => {
   const { app_name, app_logo, base_path, ai_chat, ai_avatar, sections } = settings;

@@ -1,6 +1,6 @@
 import { Demo, FloatingAssistant } from 'components';
 import { Home } from './Home';
-import { settings } from './demo';
+import { settings } from './config';
 
 
 const Page = () => {
