@@ -8,7 +8,6 @@ import { SessionProvider } from 'next-auth/react';
 
 import './global.css';
 import { AgentRuntimeProvider } from 'components';
-import { AuthenticatedUserContextProvider } from 'context';
 
 export default function RootLayout({
   children,
@@ -30,9 +29,7 @@ export default function RootLayout({
             <ReactQueryDevtools initialIsOpen={false} buttonPosition='bottom-left'/>
             <ThemeProvider attribute="class" forcedTheme='light'>
               <AgentRuntimeProvider>
-                <AuthenticatedUserContextProvider>
                   {children}
-                </AuthenticatedUserContextProvider>
               </AgentRuntimeProvider>
             </ThemeProvider>
           </QueryClientProvider>
