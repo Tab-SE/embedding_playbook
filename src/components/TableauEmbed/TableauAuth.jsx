@@ -22,9 +22,9 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
 
   let embed_token;
 
-  // tanstack query hook to manage embed sessions
+  // tanstack query hook to safely represent users on the client
   const {
-    status,
+    status: sessionStatus,
     data: user,
     error: sessionError,
     isSuccess: isSessionSuccess,

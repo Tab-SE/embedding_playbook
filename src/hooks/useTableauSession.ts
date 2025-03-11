@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signIn, SignInOptions } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { getUser } from "libs";
@@ -14,35 +14,7 @@ import { getUser } from "libs";
 export const useTableauSession = () => {
 
   // set to an empty array if enumerated function parameters are not available in array
-  // const queryKey = [user_id].every(param => param != null) ? ["tableau", "user session",  user_id, demo] : [];
   const queryKey = ["tableau", "user session"];
-
-  // const { status: session_status, data: session_data } = useSession({
-  //   required: true, // if true only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
-  //   async onUnauthenticated() {
-  //     if (user_id && demo) {
-  //       // Handle unauthenticated state
-  //       const signInResponse = await signIn("demo-user", {
-  //         redirect: false,
-  //         ID: user_id,
-  //         demo: demo,
-  //       } as SignInOptions);
-
-  //       if (signInResponse) {
-  //         const { error, status, ok } = signInResponse;
-
-  //         if (!ok) {
-  //           console.error("Sign-in failed:", error);
-  //           throw new Error(`Sign-in failed with status ${status}`);
-  //         }
-  //       } else {
-  //         console.error("Sign-in response is undefined");
-  //       }
-  //     } else {
-  //       console.warn("User ID or demo is missing. Cannot sign in.");
-  //     }
-  //   }
-  // });
 
   const { status: session_status, data: session_data } = useSession({ required: true });
 

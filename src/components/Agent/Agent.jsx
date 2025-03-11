@@ -1,5 +1,4 @@
-import { Thread } from 'components';
-
+import { Thread } from '@/components';
 import { useTableauSession } from '@/hooks';
 
 
@@ -8,13 +7,27 @@ export const description = "A settings page. The settings page has a sidebar nav
 export const Agent = (props) => {
   const { ai_avatar } = props;
 
+  // tanstack query hook to safely represent users on the client
+  const {
+    status: sessionStatus,
+    data: user,
+    error: sessionError,
+    isSuccess: isSessionSuccess,
+    isError: isSessionError,
+    isLoading: isSessionLoading
+  } = useTableauSession();
+
   return (
     <main className="flex h-full w-full flex-col">
       <div className="flex h-full flex-1 flex-col gap-4 bg-muted/40 p-3 md:gap-8 rounded">
-        <Thread
-          ai_avatar={ai_avatar}
-          user_avatar="/img/users/mackenzie_day.png"
-        />
+        { isSessionError ? <p>Authentication Error!</p> : null }
+        { isSessionLoading ? <p>Authenticating the User...</p> : null }
+        {isSessionSuccess ?
+          <Thread
+            ai_avatar={ai_avatar}
+            user_avatar={user.picture}
+          /> : null
+        }
       </div>
     </main>
   )
