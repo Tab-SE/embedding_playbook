@@ -1,4 +1,4 @@
-import { AuthOptions, User } from "next-auth";
+import { AuthOptions, User, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -13,6 +13,15 @@ interface DemoUser extends User {
   uaf?: any;
   tableau?: any;
   rest_token?: string;
+}
+
+interface CustomSession extends Session {
+  user: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    demo?: string;
+  }
 }
 
 
@@ -32,8 +41,31 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials: any, req) {
         let user: any = null;
+        let callbackUrl = 'documentation'; // Default value
 
-        // const demo = UserStore[credentials.demo];
+        const referer = req?.headers?.referer as string | undefined;
+
+        if (referer) {
+          // Use URL to parse the referer string
+          const url = new URL(referer);
+
+          // Extract the callbackUrl parameter
+          const callbackUrlParam = url.searchParams.get('callbackUrl');
+
+          if (callbackUrlParam) {
+            // Decode the callbackUrl parameter
+            const decodedCallbackUrl = decodeURIComponent(callbackUrlParam);
+
+            // Check for 'demo/x' pattern
+            const demoMatch = decodedCallbackUrl.match(/\/demo\/(.+)$/);
+            if (demoMatch) {
+              callbackUrl = demoMatch[1]; // Assign whatever comes after 'demo/'
+            }
+          }
+        }
+
+        console.log("Determined callbackUrl:", callbackUrl);
+
 
         // Find the demo object in Users that matches the provided demo
         const demoObject = Users.find((demo) => demo.demo === credentials.demo);
@@ -103,69 +135,6 @@ export const authOptions: AuthOptions = {
           }
         }
       }
-
-        // for (const [key, value] of Object.entries(demo.users)) {
-        //   if (key.toUpperCase() === credentials.ID.toUpperCase()) {
-        //     user = value;
-        //     break;
-        //   }
-        // }
-        // if (user) {
-        //   user.demo = credentials.demo;
-        //   user.uaf = user.uaf || {};
-        //   const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
-        //   const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
-        //   const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID;
-        //   const rest_secret = process.env.TABLEAU_REST_JWT_SECRET;
-        //   const rest_secret_id = process.env.TABLEAU_REST_JWT_SECRET_ID;
-
-        //   // Client-safe Connected App scopes
-        //   const embed_scopes = [
-        //     "tableau:views:embed",
-        //     "tableau:views:embed_authoring",
-        //     "tableau:insights:embed",
-        //   ];
-        //   const embed_options = {
-        //     jwt_secret: embed_secret,
-        //     jwt_secret_id: embed_secret_id,
-        //     jwt_client_id
-        //   };
-        //   // Backend secured Connected App scopes
-        //   const rest_scopes = [
-        //     "tableau:content:read",
-        //     "tableau:datasources:read",
-        //     "tableau:workbooks:read",
-        //     "tableau:projects:read",
-        //     "tableau:insights:read",
-        //     "tableau:metric_subscriptions:read",
-        //     "tableau:insight_definitions_metrics:read",
-        //     "tableau:insight_metrics:read",
-        //     "tableau:metrics:download",
-        //   ];
-        //   const rest_options = {
-        //     jwt_secret: rest_secret,
-        //     jwt_secret_id: rest_secret_id,
-        //     jwt_client_id
-        //   };
-
-        //   const session = new SessionModel(user.name);
-        //   await session.jwt(user.email, embed_options, embed_scopes, rest_options, rest_scopes, user.uaf);
-
-        //   if (session.authorized) {
-        //     const {
-        //       username, user_id, embed_token, rest_token, rest_key, site_id, site, created, expires,
-        //     } = session;
-
-        //     user.tableau = {
-        //       username, user_id, embed_token, rest_token, rest_key, site_id, site, created, expires,
-        //     };
-        //   }
-
-        //   return user.tableau ? user : null;
-        // } else {
-        //   return null;
-        // }
-      // }
     }),
     GithubProvider({
       clientId: process.env.GITHUB_ID || '',
@@ -203,7 +172,11 @@ export const authOptions: AuthOptions = {
       }
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token }: { session: Session; token: JWT; }) {
+      const customSession = session as CustomSession;
+      if (customSession.user) {
+        customSession.user.demo = token.demo as string;
+      }
       return session;
     }
   },

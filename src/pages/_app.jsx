@@ -31,7 +31,10 @@ export default function App({
             <AgentRuntimeProvider>
               <DocumentsSession />
               <Component {...pageProps} />
-              <FloatingAssistant ai_avatar='/img/themes/superstore/superstore.png' />
+              <FloatingAssistant
+                ai_avatar='/img/themes/superstore/superstore.png'
+                demo='superstore'
+              />
             </AgentRuntimeProvider>
           </ThemeProvider>
       </QueryClientProvider>
@@ -45,7 +48,7 @@ const DocumentsSession = () => {
     required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
     async onUnauthenticated() {
       // The user is not authenticated, handle it here
-      signIn('demo-user', { redirect: false, ID: 'a', demo: 'superstore' });
+      signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
     }
   });
 

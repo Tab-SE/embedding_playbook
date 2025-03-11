@@ -1,5 +1,17 @@
 export const Users = [
   {
+    demo: 'documentation',
+    users: [
+      {
+        id: 'a',
+        name: "Julie Morris",
+        email: "jmorris@mail.com",
+        picture: "/img/users/mackenzie_day.png",
+        vector_store: 'superstore_jmorris'
+      }
+    ]
+  },
+  {
     demo: 'superstore',
     roles: {
       1: { title: 'hobby', description: 'Basic data & analytics'},

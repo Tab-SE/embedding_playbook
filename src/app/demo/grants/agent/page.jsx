@@ -30,6 +30,7 @@ const Page = () => {
     >
       <Agent
         ai_avatar={ai_avatar}
+        demo={app_name}
       />
     </Demo>
   )

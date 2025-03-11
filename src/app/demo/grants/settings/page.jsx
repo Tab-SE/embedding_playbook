@@ -31,6 +31,7 @@ const Page = () => {
       <Settings />
       <FloatingAssistant
         ai_avatar={ai_avatar}
+        demo={app_name}
       />
     </Demo>
   )
