@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 
 import './global.css';
 import { AuthenticatedUserContextProvider} from 'context';
@@ -31,6 +31,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class" forcedTheme='light'>
               <AgentRuntimeProvider>
                 <AuthenticatedUserContextProvider>
+                  <DocumentsSession />
                   {children}
                 </AuthenticatedUserContextProvider>
               </AgentRuntimeProvider>
@@ -40,4 +41,10 @@ export default function RootLayout({
       </body>
     </html>
   )
+}
+
+// Logs users in automatically with the documents demo user (at a minimum has access to superstore)
+const DocumentsSession = () => {
+  const { status: session_status, data: session_data } = useSession({required: true});
+  return <></>
 }

@@ -1,3 +1,4 @@
+"use client";
 import { Thread } from '@/components';
 import { useTableauSession } from '@/hooks';
 
@@ -22,7 +23,7 @@ export const Agent = (props) => {
       <div className="flex h-full flex-1 flex-col gap-4 bg-muted/40 p-3 md:gap-8 rounded">
         { isSessionError ? <p>Authentication Error!</p> : null }
         { isSessionLoading ? <p>Authenticating the User...</p> : null }
-        {isSessionSuccess ?
+        { isSessionSuccess ?
           <Thread
             ai_avatar={ai_avatar}
             user_avatar={user.picture}

@@ -16,7 +16,7 @@ export const useTableauSession = () => {
   // set to an empty array if enumerated function parameters are not available in array
   const queryKey = ["tableau", "user session"];
 
-  const { status: session_status, data: session_data } = useSession({ required: true });
+  const { status: session_status, data: session_data } = useSession({ required: false });
 
   // controls dependent query
   const signedIn = session_status === 'authenticated';

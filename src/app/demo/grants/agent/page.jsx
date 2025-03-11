@@ -28,7 +28,9 @@ const Page = () => {
       ai_avatar={ai_avatar}
       sections={sections}
     >
-      <Agent />
+      <Agent
+        ai_avatar={ai_avatar}
+      />
     </Demo>
   )
 }

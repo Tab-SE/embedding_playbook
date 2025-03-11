@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useSession, signIn } from "next-auth/react";
 import { ThemeProvider } from 'next-themes';
 
 import '../global.css';
-import { SessionProvider, AgentRuntimeProvider, FloatingAssistant } from 'components';
+import { SessionProvider, AgentRuntimeProvider, FloatingAssistant } from '@/components';
 
 export default function App({
   Component,
@@ -28,11 +29,25 @@ export default function App({
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
           <ThemeProvider attribute="class" forcedTheme='light'>
             <AgentRuntimeProvider>
+              <DocumentsSession />
               <Component {...pageProps} />
-              <FloatingAssistant />
+              <FloatingAssistant ai_avatar='/img/themes/superstore/superstore.png' />
             </AgentRuntimeProvider>
           </ThemeProvider>
       </QueryClientProvider>
     </SessionProvider>
   )
+}
+
+// Logs users in automatically with the documents demo user (at a minimum has access to superstore)
+const DocumentsSession = () => {
+  const { status: session_status, data: session_data } = useSession({
+    required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
+    async onUnauthenticated() {
+      // The user is not authenticated, handle it here
+      signIn('demo-user', { redirect: false, ID: 'a', demo: 'superstore' });
+    }
+  });
+
+  return <></>
 }

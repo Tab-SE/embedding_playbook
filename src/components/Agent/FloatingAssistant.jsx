@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { useState, forwardRef } from "react";
 import Image from "next/image";
 import { ChevronDownIcon } from "lucide-react";
@@ -34,7 +34,7 @@ export const FloatingAssistant = (props) => {
       >
         { isSessionError ? <p>Authentication Error!</p> : null }
         { isSessionLoading ? <p>Authenticating the User...</p> : null }
-        {isSessionSuccess ?
+        { isSessionSuccess ?
           <MiniThread
             ai_avatar={ai_avatar}
             user_avatar={user.picture}
