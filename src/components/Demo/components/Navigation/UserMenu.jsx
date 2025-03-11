@@ -1,7 +1,5 @@
 "use client";
 
-import React, { useContext } from 'react';
-
 import { signIn, signOut } from "next-auth/react";
 import Link from 'next/link';
 
@@ -23,14 +21,10 @@ import {
 } from "components/ui";
 
 import { useTableauSession } from 'hooks';
-import { AuthenticatedUserContext } from 'context';
 
 
 export function UserMenu(props) {
   const { app_name } = props;
-
-  const { authenticatedUser, setAuthenticatedUser } = useContext(AuthenticatedUserContext);
-  const { user_id, demo } =  authenticatedUser;
 
   // tanstack query hook to manage embed sessions
   const {
@@ -40,7 +34,7 @@ export function UserMenu(props) {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession(user_id, demo);
+  } = useTableauSession();
 
   if (isSessionError) {
     console.debug('Session Error:', sessionError);

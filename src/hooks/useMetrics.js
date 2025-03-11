@@ -9,7 +9,7 @@ import { getMetrics } from "libs";
 // more on query key structure: https://tkdodo.eu/blog/effective-react-query-keys#structure
 // more on dependent queries: https://tanstack.com/query/v3/docs/react/guides/dependent-queries
 
-export const useMetrics = (user_id, demo) => {
+export const useMetrics = () => {
   // tanstack query hook to safely represent users on the client
   const {
     status: sessionStatus,
@@ -18,7 +18,7 @@ export const useMetrics = (user_id, demo) => {
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession(user_id, demo);
+  } = useTableauSession();
 
   // set to an empty array if enumerated function parameters are not available in array
   const queryKey = [user?.name].every(param => param != null) ? ["tableau", user.name, "metrics"] : [];

@@ -29,7 +29,9 @@ const Page = () => {
       sections={sections}
     >
       <Orders />
-      <FloatingAssistant />
+      <FloatingAssistant
+        ai_avatar={ai_avatar}
+      />
     </Demo>
   )
 }

@@ -30,7 +30,9 @@ const Page = () => {
       sections={sections}
     >
       <Home/>
-      <FloatingAssistant />
+      <FloatingAssistant
+        ai_avatar={ai_avatar}
+      />
     </Demo>
   )
 }

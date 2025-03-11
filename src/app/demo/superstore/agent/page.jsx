@@ -4,7 +4,6 @@ import { settings } from '../config';
 const Page = () => {
   const { app_name, app_logo, base_path, ai_chat, ai_avatar, sections } = settings;
 
-
   // for the most part, only the pageName and child components for <Demo/> should be modified to make new pages
   const pageName = 'Agent';
 
@@ -28,7 +27,9 @@ const Page = () => {
       ai_avatar={ai_avatar}
       sections={sections}
     >
-      <Agent />
+      <Agent
+        ai_avatar={ai_avatar}
+      />
     </Demo>
   )
 }
