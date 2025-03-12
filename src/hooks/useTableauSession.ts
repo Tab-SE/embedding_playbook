@@ -1,19 +1,10 @@
 "use client";
 
-import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { getUser } from "libs";
-
-interface CustomSession extends Session {
-  user: {
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    demo?: string;
-  }
-}
+import { CustomSession } from "types";
 
 // implements custom hooks with tanstack query for asynchronous state management
 // concepts described here: https://tkdodo.eu/blog/react-query-as-a-state-manager

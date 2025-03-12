@@ -9,18 +9,20 @@ import { SessionProvider, useSession } from 'next-auth/react';
 import './global.css';
 import { AuthenticatedUserContextProvider} from 'context';
 import { AgentRuntimeProvider } from 'components';
+import { CustomSession } from "types";
+
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(() => new QueryClient());
 
   useEffect(() => {
     // @ts-ignore
     window.toggleDevtools = () => setShowDevtools((old) => !old)
-  }, [])
+  }, []);
 
   return (
     <html lang="en">
@@ -31,7 +33,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class" forcedTheme='light'>
               <AgentRuntimeProvider>
                 <AuthenticatedUserContextProvider>
-                  <DocumentsSession />
+                  <DemoSession />
                   {children}
                 </AuthenticatedUserContextProvider>
               </AgentRuntimeProvider>
@@ -44,7 +46,15 @@ export default function RootLayout({
 }
 
 // Logs users in automatically with the documents demo user (at a minimum has access to superstore)
-const DocumentsSession = () => {
+const DemoSession = (props) => {
   const { status: session_status, data: session_data } = useSession({required: true});
+
+  const signedIn = session_status === 'authenticated';
+
+  if (signedIn) {
+    const user_data = session_data as CustomSession;
+    const demo = user_data?.user?.demo;
+  }
+
   return <></>
 }
