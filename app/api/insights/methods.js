@@ -1,3 +1,5 @@
+import { httpPost } from 'utils';
+
 const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 
@@ -9,49 +11,41 @@ export const makePayload = async (rest_key, metric) => {
       // request insights
       bundle = await getInsightBundle(rest_key, metric, '/detail');
     } catch (err) {
-      console.debug(err);
+      console.debug('makePayload Error:', err);
       return null;
     }
     return bundle;
   } else {
     // errors resolve to false
     const err = new Error('Cannot perform operation without required params');
-    console.debug(err);
+    console.debug('makePayload Error:', err);
     return err;
   }
 }
 
 // requests insight bundles for all supported types given a metric (params)
 const getInsightBundle = async (apiKey, metric, resource) => {
-  // create a request body (standard for all Pulse bundle requests)
-  const body = makeBundleBody(metric);
+  const bundles = makeBundleBody(metric);
+  const endpoint = `${tableau_domain}${pulse_path}/insights${resource}`;
 
-  const endpoint = tableau_domain + pulse_path + '/insights' + resource;
-
-  const request = new Request(endpoint, {
-    method: 'POST',
+  const config = {
     headers: {
       'X-Tableau-Auth': apiKey,
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
-  });
+  };
 
-  const res = await fetch(request);
-
-  isServerlessTimeout(res);
-
-  const contentType = res.headers.get('content-type');
-
-  if (contentType === 'text/html') {
-    const txt = await res.text();
-    throw new Error(txt);
-  } else if (contentType === 'application/json') {
-    const jsonData = await res.json();
-    return jsonData;
+  try {
+    const response = await httpPost(endpoint, bundles, config);
+    return response;
+  } catch (error) {
+    if (error.code === 504) {
+      throw new Error('Serverless Timeout Error:', error);
+    }
+    throw error; // Re-throw other errors
   }
-}
+};
 
 // generetes the complex request body required to generate an insights bundle
 const makeBundleBody = (metric) => {
