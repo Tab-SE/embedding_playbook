@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from 'next/link'
 
 import { Card, CardContent } from "components/ui";
 import {
@@ -22,14 +23,12 @@ export const Gallery = (props) => {
         {galleryItems.map((item) => (
             <HoverCard key={item.id}>
               <HoverCardTrigger>
-                <span
-                  onClick={() => window.open(item.link, "_blank")}
-                  className="block cursor-pointer"
-                  role="button"
-                  tabIndex={0}
-                  onKeyUp={(e) => e.key === 'Enter' && window.open(item.link, "_blank")}
+                <Link
+                  href={item.link}
                 >
-                  <Card className="overflow-hidden shadow-2xl h-60 transform transition-transform duration-300 hover:scale-110">
+                  <Card
+                    className="overflow-hidden shadow-2xl h-60 transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+                  >
                     <CardContent className="p-0">
                       <Image
                         src={item.src}
@@ -40,7 +39,7 @@ export const Gallery = (props) => {
                       />
                     </CardContent>
                   </Card>
-                </span>
+                </Link>
               </HoverCardTrigger>
               <HoverCardContent className="w-96 shadow-2xl" sideOffset={15}>
                 <div className="flex justify-between space-x-3">
