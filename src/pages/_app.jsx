@@ -5,7 +5,7 @@ import { useSession, signIn } from "next-auth/react";
 import { ThemeProvider } from 'next-themes';
 
 import '../global.css';
-import { SessionProvider, AgentRuntimeProvider, FloatingAssistant } from '@/components';
+import { SessionProvider, AgentRuntimeProvider, AuthGuard, FloatingAssistant } from '@/components';
 
 export default function App({
   Component,
@@ -29,11 +29,11 @@ export default function App({
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
           <ThemeProvider attribute="class" forcedTheme='light'>
             <AgentRuntimeProvider>
+              <AuthGuard demo='documentation'/>
               <DocumentsSession />
               <Component {...pageProps} />
               <FloatingAssistant
                 ai_avatar='/img/themes/superstore/superstore.png'
-                demo='superstore'
               />
             </AgentRuntimeProvider>
           </ThemeProvider>

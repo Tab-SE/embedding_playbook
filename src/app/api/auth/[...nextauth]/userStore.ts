@@ -7,7 +7,8 @@ export const Users = [
         name: "Julie Morris",
         email: "jmorris@mail.com",
         picture: "/img/users/mackenzie_day.png",
-        vector_store: 'superstore_jmorris'
+        vector_store: 'superstore_jmorris',
+        uaf: {}
       }
     ]
   },

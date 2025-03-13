@@ -21,7 +21,7 @@ export const useMetrics = () => {
   } = useTableauSession();
 
   // set to an empty array if enumerated function parameters are not available in array
-  const queryKey = [user?.name].every(param => param != null) ? ["tableau", user.name, "metrics"] : [];
+  const queryKey = [user?.name].every(param => param != null) ? ["tableau", "metrics"] : [];
 
   return useQuery({
     queryKey: queryKey,

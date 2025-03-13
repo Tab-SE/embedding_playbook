@@ -31,7 +31,6 @@ const Page = () => {
       <Customers />
       <FloatingAssistant
         ai_avatar={ai_avatar}
-        demo={app_name}
       />
     </Demo>
   )

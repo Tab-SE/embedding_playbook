@@ -12,7 +12,7 @@ import { CustomSession } from "types";
 // more on dependent queries: https://tanstack.com/query/v5/docs/framework/react/guides/dependent-queries
 // more on retries (default 3): https://tanstack.com/query/v5/docs/framework/react/guides/query-retries
 // secures UI components via these methods: https://next-auth.js.org/getting-started/client#require-session
-export const useTableauSession = (demo?: string) => {
+export const useTableauSession = () => {
   const { status: session_status, data: session_data } = useSession({ required: false });
 
   // controls dependent query
@@ -28,7 +28,6 @@ export const useTableauSession = (demo?: string) => {
     queryKey: queryKey,
     queryFn: () => {
       if (session_data?.user?.email) {
-        console.log('session_data', session_data);
         return getClientSession(session_data.user.email);
       } else {
         throw new Error("Error: Session data not available");

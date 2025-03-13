@@ -8,7 +8,7 @@ import { useTableauSession } from '@/hooks';
 import { MiniThread, TooltipIconButton } from "./ui";
 
 export const FloatingAssistant = (props) => {
-  const { ai_avatar, demo } = props;
+  const { ai_avatar } = props;
   const [isOpen, setIsOpen] = useState(false);
 
   // tanstack query hook to safely represent users on the client
