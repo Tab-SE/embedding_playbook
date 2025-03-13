@@ -5,7 +5,28 @@ import { QueryClient } from "@tanstack/react-query";
 
 import { useTableauSession } from '@/hooks';
 
-export const AuthGuard = async (props) => {
+const killSession = async () => {
+  // Invalidate the useTableauSession query
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity,
+      },
+    },
+  });
+
+  await queryClient.invalidateQueries(
+    {
+      queryKey: ['tableau'],
+      refetchType: 'none',
+    }
+  );
+
+  // sign the user out
+  signOut({redirect: false});
+}
+
+export const AuthGuard = (props) => {
   const { demo } = props;
   // tanstack query hook to safely represent users on the client
   const {
@@ -23,32 +44,11 @@ export const AuthGuard = async (props) => {
     console.debug('Tableau Auth Error:', sessionError);
   }
 
-  console.log('*** user ***', sessionStatus, isSessionLoading, user);
-
   if (isSessionSuccess) {
+    console.log('*** demo ***', demo);
+    console.log('*** user.demo ***', user.demo);
     if (demo != user.demo) {
-      console.log('*** user ***', user);
-      // Invalidate the useTableauSession query
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: Infinity,
-          },
-        },
-      })
-
-      // queryClient.invalidateQueries({ queryKey: ["tableau"] });
-
-      await queryClient.invalidateQueries(
-        {
-          queryKey: ['tableau'],
-          exact,
-          refetchType: 'active',
-        },
-        { throwOnError, cancelRefetch },
-      )
-      // sign the user out
-      signOut();
+      killSession();
     }
   }
 
