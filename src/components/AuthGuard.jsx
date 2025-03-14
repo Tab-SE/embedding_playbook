@@ -1,20 +1,15 @@
 "use client";
 
+import { useEffect } from 'react';
 import { signOut } from "next-auth/react";
-import { QueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from 'next/navigation';
 
 import { useTableauSession } from '@/hooks';
 
-const killSession = async () => {
-  // Invalidate the useTableauSession query
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: Infinity,
-      },
-    },
-  });
 
+const killSession = async (queryClient, router, demo) => {
+  // Invalidate the useTableauSession query
   await queryClient.invalidateQueries(
     {
       queryKey: ['tableau'],
@@ -22,12 +17,18 @@ const killSession = async () => {
     }
   );
 
-  // sign the user out
-  signOut({redirect: false});
+  const callbackUrl = `/demo/${demo}`;
+  const authUrl = `/demo/${demo}/auth`;
+
+  // sign the user out and redirect to demo /auth page
+  signOut({ redirect: false, callbackUrl: callbackUrl });
+  router.push(authUrl);
 }
 
 export const AuthGuard = (props) => {
   const { demo } = props;
+  const router = useRouter();
+  const queryClient = useQueryClient();
   // tanstack query hook to safely represent users on the client
   const {
     status: sessionStatus,
@@ -38,19 +39,13 @@ export const AuthGuard = (props) => {
     isLoading: isSessionLoading
   } = useTableauSession();
 
-  // const { status: session_status, data: session_data } = useSession({ required: false });
+  useEffect(() => {
+    if (isSessionSuccess && demo !== user.demo) {
+      killSession(queryClient, router, demo);
+    }
+  }, [isSessionSuccess, demo, user]);
 
   if (isSessionError) {
     console.debug('Tableau Auth Error:', sessionError);
   }
-
-  if (isSessionSuccess) {
-    console.log('*** demo ***', demo);
-    console.log('*** user.demo ***', user.demo);
-    if (demo != user.demo) {
-      killSession();
-    }
-  }
-
-  // console.log('*** session_data ***', session_data);
 }

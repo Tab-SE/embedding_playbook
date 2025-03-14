@@ -32,10 +32,7 @@ export default function RootLayout({
             <ReactQueryDevtools initialIsOpen={false} buttonPosition='bottom-left'/>
             <ThemeProvider attribute="class" forcedTheme='light'>
               <AgentRuntimeProvider>
-                <AuthenticatedUserContextProvider>
-                  <DemoSession />
-                  {children}
-                </AuthenticatedUserContextProvider>
+                {children}
               </AgentRuntimeProvider>
             </ThemeProvider>
           </QueryClientProvider>
