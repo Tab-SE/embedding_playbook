@@ -7,7 +7,6 @@ import { ThemeProvider } from 'next-themes';
 import { SessionProvider, useSession } from 'next-auth/react';
 
 import './global.css';
-import { AuthenticatedUserContextProvider} from 'context';
 import { AgentRuntimeProvider } from 'components';
 import { CustomSession } from "types";
 
