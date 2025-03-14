@@ -41,31 +41,6 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials: any, req) {
         let user: any = null;
-        let callbackUrl = 'documentation'; // Default value
-
-        const referer = req?.headers?.referer as string | undefined;
-
-        if (referer) {
-          // Use URL to parse the referer string
-          const url = new URL(referer);
-
-          // Extract the callbackUrl parameter
-          const callbackUrlParam = url.searchParams.get('callbackUrl');
-
-          if (callbackUrlParam) {
-            // Decode the callbackUrl parameter
-            const decodedCallbackUrl = decodeURIComponent(callbackUrlParam);
-
-            // Check for 'demo/x' pattern
-            const demoMatch = decodedCallbackUrl.match(/\/demo\/(.+)$/);
-            if (demoMatch) {
-              callbackUrl = demoMatch[1]; // Assign whatever comes after 'demo/'
-            }
-          }
-        }
-
-        console.log("Determined callbackUrl:", callbackUrl);
-
 
         // Find the demo object in Users that matches the provided demo
         const demoObject = Users.find((demo) => demo.demo === credentials.demo);
