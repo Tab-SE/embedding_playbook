@@ -43,7 +43,7 @@ export const AuthGuard = (props) => {
     if (isSessionSuccess && demo !== user.demo) {
       killSession(queryClient, router, demo);
     }
-  }, [isSessionSuccess, demo, user]);
+  }, [isSessionSuccess, demo, user, queryClient, router]);
 
   if (isSessionError) {
     console.debug('Tableau Auth Error:', sessionError);
