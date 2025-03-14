@@ -36,7 +36,7 @@ export const NavigationSm = (props) => {
       <SheetContent side="left" className="sm:max-w-xs bg-navigationBackground">
         <nav className="grid gap-6 text-lg font-medium">
           <Link
-            href={base_path ? base_path : '/'}
+            href='/demos'
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
             <Avatar className="h-6 w-6 transition-all group-hover:scale-110">
