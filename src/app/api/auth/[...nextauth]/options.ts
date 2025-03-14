@@ -2,8 +2,9 @@ import { AuthOptions, User, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { SessionModel } from "models";
-import { Users } from "./userStore";
+
+import { SessionModel } from "@/models";
+import { Users } from "@/userStore";
 
 interface DemoUser extends User {
   picture?: string;
