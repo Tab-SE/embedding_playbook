@@ -1,16 +1,28 @@
 import { NavigationMd, Navigation } from 'components';
 
 export const Demo = (props) => {
+  const { children, settings, pageName } = props;
+
   const {
-    children,
     base_path,
-    crumbs,
     app_name,
     app_logo,
     ai_chat,
     ai_avatar,
     sections,
-  } = props;
+  } = settings;
+
+  const crumbs = {
+    [app_name]: {
+      path: '/',
+      child: {
+        [pageName]: {
+          path: `${pageName ? pageName.toLowerCase() : ''}`,
+          child: null
+        }
+      }
+    }
+  }
 
   return (
     <div className="flex h-full w-full flex-col bg-muted/40 overflow-auto">

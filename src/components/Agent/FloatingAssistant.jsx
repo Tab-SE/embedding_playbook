@@ -8,7 +8,7 @@ import { useTableauSession } from '@/hooks';
 import { MiniThread, TooltipIconButton } from "./ui";
 
 export const FloatingAssistant = (props) => {
-  const { ai_avatar } = props;
+  const { settings } = props;
   const [isOpen, setIsOpen] = useState(false);
 
   // tanstack query hook to safely represent users on the client
@@ -25,7 +25,7 @@ export const FloatingAssistant = (props) => {
     (<AssistantModalPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
       <AssistantModalPrimitive.Anchor className="fixed bottom-4 right-4 size-11">
         <AssistantModalPrimitive.Trigger asChild>
-          <FloatingAssistantButton ai_avatar={ai_avatar} />
+          <FloatingAssistantButton ai_avatar={settings.ai_avatar} />
         </AssistantModalPrimitive.Trigger>
       </AssistantModalPrimitive.Anchor>
       <AssistantModalPrimitive.Content
@@ -36,7 +36,7 @@ export const FloatingAssistant = (props) => {
         { isSessionLoading ? <p>Authenticating the User...</p> : null }
         { isSessionSuccess ?
           <MiniThread
-            ai_avatar={ai_avatar}
+            ai_avatar={settings.ai_avatar}
             user_avatar={user.picture}
           /> : null
         }

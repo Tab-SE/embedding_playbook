@@ -40,17 +40,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-// Logs users in automatically with the documents demo user (at a minimum has access to superstore)
-const DemoSession = (props) => {
-  const { status: session_status, data: session_data } = useSession({required: true});
-
-  const signedIn = session_status === 'authenticated';
-
-  if (signedIn) {
-    const user_data = session_data as CustomSession;
-    const demo = user_data?.user?.demo;
-  }
-
-  return <></>
-}

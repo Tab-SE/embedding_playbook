@@ -11,8 +11,12 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
-  // This file imports global CSS and defines providers wrapping the App component
 
+  const docs_settings = {
+    ai_avatar: '/img/themes/superstore/superstore.png'
+  };
+
+  // This file imports global CSS and defines providers wrapping the App component
   // initializes Tanstack Query's client: https://tanstack.com/query/v4/docs/react/reference/QueryClient
   const [queryClient] = useState(new QueryClient());
 
@@ -33,7 +37,7 @@ export default function App({
               <DocumentsSession />
               <Component {...pageProps} />
               <FloatingAssistant
-                ai_avatar='/img/themes/superstore/superstore.png'
+                settings={docs_settings}
               />
             </AgentRuntimeProvider>
           </ThemeProvider>

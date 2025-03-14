@@ -1,4 +1,4 @@
-import { AuthGuard } from 'components';
+import { AuthGuard } from '@/components';
 import { settings } from './config';
 
 export default function Layout({ children }) {
