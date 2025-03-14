@@ -1,20 +1,22 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import { Button } from "components/ui";
-import { RadioGroup, RadioGroupItem } from "components/ui";
+import { Button } from "@/components/ui";
+import { RadioGroup, RadioGroupItem } from "@/components/ui";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "components/ui";
+} from "@/components/ui";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "components/ui";
+} from "@/components/ui";
+
+import { UserModel } from "@/models";
 
 export const description = "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image";
 
@@ -22,11 +24,15 @@ export const Auth = (props) => {
   const { settings } = props;
 
   const {
+    app_id,
     app_name,
     app_logo,
     auth_hero,
-    users
   } = settings;
+
+  const demoManager = new UserModel();
+  const users = demoManager.getUsersForDemo(app_id);
+  const roles = demoManager.getAllRolesForDemo(app_id);
 
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-12 xl:min-h-[800px]">
@@ -44,7 +50,10 @@ export const Auth = (props) => {
               Select a user to login
             </p>
           </div>
-          <DemoTeamMembers users={users} />
+          <DemoTeamMembers
+            users={users}
+            roles={roles}
+          />
         </div>
       </div>
       <div className="hidden bg-muted lg:block lg:col-span-8">
@@ -63,7 +72,7 @@ export const Auth = (props) => {
 
 
 const DemoTeamMembers = (props) => {
-  const { users } = props;
+  const { users, roles } = props;
 
   return (
     <Card>
@@ -74,38 +83,13 @@ const DemoTeamMembers = (props) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
-        <div className="flex items-center justify-between space-x-4">
-          <div className="flex items-center space-x-9">
-            <Avatar>
-              <AvatarImage src="/avatars/01.png" />
-              <AvatarFallback>OM</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm font-medium leading-none">Sofia Davis</p>
-              <p className="text-sm text-muted-foreground">m@example.com</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium leading-none">Explorer</p>
-              <p className="text-sm text-muted-foreground">Self-service analytics</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center justify-between space-x-4">
-          <div className="flex items-center space-x-9">
-            <Avatar>
-              <AvatarImage src="/avatars/02.png" />
-              <AvatarFallback>JL</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm font-medium leading-none">Jackson Lee</p>
-              <p className="text-sm text-muted-foreground">p@example.com</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium leading-none">Viewer</p>
-              <p className="text-sm text-muted-foreground">Analytics consumer</p>
-            </div>
-          </div>
-        </div>
+        {users ? users.map((user) => (
+          <DemoUser
+            key={user.id}
+            user={user}
+            roles={roles}
+          />
+        )) : 'No Users Found for Provided Demo'}
         <Button type="submit" className="w-fit mx-auto">
           Login
         </Button>
@@ -114,15 +98,22 @@ const DemoTeamMembers = (props) => {
   )
 }
 
-const demoUser = (props) => {
-  const { user, roles } = props;
-  const { name, email, role, img } = user;
+const DemoUser = (props) => {
+  const { user , roles } = props;
+  const { name, email, role, picture } = user;
+
+  const getRoleProperties = (roleId) => {
+    return roles[roleId] || { title: 'Unknown', description: 'Role not found' };
+  };
+
+  // Get the correct role properties
+  const {title, description } = getRoleProperties(role);
 
   return (
     <div className="flex items-center justify-between space-x-4">
       <div className="flex items-center space-x-9">
         <Avatar>
-          <AvatarImage src={img} />
+          <AvatarImage src={picture} />
           <AvatarFallback>USER</AvatarFallback>
         </Avatar>
         <div>
@@ -130,8 +121,8 @@ const demoUser = (props) => {
           <p className="text-sm text-muted-foreground">{email}</p>
         </div>
         <div>
-          <p className="text-sm font-medium leading-none">{role.title}</p>
-          <p className="text-xs text-muted-foreground">{role.description}</p>
+          <p className="text-sm font-medium leading-none">{title}</p>
+          <p className="text-xs text-muted-foreground">{description}</p>
         </div>
       </div>
     </div>

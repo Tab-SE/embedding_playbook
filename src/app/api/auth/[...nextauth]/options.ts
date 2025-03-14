@@ -3,8 +3,7 @@ import { JWT } from "next-auth/jwt";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import { SessionModel } from "@/models";
-import { Users } from "@/userStore";
+import { SessionModel, UserModel } from "@/models";
 
 interface DemoUser extends User {
   picture?: string;
@@ -43,12 +42,12 @@ export const authOptions: AuthOptions = {
       async authorize(credentials: any, req) {
         let user: any = null;
 
-        // Find the demo object in Users that matches the provided demo
-        const demoObject = Users.find((demo) => demo.demo === credentials.demo);
+        const demoManager = new UserModel();
+        const currentDemo = demoManager.getDemoByName(credentials.demo);
 
-        if (demoObject) {
+        if (currentDemo) {
           // Find the user in the users array of the matched demo object
-          const matchedUser = demoObject.users.find(
+          const matchedUser = currentDemo.users.find(
             (user) => user.id.toUpperCase() === credentials.ID.toUpperCase()
           );
 
