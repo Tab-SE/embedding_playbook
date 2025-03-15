@@ -96,11 +96,27 @@ export const authOptions: AuthOptions = {
 
             if (session.authorized) {
               const {
-                username, user_id, embed_token, rest_token, rest_key, site_id, site, created, expires,
+                username,
+                user_id,
+                embed_token,
+                rest_token,
+                rest_key,
+                site_id,
+                site,
+                created,
+                expires
               } = session;
 
               user.tableau = {
-                username, user_id, embed_token, rest_token, rest_key, site_id, site, created, expires,
+                username,
+                user_id,
+                embed_token,
+                rest_token,
+                rest_key,
+                site_id,
+                site,
+                created,
+                expires
               };
             }
 
