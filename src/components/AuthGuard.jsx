@@ -5,7 +5,6 @@ import { signOut, signIn, useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from 'next/navigation';
 
-
 const killSession = async (queryClient, router, demo) => {
   // Invalidate the useTableauSession query
   await queryClient.invalidateQueries(
@@ -43,19 +42,15 @@ export const AuthGuard = (props) => {
   useEffect(() => {
     if (signedOut) {
       if (demo === 'documentation') {
-        console.log('signedOut', 'documentation');
         signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
       } else {
-        console.log('signedOut', demo);
         killSession(queryClient, router, demo);
       }
     }
     if (signedIn) {
       if (demo === 'documentation' && session_data.user.demo !== 'documentation') {
-        console.log('signedIn', signedIn, 'demo', demo, 'wrong session', session_data.user.demo);
-        // killSession(queryClient, router, 'documentation');
+        killSession(queryClient, router, 'documentation');
       } else if (demo !== session_data.user.demo) {
-        console.log('signedIn', demo);
         killSession(queryClient, router, demo);
       }
     }
