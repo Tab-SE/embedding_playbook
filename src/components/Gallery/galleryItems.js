@@ -5,9 +5,10 @@ import {
   HeartPulse
 } from 'lucide-react';
 
+// NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
 export const galleryItems = [
   {
-    id: 1,
+    id: 'superstore',
     link: "/demo/superstore",
     src: "/img/demos/superstore.png",
     alt: "Superstore Analytics",
@@ -16,7 +17,7 @@ export const galleryItems = [
     icon: <ShoppingCart size={12} strokeWidth={2} />
   },
   {
-    id: 2,
+    id: 'pacifica',
     link: "https://embedding-playbook-git-pacifica-tab-se.vercel.app",
     src: "/img/demos/pacifica_cpq.png",
     alt: "Pacifica | Configure, Price, Quote (CPQ)",
@@ -25,7 +26,7 @@ export const galleryItems = [
     icon: <BriefcaseBusiness size={12} strokeWidth={2} />
   },
   {
-    id: 3,
+    id: 'cumulus',
     link: "https://embedding-playbook-git-cumulus-tab-se.vercel.app",
     src: "/img/demos/cumulus_wealth.png",
     alt: "Cumulus | Wealth Management",
@@ -34,7 +35,7 @@ export const galleryItems = [
     icon: <HandCoins size={12} strokeWidth={2} />
   },
   {
-    id: 4,
+    id: 'makana',
     link: "https://embedding-playbook-git-makana-tab-se.vercel.app",
     src: "/img/demos/makana_payer.png",
     alt: "Makana | Health Payer Portal",
