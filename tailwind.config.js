@@ -20,6 +20,7 @@ module.exports = {
       colors: {
         demoBackground: '#f5f5f4',
         navigationBackground: '#fafaf9',
+        logoBackground: '#fafaf9',
         navigationIcons: '#0c0a09',
         iconBackground: '#fafaf9',
         metricsPositive: '#0284c7',
