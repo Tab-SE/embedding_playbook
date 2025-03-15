@@ -33,7 +33,9 @@ export default function App({
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
           <ThemeProvider attribute="class" forcedTheme='light'>
             <AgentRuntimeProvider>
-              <AuthGuard demo='documentation'/>
+              <AuthGuard
+                demo='documentation'
+              />
               <DocumentsSession />
               <Component {...pageProps} />
               <FloatingAssistant
