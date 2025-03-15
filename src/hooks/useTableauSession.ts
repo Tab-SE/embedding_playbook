@@ -30,7 +30,7 @@ export const useTableauSession = () => {
       if (session_data?.user?.email) {
         return getClientSession(session_data.user.email);
       } else {
-        throw new Error("Error: Session data not available");
+        throw new Error("useTableauSession Error: Session data not available");
       }
     },
     enabled: signedIn,
