@@ -41,19 +41,19 @@ export const Users = [
   {
     demo: 'superstore',
     roles: {
-      0: { title: 'hobby', description: 'Basic data & analytics'},
-      1: { title: 'pro', description: 'More data, analytics & exports'},
-      2: { title: 'premium', description: 'Full self-service analytics'},
+      0: { title: 'Hobby', description: 'Basic data & analytics'},
+      1: { title: 'Professional', description: 'More analytics & exports'},
+      2: { title: 'Premium', description: 'Full self-service analytics'},
     },
     users: [
       {
         id: 'a',
-        name: "Julie Morris",
-        email: "jmorris@mail.com",
-        picture: "/img/users/mackenzie_day.png",
-        role: 2,
-        vector_store: 'superstore_jmorris',
-        uaf: {"Region": ["South"]}
+        name: "Sofia Lopez",
+        email: "slopez@mail.com",
+        picture: "/img/users/sofia_lopez.png",
+        role: 0,
+        vector_store: 'superstore_slopez',
+        uaf: {"Region": ["West"]}
       },
       {
         id: 'b',
@@ -66,13 +66,13 @@ export const Users = [
       },
       {
         id: 'c',
-        name: "Sofia Lopez",
-        email: "slopez@mail.com",
-        picture: "/img/users/sofia_lopez.png",
-        role: 0,
-        vector_store: 'superstore_slopez',
-        uaf: {"Region": ["West"]}
-      }
+        name: "Julie Morris",
+        email: "jmorris@mail.com",
+        picture: "/img/users/mackenzie_day.png",
+        role: 2,
+        vector_store: 'superstore_jmorris',
+        uaf: {"Region": ["South"]}
+      },
     ]
   }
 ]
