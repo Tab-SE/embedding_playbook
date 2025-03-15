@@ -7,8 +7,8 @@ import { ThemeProvider } from 'next-themes';
 import { SessionProvider, useSession } from 'next-auth/react';
 
 import './global.css';
-import { AgentRuntimeProvider } from 'components';
-import { CustomSession } from "types";
+import { AgentRuntimeProvider } from '@/components';
+import { CustomSession } from "@/types";
 
 
 export default function RootLayout({

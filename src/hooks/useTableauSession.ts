@@ -3,8 +3,8 @@
 import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { getUser } from "libs";
-import { CustomSession } from "types";
+import { getUser } from "@/libs";
+import { CustomSession } from "@/types";
 
 // implements custom hooks with tanstack query for asynchronous state management
 // concepts described here: https://tkdodo.eu/blog/react-query-as-a-state-manager

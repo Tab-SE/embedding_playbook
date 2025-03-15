@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect } from 'react';
-import { signOut } from "next-auth/react";
+import { signOut, signIn, useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from 'next/navigation';
-
-import { useTableauSession } from '@/hooks';
 
 
 const killSession = async (queryClient, router, demo) => {
@@ -17,35 +15,50 @@ const killSession = async (queryClient, router, demo) => {
     }
   );
 
-  const callbackUrl = `/demo/${demo}`;
-  const authUrl = `/demo/${demo}/auth`;
+  if (demo === 'documentation') {
+    // sign the user out without redirecting to standard auth page
+    signOut({ redirect: false, callbackUrl: '/' });
+    signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
+  } else {
+    const callbackUrl = `/demo/${demo}`;
+    const authUrl = `/demo/${demo}/auth`;
 
-  // sign the user out and redirect to demo /auth page
-  signOut({ redirect: false, callbackUrl: callbackUrl });
-  router.push(authUrl);
+    // sign the user out without redirecting to standard auth page
+    signOut({ redirect: false, callbackUrl: callbackUrl });
+    // redirect to local demo /auth page
+    router.push(authUrl);
+  }
 }
 
 export const AuthGuard = (props) => {
   const { demo } = props;
   const router = useRouter();
   const queryClient = useQueryClient();
-  // tanstack query hook to safely represent users on the client
-  const {
-    status: sessionStatus,
-    data: user,
-    error: sessionError,
-    isSuccess: isSessionSuccess,
-    isError: isSessionError,
-    isLoading: isSessionLoading
-  } = useTableauSession();
+
+  const { status: session_status, data: session_data } = useSession({ required: false });
+
+  const signedIn = session_status === 'authenticated';
+  const signedOut = session_status === 'unauthenticated';
 
   useEffect(() => {
-    if (isSessionSuccess && demo !== user.demo) {
-      killSession(queryClient, router, demo);
+    if (signedOut) {
+      if (demo === 'documentation') {
+        console.log('signedOut', 'documentation');
+        signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
+      } else {
+        console.log('signedOut', demo);
+        killSession(queryClient, router, demo);
+      }
     }
-  }, [isSessionSuccess, demo, user, queryClient, router]);
+    if (signedIn) {
+      if (demo === 'documentation' && session_data.user.demo !== 'documentation') {
+        console.log('signedIn', signedIn, 'demo', demo, 'wrong session', session_data.user.demo);
+        // killSession(queryClient, router, 'documentation');
+      } else if (demo !== session_data.user.demo) {
+        console.log('signedIn', demo);
+        killSession(queryClient, router, demo);
+      }
+    }
 
-  if (isSessionError) {
-    console.debug('Tableau Auth Error:', sessionError);
-  }
+  }, [ signedIn, signedOut, demo, session_data, queryClient, router ]);
 }

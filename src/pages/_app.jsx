@@ -36,7 +36,6 @@ export default function App({
               <AuthGuard
                 demo='documentation'
               />
-              <DocumentsSession />
               <Component {...pageProps} />
               <FloatingAssistant
                 settings={docs_settings}
@@ -46,17 +45,4 @@ export default function App({
       </QueryClientProvider>
     </SessionProvider>
   )
-}
-
-// Logs users in automatically with the documents demo user (at a minimum has access to superstore)
-const DocumentsSession = () => {
-  const { status: session_status, data: session_data } = useSession({
-    required: true, // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
-    async onUnauthenticated() {
-      // The user is not authenticated, handle it here
-      signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
-    }
-  });
-
-  return <></>
 }
