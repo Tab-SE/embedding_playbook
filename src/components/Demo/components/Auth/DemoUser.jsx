@@ -1,10 +1,13 @@
 'use client';
 
+import { signIn } from "next-auth/react";
+
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 
 export const DemoUser = (props) => {
-  const { user, roles } = props;
-  const { name, email, role, picture } = user;
+  const { user, roles, demo } = props;
+  const { id, name, email, role, picture } = user;
 
   const getRoleProperties = (roleId) => {
     return roles[roleId] || { title: "Unknown", description: "Role not found" }
@@ -13,8 +16,8 @@ export const DemoUser = (props) => {
   const { title, description } = getRoleProperties(role);
 
   const authenticateUser = () => {
-    // Empty function for now
-    console.log("Authenticating user:", name);
+    // sign the user in with the selected options
+    signIn('demo-user', { ID: id, demo: demo });
   }
 
   return (

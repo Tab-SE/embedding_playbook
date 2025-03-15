@@ -52,7 +52,7 @@ export const Auth = (props) => {
                   {users.map((user, index) => (
                     <Fragment key={user.id}>
                       {index > 0 && <Separator className="my-3 bg-gray-300" orientation="horizontal" />}
-                      <DemoUser user={user} roles={roles} />
+                      <DemoUser user={user} demo={app_id} roles={roles} />
                     </Fragment>
                   ))}
                 </div>
