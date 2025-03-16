@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useSession, signIn } from "next-auth/react";
 import { ThemeProvider } from 'next-themes';
 
 import '../global.css';

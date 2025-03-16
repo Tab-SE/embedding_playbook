@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
-import { SessionProvider, useSession } from 'next-auth/react';
+import { SessionProvider } from 'next-auth/react';
 
 import './global.css';
 import { AgentRuntimeProvider } from '@/components';
-import { CustomSession } from "@/types";
 
 
 export default function RootLayout({
