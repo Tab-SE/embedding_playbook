@@ -1,6 +1,7 @@
 'use client';
 
 import { signIn } from "next-auth/react";
+import { useRouter } from 'next/navigation';
 
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
@@ -8,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 export const DemoUser = (props) => {
   const { user, roles, demo } = props;
   const { id, name, email, role, picture } = user;
+  const router = useRouter();
 
   const getRoleProperties = (roleId) => {
     return roles[roleId] || { title: "Unknown", description: "Role not found" }
@@ -16,8 +18,11 @@ export const DemoUser = (props) => {
   const { title, description } = getRoleProperties(role);
 
   const authenticateUser = () => {
+    const demoUrl = `/demo/${demo}`;
     // sign the user in with the selected options
-    signIn('demo-user', { ID: id, demo: demo });
+    signIn('demo-user', { redirect: false, ID: id, demo: demo });
+    // redirect to local demo /auth page
+    router.push(demoUrl);
   }
 
   return (
