@@ -10,7 +10,7 @@ export const Overview = () => {
         <CardHeader>
           <CardTitle>Overview</CardTitle>
           <CardDescription>
-            Your personal digest of Superstore sales in North America
+            Your personal book of business
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center pl-2">

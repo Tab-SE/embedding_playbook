@@ -8,7 +8,7 @@ const Intro = () => {
     <div>
       {/*<h1 className='text-5xl font-bold mb-9'>Commonwealth</h1>*/}
       <Image
-        src='/img/other/commonwealth_logo.jpg'
+        src='/img/other/cambridge_logo_1.png'
         width='415'
         height='250'
         alt='company logo'
@@ -16,10 +16,10 @@ const Intro = () => {
       <h1 className='text-2xl font-bold mb-10 mt-10'>Welcome to the power of partnership.</h1>
         <div className='space-y-0'>
           <p className='leading-loose font-bold'>
-            Welcome to Commonwealth.
+            Welcome to Cambridge.
           </p>
           <p className='leading-relaxed pb-10'>
-            You have a vision as an independent financial advisor.
+            You have a vision as an independent financial professional.
             Realize it with a partner that puts you first and powers you forward with sophisticated solutions, 
             specialized consulting, and intuitive tools.
           </p>
