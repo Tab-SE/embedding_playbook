@@ -13,15 +13,13 @@ const Intro = () => {
         height='250'
         alt='company logo'
       />
-      <h1 className='text-2xl font-bold mb-10 mt-10'>Welcome to the power of partnership.</h1>
+      <h1 className='text-2xl font-bold mb-10 mt-10'>Celebrating Something Wonderful</h1>
         <div className='space-y-0'>
           <p className='leading-loose font-bold'>
             Welcome to Cambridge.
           </p>
           <p className='leading-relaxed pb-10'>
-            You have a vision as an independent financial professional.
-            Realize it with a partner that puts you first and powers you forward with sophisticated solutions, 
-            specialized consulting, and intuitive tools.
+          We are innovators, problem solvers, and game changers. We are independent. We are Cambridge.
           </p>
           <Image
             src='/img/other/client2.png'
@@ -38,18 +36,17 @@ const Outro = () => {
   return (
     <div className='overflow-hidden leading-relaxed'>
       <p className='text-2xl font-bold mt-5'>
-        Break away and break through
+        Your Business. Your Way.
       </p>
       <ol className='list-decimal leading-loose text-2xl mt-3 ml-14'>
-        <li>Tailored Business Strategies</li>
-        <li>Advanced Planning & Research</li>
-        <li>Complete Marketing Support</li>
-        <li>Collaborative Compliance</li>
-        <li>Powerful Technology</li>
+        <li>Control Your Journey</li>
+        <li>Discover a New Level of Technology</li>
+        <li>Independence Focused on You</li>
+        <li>Support at Every Turn</li>
+        <li>Join the Cambridge Community</li>
       </ol>
       <p className='mt-10'>
-        Build your business with comprehensive, integrated capabilities that accentuate your strengths 
-        and a partner who is as invested in your success as you are.
+      We believe culture and success go hand in hand. Our core values of integrity, commitment, flexibility, and kindness have shaped our journey and kept us centered on our purpose of serving independent financial advisors and their clients.
       </p>
     </div>
   )

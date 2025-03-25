@@ -5,7 +5,7 @@ import { Performance } from './Performance';
 
 export const Commonwealth = () => {
   return (
-    <Tabs defaultValue="overview" className="space-y-3">
+    <Tabs defaultValue="overview">
       <TabsList>
         <TabsTrigger value="overview">
           Overview

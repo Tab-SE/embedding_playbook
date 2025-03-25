@@ -17,8 +17,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "components/ui";
-
-import { RightClick } from 'components';
+import { TableauToolbar } from "../Toolbar/TableauToolbar"
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
@@ -63,6 +62,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   return (
     <ContextMenu>
       <ContextMenuTrigger >
+      <TableauToolbar src={src} ref={innerRef} />
+
         <tableau-viz
           ref={innerRef}
           id="tableauViz"

@@ -85,8 +85,8 @@ export const Metric = (props) => {
           }
 
           if (sent === 'positive') {
-            stats.color = 'text-[#2f4a3d]';
-            stats.badge = 'bg-[#2f4a3d] dark:bg-[#2f4a3d]';
+            stats.color = 'text-[#014b63]';
+            stats.badge = 'bg-[#014b63] dark:bg-[#014b63]';
           } else if (sent === 'negative') {
             stats.color = 'text-orange-600';
             stats.badge = 'bg-orange-600 dark:bg-orange-600';
@@ -116,7 +116,7 @@ export const Metric = (props) => {
 
 const Stats = (props) => {
   const { isSuccess, stats, bundleCount, metric } = props;
-
+  // 1B9C6C
   if (isSuccess) {
     return (
       <div className="grid grid-cols-12">
@@ -129,10 +129,10 @@ const Stats = (props) => {
           </div>
           <Dialog>
             <DialogTrigger>
-              <Badge className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6 hover:bg-[#e6f74a] hover:text-stone-900`}>
+              <Badge className={`${stats.badge} text-stone-50 max-h-6 my-auto ml-6 hover:bg-[#1BB6F1] hover:text-stone-900`}>
                 <IconSparkles width={15} height={15} className="mr-1"/>
                 Insights: {bundleCount}
-              </Badge> 
+              </Badge>
             </DialogTrigger>
             <InsightsModal metric={metric} stats={stats} />
           </Dialog>

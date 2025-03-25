@@ -3,7 +3,8 @@ import { tab_embed } from 'libs';
 import { forwardRef } from 'react';
 
 import { useTableauSession } from 'hooks';
-import { TableauViz, TableauWebAuthor, AuthoringModal } from 'components';
+import { TableauViz, TableauWebAuthor, AuthoringModal, Tableau } from 'components';
+
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauEmbed = forwardRef(function TableauViz(props, ref) {
@@ -63,6 +64,7 @@ const AuthLayer = forwardRef(function AuthLayer(props, ref) {
 
   return (
     <div className='rounded'>
+
       {isSessionError ? <p>Authentication Error!</p> : null}
       {isSessionLoading ? <p>Authenticating the User...</p> : null}
       {isSessionSuccess ? !WebEdit ?

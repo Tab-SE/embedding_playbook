@@ -10,17 +10,19 @@ export const Overview = () => {
         <CardHeader>
           <CardTitle>Overview</CardTitle>
           <CardDescription>
-            Your personal digest of Superstore sales in North America
-          </CardDescription>
+          The financial portfolio and client performance overview dashboard offers a snapshot of Assets Under Management (AUM), client count, and total assets. It visually tracks performance over time, highlighting portfolio growth and client engagement, providing a quick assessment of investment effectiveness and client satisfaction.
+
+</CardDescription>
         </CardHeader>
-        <CardContent className="flex justify-center pl-2">
+        <CardContent className="flex justify-center">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance_17248196416610/PortfolioOverview'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Cambridge_PortfolioPerformance/PortfolioOverview'
             width={800}
-            height={1000}
+            height={900}
             hideTabs={true}
             device='default'
             toolbar='hidden'
+            webEdit="true"
           />
         </CardContent>
       </Card>

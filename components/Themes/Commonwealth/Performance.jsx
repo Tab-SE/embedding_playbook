@@ -5,19 +5,19 @@ import { TableauEmbed } from 'components';
 
 export const Performance = () => {
   return (
-    <TabsContent value="product" className="space-y-4">
+    <TabsContent value="performance" className="space-y-2">
       <Card className="dark:bg-stone-900">
         <CardHeader>
-          <CardTitle>Product Details</CardTitle>
+          <CardTitle>Client Performance</CardTitle>
           <CardDescription>
-            A comparison of performance by product segment, category and subcategory
+          Compares Client Value growth or decline over time
           </CardDescription>
         </CardHeader>
-        <CardContent className="pl-2">
+        <CardContent>
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Cambridge_PortfolioPerformance/ClientPerformance'
             width={800}
-            height={400}
+            height={600}
             hideTabs={true}
             device='default'
             toolbar='hidden'
@@ -26,16 +26,16 @@ export const Performance = () => {
       </Card>
       <Card className="dark:bg-stone-900">
         <CardHeader>
-          <CardTitle>Product Details</CardTitle>
+          <CardTitle>Asset Performance</CardTitle>
           <CardDescription>
-            Segment sales by month and year
+          Compares Asset Value Performance over time
           </CardDescription>
         </CardHeader>
-        <CardContent className="pl-2">
+        <CardContent>
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
+            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Cambridge_PortfolioPerformance/AssetPerformance'
             width={800}
-            height={300}
+            height={400}
             hideTabs={true}
             device='default'
             toolbar='hidden'

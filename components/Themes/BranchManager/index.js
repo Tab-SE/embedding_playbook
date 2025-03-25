@@ -10,13 +10,13 @@ export const BranchManager = () => {
         <TabsTrigger value="overview">
           Overview
         </TabsTrigger>
-        <TabsTrigger value="performance" >
+        {/* <TabsTrigger value="performance" >
           Performance
-        </TabsTrigger>
+        </TabsTrigger> */}
       </TabsList>
       <section className="min-h-[892px]">
         <Overview />
-        <Performance />
+        {/* <Performance /> */}
       </section>
     </Tabs>
   )

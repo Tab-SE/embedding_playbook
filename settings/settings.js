@@ -12,14 +12,14 @@ export const settings = {
   custom_metrics: true,
   themes: [
     {
-      label: "Matthew - Financial Advisor",
+      label: "Matthew - Financial Professional",
       name: "superstore",
       component: Commonwealth,
       type: "default",
       logo: "/img/users/matthew_wells.png",
       styles: "",
       project: {
-        name: "Matthew - Financial Advisor",
+        name: "Matthew - Financial Professional",
         workbooks: [],
         data_sources: []
       }
