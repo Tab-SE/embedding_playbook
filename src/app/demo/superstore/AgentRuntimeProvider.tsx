@@ -83,7 +83,7 @@ import { useLangGraphRuntime, LangChainMessage } from "@assistant-ui/react-langg
 import { Client, ThreadState } from "@langchain/langgraph-sdk";
 
 const createClient = () => {
-  const apiUrl = process.env["NEXT_PUBLIC_LANGGRAPH_API_URL"] || "/api";
+  const apiUrl = process.env["NEXT_PUBLIC_LANGGRAPH_API_URL"] || "/api/langgraph";
   return new Client({
     apiUrl,
   });
@@ -104,6 +104,7 @@ export const getThreadState = async (
 export const sendMessage = async (params: {
   threadId: string;
   messages: LangChainMessage[];
+  agentId: string;
 }) => {
   const client = createClient();
   return client.runs.stream(
@@ -124,7 +125,9 @@ export function AgentRuntimeProvider({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>,
+agentId: string
+) {
   const threadIdRef = useRef<string | undefined>();
 
   const runtime = useLangGraphRuntime({
@@ -135,7 +138,7 @@ export function AgentRuntimeProvider({
         threadIdRef.current = thread_id;
       }
       const threadId = threadIdRef.current;
-      return sendMessage({ threadId, messages });
+      return sendMessage({ threadId, messages, agentId });
     },
     onSwitchToNewThread: async () => {
       const { thread_id } = await createThread();
