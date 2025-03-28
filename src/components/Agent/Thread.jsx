@@ -24,8 +24,6 @@ import {
 import { MarkdownText, TooltipIconButton } from "./ui";
 import { cn } from "utils";
 
-import { useSession } from "next-auth/react";
-
 
 export const Thread = (props) => {
   const { ai_avatar, user_avatar } = props;
