@@ -1,80 +1,3 @@
-// "use client";
-
-// import { useRef } from "react";
-// import { useChat } from "@ai-sdk/react";
-// import { AssistantRuntimeProvider } from "@assistant-ui/react";
-// import { useVercelUseChatRuntime } from "@assistant-ui/react-ai-sdk";
-// import { useLangGraphRuntime } from "@assistant-ui/react-langgraph";
-// import { Client } from "@langchain/langgraph-sdk";
-// import { LangChainMessage } from "@assistant-ui/react-langgraph";
-
-// export function AgentRuntimeProvider({
-//   children,
-// }: Readonly<{
-//   children: React.ReactNode;
-// }>) {
-
-//   // for using a serverless or edge Agent on this repo
-//   const chat = useChat({
-//     api: "/api/chat",
-//   });
-
-//   // const runtime = useVercelUseChatRuntime(chat);
-
-//   const threadIdRef = useRef<string | undefined>();
-
-//   // for using the specified Langgraph Agent
-//   const runtime = useLangGraphRuntime({
-//     threadId: threadIdRef.current,
-//   });
-
-
-//   return (
-//     <AssistantRuntimeProvider runtime={runtime}>
-//       {children}
-//     </AssistantRuntimeProvider>
-//   );
-// }
-
-
-
-// const createClient = () => {
-//   const apiUrl = process.env["NEXT_PUBLIC_LANGGRAPH_API_URL"] || "/api";
-//   return new Client({
-//     apiUrl,
-//   });
-// };
-
-// export const createThread = async () => {
-//   const client = createClient();
-//   return client.threads.create();
-// };
-
-// export const getThreadState = async (
-//   threadId: string,
-// ): Promise<ThreadState<{ messages: LangChainMessage[] }>> => {
-//   const client = createClient();
-//   return client.threads.getState(threadId);
-// };
-
-// export const sendMessage = async (params: {
-//   threadId: string;
-//   messages: LangChainMessage;
-// }) => {
-//   const client = createClient();
-//   return client.runs.stream(
-//     params.threadId,
-//     process.env["NEXT_PUBLIC_LANGGRAPH_ASSISTANT_ID"]!,
-//     {
-//       input: {
-//         messages: params.messages,
-//       },
-//       streamMode: "messages",
-//     },
-//   );
-// };
-
-
 "use client";
 
 import { useRef } from "react";
@@ -107,9 +30,10 @@ export const sendMessage = async (params: {
   agentId: string;
 }) => {
   const client = createClient();
+
   return client.runs.stream(
     params.threadId,
-    process.env["NEXT_PUBLIC_LANGGRAPH_ASSISTANT_ID"]!,
+    params.agentId!,
     {
       input: {
         messages: params.messages,
@@ -120,13 +44,13 @@ export const sendMessage = async (params: {
 };
 
 
-
 export function AgentRuntimeProvider({
   children,
+  agentId,
 }: Readonly<{
   children: React.ReactNode;
-}>,
-agentId: string
+  agentId: string;
+}>
 ) {
   const threadIdRef = useRef<string | undefined>();
 
