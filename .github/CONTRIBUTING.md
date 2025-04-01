@@ -2,7 +2,7 @@
 
 Contributions to this project are more than welcome and may come in the form of enhancements to the codebase, writing articles, correcting or identifying bugs or even suggesting improvements.
 
-This project has two separate contribution models, one designed for writing articles and the other intended for maintaining the codebase. [ABOUT.md](./ABOUT.md) explains how the architecture chosen for this app enables a twin contribution model.
+This project has two separate contribution models, one designed for writing articles and the other intended for maintaining the codebase. [ABOUT.md](.github/ABOUT.md) explains how the architecture chosen for this app enables a twin contribution model.
 
 Most contributions will come in the form of articles. Writing high-quality guidance for embedding Tableau is the main purpose of this project.
 
@@ -10,7 +10,7 @@ Most contributions will come in the form of articles. Writing high-quality guida
 
 ## Writing Content
 
-For detailed instructions on how to write content, how to add images and how to display interactive UI components in this app, refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
+For detailed instructions on how to write content, how to add images and how to display interactive UI components in this app, refer to [STYLE_GUIDE.md](.github/STYLE_GUIDE.md).
 
 ## Developers
 

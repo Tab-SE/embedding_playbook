@@ -8,7 +8,7 @@ Customizing Embedded Tableau demos in this app requires working with 2 layers:
 
 1. **Application Layer**: the foundational framework called Nextra provides a configurable "wrapper" combining UI elements with navigation, routing, search indexing and more. This first layer provides a lot of out-of-the-box functionality and relies entirely on local files (databases or dedicated servers are optional) which makes it particularly lightweight and nimble.
 
-    For more details on Nextra, refer to their [official documentation](https://nextra.site/) and the [ABOUT.md](/docs/ABOUT.md) article.
+    For more details on Nextra, refer to their [official documentation](https://nextra.site/) and the [ABOUT.md](.github/ABOUT.md) article.
 
 2. **Demo Layer**: since [EmbedTableau.com](https://embedtableau.com) is intended for more uses than just a demo, the initial first layer is designed to support an infinite variety of UIs and use cases. These different interfaces can be defined as reusable UI components that can occupy an entire page or only inhabit portions of it.
 
@@ -146,4 +146,4 @@ With this, you can essentially describe a UI or outcome in natural language, lev
 
 This provides a very efficient way to generate fully custom UIs that can be ported into this app with ease.
 
-To import new shadcn components or to update existing files, refer to the guide in [USAGE.md](/docs/USAGE.md#importing-ui-components-from-shadcn).
+To import new shadcn components or to update existing files, refer to the guide in [USAGE.md](.github/USAGE.md#importing-ui-components-from-shadcn).
