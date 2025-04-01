@@ -6,7 +6,11 @@ import { useLangGraphRuntime, LangChainMessage } from "@assistant-ui/react-langg
 import { Client, ThreadState } from "@langchain/langgraph-sdk";
 
 const createClient = () => {
-  const apiUrl = process.env["NEXT_PUBLIC_LANGGRAPH_API_URL"] || "/api/langgraph";
+  const baseUrl = typeof window !== 'undefined'
+    ? `${window.location.protocol}//${window.location.host}`
+    : "http://localhost:3000"; // Default for server-side or if window is not available
+  const apiUrl = `${baseUrl}/api/langgraph`;
+
   return new Client({
     apiUrl,
   });

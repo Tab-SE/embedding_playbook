@@ -5,7 +5,7 @@ import { settings } from './config';
 export default function Layout({ children }) {
   return (
     <AgentRuntimeProvider
-      agentId='fe096781-5601-53d2-b2f6-0d3403f7e9ca'
+      agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
     >
       <AuthGuard demo={settings.app_id} />
       {children}
