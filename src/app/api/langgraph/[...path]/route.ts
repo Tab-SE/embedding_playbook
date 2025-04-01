@@ -12,7 +12,8 @@ function getCorsHeaders() {
 
 async function handleRequest(req: NextRequest, method: string) {
   try {
-    const path = req.nextUrl.pathname.replace(/^\/?api\//, "");
+    // const path = req.nextUrl.pathname.replace(/^\/?api\//, ""); // previous path extraction logic
+    const path = req.nextUrl.pathname.replace(/^\/?api\/langgraph\//, "");
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.search);
     searchParams.delete("_path");
@@ -31,6 +32,11 @@ async function handleRequest(req: NextRequest, method: string) {
     if (["POST", "PUT", "PATCH"].includes(method)) {
       options.body = await req.text();
     }
+
+    console.log('*** path ***', path);
+    console.log('*** url ***', queryString);
+    console.log('*** queryString ***', queryString);
+    console.log('*** options.body ***', options.body);
 
     const res = await fetch(
       `${process.env["LANGGRAPH_API_URL"]}/${path}${queryString}`,
