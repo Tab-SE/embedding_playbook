@@ -87,7 +87,7 @@ Another block of text and an *image* can go after the embed.
 ![Alt Text](Image URL)
 ```
 
-For more information on writing articles, adding images and displaying interactive components such as a Tableau visualization refer to [STYLE_GUIDE.md](/.github/STYLE_GUIDE.md).
+For more information on writing articles, adding images and displaying interactive components such as a Tableau visualization refer to [STYLE_GUIDE.md](.github/STYLE_GUIDE.md).
 
 ## Demos
 
@@ -106,7 +106,7 @@ For more information describing the overall architecture of this application as 
 
 Contributions to this project are more than welcome and may come in the form of enhancements to the codebase, writing articles, correcting or identifying bugs or even suggesting improvements.
 
-For more information please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md).
+For more information please refer to the [CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
 ## Contributors
 
