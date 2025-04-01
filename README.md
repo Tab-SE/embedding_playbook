@@ -38,7 +38,7 @@ cp ./.env.production ./.env.production.local
 
 5. Provide values for all environment variables listed in `.env.development.local` & `.env.production.local`.
 
-6. Finally, start the development server (see [USAGE.md](docs/USAGE.md) for more shell scripts).
+6. Finally, start the development server (see [USAGE.md](.github/USAGE.md) for more shell scripts).
 ```sh
 npm run dev
 ```
@@ -47,9 +47,9 @@ npm run dev
 
 Visit `localhost:3000` to see the app. Enjoy!
 
-For more detailed installation instructions refer to [INSTALLATION.md](./docs/INSTALLATION.md) to learn about production deployments.
+For more detailed installation instructions refer to [INSTALLATION.md](.github/INSTALLATION.md) to learn about production deployments.
 
-To learn more about developer scripts that run this application go to [USAGE.md](docs/USAGE.md).
+To learn more about developer scripts that run this application go to [USAGE.md](.github/USAGE.md).
 
 >NOTE: Development on GitHub codespaces may differ from this process. Please refer to their documentation for further guidance.
 
@@ -87,29 +87,31 @@ Another block of text and an *image* can go after the embed.
 ![Alt Text](Image URL)
 ```
 
-For more information on writing articles, adding images and displaying interactive components such as a Tableau visualization refer to [STYLE_GUIDE.md](/docs/STYLE_GUIDE.md).
+For more information on writing articles, adding images and displaying interactive components such as a Tableau visualization refer to [STYLE_GUIDE.md](.github/STYLE_GUIDE.md).
 
 ## Demos
 
 You are welcome customize this app and use it to conduct demonstrations of embedded analytics using Tableau. In other words, you can modify the styles and content of the app so it matches your own brand standard and portrays the analytics use case you have in mind.
 
-To learn more about building custom demos using this application please visit [DEMOS.md](/docs/DEMOS.md) for instructions on working with configuration files.
+To learn more about building custom demos using this application please visit [DEMOS.md](.github/DEMOS.md) for instructions on working with configuration files.
 
 ## About
 
 This application follows a "[docs-as-code](https://www.writethedocs.org/guide/docs-as-code/)" model of development  incorporating a powerful UI framework which interfaces with Markdown as the language of content, this helps developers
 and analysts collaborate with the community at-large and more importantly to keep up with the pace of change.
 
-For more information describing the overall architecture of this application as well as it's purpose and inspiration refer to [ABOUT.md](/docs/ABOUT.md).
+For more information describing the overall architecture of this application as well as it's purpose and inspiration refer to [ABOUT.md](.github/ABOUT.md).
 
 ## Contributing
 
 Contributions to this project are more than welcome and may come in the form of enhancements to the codebase, writing articles, correcting or identifying bugs or even suggesting improvements.
 
-For more information please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md).
+For more information please refer to the [CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
-## License
+## Contributors
 
-This project is licensed under the [MIT License](LICENSE).
+This the founding team for the project. Please consider contributing in your own way to further what's possible when you combine Tableau with AI Agents.
 
-![narrow area chart](public/img/tableau/stock/area_chart_banner.png)
+* [@stephenlprice](https://github.com/stephenlprice) - Lead Developer
+* [@allisonbierschenk](https://github.com/allisonbierschenk) - Developer
+* [@dschober71](https://github.com/dschober71) - Developer

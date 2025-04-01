@@ -24,22 +24,33 @@ import {
 import { MarkdownText, TooltipIconButton } from "./ui";
 import { cn } from "utils";
 
-import { settings } from 'components/Demo/settings';
 
+export const Thread = (props) => {
+  const { ai_avatar, user_avatar } = props;
 
-export const Thread = () => {
   return (
     (<ThreadPrimitive.Root className="bg-white h-full dark:bg-stone-950">
       <ThreadPrimitive.Viewport
         className="flex h-full flex-col items-center overflow-y-scroll scroll-smooth bg-inherit px-4 pt-3">
-        <MyThreadWelcome />
+        <MyThreadWelcome
+          ai_avatar={ai_avatar}
+        />
 
-        <ThreadPrimitive.Messages
+        {/* <ThreadPrimitive.Messages
           components={{
             UserMessage: DemoUserMessage,
             EditComposer: MyEditComposer,
             AssistantMessage: AgentMessage,
-          }} />
+          }}
+        /> */}
+
+        <ThreadPrimitive.Messages
+          components={{
+            UserMessage: (props) => <DemoUserMessage {...props} user_avatar={user_avatar} />,
+            EditComposer: MyEditComposer,
+            AssistantMessage: (props) => <AgentMessage {...props} ai_avatar={ai_avatar} />
+          }}
+        />
 
         <div className="min-h-8 flex-grow" />
 
@@ -66,14 +77,14 @@ const MyThreadScrollToBottom = () => {
   );
 };
 
-const MyThreadWelcome = () => {
-  const src = settings.ai_avatar;
+const MyThreadWelcome = (props) => {
+  const { ai_avatar } = props;
 
   return (
     (<ThreadPrimitive.Empty>
       <div className="flex flex-grow flex-col items-center justify-center">
         <MessageAvatar
-          src={src}
+          src={ai_avatar}
           alt='AI Avatar'
           fallback='AI'
         />
@@ -127,17 +138,17 @@ const MessageAvatar = (props) => {
   )
 }
 
-const DemoUserMessage = () => {
-  const src = "/img/users/mackenzie_day.png";
+const DemoUserMessage = (props) => {
+  const { user_avatar } = props;
 
   return (
     (<MessagePrimitive.Root
       className="grid w-full max-w-2xl auto-rows-auto grid-cols-[minmax(72px,1fr)_auto] gap-y-2 py-4">
       <MyUserActionBar />
       <MessageAvatar
-        src={src}
+        src={user_avatar}
         alt='Demo User Avatar'
-        fallback='DEMO'
+        fallback='USER'
       />
       <div
         className="bg-stone-100 text-stone-950 col-start-2 row-start-1 max-w-xl break-words rounded-3xl px-5 py-2.5 dark:bg-stone-800 dark:text-stone-50">
@@ -181,14 +192,14 @@ const MyEditComposer = () => {
   );
 };
 
-const AgentMessage = () => {
-  const src = settings.ai_avatar;
+const AgentMessage = (props) => {
+  const { ai_avatar } = props;
 
   return (
     (<MessagePrimitive.Root
       className="relative grid w-full max-w-2xl grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr] py-4">
       <MessageAvatar
-        src={src}
+        src={ai_avatar}
         alt='AI Avatar'
         fallback='AI'
       />

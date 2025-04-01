@@ -1,7 +1,5 @@
 "use client";
 
-import React, { useContext } from 'react';
-
 import { signIn, signOut } from "next-auth/react";
 import Link from 'next/link';
 
@@ -23,24 +21,20 @@ import {
 } from "components/ui";
 
 import { useTableauSession } from 'hooks';
-import { AuthenticatedUserContext } from 'context';
 
 
 export function UserMenu(props) {
   const { app_name } = props;
 
-  const { authenticatedUser, setAuthenticatedUser } = useContext(AuthenticatedUserContext);
-  const { user_id, demo } =  authenticatedUser;
-
-  // tanstack query hook to manage embed sessions
+  // tanstack query hook to safely represent users on the client
   const {
-    status,
+    status: sessionStatus,
     data: user,
     error: sessionError,
     isSuccess: isSessionSuccess,
     isError: isSessionError,
     isLoading: isSessionLoading
-  } = useTableauSession(user_id, demo);
+  } = useTableauSession();
 
   if (isSessionError) {
     console.debug('Session Error:', sessionError);
@@ -48,26 +42,26 @@ export function UserMenu(props) {
 
   return (
     <div>
+      {isSessionError ?
+          <DropdownMenu>
+            <Trigger src='' />
+            <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
+              <Label app_name={app_name} email='' />
+              <Group />
+              <Logout status={sessionStatus} />
+            </DropdownMenuContent>
+          </DropdownMenu>
+      : null}
       {isSessionSuccess ?
         <DropdownMenu>
           <Trigger src={user.picture} />
           <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
             <Label app_name={app_name} email={user.email} />
             <Group />
-            <Logout status={status} />
+            <Logout status={sessionStatus} />
           </DropdownMenuContent>
         </DropdownMenu>
-    : null}
-    {isSessionError ?
-        <DropdownMenu>
-          <Trigger src='' />
-          <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-            <Label app_name={app_name} email='' />
-            <Group />
-            <Logout status={status} />
-          </DropdownMenuContent>
-        </DropdownMenu>
-    : null}
+      : null}
     </div>
   )
 }

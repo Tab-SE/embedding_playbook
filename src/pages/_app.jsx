@@ -4,14 +4,18 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
 
 import '../global.css';
-import { SessionProvider, AgentRuntimeProvider, FloatingAssistant } from 'components';
+import { SessionProvider, AgentRuntimeProvider, AuthGuard, FloatingAssistant } from '@/components';
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
-  // This file imports global CSS and defines providers wrapping the App component
 
+  const docs_settings = {
+    ai_avatar: '/img/themes/superstore/superstore.png'
+  };
+
+  // This file imports global CSS and defines providers wrapping the App component
   // initializes Tanstack Query's client: https://tanstack.com/query/v4/docs/react/reference/QueryClient
   const [queryClient] = useState(new QueryClient());
 
@@ -28,8 +32,13 @@ export default function App({
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
           <ThemeProvider attribute="class" forcedTheme='light'>
             <AgentRuntimeProvider>
+              <AuthGuard
+                demo='documentation'
+              />
               <Component {...pageProps} />
-              <FloatingAssistant />
+              <FloatingAssistant
+                settings={docs_settings}
+              />
             </AgentRuntimeProvider>
           </ThemeProvider>
       </QueryClientProvider>
