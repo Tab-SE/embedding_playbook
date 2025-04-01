@@ -39,7 +39,7 @@ export const Chat = () => {
         handleSubmit={handleSubmit}
         handleInputChange={handleInputChange}
         isLoading={isLoading}
-        multiModal={process.env.NEXT_PUBLIC_MODEL === "gpt-4-vision-preview"}
+        multiModal={process.env.AGENT_MODEL === "gpt-4-vision-preview"}
       />
     </div>
   );
