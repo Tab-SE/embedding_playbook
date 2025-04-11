@@ -28,13 +28,13 @@ export const NavigationMd = (props) => {
   } = props;
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-navigationBackground sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-navBackground sm:flex">
+      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5 bg-logoBackground">
         <Link
           href='/demos'
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-logoBackground text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
-          <Avatar className="h-8 w-8 p-1 transition-all group-hover:scale-110 bg-iconBackground">
+          <Avatar className="h-8 w-8 p-1 transition-all group-hover:scale-110 bg-logoBackground">
             <AvatarImage src={app_logo} alt="demo brand logo" />
             <AvatarFallback>APP</AvatarFallback>
           </Avatar>
@@ -52,7 +52,7 @@ export const NavigationMd = (props) => {
                 href={base_path + '/settings'}
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <Settings className="h-5 w-5 text-navigationIcons"/>
+                <Settings className="h-5 w-5 text-navIcons"/>
                 <span className="sr-only">Settings</span>
               </Link>
             </TooltipTrigger>
@@ -74,7 +74,7 @@ const NavBarItem = (props) => {
         <TooltipTrigger asChild>
           <Link
             href={base_path + path}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 text-navigationIcons bg-iconBackground hover:scale-110"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 text-navIcons bg-iconBackground hover:scale-110"
           >
             {icon}
             <span className="sr-only">{name}</span>
