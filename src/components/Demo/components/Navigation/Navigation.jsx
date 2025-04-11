@@ -12,7 +12,7 @@ export const Navigation = (props) => {
   } = props;
 
   return (
-    <header className="sticky top-0 z-30 flex h-20 mt-6 items-center gap-4 border-b bg-background px-4 sm:static sm:border-0 sm:bg-transparent sm:px-6">
+    <header className="sticky top-0 z-30 flex h-20 pt-6 items-center gap-4 border-b bg-background px-4 sm:static sm:border-0 sm:bg-transparent sm:px-6">
       <NavigationSm
         base_path={base_path}
         crumbs={crumbs}

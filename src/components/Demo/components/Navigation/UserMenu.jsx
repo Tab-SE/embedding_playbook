@@ -41,8 +41,8 @@ export function UserMenu(props) {
   }
 
   return (
-    <div>
-      {isSessionError ?
+    <div className="pr-6">
+      {isSessionError || isSessionLoading ?
           <DropdownMenu>
             <Trigger src='' />
             <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
