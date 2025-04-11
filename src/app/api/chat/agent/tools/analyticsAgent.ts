@@ -12,6 +12,8 @@ const client = new Client({
   apiUrl: process.env.LANGGRAPH_API_URL || 'http://localhost:8123'
 });
 
+console.log('client', client)
+
 export const analyticsAgent = new DynamicTool({
   name: "analytics_agent",
   description: `AI Analyst performing ad-hoc analysis. Prioritize this tool for analytics and data queries.
@@ -33,8 +35,8 @@ export const analyticsAgent = new DynamicTool({
   func: async (input) => {
     try {
       const streamResponse = client.runs.stream(
-        null,
-        "fe096781-5601-53d2-b2f6-0d3403f7e9ca",
+        null, // threadId
+        "a585b681-26dd-5c0a-b77f-47a0e69b1bbd", // assistantId
         {
           input: {
             messages: [{ role: "assistant", content: input }]
