@@ -27,7 +27,6 @@
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem; /* Example border radius variable */
 
-    /* Your metric colors (if static) */
     --metrics-positive: 199 99% 39% ;
     --metrics-neutral: 39 7% 54%;
     --metrics-negative: 23 93% 51%;
@@ -55,6 +54,37 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%; /* Lighter Blue */
+
+    --metrics-positive: 199 99% 39% ;
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 23 93% 51%;
+  }
+
+  /* Define variables for the 'superstore' theme (orange and blue) */
+  [data-theme="superstore"] {
+    --background: 210 100% 97%; /* Very Light Blue */
+    --foreground: 220 13% 20%; /* Dark Blue-Gray */
+    --card: 210 100% 99%; /* Almost White Blue */
+    --card-foreground: 220 13% 20%;
+    --popover: 210 100% 99%;
+    --popover-foreground: 220 13% 20%;
+    --primary: 205 90% 50%;  /* Bright Blue */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 210 60% 90%; /* Light Blue */
+    --secondary-foreground: 205 90% 30%; /* Darker Blue */
+    --muted: 210 60% 95%;   /* Very Light Blue */
+    --muted-foreground: 210 10% 45%; /* Mid Blue-Gray */
+    --accent: 190 70% 85%;  /* Light Cyan */
+    --accent-foreground: 190 90% 25%; /* Dark Cyan */
+    --destructive: 0 70% 60%; /* Red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 50% 88%; /* Soft Blue Border */
+    --input: 210 50% 92%;  /* Very Soft Blue Input */
+    --ring: 205 90% 50%;   /* Bright Blue Ring */
+
+    --metrics-positive: 199 99% 39% ;
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 23 93% 51%;
   }
 
   /* Define variables for the 'cumulus' theme (Light Blue) */
@@ -78,7 +108,10 @@
     --border: 210 50% 88%; /* Soft Blue Border */
     --input: 210 50% 92%;  /* Very Soft Blue Input */
     --ring: 205 90% 50%;   /* Bright Blue Ring */
-    /* Adjust metrics colors if needed for this theme */
+
+    --metrics-positive: 199 99% 39% ;
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 23 93% 51%;
   }
 
   /* Define variables for the 'pacifica' theme (Red) */
@@ -102,7 +135,10 @@
     --border: 5 50% 88%; /* Soft Red Border */
     --input: 5 50% 92%;  /* Very Soft Red Input */
     --ring: 0 80% 60%;   /* Strong Red Ring */
-    /* Adjust metrics colors if needed for this theme */
+
+    --metrics-positive: 199 99% 39% ;
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 23 93% 51%;
   }
 
    /* Define variables for the 'makana' theme (Purple) */
@@ -126,7 +162,10 @@
     --border: 265 50% 88%; /* Soft Purple Border */
     --input: 265 50% 92%;  /* Very Soft Purple Input */
     --ring: 260 80% 60%;   /* Strong Purple Ring */
-    /* Adjust metrics colors if needed for this theme */
+
+    --metrics-positive: 199 99% 39% ;
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 23 93% 51%;
   }
 }
 

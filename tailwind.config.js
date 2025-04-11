@@ -73,6 +73,7 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))", // Replaces demoBackground, navigationBackground, logoBackground, iconBackground if they serve the same purpose
+        // navigationBackground: "",
         foreground: "hsl(var(--foreground))", // Replaces navigationIcons potentially
         primary: {
           DEFAULT: "hsl(var(--primary))",
