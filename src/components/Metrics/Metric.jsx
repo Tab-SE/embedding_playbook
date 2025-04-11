@@ -114,8 +114,6 @@ export const Metric = (props) => {
 const Stats = (props) => {
   const { isSuccess, stats, bundleCount, metric } = props;
 
-  console.log('metric.name', metric.name, 'stats.color', stats.color);
-
   if (isSuccess) {
     return (
       <div>
