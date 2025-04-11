@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ThemeProvider } from 'next-themes';
 import { SessionProvider } from 'next-auth/react';
 
-import './global.css';
+import '../global.css';
 
 
 export default function RootLayout({
@@ -27,9 +26,7 @@ export default function RootLayout({
         <SessionProvider>
           <QueryClientProvider client={queryClient}>
             <ReactQueryDevtools initialIsOpen={false} buttonPosition='bottom-left'/>
-            <ThemeProvider attribute="class" forcedTheme='light'>
-              {children}
-            </ThemeProvider>
+            {children}
           </QueryClientProvider>
         </SessionProvider>
       </body>

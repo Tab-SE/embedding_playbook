@@ -29,12 +29,12 @@ export const Auth = (props) => {
           fill
           priority
           sizes="100vw"
-          className="object-cover dark:brightness-[0.2] dark:grayscale bg-demoBackground"
+          className="object-cover dark:brightness-[0.2] dark:grayscale background"
         />
       </div>
 
       <div className="relative z-10 flex items-center justify-center w-full min-h-screen p-4">
-        <Card className="mx-auto w-[480px] max-w-full shadow-lg backdrop-blur-sm bg-demoBackground/95">
+        <Card className="mx-auto w-[480px] max-w-full shadow-lg backdrop-blur-sm loginBackground/95">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <Avatar className="flex items-center justify-center h-16 w-16 bg-logoBackground">

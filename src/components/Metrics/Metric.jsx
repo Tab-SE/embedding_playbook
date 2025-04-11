@@ -114,6 +114,8 @@ export const Metric = (props) => {
 const Stats = (props) => {
   const { isSuccess, stats, bundleCount, metric } = props;
 
+  console.log('metric.name', metric.name, 'stats.color', stats.color);
+
   if (isSuccess) {
     return (
       <div>
@@ -135,11 +137,11 @@ const Stats = (props) => {
               <InsightsModal metric={metric} stats={stats} />
             </Dialog>
           </div>
-          <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground ${stats.color}`}>
+          <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground}`}>
             <div>{stats.units}&nbsp;</div>
-            <div>{stats.direction}</div>
-            <div>{stats.absolute}&nbsp;</div>
-            <div>{stats.relative ? `${stats.relative} △` : null}&nbsp;</div>
+            <div className={`${stats.color}`}>{stats.direction}</div>
+            <div className={`${stats.color}`}>{stats.absolute}&nbsp;</div>
+            <div className={`${stats.color}`}>{stats.relative ? `${stats.relative} △` : null}&nbsp;</div>
           </div>
         </div>
       </div>

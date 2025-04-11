@@ -29,15 +29,15 @@ export const NavigationSm = (props) => {
     <Sheet>
       <SheetTrigger asChild>
         <Button size="icon" variant="outline" className="sm:hidden">
-          <PanelLeft className="h-5 w-5 text-navigationIcons"/>
+          <PanelLeft className="h-5 w-5 text-navIcons"/>
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="sm:max-w-xs bg-navigationBackground">
+      <SheetContent side="left" className="sm:max-w-xs bg-navBackground">
         <nav className="grid gap-6 text-lg font-medium">
           <Link
             href='/demos'
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground bg-primary"
           >
             <Avatar className="h-6 w-6 transition-all group-hover:scale-110">
               <AvatarImage src={app_logo} alt="demo brand logo" />
@@ -53,7 +53,7 @@ export const NavigationSm = (props) => {
             href={base_path + '/settings'}
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
-            <Settings className="h-5 w-5 text-navigationIcons"/>
+            <Settings className="h-5 w-5 text-navIcons"/>
             Settings
           </Link>
         </nav>
@@ -69,7 +69,7 @@ const NavBarItem = (props) => {
   return (
     <Link
       href={base_path + path}
-      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground text-navigationIcons"
+      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground text-navIcons bg-iconBackground"
     >
       {icon}
       {name}

@@ -5,6 +5,7 @@ import {
   ComposerPrimitive,
   MessagePrimitive,
   ThreadPrimitive,
+  useMessage
 } from "@assistant-ui/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
@@ -36,19 +37,14 @@ export const Thread = (props) => {
           ai_avatar={ai_avatar}
         />
 
-        {/* <ThreadPrimitive.Messages
-          components={{
-            UserMessage: DemoUserMessage,
-            EditComposer: MyEditComposer,
-            AssistantMessage: AgentMessage,
-          }}
-        /> */}
-
         <ThreadPrimitive.Messages
           components={{
-            UserMessage: (props) => <DemoUserMessage {...props} user_avatar={user_avatar} />,
+            UserMessage: (messageProps) => <DemoUserMessage {...messageProps} user_avatar={user_avatar} />,
             EditComposer: MyEditComposer,
-            AssistantMessage: (props) => <AgentMessage {...props} ai_avatar={ai_avatar} />
+            AssistantMessage: (messageProps) => <AgentMessage {...messageProps} ai_avatar={ai_avatar} />
+            // Note: If you had a specific component for 'ToolMessage', it would be called for role='tool'.
+            // Since you don't, the primitive might try AssistantMessage or UserMessage depending on its internal logic,
+            // but our added checks inside them will prevent rendering.
           }}
         />
 
@@ -141,6 +137,14 @@ const MessageAvatar = (props) => {
 const DemoUserMessage = (props) => {
   const { user_avatar } = props;
 
+  // Access the specific message data for this instance
+  const message  = useMessage();
+
+  // Check the role: Only render if it's a user message
+  if (message.role !== 'user') {
+    return null; // Render nothing if it's not a user message
+  }
+
   return (
     (<MessagePrimitive.Root
       className="grid w-full max-w-2xl auto-rows-auto grid-cols-[minmax(72px,1fr)_auto] gap-y-2 py-4">
@@ -194,6 +198,14 @@ const MyEditComposer = () => {
 
 const AgentMessage = (props) => {
   const { ai_avatar } = props;
+
+  // Access the specific message data for this instance
+  const message  = useMessage();
+
+  // Check the role: Only render if it's a user message
+  if (message.role !== 'assistant') {
+    return null; // Render nothing if it's not a user message
+  }
 
   return (
     (<MessagePrimitive.Root

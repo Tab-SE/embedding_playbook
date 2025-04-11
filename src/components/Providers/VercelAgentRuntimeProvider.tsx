@@ -4,7 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import { useVercelUseChatRuntime } from "@assistant-ui/react-ai-sdk";
 
-export function AgentRuntimeProvider({
+export function VercelAgentRuntimeProvider({
   children,
 }: Readonly<{
   children: React.ReactNode;
