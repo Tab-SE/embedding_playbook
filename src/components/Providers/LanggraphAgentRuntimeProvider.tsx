@@ -54,8 +54,7 @@ export function LanggraphAgentRuntimeProvider({
 }: Readonly<{
   children: React.ReactNode;
   agentId: string;
-}>
-) {
+}>) {
   const threadIdRef = useRef<string | undefined>();
 
   const runtime = useLangGraphRuntime({
@@ -75,7 +74,11 @@ export function LanggraphAgentRuntimeProvider({
     onSwitchToThread: async (threadId) => {
       const state = await getThreadState(threadId);
       threadIdRef.current = threadId;
-      return { messages: state.values.messages };
+      return {
+        messages: state.values.messages.filter(
+          msg => msg.type === 'ai' || msg.type === 'human'
+        )
+      };
     },
   });
 
@@ -85,5 +88,3 @@ export function LanggraphAgentRuntimeProvider({
     </AssistantRuntimeProvider>
   );
 }
-
-
