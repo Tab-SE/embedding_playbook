@@ -12,8 +12,6 @@ const client = new Client({
   apiUrl: process.env.LANGGRAPH_API_URL || 'http://localhost:8123'
 });
 
-console.log('client', client)
-
 export const analyticsAgent = new DynamicTool({
   name: "analytics_agent",
   description: `AI Analyst performing ad-hoc analysis. Prioritize this tool for analytics and data queries.
