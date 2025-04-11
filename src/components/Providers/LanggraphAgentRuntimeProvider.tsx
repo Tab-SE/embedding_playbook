@@ -48,7 +48,7 @@ export const sendMessage = async (params: {
 };
 
 
-export function AgentRuntimeProvider({
+export function LanggraphAgentRuntimeProvider({
   children,
   agentId,
 }: Readonly<{
