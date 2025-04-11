@@ -1,3 +1,140 @@
+/* src/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Define variables for the default theme (light) */
+  :root {
+    --background: 0 0% 100%; /* White */
+    --foreground: 222.2 84% 4.9%; /* Dark Gray */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%; /* Dark Blue */
+    --primary-foreground: 210 40% 98%; /* Light Gray */
+    --secondary: 210 40% 96.1%; /* Light Gray */
+    --secondary-foreground: 222.2 47.4% 11.2%; /* Dark Blue */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%; /* Mid Gray */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%; /* Light Gray */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem; /* Example border radius variable */
+
+    /* Your metric colors (if static) */
+    --metrics-positive: 199 99% 39% ;
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 23 93% 51%;
+  }
+
+  /* Define variables for the dark theme */
+  .dark, /* Optional: If you still want to support .dark class directly */
+  [data-theme="dark"] {
+    --background: 222.2 84% 4.9%; /* Dark Gray */
+    --foreground: 210 40% 98%; /* Light Gray */
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%; /* Light Gray */
+    --primary-foreground: 222.2 47.4% 11.2%; /* Dark Blue */
+    --secondary: 217.2 32.6% 17.5%; /* Darker Gray */
+    --secondary-foreground: 210 40% 98%; /* Light Gray */
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%; /* Lighter Mid Gray */
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%; /* Darker Red */
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%; /* Lighter Blue */
+  }
+
+  /* Define variables for the 'cumulus' theme (Light Blue) */
+  [data-theme="cumulus"] {
+    --background: 210 100% 97%; /* Very Light Blue */
+    --foreground: 220 13% 20%; /* Dark Blue-Gray */
+    --card: 210 100% 99%; /* Almost White Blue */
+    --card-foreground: 220 13% 20%;
+    --popover: 210 100% 99%;
+    --popover-foreground: 220 13% 20%;
+    --primary: 205 90% 50%;  /* Bright Blue */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 210 60% 90%; /* Light Blue */
+    --secondary-foreground: 205 90% 30%; /* Darker Blue */
+    --muted: 210 60% 95%;   /* Very Light Blue */
+    --muted-foreground: 210 10% 45%; /* Mid Blue-Gray */
+    --accent: 190 70% 85%;  /* Light Cyan */
+    --accent-foreground: 190 90% 25%; /* Dark Cyan */
+    --destructive: 0 70% 60%; /* Red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 50% 88%; /* Soft Blue Border */
+    --input: 210 50% 92%;  /* Very Soft Blue Input */
+    --ring: 205 90% 50%;   /* Bright Blue Ring */
+    /* Adjust metrics colors if needed for this theme */
+  }
+
+  /* Define variables for the 'pacifica' theme (Red) */
+  [data-theme="pacifica"] {
+    --background: 10 80% 97%; /* Very Light Red/Orange */
+    --foreground: 10 20% 20%; /* Dark Brownish */
+    --card: 10 80% 99%; /* Almost White Red/Orange */
+    --card-foreground: 10 20% 20%;
+    --popover: 10 80% 99%;
+    --popover-foreground: 10 20% 20%;
+    --primary: 0 80% 60%; /* Strong Red */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 5 60% 90%; /* Light Red/Pink */
+    --secondary-foreground: 0 80% 35%; /* Dark Red */
+    --muted: 5 60% 95%;   /* Very Light Red/Pink */
+    --muted-foreground: 10 10% 45%; /* Mid Brownish-Gray */
+    --accent: 30 70% 85%;  /* Light Orange */
+    --accent-foreground: 30 90% 25%; /* Dark Orange/Brown */
+    --destructive: 350 70% 60%; /* Another Red variant */
+    --destructive-foreground: 0 0% 100%;
+    --border: 5 50% 88%; /* Soft Red Border */
+    --input: 5 50% 92%;  /* Very Soft Red Input */
+    --ring: 0 80% 60%;   /* Strong Red Ring */
+    /* Adjust metrics colors if needed for this theme */
+  }
+
+   /* Define variables for the 'makana' theme (Purple) */
+  [data-theme="makana"] {
+    --background: 270 80% 97%; /* Very Light Purple */
+    --foreground: 270 20% 20%; /* Dark Purple-Gray */
+    --card: 270 80% 99%; /* Almost White Purple */
+    --card-foreground: 270 20% 20%;
+    --popover: 270 80% 99%;
+    --popover-foreground: 270 20% 20%;
+    --primary: 260 80% 60%; /* Strong Purple */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 265 60% 90%; /* Light Purple/Lavender */
+    --secondary-foreground: 260 80% 35%; /* Dark Purple */
+    --muted: 265 60% 95%;   /* Very Light Purple */
+    --muted-foreground: 270 10% 45%; /* Mid Purple-Gray */
+    --accent: 280 70% 85%;  /* Light Magenta */
+    --accent-foreground: 280 90% 25%; /* Dark Magenta */
+    --destructive: 330 70% 60%; /* Pinkish Red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 265 50% 88%; /* Soft Purple Border */
+    --input: 265 50% 92%;  /* Very Soft Purple Input */
+    --ring: 260 80% 60%;   /* Strong Purple Ring */
+    /* Adjust metrics colors if needed for this theme */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border; /* Apply border color globally */
+  }
+  body {
+    @apply bg-background text-foreground; /* Apply base bg/text colors */
+  }
+}

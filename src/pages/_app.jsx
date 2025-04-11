@@ -30,7 +30,12 @@ export default function App({
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
-          <ThemeProvider attribute="class" forcedTheme='light'>
+          <ThemeProvider
+            attribute="data-theme"
+            forcedTheme='light'
+            enableSystem={false}
+            themes={[ 'light' ]}
+          >
             <VercelAgentRuntimeProvider>
               <AuthGuard
                 demo='documentation'
