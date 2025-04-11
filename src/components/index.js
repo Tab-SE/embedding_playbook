@@ -45,7 +45,7 @@ export { ActionCard } from './ActionCard';
 
 export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './ResponsiveLayouts';
 
-export { SessionProvider, AgentRuntimeProvider } from './Providers';
+export { SessionProvider, VercelAgentRuntimeProvider } from './Providers';
 
 export { FloatingAssistant, Thread, Agent } from './Agent';
 
