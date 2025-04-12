@@ -136,7 +136,7 @@ const Stats = (props) => {
             </Dialog>
           </div>
           <div className={`col-span-4 grid justify-evenly items-end text-xs text-muted-foreground}`}>
-            <div>{stats.units}&nbsp;</div>
+            <div className="text-stone-500">{stats.units}&nbsp;</div>
             <div className={`${stats.color}`}>{stats.direction}</div>
             <div className={`${stats.color}`}>{stats.absolute}&nbsp;</div>
             <div className={`${stats.color}`}>{stats.relative ? `${stats.relative} △` : null}&nbsp;</div>
