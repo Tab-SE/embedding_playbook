@@ -55,8 +55,7 @@ export const Gallery = (props) => {
                   <Image
                     src={item.src}
                     alt={item.alt}
-                    width={318}
-                    height={171}
+                    fill
                     className="w-full object-cover"
                   />
                 </CardContent>
@@ -72,7 +71,7 @@ export const Gallery = (props) => {
                   <div className="flex items-center pt-2">
                     <Badge>
                       {item.icon}
-                      <span className="text-xs text-muted-foreground ml-1">
+                      <span className="text-xs text-white ml-1">
                         {item.vertical}
                       </span>
                     </Badge>
