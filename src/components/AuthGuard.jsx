@@ -19,8 +19,8 @@ const killSession = async (queryClient, router, demo) => {
     signOut({ redirect: false, callbackUrl: '/' });
     signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
   } else {
-    const callbackUrl = `/demo/${demo}`;
-    const authUrl = `/demo/${demo}/auth`;
+    const callbackUrl = `/`;
+    const authUrl = `/auth`;
 
     // sign the user out without redirecting to standard auth page
     signOut({ redirect: false, callbackUrl: callbackUrl });
