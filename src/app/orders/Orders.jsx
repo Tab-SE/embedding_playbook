@@ -35,7 +35,7 @@ export const Orders = (props) => {
         </CardHeader>
         <CardContent className="flex items-center justify-center">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShipSummary'
+            src='https://tc25booth.demo.tableau.com/views/Superstore_17444405554090/ShipSummary'
             hideTabs={true}
             toolbar='hidden'
             className='
@@ -66,7 +66,7 @@ export const Orders = (props) => {
         </CardHeader>
         <CardContent className="flex items-center justify-center">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'
+            src='https://tc25booth.demo.tableau.com/views/Superstore_17444405554090/ShippingTrend'
             hideTabs={true}
             toolbar='hidden'
             className='

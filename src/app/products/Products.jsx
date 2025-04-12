@@ -41,7 +41,7 @@ export const Products = (props) => {
             </CardHeader>
             <CardContent className="flex items-center justify-center px-1">
               <TableauEmbed
-                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
+                src='https://tc25booth.demo.tableau.com/views/Superstore_17444405554090/ProductDetails'
                 width={1260}
                 height={516}
                 hideTabs={true}
@@ -77,7 +77,7 @@ export const Products = (props) => {
             </CardHeader>
             <CardContent className="flex items-center justify-center">
               <TableauEmbed
-                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
+                src='https://tc25booth.demo.tableau.com/views/Superstore_17444405554090/ProductView'
                 width={1260}
                 height={516}
                 hideTabs={true}
