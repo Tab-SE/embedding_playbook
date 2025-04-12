@@ -31,7 +31,7 @@ export const NavigationMd = (props) => {
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-navBackground sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5 bg-logoBackground">
         <Link
-          href='/demos'
+          href='/'
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-logoBackground text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Avatar className="h-8 w-8 p-1 transition-all group-hover:scale-110 bg-logoBackground">
