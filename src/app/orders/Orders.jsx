@@ -8,15 +8,6 @@ import { OrdersTable, OrderDetail, ActionCard, Metric, extractMetrics, TableauEm
 export const description = "An orders dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. The main area has a list of recent orders with a filter and export button. The main area also has a detailed view of a single order with order details, shipping information, billing information, customer information, and payment information."
 
 export const Orders = (props) => {
-  const { status, data, error, isError, isSuccess } = useMetrics();
-  // define which metrics to store on this page
-  const metricIds = ["da6f99eb-8cda-418f-8d9a-564a0c35bd1f", "54f85f6b-9c68-4e2c-98b7-b2ee8d2e07a9"];
-  let metrics;
-
-  if (isSuccess && data) {
-    // extract metrics if data is available
-    metrics = extractMetrics(data, metricIds);
-  }
 
 
   return (
@@ -30,12 +21,6 @@ export const Orders = (props) => {
           buttonTitle='Create New Order'
         />
         <div className="grid gap-3 md:col-span-2 xl:grid-cols-2 lg:col-span-3 xl:col-span-4 flex justify-center items-center">
-          {isSuccess ? (
-            <>
-              <Metric metric={metrics.orders} />
-              <Metric metric={metrics.shippingtime} />
-            </>
-          ) : null}
         </div>
       </div>
       <OrdersTable />
