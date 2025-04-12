@@ -42,8 +42,8 @@ export const httpPost = async (endpoint, body, config) => {
       err.code = 504;
       throw err;
     } else {
-      console.log('status', status);
-      console.log('response', response.data);
+      console.error('status', status);
+      console.error('response', response.data);
       throw new Error(`ERROR: Cannot POST for endpoint: ${endpoint}`);
     }
   } catch (error) {
@@ -53,8 +53,12 @@ export const httpPost = async (endpoint, body, config) => {
 
 const formatError = (error) => {
   const errMessage = new Error(
-    `HTTP - ${error.config.method} ${error.response.status} ${error.code}: ${error.response.data.message}`
+    `${error.response.config.tableau_domain}
+    HTTP - ${error.config.method}
+    ${error.response.status} ${error.code}
+    `
   );
-  console.debug('Format Error:', errMessage);
+  console.error(errMessage);
+  console.error(error.response.data.error);
   return errMessage;
 }

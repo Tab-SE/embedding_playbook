@@ -26,13 +26,20 @@ export const tabAuthJWT = async (jwt) => {
     },
   };
 
-  const response = await httpPost(endpoint, body, config);
+  try {
+    const response = await httpPost(endpoint, body, config);
 
-  const site_id = response.credentials.site.id;
-  const site = response.credentials.site.contentUrl;
-  const user_id = response.credentials.user.id;
-  const rest_key = response.credentials.token; // Embed and REST API authentication supported via JWT
-  return { site_id, site, user_id, rest_key };
+    const site_id = response.credentials.site.id;
+    const site = response.credentials.site.contentUrl;
+    const user_id = response.credentials.user.id;
+    const rest_key = response.credentials.token; // Embed and REST API authentication supported via JWT
+
+    return { site_id, site, user_id, rest_key };
+  }
+  catch (error) {
+    console.error('Cannot authenticate via Connected App:', error);
+    throw new Error(`Cannot authenticate via Connected App: ${error.message || error || response}`);
+  }
 }
 
 // authenticate to Tableau with Personal Access Tokens

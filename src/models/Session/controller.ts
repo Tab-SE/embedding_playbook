@@ -30,23 +30,29 @@ export const handleJWT = async (
   rest_scopes: string[],
   uaf: UAF
 ) => {
-  // encode and sign new JWTs for Embed and REST APIs
-  const embed_token = jwtSign(sub, embed_options, embed_scopes, uaf);
-  const rest_token = jwtSign(sub, rest_options, rest_scopes, uaf);
-  // verify the JWT against the same parameters
-  const valid_embed = jwtVerify(embed_token, sub, embed_options.jwt_secret, embed_options.jwt_client_id);
-  const valid_rest = jwtVerify(rest_token, sub, rest_options.jwt_secret, rest_options.jwt_client_id);
+  try {
+    // encode and sign new JWTs for Embed and REST APIs
+    const embed_token = jwtSign(sub, embed_options, embed_scopes, uaf);
+    const rest_token = jwtSign(sub, rest_options, rest_scopes, uaf);
+    // verify the JWT against the same parameters
+    const valid_embed = jwtVerify(embed_token, sub, embed_options.jwt_secret, embed_options.jwt_client_id);
+    const valid_rest = jwtVerify(rest_token, sub, rest_options.jwt_secret, rest_options.jwt_client_id);
 
-  if (valid_embed && valid_rest) {
-    // only return credentials if JWT meets requirements
-    const credentials = await tabAuthJWT(rest_token);
-    // JWT library automatically calculates session life
-    credentials.created = valid_rest.iat;
-    credentials.expiration = valid_rest.exp;
+    if (valid_embed && valid_rest) {
+      // only return credentials if JWT meets requirements
+      const credentials = await tabAuthJWT(rest_token);
+      // JWT library automatically calculates session life
+      credentials.created = valid_rest.iat;
+      credentials.expiration = valid_rest.exp;
 
-    return { credentials, rest_token,  embed_token };
-  } else {
-    throw new Error('One or more JWTs are not valid!');
+      return { credentials, rest_token,  embed_token };
+    } else {
+      throw new Error('One or more JWTs are not valid!');
+    }
+  }
+  catch (error) {
+    console.error('Cannot sign Connected App token:', error);
+    throw new Error(`Cannot sign Connected App token: ${error.message || error}`);
   }
 };
 

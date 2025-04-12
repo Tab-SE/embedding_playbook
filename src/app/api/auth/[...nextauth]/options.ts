@@ -92,7 +92,8 @@ export const authOptions: AuthOptions = {
             };
 
             const session = new SessionModel(user.name);
-            await session.jwt(user.email, embed_options, embed_scopes, rest_options, rest_scopes, user.uaf);
+
+            await session.jwt(user.tableau_user, embed_options, embed_scopes, rest_options, rest_scopes, user.uaf);
 
             if (session.authorized) {
               const {

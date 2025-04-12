@@ -19,6 +19,7 @@ export const DemoUser = (props) => {
 
   const authenticateUser = () => {
     const demoUrl = `/`;
+
     // sign the user in with the selected options
     signIn('demo-user', { redirect: false, ID: id, demo: demo });
     // redirect to local demo /auth page
