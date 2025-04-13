@@ -19,8 +19,8 @@ export const Agent = (props) => {
   } = useTableauSession();
 
   return (
-    <main className="flex h-full w-full flex-col">
-      <div className="flex h-full flex-1 flex-col gap-4 bg-muted/40 p-3 md:gap-8 rounded">
+    <main className="flex h-full w-full flex-col bg-demoBackground">
+      <div className="flex h-full flex-1 flex-col gap-4 p-3 md:gap-8 rounded bg-demoBackground">
         { isSessionError ? <p>Authentication Error!</p> : null }
         { isSessionLoading ? <p>Authenticating the User...</p> : null }
         { isSessionSuccess ?

@@ -43,12 +43,7 @@ const InsightsChat = (props) => {
   return (
     <TabsContent value="insights" className="space-y-4">
       <div className="grid grid-cols-12" value="insights">
-        <section className="col-span-7">
-          <Insights metric={metric} stats={stats} />
-        </section>
-        <section className="col-span-5">
-          <Chat />
-        </section>
+        <Insights metric={metric} stats={stats} />
       </div>
     </TabsContent>
   )
