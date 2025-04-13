@@ -1,18 +1,18 @@
 import { Demo, FloatingAssistant } from '@/components';
 
-import { Orders } from './Orders';
+import { Customers } from './Customers';
 import { settings } from '../config';
 
 const Page = () => {
   // for the most part, only the pageName and child components for <Demo/> should be modified to make new pages
-  const pageName = 'Orders';
+  const pageName = 'Group Reporting';
 
   return (
     <Demo
       settings={settings}
       pageName={pageName}
     >
-      <Orders />
+      <Customers />
       <FloatingAssistant
         settings={settings}
       />

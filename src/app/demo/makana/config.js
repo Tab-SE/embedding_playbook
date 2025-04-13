@@ -1,9 +1,9 @@
 import {
   Home,
-  Package,
-  ShoppingCart,
-  Users2,
-  BrainCircuit
+  HeartPulse,
+  BriefcaseMedical,
+  BrainCircuit,
+  PillBottle
 } from "lucide-react";
 
 export const settings = {
@@ -30,23 +30,23 @@ export const settings = {
       description: 'a fully tooled agent ready to assist you'
     },
     {
-      name: 'Orders',
-      icon: <ShoppingCart className="h-5 w-5"/>,
-      path: '/orders',
+      name: 'Group Reporting',
+      icon: <BriefcaseMedical className="h-5 w-5"/>,
+      path: '/groups',
       min_role: 1,
       description: 'submit and update orders with data-driven insights'
     },
     {
-      name: 'Products',
-      icon: <Package className="h-5 w-5"/>,
-      path: '/products',
+      name: 'Members',
+      icon: <PillBottle className="h-5 w-5"/>,
+      path: '/members',
       min_role: 2,
       description: 'analyze product performance across segments and categories'
     },
     {
-      name: 'Customers',
-      icon: <Users2 className="h-5 w-5"/>,
-      path: '/customers',
+      name: 'Mother Baby',
+      icon: <HeartPulse className="h-5 w-5"/>,
+      path: '/mother',
       min_role: 3,
       description: 'improve customer retention rates and identify critical business partnerships'
     },
