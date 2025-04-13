@@ -170,6 +170,7 @@
     --login-card-background: 0 0% 100%; /* for the Auth component on login screens */
     --nav-icons: 270 20% 20%; /* to color icons */
     --ai-icons: 265 60% 90%;
+    --breadcrumbs: 265 60% 90%;
     --card: 270 80% 99%; /* Almost White Purple */
     --card-foreground: 270 20% 20%;
     --popover: 270 80% 99%;

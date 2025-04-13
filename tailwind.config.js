@@ -30,6 +30,7 @@ module.exports = {
         loginBackground: "hsl(var(--login-card-background))", /* for the Auth component on login screens */
         navIcons: "hsl(var(--nav-icons))", /* to color icons */
         aiIcons: "hsl(var(--ai-icons))",
+        breadcrumbs: "hsl(var(--breadcrumbs))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
