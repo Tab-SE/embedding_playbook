@@ -191,7 +191,7 @@
     --metrics-neutral: 39 7% 54%;
     --metrics-negative: 23 93% 51%;
   }
-}
+} /* End of @layer base containing themes */
 
 @layer base {
   * {
