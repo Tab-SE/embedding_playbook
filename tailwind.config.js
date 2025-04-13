@@ -22,13 +22,14 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))", // Replaces demoBackground, navigationBackground, logoBackground, iconBackground if they serve the same purpose
+        foreground: "hsl(var(--foreground))", // Replaces navigationIcons potentially
         demoBackground: "hsl(var(--demo-background))", /* contrasts ui components in /demos */
         navBackground: "hsl(var(--nav-background))", /* left hand nav */
         logoBackground: "hsl(var(--logo-background))", /* sometimes logo files are transparent */
         iconBackground: "hsl(var(--icon-background))", /* same with icon having transparent backgrounds */
         loginBackground: "hsl(var(--login-card-background))", /* for the Auth component on login screens */
         navIcons: "hsl(var(--nav-icons))", /* to color icons */
-        foreground: "hsl(var(--foreground))", // Replaces navigationIcons potentially
+        aiIcons: "hsl(var(--ai-icons))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
