@@ -13,7 +13,7 @@ export const settings = {
   base_path: '/demo/makana',
   auth_hero: '/img/themes/makana/makana_xray.png',
   ai_chat: true,
-  ai_avatar: '/img/themes/superstore/superstore.png',
+  ai_avatar: '/img/themes/makana/makanaHealth_SmallLogo.png',
   sections: [
     {
       name: 'Home',
