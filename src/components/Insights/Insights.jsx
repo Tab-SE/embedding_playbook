@@ -53,7 +53,7 @@ const Insight = (props) => {
         <CardDescription style={{ fontSize: '10px', color: '#999' }}>Score: {formattedScore}</CardDescription>
       </CardHeader>
       <CardContent>
-        {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={360} width={560} spec={viz}></VegaLiteViz>}
+        {Object.entries(viz).length === 0 ? <></> : <VegaLiteViz height={360} width={810} spec={viz}></VegaLiteViz>}
       </CardContent>
       <CardFooter>
         <div>{markup}</div>
