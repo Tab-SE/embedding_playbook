@@ -30,7 +30,7 @@ export const Users = [
       {
         id: 'a',
         name: "Julie Morris",
-        email: "jmorris@mail.com",
+        email: "jmorris@superstore.com",
         tableau_user: "Julie Morris",
         picture: "/img/users/mackenzie_day.png",
         role: 0,
@@ -50,7 +50,7 @@ export const Users = [
       {
         id: 'a',
         name: "Sofia Lopez",
-        email: "slopez@mail.com",
+        email: "slopez@superstore.com",
         tableau_user: "Sofia Lopez",
         picture: "/img/users/sofia_lopez.png",
         role: 0,
@@ -60,7 +60,7 @@ export const Users = [
       {
         id: 'b',
         name: "Justin Chen",
-        email: "jchen@mail.com",
+        email: "jchen@superstore.com",
         tableau_user: "Justin Chen",
         picture: "/img/users/justin_chen.png",
         role: 1,
@@ -70,7 +70,7 @@ export const Users = [
       {
         id: 'c',
         name: "Julie Morris",
-        email: "jmorris@mail.com",
+        email: "jmorris@superstore.com",
         tableau_user: "Julie Morris",
         picture: "/img/users/mackenzie_day.png",
         role: 2,
