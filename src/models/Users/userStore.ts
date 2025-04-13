@@ -74,5 +74,42 @@ export const Users = [
         uaf: {"Region": ["South"]}
       },
     ]
+  },
+  {
+    demo: 'makana',
+    roles: {
+      0: { title: 'Hobby', description: 'Basic data & analytics'},
+      1: { title: 'Professional', description: 'More analytics & exports'},
+      2: { title: 'Premium', description: 'Full self-service analytics'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Rachel Morris",
+        email: "rmorris@makana.com",
+        picture: "/img/users/rachel_morris.png",
+        role: 0,
+        vector_store: 'superstore_rmorris',
+        // uaf: {"Region": ["West"]}
+      },
+      {
+        id: 'b',
+        name: "Debi Patel",
+        email: "dpatel@makana.com",
+        picture: "/img/users/debi_patel.png",
+        role: 1,
+        vector_store: 'superstore_dpatel',
+        // uaf: {"Region": ["Central","East"]}
+      },
+      {
+        id: 'c',
+        name: "Matthew Wells",
+        email: "mwells@makana.com",
+        picture: "/img/users/matthew_wells.png",
+        role: 2,
+        vector_store: 'superstore_mwells',
+        // uaf: {"Region": ["South"]}
+      },
+    ]
   }
 ]
