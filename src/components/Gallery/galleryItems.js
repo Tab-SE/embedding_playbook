@@ -17,6 +17,15 @@ export const galleryItems = [
     icon: <ShoppingCart size={12} strokeWidth={2} />
   },
   {
+    id: 'makana',
+    link: "/demo/makana",
+    src: "/img/demos/makana_payer.png",
+    alt: "Makana | Health Payer Portal",
+    vertical: "Healthcare & Life Sciences",
+    description: "A healthcare payer portal app that helps users make data-driven decisions related to claims, costs, utilization, and quality measures to improve patient outcomes",
+    icon: <HeartPulse size={12} strokeWidth={2} />
+  },
+  {
     id: 'pacifica',
     link: "https://embedding-playbook-git-pacifica-tab-se.vercel.app",
     src: "/img/demos/pacifica_cpq.png",
@@ -33,14 +42,5 @@ export const galleryItems = [
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
     icon: <HandCoins size={12} strokeWidth={2} />
-  },
-  {
-    id: 'makana',
-    link: "https://embedding-playbook-git-makana-tab-se.vercel.app",
-    src: "/img/demos/makana_payer.png",
-    alt: "Makana | Health Payer Portal",
-    vertical: "Healthcare & Life Sciences",
-    description: "A healthcare payer portal app that helps users make data-driven decisions related to claims, costs, utilization, and quality measures to improve patient outcomes",
-    icon: <HeartPulse size={12} strokeWidth={2} />
   }
 ]

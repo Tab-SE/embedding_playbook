@@ -25,12 +25,12 @@ export const Breadcrumbs = (props) => {
           <React.Fragment key={index}>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href={item.href}>
+                <Link href={item.href} className="text-breadcrumbs">
                   {item.title}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
+            {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator className="text-breadcrumbs" />}
           </React.Fragment>
         ))}
       </BreadcrumbList>

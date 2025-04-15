@@ -8,31 +8,22 @@ export const InsightsModal = (props) => {
 
   return (
     <DialogContent className="max-w-[93vw] h-[93vh] dark:bg-stone-900">
-      <Tabs defaultValue="insights">
-        <DialogHeader className="ml-6">
+      <DialogHeader className="ml-6">
           <DialogTitle className="text-3xl">
             <span className={`${stats.color} inline-block`}>{stats.direction}</span> <span className="text-stone-600 dark:text-stone-300">{metric.name}:</span> <span className="font-bold ml-3">{stats.value}</span>
           </DialogTitle>
           <DialogDescription className='pt-3'>
-            <span className={`text-2xl text-muted-foreground ${stats.color}`}>
-              {stats.absolute}
-            </span>
-            <span className={`text-2xl text-muted-foreground ${stats.color}`}>
-              &nbsp; △ {stats.relative ? `${stats.relative}` : null}
-            </span>
-            <TabsList className='mx-6'>
-              <TabsTrigger value="insights">
-                Insights
-              </TabsTrigger>
-              <TabsTrigger value="dashboard">
-                Dashboard
-              </TabsTrigger>
-            </TabsList>
+            <div className="mb-12">
+              <span className={`text-2xl text-muted-foreground ${stats.color}`}>
+                {stats.absolute}
+              </span>
+              <span className={`text-2xl text-muted-foreground ${stats.color}`}>
+                &nbsp; △ {stats.relative ? `${stats.relative}` : null}
+              </span>
+            </div>
+            <Insights metric={metric} stats={stats} />
           </DialogDescription>
         </DialogHeader>
-          <InsightsChat metric={metric} stats={stats} />
-          <Dashboards src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/DaystoShip' />
-      </Tabs>
     </DialogContent>
   )
 }
@@ -42,14 +33,7 @@ const InsightsChat = (props) => {
 
   return (
     <TabsContent value="insights" className="space-y-4">
-      <div className="grid grid-cols-12" value="insights">
-        <section className="col-span-7">
-          <Insights metric={metric} stats={stats} />
-        </section>
-        <section className="col-span-5">
-          <Chat />
-        </section>
-      </div>
+      <Insights metric={metric} stats={stats} />
     </TabsContent>
   )
 }

@@ -30,7 +30,7 @@ export const Users = [
       {
         id: 'a',
         name: "Julie Morris",
-        email: "jmorris@mail.com",
+        email: "jmorris@superstore.com",
         picture: "/img/users/mackenzie_day.png",
         role: 0,
         vector_store: 'superstore_jmorris',
@@ -49,7 +49,7 @@ export const Users = [
       {
         id: 'a',
         name: "Sofia Lopez",
-        email: "slopez@mail.com",
+        email: "slopez@superstore.com",
         picture: "/img/users/sofia_lopez.png",
         role: 0,
         vector_store: 'superstore_slopez',
@@ -58,7 +58,7 @@ export const Users = [
       {
         id: 'b',
         name: "Justin Chen",
-        email: "jchen@mail.com",
+        email: "jchen@superstore.com",
         picture: "/img/users/justin_chen.png",
         role: 1,
         vector_store: 'superstore_jchen',
@@ -67,11 +67,48 @@ export const Users = [
       {
         id: 'c',
         name: "Julie Morris",
-        email: "jmorris@mail.com",
+        email: "jmorris@superstore.com",
         picture: "/img/users/mackenzie_day.png",
         role: 2,
         vector_store: 'superstore_jmorris',
         uaf: {"Region": ["South"]}
+      },
+    ]
+  },
+  {
+    demo: 'makana',
+    roles: {
+      0: { title: 'Hobby', description: 'Basic data & analytics'},
+      1: { title: 'Professional', description: 'More analytics & exports'},
+      2: { title: 'Premium', description: 'Full self-service analytics'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Rachel Morris",
+        email: "rmorris@makana.com",
+        picture: "/img/users/rachel_morris.png",
+        role: 0,
+        vector_store: 'superstore_rmorris',
+        uaf: {}
+      },
+      {
+        id: 'b',
+        name: "Debi Patel",
+        email: "dpatel@makana.com",
+        picture: "/img/users/debi_patel.png",
+        role: 1,
+        vector_store: 'superstore_dpatel',
+        uaf: {}
+      },
+      {
+        id: 'c',
+        name: "Matthew Wells",
+        email: "mwells@makana.com",
+        picture: "/img/users/matthew_wells.png",
+        role: 2,
+        vector_store: 'superstore_mwells',
+        uaf: {}
       },
     ]
   }

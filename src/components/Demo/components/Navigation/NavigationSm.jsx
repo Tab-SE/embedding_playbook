@@ -34,12 +34,12 @@ export const NavigationSm = (props) => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="sm:max-w-xs bg-navBackground">
-        <nav className="grid gap-6 text-lg font-medium">
+        <nav className="grid gap-6 text-lg font-medium bg-navBackground">
           <Link
             href='/demos'
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground bg-primary"
+            className="flex items-center gap-4 px-2.5 hover:text-foreground"
           >
-            <Avatar className="h-6 w-6 transition-all group-hover:scale-110">
+            <Avatar className="h-6 w-6 transition-all group-hover:scale-110 bg-logoBackground">
               <AvatarImage src={app_logo} alt="demo brand logo" />
               <AvatarFallback>APP</AvatarFallback>
             </Avatar>
@@ -51,7 +51,7 @@ export const NavigationSm = (props) => {
           }): null}
           <Link
             href={base_path + '/settings'}
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+            className="flex items-center gap-4 px-2.5 hover:text-foreground"
           >
             <Settings className="h-5 w-5 text-navIcons"/>
             Settings
@@ -69,7 +69,7 @@ const NavBarItem = (props) => {
   return (
     <Link
       href={base_path + path}
-      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground text-navIcons bg-iconBackground"
+      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground text-navIcons"
     >
       {icon}
       {name}
