@@ -189,9 +189,9 @@
     --input: 265 50% 92%;  /* Very Soft Purple Input */
     --ring: 260 80% 60%;   /* Strong Purple Ring */
 
-    --metrics-positive: 260 80% 60% ;
-    --metrics-neutral: 280 70% 75%;
-    --metrics-negative: 280 60% 33% ;
+    --metrics-positive: 251 30% 60%;
+    --metrics-neutral: 225 19% 31%;
+    --metrics-negative: 166.7 39.6% 55%;
   }
 } /* End of @layer base containing themes */
 
