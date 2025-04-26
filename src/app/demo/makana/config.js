@@ -30,9 +30,9 @@ export const settings = {
       description: 'a fully tooled agent ready to assist you'
     },
     {
-      name: 'Group Reporting',
+      name: 'Claims',
       icon: <BriefcaseMedical className="h-5 w-5"/>,
-      path: '/groups',
+      path: '/claims',
       min_role: 1,
       description: 'submit and update orders with data-driven insights'
     },
