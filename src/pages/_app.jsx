@@ -37,9 +37,7 @@ export default function App({
             themes={[ 'light' ]}
           >
             <VercelAgentRuntimeProvider>
-              <AuthGuard
-                demo='documentation'
-              />
+              <AuthGuard demo={'documentation'} base_path={'/'} />
               <Component {...pageProps} />
               <FloatingAssistant
                 settings={docs_settings}

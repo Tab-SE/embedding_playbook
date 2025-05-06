@@ -11,13 +11,14 @@ import { DemoUser } from "./DemoUser";
 export const description = "A login page with a full-screen background image and centered content overlay"
 
 export const Auth = (props) => {
-  const { settings } = props
+  const { settings } = props;
 
-  const { app_id, app_name, app_logo, auth_hero } = settings
+  const { app_id, base_path, app_name, app_logo, auth_hero } = settings;
 
-  const demoManager = new UserModel()
-  const users = demoManager.getUsersForDemo(app_id)
-  const roles = demoManager.getAllRolesForDemo(app_id)
+  const demoManager = new UserModel();
+  const users = demoManager.getUsersForDemo(app_id);
+  const roles = demoManager.getAllRolesForDemo(app_id);
+
 
   return (
     <div className="relative w-full min-h-screen">
@@ -52,7 +53,7 @@ export const Auth = (props) => {
                   {users.map((user, index) => (
                     <Fragment key={user.id}>
                       {index > 0 && <Separator className="my-3 bg-gray-300" orientation="horizontal" />}
-                      <DemoUser user={user} demo={app_id} roles={roles} />
+                      <DemoUser user={user} demo={app_id} roles={roles} base_path={base_path} />
                     </Fragment>
                   ))}
                 </div>
