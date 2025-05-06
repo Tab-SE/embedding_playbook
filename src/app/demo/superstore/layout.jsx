@@ -14,7 +14,7 @@ export default function Layout({ children }) {
       <LanggraphAgentRuntimeProvider
         agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
       >
-        <AuthGuard demo={settings.app_id} />
+        <AuthGuard demo={settings.app_id} base_path={settings.base_path} />
         {children}
       </LanggraphAgentRuntimeProvider>
     </ThemeProvider>

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 
 export const DemoUser = (props) => {
-  const { user, roles, demo } = props;
+  const { user, roles, demo, base_path } = props;
   const { id, name, email, role, picture } = user;
   const router = useRouter();
 
@@ -18,11 +18,11 @@ export const DemoUser = (props) => {
   const { title, description } = getRoleProperties(role);
 
   const authenticateUser = () => {
-    const demoUrl = `/demo/${demo}`;
     // sign the user in with the selected options
     signIn('demo-user', { redirect: false, ID: id, demo: demo });
-    // redirect to local demo /auth page
-    router.push(demoUrl);
+    // redirect to local demo /auth page using the base_path in config file
+
+    router.push(base_path);
   }
 
   return (
