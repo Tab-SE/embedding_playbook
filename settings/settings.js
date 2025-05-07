@@ -25,14 +25,14 @@ export const settings = {
       }
     },
     {
-      label: "Mackenzie - Branch Manager",
+      label: "Mackenzie - Relationship Manager",
       name: "superstore",
       component: BranchManager,
       type: "internal",
       logo: "/img/users/mackenzie_day.png",
       styles: "",
       project: {
-        name: "Mackenzie - Branch Manager",
+        name: "Mackenzie - Relationship Manager",
         workbooks: [],
         data_sources: []
       }

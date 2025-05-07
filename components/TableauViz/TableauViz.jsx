@@ -61,16 +61,15 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger >
+      <ContextMenuTrigger>
       <TableauToolbar src={src} ref={innerRef} />
-
         <tableau-viz
           ref={innerRef}
           id="tableauViz"
           src={src}
           token={!isPublic ? jwt : null}
-          height={`${height}px`}
-          width={`${width}px`}
+          height={`${height - 50}px`}
+          width={`${width + 500 }px`}
           device={device}
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
