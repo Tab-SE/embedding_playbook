@@ -27,24 +27,24 @@ export const Home = () => {
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
                 <TableauEmbed
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/PortfolioOverview'
                   hideTabs={true}
                   toolbar='hidden'
                   className='
-                  min-w-[300px] min-h-[1430px]
-                  sm:min-w-[510px] sm:min-h-[1430px]
-                  md:min-w-[600px] md:min-h-[1080px]
-                  lg:min-w-[400px] lg:min-h-[1440px]
-                  xl:min-w-[720px] xl:min-h-[1180px]
-                  2xl:min-w-[860px] 2xl:min-h-[1180px]
+                  min-w-[800px] min-h-[800px]
+                  sm:min-w-[800px] sm:min-h-[800px]
+                  md:min-w-[800px] md:min-h-[800px]
+                  lg:min-w-[800px] lg:min-h-[800px]
+                  xl:min-w-[800px] xl:min-h-[800px]
+                  2xl:min-w-[800px] 2xl:min-h-[800px]
                   '
                   layouts = {{
-                    'xs': { 'device': 'phone' },
-                    'sm': { 'device': 'phone' },
+                    'xs': { 'device': 'default' },
+                    'sm': { 'device': 'default' },
                     'md': { 'device': 'default' },
-                    'lg': { 'device': 'phone' },
-                    'xl': { 'device': 'tablet' },
-                    'xl2': { 'device': 'desktop' },
+                    'lg': { 'device': 'default' },
+                    'xl': { 'device': 'default' },
+                    'xl2': { 'device': 'default' },
                   }}
                 />
               </CardContent>

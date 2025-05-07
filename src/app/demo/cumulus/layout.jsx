@@ -7,9 +7,9 @@ export default function Layout({ children }) {
   return (
     <ThemeProvider
       attribute="data-theme"
-      forcedTheme='superstore'
+      forcedTheme='cumulus'
       enableSystem={false}
-      themes={[ 'superstore' ]}
+      themes={[ 'cumulus' ]}
     >
       <LanggraphAgentRuntimeProvider
         agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
