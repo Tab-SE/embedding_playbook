@@ -23,7 +23,7 @@ export const Home = () => {
             <Card className='dark:bg-stone-900 shadow-xl'>
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
-                <CardDescription>Your personal digest of Superstore sales in North America</CardDescription>
+                <CardDescription>The financial portfolio and client performance overview dashboard offers a snapshot of Assets Under Management (AUM), client count, and total assets. It visually tracks performance over time, highlighting portfolio growth and client engagement, providing a quick assessment of investment effectiveness and client satisfaction.</CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
                 <TableauEmbed
@@ -51,7 +51,7 @@ export const Home = () => {
             </Card>
           </div>
           <div className="space-y-6">
-            <RecentSales />
+            <RecentSales title='Recent Trades' />
             <Transactions />
           </div>
         </div>

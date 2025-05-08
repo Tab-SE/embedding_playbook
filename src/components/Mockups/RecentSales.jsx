@@ -13,11 +13,13 @@ import {
   CardTitle,
 } from "components/ui";
 
-export const RecentSales = () => {
+export const RecentSales = (props) => {
+  const { title } = props;
+
   return (
     <Card className='shadow-xl' x-chunk="dashboard-01-chunk-5">
       <CardHeader>
-        <CardTitle>Recent Sales</CardTitle>
+        <CardTitle>{title ? title : 'Recent Sales'}</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-8">
         <div className="flex items-center gap-4">
