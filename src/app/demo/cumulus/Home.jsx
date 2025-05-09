@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui";
 
-import { Metrics, TableauEmbed, Transactions, RecentSales } from '@/components';
+import { Metrics, TableauEmbed, TransactionsLong } from '@/components';
 
 export const description = "An application shell with a header and main content area. The header has a navbar, a search input and and a user nav dropdown. The user nav is toggled by a button with an avatar image. The main content area is divided into two rows. The first row has a grid of cards with statistics. The second row has a grid of cards with a table of recent transactions and a list of recent sales.";
 
@@ -51,8 +51,7 @@ export const Home = () => {
             </Card>
           </div>
           <div className="space-y-6">
-            <RecentSales title='Recent Trades' />
-            <Transactions />
+            <TransactionsLong />
           </div>
         </div>
       </main>

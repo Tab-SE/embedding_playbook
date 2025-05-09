@@ -98,11 +98,11 @@
     --background: 210 100% 97%; /* Very Light Blue */
     --foreground: 220 13% 20%; /* Dark Blue-Gray */
     --demo-background: 60 5% 96%; /* contrasts ui components in /demos */
-    --nav-background: 60 9% 98%; /* left hand nav */
+    --nav-background: 205 90% 20%; /* left hand nav */
     --logo-background: 60 9% 98%; /* sometimes logo files are transparent */
-    --icon-background: 60 9% 98%; /* same with icon having transparent backgrounds */
+    --icon-background: 199 99% 39%; /* same with icon having transparent backgrounds */
     --login-card-background: 0 0% 100%; /* for the Auth component on login screens */
-    --nav-icons: 20 14% 4%; /* to color icons */
+    --nav-icons: 0 0% 100%; /* to color icons */
     --card: 210 100% 99%; /* Almost White Blue */
     --card-foreground: 220 13% 20%;
     --popover: 210 100% 99%;
@@ -121,7 +121,7 @@
     --input: 210 50% 92%;  /* Very Soft Blue Input */
     --ring: 205 90% 50%;   /* Bright Blue Ring */
 
-    --metrics-positive: 199 99% 39% ;
+    --metrics-positive: 199 99% 39%;
     --metrics-neutral: 39 7% 54%;
     --metrics-negative: 23 93% 51%;
   }

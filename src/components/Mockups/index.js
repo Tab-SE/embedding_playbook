@@ -1,4 +1,5 @@
 export { Transactions } from './Transactions';
+export { TransactionsLong } from './TransactionsLong';
 export { RecentSales } from './RecentSales';
 export { ProductsTable } from './ProductsTable';
 export { OrdersTable } from './OrdersTable';

@@ -38,7 +38,8 @@ export {
   ProductsTable,
   OrdersTable,
   OrderDetail,
-  GeneralSettings
+  GeneralSettings,
+  TransactionsLong
 } from './Mockups';
 
 export { ActionCard } from './ActionCard';
