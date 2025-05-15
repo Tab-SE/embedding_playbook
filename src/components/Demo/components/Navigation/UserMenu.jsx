@@ -24,7 +24,7 @@ import { useTableauSession } from 'hooks';
 
 
 export function UserMenu(props) {
-  const { app_name } = props;
+  const { app_name, base_path } = props;
 
   // tanstack query hook to safely represent users on the client
   const {
@@ -57,7 +57,7 @@ export function UserMenu(props) {
           <Trigger src={user.picture} />
           <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
             <Label app_name={app_name} email={user.email} />
-            <Group />
+            <Group base_path={base_path} />
             <Logout status={sessionStatus} />
           </DropdownMenuContent>
         </DropdownMenu>
@@ -134,6 +134,8 @@ const Label = (props) => {
 
 
 const Group = (props) => {
+  const { base_path } = props;
+
   return (
     <div>
       <DropdownMenuSeparator />
@@ -142,12 +144,18 @@ const Group = (props) => {
           Billing
           <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
         </DropdownMenuItem>
-        <Link href="/demos/superstore/settings">
-          <DropdownMenuItem className='hover:cursor-pointer'>
+        <DropdownMenuItem asChild>
+          <Link href={`${base_path}/settings`} className='hover:cursor-pointer'>
             Settings
-            <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </Link>
+            <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/demos" className='hover:cursor-pointer'>
+            More Demos
+            <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
+          </Link>
+        </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
     </div>
