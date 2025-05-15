@@ -29,6 +29,7 @@ export const Navigation = (props) => {
       <div className="relative ml-auto flex-1 md:grow-0"/>
       <UserMenu
         app_name={app_name}
+        base_path={base_path}
       />
     </header>
   )

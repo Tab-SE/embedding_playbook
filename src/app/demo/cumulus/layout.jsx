@@ -12,7 +12,7 @@ export default function Layout({ children }) {
       themes={[ 'cumulus' ]}
     >
       <LanggraphAgentRuntimeProvider
-        agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
+        agentId='730bfbd6-9543-5e48-9f2b-bcb009fbb33e'
       >
         <AuthGuard demo={settings.app_id} base_path={settings.base_path} />
         {children}

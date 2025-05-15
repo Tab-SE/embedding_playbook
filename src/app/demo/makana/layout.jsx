@@ -12,7 +12,7 @@ export default function Layout({ children }) {
       themes={[ 'makana' ]}
     >
       <LanggraphAgentRuntimeProvider
-        agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
+        agentId='a0bbabff-36ab-5e80-87dc-c73cc0bf8840'
       >
         <AuthGuard demo={settings.app_id} base_path={settings.base_path} />
         {children}
