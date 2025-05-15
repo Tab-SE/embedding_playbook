@@ -111,5 +111,42 @@ export const Users = [
         uaf: {}
       },
     ]
+  },
+  {
+    demo: 'cumulus',
+    roles: {
+      0: { title: 'Hobby', description: 'Basic data & analytics'},
+      1: { title: 'Professional', description: 'More analytics & exports'},
+      2: { title: 'Premium', description: 'Full self-service analytics'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Vivian Yang",
+        email: "vyang@cumulus.com",
+        picture: "/img/users/vivian_yang.png",
+        role: 0,
+        vector_store: 'cumulus_vyang',
+        uaf: {}
+      },
+      {
+        id: 'b',
+        name: "Tawnia Williams",
+        email: "twilliams@cumulus.com",
+        picture: "/img/users/tawnia_williams.png",
+        role: 1,
+        vector_store: 'cumulus_twilliams',
+        uaf: {}
+      },
+      {
+        id: 'c',
+        name: "Nigel Morris",
+        email: "nmorris@cumulus.com",
+        picture: "/img/users/nigel_morris.png",
+        role: 2,
+        vector_store: 'cumulus_nmorris',
+        uaf: {}
+      },
+    ]
   }
 ]
