@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import Image from "next/image";
+import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
@@ -61,6 +62,9 @@ export const Auth = (props) => {
                 <div className="text-center text-muted-foreground">No Users Found for Provided Demo</div>
               )}
             </div>
+            <Link href="/demos" className="text-sm text-balance text-stone-500 dark:text-stone-400 hover:underline text-center">
+              &larr; More Demos
+            </Link>
           </CardContent>
         </Card>
       </div>
