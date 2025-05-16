@@ -21,8 +21,8 @@ export const Home = () => {
         <div className="grid gap-4 md:gap-8">
           <Card className='dark:bg-stone-900 shadow-xl'>
             <CardHeader>
-              <CardTitle>Overview</CardTitle>
-              <CardDescription>Your personal digest of Superstore sales in North America</CardDescription>
+              <CardTitle>Care Programs</CardTitle>
+              <CardDescription>Centralizes patient care programs, goals, and tasks for streamlined management. It features key metrics and visual summaries of care plan performance alongside detailed lists of recent patient activities. Designed to help care teams monitor progress and coordinate effective, goal-driven care.</CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
