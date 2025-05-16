@@ -11,7 +11,7 @@ export const settings = {
   app_name: 'Makana Health',
   app_logo: '/img/themes/makana/makanaHealth_SmallLogo.png',
   base_path: '/demo/makana',
-  auth_hero: '/img/themes/makana/makana_xray.png',
+  auth_hero: 'https://images.unsplash.com/photo-1666886573301-b5d526cfd518?q=80&w=3072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   ai_chat: true,
   ai_avatar: '/img/themes/makana/makanaHealth_SmallLogo.png',
   sections: [

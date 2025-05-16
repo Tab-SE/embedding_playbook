@@ -12,7 +12,7 @@ export const settings = {
   app_name: 'Cumulus Wealth',
   app_logo: '/img/themes/cumulus/cumulus-core-icon-wealth-blue.png',
   base_path: '/demo/cumulus',
-  auth_hero: 'https://images.unsplash.com/photo-1590859808308-3d2d9c515b1a?q=80&w=2948&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  auth_hero: 'https://images.unsplash.com/photo-1645226880663-81561dcab0ae?q=80&w=2872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3DD',
   ai_chat: true,
   ai_avatar: '/img/themes/cumulus/cumulus-core-mid-logo-wealth-blue.png',
   sections: [

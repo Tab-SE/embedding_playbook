@@ -25,15 +25,15 @@ export const galleryItems = [
     description: "A healthcare payer portal app that helps users make data-driven decisions related to claims, costs, utilization, and quality measures to improve patient outcomes",
     icon: <HeartPulse size={12} strokeWidth={2} />
   },
-  {
-    id: 'pacifica',
-    link: "https://embedding-playbook-git-pacifica-tab-se.vercel.app",
-    src: "/img/demos/pacifica_cpq.png",
-    alt: "Pacifica | Configure, Price, Quote (CPQ)",
-    vertical: "Consulting & Business Services",
-    description: "A software solution that helps businesses streamline the quoting process for customizable products and services",
-    icon: <BriefcaseBusiness size={12} strokeWidth={2} />
-  },
+  // {
+  //   id: 'pacifica',
+  //   link: "https://embedding-playbook-git-pacifica-tab-se.vercel.app",
+  //   src: "/img/demos/pacifica_cpq.png",
+  //   alt: "Pacifica | Configure, Price, Quote (CPQ)",
+  //   vertical: "Consulting & Business Services",
+  //   description: "A software solution that helps businesses streamline the quoting process for customizable products and services",
+  //   icon: <BriefcaseBusiness size={12} strokeWidth={2} />
+  // },
   {
     id: 'cumulus',
     link: "https://embedding-playbook-git-cumulus-tab-se.vercel.app",
