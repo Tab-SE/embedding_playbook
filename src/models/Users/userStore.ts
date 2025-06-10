@@ -148,5 +148,42 @@ export const Users = [
         uaf: {}
       },
     ]
-  }
+  },
+   {
+    demo: 'bridgeway',
+    roles: {
+      0: { title: 'Hobby', description: 'Basic data & analytics'},
+      1: { title: 'Professional', description: 'More analytics & exports'},
+      2: { title: 'Premium', description: 'Full self-service analytics'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Sofia Lopez",
+        email: "slopez@bridgeway.com",
+        picture: "/img/users/sofia_lopez.png",
+        role: 0,
+        vector_store: 'superstore_slopez',
+        uaf: {"Region": ["West"]}
+      },
+      {
+        id: 'b',
+        name: "Justin Chen",
+        email: "jchen@bridgeway.com",
+        picture: "/img/users/justin_chen.png",
+        role: 1,
+        vector_store: 'superstore_jchen',
+        uaf: {"Region": ["Central","East"]}
+      },
+      {
+        id: 'c',
+        name: "Julie Morris",
+        email: "jmorris@bridgeway.com",
+        picture: "/img/users/mackenzie_day.png",
+        role: 2,
+        vector_store: 'superstore_jmorris',
+        uaf: {"Region": ["South"]}
+      },
+    ]
+  },
 ]

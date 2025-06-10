@@ -42,5 +42,14 @@ export const galleryItems = [
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
     icon: <HandCoins size={12} strokeWidth={2} />
+  },
+    {
+    id: 'bridgeway',
+    link: "https://embedding-playbook-git-bridgeway-tab-se.vercel.app",
+    src: "/img/demos/cumulus_wealth.png",
+    alt: "Bridgeway | Multiemployer Benefits Administration Technology Solutions",
+    vertical: "Technology",
+    description: "Bridgeway is leading the way by delivering  secure, systematic and sustainable solutions, and continuously striving to be the most trusted and forward-thinking technology company  spanning the multiemployer market. We are proud to support your way to success",
+    icon: <HandCoins size={12} strokeWidth={2} />
   }
 ]
