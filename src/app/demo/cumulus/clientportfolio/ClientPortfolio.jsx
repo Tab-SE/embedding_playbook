@@ -22,8 +22,9 @@ export const ClientPortfolio = (props) => {
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-      <Tabs defaultValue="client">
+      <Tabs defaultValue="advisor">
         <TabsList className="mb-2 sm:mb-0">
+          <TabsTrigger value="advisor">Advisor View</TabsTrigger>
           <TabsTrigger value="client">Client Performance</TabsTrigger>
           <TabsTrigger value="asset">Asset Performance</TabsTrigger>
         </TabsList>
@@ -88,6 +89,42 @@ export const ClientPortfolio = (props) => {
                 lg:min-w-[800px] lg:min-h-[500px]
                 xl:min-w-[1000px] xl:min-h-[700px]
                 2xl:min-w-[1200px] 2xl:min-h-[800px]
+                '
+                layouts = {{
+                  'xs': { 'device': 'default' },
+                  'sm': { 'device': 'default' },
+                  'md': { 'device': 'default' },
+                  'lg': { 'device': 'default' },
+                  'xl': { 'device': 'default' },
+                  'xl2': { 'device': 'default' },
+                }}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="advisor">
+          <Card className="dark:bg-stone-900 shadow-xl">
+            <CardHeader>
+              <CardTitle>Advisor Portfolio</CardTitle>
+              <CardDescription>
+                Advisor specific view of AUM, Individual Net Worth, and Pipeline
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex items-center justify-center px-1">
+              <TableauEmbed
+                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/InsightsforAdvisors'
+                width={1340}
+                height={780}
+                hideTabs={true}
+                device='default'
+                toolbar='hidden'
+                className='
+                min-w-[300px] min-h-[500px]
+                sm:min-w-[490px] sm:min-h-[500px]
+                md:min-w-[620px] md:min-h-[500px]
+                lg:min-w-[1400px] lg:min-h-[500px]
+                xl:min-w-[1400px] xl:min-h-[700px]
+                2xl:min-w-[1400px] 2xl:min-h-[800px]
                 '
                 layouts = {{
                   'xs': { 'device': 'default' },
