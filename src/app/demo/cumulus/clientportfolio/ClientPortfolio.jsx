@@ -17,31 +17,30 @@ import { ProductsTable, TableauEmbed } from "components";
 
 export const description = "An products dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. It displays a list of products in a table with actions."
 
-export const Products = (props) => {
+export const ClientPortfolio = (props) => {
   const { } = props;
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-      <Tabs defaultValue="products">
+      <Tabs defaultValue="client">
         <TabsList className="mb-2 sm:mb-0">
-          <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="segment">Segments</TabsTrigger>
-          <TabsTrigger value="category">Categories</TabsTrigger>
+          <TabsTrigger value="client">Client Performance</TabsTrigger>
+          <TabsTrigger value="asset">Asset Performance</TabsTrigger>
         </TabsList>
-        <TabsContent value="products">
+        {/* <TabsContent value="performance">
           <ProductsTable />
-        </TabsContent>
-        <TabsContent value="segment">
+        </TabsContent> */}
+        <TabsContent value="client">
           <Card className="dark:bg-stone-900 shadow-xl">
             <CardHeader>
-              <CardTitle>Segment Analysis</CardTitle>
+              <CardTitle>Client Performance</CardTitle>
               <CardDescription>
-                A comparison of product sales and profitability by segment and category
+                A comparison over time of client performance
               </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center px-1">
               <TableauEmbed
-                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
+                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/ClientPerformance'
                 width={1260}
                 height={516}
                 hideTabs={true}
@@ -67,18 +66,17 @@ export const Products = (props) => {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="category">
+        <TabsContent value="asset">
           <Card className="dark:bg-stone-900 shadow-xl">
             <CardHeader>
-              <CardTitle>Category Performance</CardTitle>
+              <CardTitle>Asset Performance</CardTitle>
               <CardDescription>
-                Product category sales by month and year. Darker cells indicate higher relative sales while lighter cells signal the opposite.
+                Shows how each client’s assets are performing week by week.
               </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center">
               <TableauEmbed
-                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
-                width={1260}
+                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/AssetPerformance'                width={1260}
                 height={516}
                 hideTabs={true}
                 device='default'
