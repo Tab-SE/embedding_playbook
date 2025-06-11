@@ -12,7 +12,7 @@ export const settings = {
   app_name: 'Cumulus Wealth',
   app_logo: '/img/themes/cumulus/cumulus-core-icon-wealth-blue.png',
   base_path: '/demo/cumulus',
-  auth_hero: 'https://images.unsplash.com/photo-1645226880663-81561dcab0ae?q=80&w=2872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3DD',
+  auth_hero: '/img/themes/cumulus/cumulus_hero.png',
   ai_chat: true,
   ai_avatar: '/img/themes/cumulus/cumulus-core-mid-logo-wealth-blue.png',
   sections: [
@@ -24,9 +24,9 @@ export const settings = {
       description: 'your cumulus financial homepage'
     },
     {
-      name: 'Performance',
+      name: 'Client Portfolio',
       icon: <ChartNoAxesCombined className="h-5 w-5"/>,
-      path: '/performance',
+      path: '/clientportfolio',
       min_role: 1,
       description: 'submit and update orders with data-driven insights'
     },
