@@ -8,12 +8,12 @@ import {
 
 export const settings = {
   app_id: 'pacifica',
-  app_name: 'pacifica Benefits Technology',
-  app_logo: '/img/themes/pacifica/pacificasmalllogo.png',
+  app_name: 'pacifica',
+  app_logo: '/img/themes/pacifica/pacifica_icon.png',
   base_path: '/demo/pacifica',
-  auth_hero: 'https://images.unsplash.com/photo-1666886573301-b5d526cfd518?q=80&w=3072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  auth_hero: '/img/themes/pacifica/pacifica_tech.png',
   ai_chat: true,
-  ai_avatar: '/img/themes/pacifica/pacificasmalllogo.png',
+  ai_avatar: '/img/themes/pacifica/pacifica_icon.png',
   sections: [
     {
       name: 'Home',
