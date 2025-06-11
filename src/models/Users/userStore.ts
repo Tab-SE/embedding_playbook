@@ -150,7 +150,7 @@ export const Users = [
     ]
   },
    {
-    demo: 'bridgeway',
+    demo: 'pacifica',
     roles: {
       0: { title: 'Hobby', description: 'Basic data & analytics'},
       1: { title: 'Professional', description: 'More analytics & exports'},
@@ -160,7 +160,7 @@ export const Users = [
       {
         id: 'a',
         name: "Sofia Lopez",
-        email: "slopez@bridgeway.com",
+        email: "slopez@pacifica.com",
         picture: "/img/users/sofia_lopez.png",
         role: 0,
         vector_store: 'superstore_slopez',
@@ -169,7 +169,7 @@ export const Users = [
       {
         id: 'b',
         name: "Justin Chen",
-        email: "jchen@bridgeway.com",
+        email: "jchen@pacifica.com",
         picture: "/img/users/justin_chen.png",
         role: 1,
         vector_store: 'superstore_jchen',
@@ -178,7 +178,7 @@ export const Users = [
       {
         id: 'c',
         name: "Julie Morris",
-        email: "jmorris@bridgeway.com",
+        email: "jmorris@pacifica.com",
         picture: "/img/users/mackenzie_day.png",
         role: 2,
         vector_store: 'superstore_jmorris',

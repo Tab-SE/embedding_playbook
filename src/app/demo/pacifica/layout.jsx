@@ -7,9 +7,9 @@ export default function Layout({ children }) {
   return (
     <ThemeProvider
       attribute="data-theme"
-      forcedTheme='bridgeway'
+      forcedTheme='pacifica'
       enableSystem={false}
-      themes={[ 'bridgeway' ]}
+      themes={[ 'pacifica' ]}
     >
       <LanggraphAgentRuntimeProvider
         agentId='a0bbabff-36ab-5e80-87dc-c73cc0bf8840'

@@ -22,7 +22,7 @@ export const Home = () => {
           <Card className='dark:bg-stone-900 shadow-xl'>
             <CardHeader>
               <CardTitle>Multiemployer Benefits Administration Technology Solutions</CardTitle>
-              <CardDescription>Bridgeway is leading the way by delivering  secure, systematic and sustainable solutions, and continuously striving to be the most trusted and forward-thinking technology company  spanning the multiemployer market. We are proud to support your way to success.</CardDescription>
+              <CardDescription>pacifica is leading the way by delivering  secure, systematic and sustainable solutions, and continuously striving to be the most trusted and forward-thinking technology company  spanning the multiemployer market. We are proud to support your way to success.</CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed

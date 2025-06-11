@@ -193,8 +193,8 @@
     --metrics-neutral: 280 70% 75%;
     --metrics-negative: 280 60% 33% ;
   }
-  [data-theme="bridgeway"] {
-    /* Main colors inspired by the Bridgeway logo and overall site */
+  [data-theme="pacifica"] {
+    /* Main colors inspired by the pacifica logo and overall site */
     --background: 210 15% 98%; /* Very Light Blue-Gray, almost white */
     --foreground: 210 10% 25%; /* Dark Blue-Gray for text */
 
