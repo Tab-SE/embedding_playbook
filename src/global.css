@@ -194,7 +194,7 @@
   }
    /* Define variables for the 'omnicell' theme (Purple) */
   [data-theme="omnicell"] {
-    --background: 225 19% 31%; /* Very Light Purple */
+    --background: 225 19% 30%; /* Very Light Purple */
     --foreground: 270 20% 20%; /* Dark Purple-Gray */
     --demo-background: 225 19% 31%; /* contrasts ui components in /demos */
     --nav-background: 270 20% 20%; /* left hand nav */
