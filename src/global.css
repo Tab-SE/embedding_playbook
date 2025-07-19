@@ -158,7 +158,6 @@
     --metrics-neutral: 39 7% 54%;
     --metrics-negative: 23 93% 51%;
   }
-
    /* Define variables for the 'makana' theme (Purple) */
   [data-theme="makana"] {
     --background: 225 19% 31%; /* Very Light Purple */
@@ -179,6 +178,40 @@
     --primary-foreground: 0 0% 100%; /* White */
     --secondary: 265 60% 90%; /* Light Purple/Lavender */
     --secondary-foreground: 260 80% 35%; /* Dark Purple */
+    --muted: 265 60% 95%;   /* Very Light Purple */
+    --muted-foreground: 270 10% 45%; /* Mid Purple-Gray */
+    --accent: 280 70% 85%;  /* Light Magenta */
+    --accent-foreground: 280 90% 25%; /* Dark Magenta */
+    --destructive: 330 70% 60%; /* Pinkish Red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 265 50% 88%; /* Soft Purple Border */
+    --input: 265 50% 92%;  /* Very Soft Purple Input */
+    --ring: 260 80% 60%;   /* Strong Purple Ring */
+
+    --metrics-positive: 260 80% 60% ;
+    --metrics-neutral: 280 70% 75%;
+    --metrics-negative: 280 60% 33% ;
+  }
+   /* Define variables for the 'omnicell' theme (Purple) */
+  [data-theme="omnicell"] {
+    --background: 225 19% 31%; /* Very Light Purple */
+    --foreground: 270 20% 20%; /* Dark Purple-Gray */
+    --demo-background: 225 19% 31%; /* contrasts ui components in /demos */
+    --nav-background: 270 20% 20%; /* left hand nav */
+    --logo-background: 225 19% 31%; /* sometimes logo files are transparent */
+    --icon-background: 265 60% 90%; /* same with icon having transparent backgrounds */
+    --login-card-background: 0 0% 100%; /* for the Auth component on login screens */
+    --nav-icons: 270 20% 20%; /* to color icons */
+    --ai-icons: 265 60% 90%;
+    --breadcrumbs: 265 60% 90%;
+    --card: 270 80% 99%; /* Almost White Purple */
+    --card-foreground: 270 20% 20%;
+    --popover: 270 80% 99%;
+    --popover-foreground: 270 20% 20%;
+    --primary: 120 40% 30%; /* Strong Purple */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 265 60% 90%; /* Light Purple/Lavender */
+    --secondary-foreground: 120 40% 30%; /* Dark Purple */
     --muted: 265 60% 95%;   /* Very Light Purple */
     --muted-foreground: 270 10% 45%; /* Mid Purple-Gray */
     --accent: 280 70% 85%;  /* Light Magenta */

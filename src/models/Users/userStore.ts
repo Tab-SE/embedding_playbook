@@ -148,5 +148,42 @@ export const Users = [
         uaf: {}
       },
     ]
-  }
+  },
+   {
+    demo: 'omnicell',
+    roles: {
+      0: { title: 'Hobby', description: 'Basic data & analytics'},
+      1: { title: 'Professional', description: 'More analytics & exports'},
+      2: { title: 'Premium', description: 'Full self-service analytics'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Rachel Morris",
+        email: "rmorris@omnicell.com",
+        picture: "/img/users/rachel_morris.png",
+        role: 0,
+        vector_store: 'superstore_rmorris',
+        uaf: {}
+      },
+      {
+        id: 'b',
+        name: "Debi Patel",
+        email: "dpatel@omnicell.com",
+        picture: "/img/users/debi_patel.png",
+        role: 1,
+        vector_store: 'superstore_dpatel',
+        uaf: {}
+      },
+      {
+        id: 'c',
+        name: "Matthew Wells",
+        email: "mwells@omnicell.com",
+        picture: "/img/users/matthew_wells.png",
+        role: 2,
+        vector_store: 'superstore_mwells',
+        uaf: {}
+      },
+    ]
+  },
 ]
