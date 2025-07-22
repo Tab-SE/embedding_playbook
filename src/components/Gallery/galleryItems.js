@@ -46,7 +46,7 @@ export const galleryItems = [
    {
     id: 'omnicell',
     link: "https://omnicell.vercel.app",
-    src: "/img/demos/cumulus_wealth.png",
+    src: "/img/demos/omnicell_hero.png",
     alt: "Omnicell | Medication Management",
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
