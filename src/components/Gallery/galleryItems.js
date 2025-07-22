@@ -42,5 +42,14 @@ export const galleryItems = [
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
     icon: <HandCoins size={12} strokeWidth={2} />
+  },
+   {
+    id: 'omnicell',
+    link: "https://embedding-playbook-git-cumulus-tab-se.vercel.app",
+    src: "/img/demos/omnicell_hero.png",
+    alt: "Omnicell | Medication Management",
+    vertical: "Commercial - Medication Management",
+    description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
+    icon: <HandCoins size={12} strokeWidth={2} />
   }
 ]
