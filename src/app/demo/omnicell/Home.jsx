@@ -26,7 +26,7 @@ export const Home = () => {
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
-                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/MakanaHealthCarePlanPerformance1/CarePlanPerformanceSummary'
+                src='https://prod-ca-a.online.tableau.com/t/eacanada/views/PharmacyDashboard_v2025_1/Dashboard1'
                 hideTabs={true}
                 toolbar='hidden'
                 className='
