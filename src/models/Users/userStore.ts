@@ -16,7 +16,7 @@ export interface User {
 export interface Demo {
   demo: string;
   roles?: {
-    [key: number]: Role;
+    [key: number]: Role | undefined ;
   };
   users: User[];
 }
@@ -152,7 +152,7 @@ export const Users = [
   {
     demo: 'omnicell',
     roles: {
-      0: { title: 'Pharmacist', description: 'Pharmacy data & analytics'},
+      0: { title: 'Pharmacist', description: 'Pharmacy Data & Analytics'},
       1: { title: 'VP of Analytics', description: 'Data Analyst'},
       // 2: { title: 'Premium', description: 'Full self-service analytics'},
     },

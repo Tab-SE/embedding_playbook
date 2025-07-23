@@ -5,9 +5,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
+import { UserModel } from "@/models";
+
 
 import { Metrics, TableauEmbed, Transactions, RecentSales } from '@/components';
-
+  const demoManager = new UserModel();
+  const users = demoManager.getUsersForDemo(app_id);
+  console.log("users", users)
 export const description = "An application shell with a header and main content area. The header has a navbar, a search input and and a user nav dropdown. The user nav is toggled by a button with an avatar image. The main content area is divided into two rows. The first row has a grid of cards with statistics. The second row has a grid of cards with a table of recent transactions and a list of recent sales.";
 
 export const Home = () => {
