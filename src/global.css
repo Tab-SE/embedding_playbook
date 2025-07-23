@@ -197,7 +197,7 @@
   /* Define variables for the 'omnicell' theme */
 [data-theme="omnicell"] {
   /* Core Palette: White background, near-black text, and Omnicell greens */
-  --background: 0 0% 100%;                  /* White */
+  --background: 222 47% 11%;                 /* Near Black / Dark Slate */
   --foreground: 222 47% 11%;                /* Near Black / Dark Slate */
 
   /* Layout & Navigation */
