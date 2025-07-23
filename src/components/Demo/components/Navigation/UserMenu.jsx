@@ -35,9 +35,6 @@ export function UserMenu(props) {
     isError: isSessionError,
     isLoading: isSessionLoading
   } = useTableauSession();
-  console.log("user", user)
-  console.log("app_name", app_name)
-  console.log("base_path", base_path)
 
   if (isSessionError) {
     console.debug('Session Error:', sessionError);
