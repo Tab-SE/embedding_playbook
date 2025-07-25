@@ -14,13 +14,22 @@ const client = new Client({
 
 export const analyticsAgent = new DynamicTool({
   name: "analytics_agent",
-  description: `Use this tool to answer any questions about pharmacy data, analytics, or metrics.
-The input to this tool MUST be a single string containing the user's question in plain, simple English.
-DO NOT create a JSON object or write any code. Just pass the user's question exactly as they asked it.
+  description: `AI Analyst performing ad-hoc analysis. Prioritize this tool for analytics and data queries.
+  Describe the user query thoroughly in natural language. You can ask for relative dates such as last week,
+  3 days ago, current year, previous 3 quarters or specific dates like March 12 1980
 
-Example:
-User asks: "show me all medications expiring in the next 30 days that have a value over $1,000"
-Tool input: "show me all medications expiring in the next 30 days that have a value over $1,000"`,
+  Data Fetching:
+  User: show me the total sales, profits and average discount by region and category
+  Input: 'the user wants to see total sales, profits and average discount broken down by region and category
+
+  User: what were conects and disconnects for jan 15th 2025?
+  Input: 'the user wants to see connects & disconnects for January 15 2025'
+
+  Analysis:
+  User: why is the home office category not doing well?
+  Agent: 'can you clarify what you mean by not doing well? does that mean with regards to sales or profits?'
+  User: yes this category is the least profitable
+  Input: 'the user wants to understand why the home office category is not profitable, look at sales, orders and other data to understand the issue'`,
   func: async (input) => {
     try {
       const streamResponse = client.runs.stream(
@@ -28,8 +37,7 @@ Tool input: "show me all medications expiring in the next 30 days that have a va
         "a585b681-26dd-5c0a-b77f-47a0e69b1bbd", // assistantId
         {
           input: {
-            // Corrected role to 'user' for passing input
-            messages: [{ role: "user", content: input }]
+            messages: [{ role: "assistant", content: input }]
           }
         }
       );
