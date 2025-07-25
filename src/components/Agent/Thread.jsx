@@ -25,10 +25,6 @@ import {
 import { MarkdownText, TooltipIconButton } from "./ui";
 import { cn } from "utils";
 
-// This new component will catch any message with role='tool' and render nothing.
-const HiddenToolMessage = () => {
-  return null;
-};
 
 export const Thread = (props) => {
   const { ai_avatar, user_avatar } = props;
@@ -45,9 +41,10 @@ export const Thread = (props) => {
           components={{
             UserMessage: (messageProps) => <DemoUserMessage {...messageProps} user_avatar={user_avatar} />,
             EditComposer: MyEditComposer,
-            AssistantMessage: (messageProps) => <AgentMessage {...messageProps} ai_avatar={ai_avatar} />,
-            // This is the fix: explicitly handle and hide 'tool' messages.
-            ToolMessage: HiddenToolMessage,
+            AssistantMessage: (messageProps) => <AgentMessage {...messageProps} ai_avatar={ai_avatar} />
+            // Note: If you had a specific component for 'ToolMessage', it would be called for role='tool'.
+            // Since you don't, the primitive might try AssistantMessage or UserMessage depending on its internal logic,
+            // but our added checks inside them will prevent rendering.
           }}
         />
 
@@ -205,9 +202,9 @@ const AgentMessage = (props) => {
   // Access the specific message data for this instance
   const message  = useMessage();
 
-  // Check the role: Only render if it's an assistant message
+  // Check the role: Only render if it's a user message
   if (message.role !== 'assistant') {
-    return null; // Render nothing if it's not an assistant message
+    return null; // Render nothing if it's not a user message
   }
 
   return (
@@ -301,7 +298,7 @@ const CircleStopIcon = () => {
   return (
     (<svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 16 16"
+      viewBox="0 16"
       fill="currentColor"
       width="16"
       height="16">
