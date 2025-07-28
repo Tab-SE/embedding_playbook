@@ -117,7 +117,7 @@ const AgentMessage = (props) => {
   const { ai_avatar } = props;
   const { message: originalMessage } = useMessage();
 
-  // 2. If the message is not complete, show the "thinking" indicator
+  // If the message is not complete, show the "thinking" indicator
   if (originalMessage.status?.type !== 'complete') {
     return (
       <div className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
@@ -129,47 +129,44 @@ const AgentMessage = (props) => {
     );
   }
 
-  // DEBUG: Log what messages are coming through (Corrected to use `originalMessage`)
-  console.log('MiniThread-AgentMessage received:', {
-    role: originalMessage.role,
-    content: typeof originalMessage.content === 'string'
-      ? originalMessage.content.substring(0, 200) + '...'
-      : originalMessage.content,
-    contentType: typeof originalMessage.content,
-    isArray: Array.isArray(originalMessage.content),
-    fullMessage: originalMessage
-  });
-
   // Check the role: Only render if it's an assistant message
   if (originalMessage.role !== 'assistant') {
     return null;
   }
 
-  // 1. Find the last content part that is of type 'text'.
-  const lastTextPart = Array.isArray(originalMessage.content)
-    ? originalMessage.content.findLast((part) => part.type === 'text')
-    : null;
-  console.log("Minithread-lasttextpart", lastTextPart)
-  // 2. If we didn't find a valid text part, don't render anything.
-  if (!lastTextPart) {
-    return null;
-  }
+  // Create a custom Text component that filters content
+  const FilteredText = (props) => {
+    const { text } = props;
 
-  // 3. Create a new message object containing only the final text part.
-  const displayMessage = {
-    ...originalMessage,
-    content: [lastTextPart],
+    // Skip JSON strings
+    if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
+      return null;
+    }
+
+    // Skip short text (likely fragments)
+    if (text.length < 50) {
+      return null;
+    }
+
+    // Skip text that contains raw query data indicators
+    if (text.includes('"fields":[') || text.includes('"filters":[')) {
+      return null;
+    }
+
+    // Render the filtered text using MarkdownText
+    return <MarkdownText text={text} />;
   };
 
+  // Use MessagePrimitive.Content with custom filtering
   return (
-    // 4. Pass the modified `displayMessage` to the primitive root.
-    <MessagePrimitive.Root
-      message={displayMessage}
-      className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4"
-    >
+    <MessagePrimitive.Root className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
       <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
       <div className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
-        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+        <MessagePrimitive.Content
+          components={{
+            Text: FilteredText
+          }}
+        />
       </div>
     </MessagePrimitive.Root>
   );

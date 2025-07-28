@@ -195,58 +195,86 @@ const MyEditComposer = () => {
     </ComposerPrimitive.Root>)
   );
 };
-
+// A simple component for the "thinking" animation (three pulsing dots)
+const ThinkingIndicator = () => (
+  <div className="flex items-center gap-1.5">
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-0" />
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-150" />
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-300" />
+  </div>
+);
 const AgentMessage = (props) => {
   const { ai_avatar } = props;
   const { message: originalMessage } = useMessage();
 
-    if (originalMessage.status?.type !== 'complete') {
-    return null;
+  // 2. If the message is not complete, show the "thinking" indicator
+  if (originalMessage.status?.type !== 'complete') {
+    return (
+      <div className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
+        <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
+        <div className="text-stone-950 col-start-2 row-start-1 my-1.5 flex max-w-xl items-center dark:text-stone-50">
+          <ThinkingIndicator />
+        </div>
+      </div>
+    );
   }
 
-  // DEBUG: Log what messages are coming through (Corrected to use `originalMessage`)
-  console.log('Thread-AgentMessage received:', {
-    role: originalMessage.role,
-    content: typeof originalMessage.content === 'string'
-      ? originalMessage.content.substring(0, 200) + '...'
-      : originalMessage.content,
-    contentType: typeof originalMessage.content,
-    isArray: Array.isArray(originalMessage.content),
-    fullMessage: originalMessage
-  });
+  // DEBUG: Log ALL content parts to understand the structure
+  console.log('FULL MESSAGE CONTENT ANALYSIS:');
+  if (Array.isArray(originalMessage.content)) {
+    originalMessage.content.forEach((part, index) => {
+      console.log(`Part ${index}:`, {
+        type: part.type,
+        text: part.type === 'text' ? part.text?.substring(0, 100) + '...' : 'N/A',
+        startsWithJSON: part.type === 'text' && part.text?.startsWith('{'),
+        length: part.type === 'text' ? part.text?.length : 'N/A',
+        fullPart: part
+      });
+    });
+  }
 
   // Check the role: Only render if it's an assistant message
   if (originalMessage.role !== 'assistant') {
     return null;
   }
 
-  // 1. Find the last content part that is of type 'text'.
-  const lastTextPart = Array.isArray(originalMessage.content)
-    ? originalMessage.content.findLast((part) => part.type === 'text')
-    : null;
-  console.log("Thread-lasttextpart", lastTextPart)
-  // 2. If we didn't find a valid text part, don't render anything.
-  if (!lastTextPart) {
+  // IMPROVED FILTERING: Get only the final substantial text response
+  const filteredTextParts = Array.isArray(originalMessage.content)
+    ? originalMessage.content.filter(part =>
+        part.type === 'text' &&
+        !part.text?.startsWith('{') && // Skip JSON
+        part.text &&
+        part.text.length > 100 // Only substantial responses
+      )
+    : [];
+
+  console.log('FILTERED PARTS:', filteredTextParts);
+
+  // Get the last substantial text part
+  const finalTextPart = filteredTextParts[filteredTextParts.length - 1];
+
+  console.log('FINAL PART TO DISPLAY:', finalTextPart);
+
+  // If no valid text part, don't render
+  if (!finalTextPart) {
+    console.log('NO VALID TEXT PART FOUND - NOT RENDERING');
     return null;
   }
 
-  // 3. Create a new message object containing only the final text part.
+  // Create display message with only the final part
   const displayMessage = {
     ...originalMessage,
-    content: [lastTextPart],
+    content: [finalTextPart],
   };
 
   return (
-    // 4. Pass the modified `displayMessage` to the primitive root.
     <MessagePrimitive.Root
       message={displayMessage}
       className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4"
     >
       <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
       <div className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
-      <MessagePrimitive.Content components={{ Text: MarkdownText }} />
-        <MyAssistantActionBar />
-        <MyBranchPicker className="col-start-2 row-start-2 -ml-2 mr-2" />
+        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
       </div>
     </MessagePrimitive.Root>
   );
