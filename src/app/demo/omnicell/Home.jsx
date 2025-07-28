@@ -21,7 +21,7 @@ export const Home = () => {
   } = useTableauSession();
 
   const rMorrisSrc = 'https://prod-ca-a.online.tableau.com/#/site/eacanada/views/PharmacistDashboardWIP/PharmacyInventoryAlerts?:iid=1';
-  const defaultSrc = 'https://prod-ca-a.online.tableau.com/#/site/eacanada/views/HospitalSupplyChainWIPRough/Placeholderdashboardfornow?:iid=3';
+  const defaultSrc = 'https://prod-ca-a.online.tableau.com/#/site/eacanada/views/HospitalSupplyChainWIPRough/HospitalSupplyChainData?:iid=2';
 
   return (
     <div className="flex min-h-screen w-full flex-col">
