@@ -35,7 +35,7 @@ export function selectEmbeddings(provider: EmbeddingProvider = "openai", modelNa
   switch (provider) {
     case "azure":
       return new AzureOpenAIEmbeddings({
-        verbose: true,
+        verbose: false,
         azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
         azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME,
         azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION,

@@ -198,30 +198,57 @@ const MyEditComposer = () => {
 
 const AgentMessage = (props) => {
   const { ai_avatar } = props;
+  const { message: originalMessage } = useMessage();
 
-  // Access the specific message data for this instance
-  const message  = useMessage();
-
-  // Check the role: Only render if it's a user message
-  if (message.role !== 'assistant') {
-    return null; // Render nothing if it's not a user message
+    if (originalMessage.status?.type !== 'complete') {
+    return null;
   }
 
+  // DEBUG: Log what messages are coming through (Corrected to use `originalMessage`)
+  console.log('Thread-AgentMessage received:', {
+    role: originalMessage.role,
+    content: typeof originalMessage.content === 'string'
+      ? originalMessage.content.substring(0, 200) + '...'
+      : originalMessage.content,
+    contentType: typeof originalMessage.content,
+    isArray: Array.isArray(originalMessage.content),
+    fullMessage: originalMessage
+  });
+
+  // Check the role: Only render if it's an assistant message
+  if (originalMessage.role !== 'assistant') {
+    return null;
+  }
+
+  // 1. Find the last content part that is of type 'text'.
+  const lastTextPart = Array.isArray(originalMessage.content)
+    ? originalMessage.content.findLast((part) => part.type === 'text')
+    : null;
+  console.log("Thread-lasttextpart", lastTextPart)
+  // 2. If we didn't find a valid text part, don't render anything.
+  if (!lastTextPart) {
+    return null;
+  }
+
+  // 3. Create a new message object containing only the final text part.
+  const displayMessage = {
+    ...originalMessage,
+    content: [lastTextPart],
+  };
+
   return (
-    (<MessagePrimitive.Root
-      className="relative grid w-full max-w-2xl grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr] py-4">
-      <MessageAvatar
-        src={ai_avatar}
-        alt='AI Avatar'
-        fallback='AI'
-      />
-      <div
-        className="text-stone-950 col-span-2 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
-        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+    // 4. Pass the modified `displayMessage` to the primitive root.
+    <MessagePrimitive.Root
+      message={displayMessage}
+      className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4"
+    >
+      <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
+      <div className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
+      <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+        <MyAssistantActionBar />
+        <MyBranchPicker className="col-start-2 row-start-2 -ml-2 mr-2" />
       </div>
-      <MyAssistantActionBar />
-      <MyBranchPicker className="col-start-2 row-start-2 -ml-2 mr-2" />
-    </MessagePrimitive.Root>)
+    </MessagePrimitive.Root>
   );
 };
 

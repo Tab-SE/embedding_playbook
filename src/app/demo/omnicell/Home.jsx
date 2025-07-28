@@ -20,8 +20,8 @@ export const Home = () => {
     isError: isSessionError
   } = useTableauSession();
 
-  const rMorrisSrc = 'https://prod-ca-a.online.tableau.com/t/eacanada/views/PharmacyandClinicalOperations/Dashboard1';
-  const defaultSrc = 'https://prod-ca-a.online.tableau.com/t/eacanada/views/PharmacyDashboard_v2025_1/Dashboard1';
+  const rMorrisSrc = 'https://prod-ca-a.online.tableau.com/#/site/eacanada/views/PharmacistDashboardWIP/PharmacyInventoryAlerts?:iid=1';
+  const defaultSrc = 'https://prod-ca-a.online.tableau.com/#/site/eacanada/views/HospitalSupplyChainWIPRough/Placeholderdashboardfornow?:iid=3';
 
   return (
     <div className="flex min-h-screen w-full flex-col">
