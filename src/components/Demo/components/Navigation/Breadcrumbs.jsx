@@ -32,9 +32,9 @@ export const Breadcrumbs = (props) => {
                     <Image
                       src={logoPath}
                       alt="Omnicell Logo"
-                      width={400}
-                      height={400}
-                      style={{ marginTop: '80px' }}
+                      width={300}
+                      height={300}
+                      style={{ marginTop: '30px' }}
                     />
                   ) : (
                     item.label
