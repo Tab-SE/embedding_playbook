@@ -152,7 +152,7 @@ export const Users = [
   {
     demo: 'omnicell',
     roles: {
-      0: { title: 'Pharmacist', description: 'Pharmacy Data & Analytics'},
+      0: { title: 'Director of Pharmacy', description: 'Pharmacy Data & Analytics'},
       1: { title: 'VP of Analytics', description: 'Data Analyst'},
       // 2: { title: 'Premium', description: 'Full self-service analytics'},
     },
