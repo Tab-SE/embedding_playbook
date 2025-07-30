@@ -195,33 +195,88 @@ const MyEditComposer = () => {
     </ComposerPrimitive.Root>)
   );
 };
-
+// A simple component for the "thinking" animation (three pulsing dots)
+const ThinkingIndicator = () => (
+  <div className="flex items-center gap-1.5">
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-0" />
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-150" />
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-300" />
+  </div>
+);
 const AgentMessage = (props) => {
   const { ai_avatar } = props;
+  const { message: originalMessage } = useMessage();
 
-  // Access the specific message data for this instance
-  const message  = useMessage();
-
-  // Check the role: Only render if it's a user message
-  if (message.role !== 'assistant') {
-    return null; // Render nothing if it's not a user message
+  // 2. If the message is not complete, show the "thinking" indicator
+  if (originalMessage.status?.type !== 'complete') {
+    return (
+      <div className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
+        <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
+        <div className="text-stone-950 col-start-2 row-start-1 my-1.5 flex max-w-xl items-center dark:text-stone-50">
+          <ThinkingIndicator />
+        </div>
+      </div>
+    );
   }
 
+  // DEBUG: Log ALL content parts to understand the structure
+  console.log('FULL MESSAGE CONTENT ANALYSIS:');
+  if (Array.isArray(originalMessage.content)) {
+    originalMessage.content.forEach((part, index) => {
+      console.log(`Part ${index}:`, {
+        type: part.type,
+        text: part.type === 'text' ? part.text?.substring(0, 100) + '...' : 'N/A',
+        startsWithJSON: part.type === 'text' && part.text?.startsWith('{'),
+        length: part.type === 'text' ? part.text?.length : 'N/A',
+        fullPart: part
+      });
+    });
+  }
+
+  // Check the role: Only render if it's an assistant message
+  if (originalMessage.role !== 'assistant') {
+    return null;
+  }
+
+  // IMPROVED FILTERING: Get only the final substantial text response
+  const filteredTextParts = Array.isArray(originalMessage.content)
+    ? originalMessage.content.filter(part =>
+        part.type === 'text' &&
+        !part.text?.startsWith('{') && // Skip JSON
+        part.text &&
+        part.text.length > 100 // Only substantial responses
+      )
+    : [];
+
+  console.log('FILTERED PARTS:', filteredTextParts);
+
+  // Get the last substantial text part
+  const finalTextPart = filteredTextParts[filteredTextParts.length - 1];
+
+  console.log('FINAL PART TO DISPLAY:', finalTextPart);
+
+  // If no valid text part, don't render
+  if (!finalTextPart) {
+    console.log('NO VALID TEXT PART FOUND - NOT RENDERING');
+    return null;
+  }
+
+  // Create display message with only the final part
+  const displayMessage = {
+    ...originalMessage,
+    content: [finalTextPart],
+  };
+
   return (
-    (<MessagePrimitive.Root
-      className="relative grid w-full max-w-2xl grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr] py-4">
-      <MessageAvatar
-        src={ai_avatar}
-        alt='AI Avatar'
-        fallback='AI'
-      />
-      <div
-        className="text-stone-950 col-span-2 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
+    <MessagePrimitive.Root
+      message={displayMessage}
+      className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4"
+    >
+      <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
+      <div className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
         <MessagePrimitive.Content components={{ Text: MarkdownText }} />
       </div>
-      <MyAssistantActionBar />
-      <MyBranchPicker className="col-start-2 row-start-2 -ml-2 mr-2" />
-    </MessagePrimitive.Root>)
+    </MessagePrimitive.Root>
   );
 };
 

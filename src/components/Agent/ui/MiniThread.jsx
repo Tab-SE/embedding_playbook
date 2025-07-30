@@ -3,6 +3,7 @@ import {
   ComposerPrimitive,
   MessagePrimitive,
   ThreadPrimitive,
+  useMessage
 } from "@assistant-ui/react";
 import { SendHorizontalIcon } from "lucide-react";
 
@@ -103,24 +104,71 @@ const DemoUserMessage = (props) => {
     </MessagePrimitive.Root>)
   );
 };
+// A simple component for the "thinking" animation (three pulsing dots)
+const ThinkingIndicator = () => (
+  <div className="flex items-center gap-1.5">
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-0" />
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-150" />
+    <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400 delay-300" />
+  </div>
+);
 
 const AgentMessage = (props) => {
   const { ai_avatar } = props;
+  const { message: originalMessage } = useMessage();
 
-  return (
-    (<MessagePrimitive.Root
-      className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4"
-      >
-      <MessageAvatar
-        src={ai_avatar}
-        alt='AI Avatar'
-        fallback='AI'
-      />
-      <div
-        className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
-        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+  // If the message is not complete, show the "thinking" indicator
+  if (originalMessage.status?.type !== 'complete') {
+    return (
+      <div className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
+        <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
+        <div className="text-stone-950 col-start-2 row-start-1 my-1.5 flex max-w-xl items-center dark:text-stone-50">
+          <ThinkingIndicator />
+        </div>
       </div>
-    </MessagePrimitive.Root>)
+    );
+  }
+
+  // Check the role: Only render if it's an assistant message
+  if (originalMessage.role !== 'assistant') {
+    return null;
+  }
+
+  // Create a custom Text component that filters content
+  const FilteredText = (props) => {
+    const { text } = props;
+
+    // Skip JSON strings
+    if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
+      return null;
+    }
+
+    // Skip short text (likely fragments)
+    if (text.length < 50) {
+      return null;
+    }
+
+    // Skip text that contains raw query data indicators
+    if (text.includes('"fields":[') || text.includes('"filters":[')) {
+      return null;
+    }
+
+    // Render the filtered text using MarkdownText
+    return <MarkdownText text={text} />;
+  };
+
+  // Use MessagePrimitive.Content with custom filtering
+  return (
+    <MessagePrimitive.Root className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
+      <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
+      <div className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
+        <MessagePrimitive.Content
+          components={{
+            Text: FilteredText
+          }}
+        />
+      </div>
+    </MessagePrimitive.Root>
   );
 };
 
