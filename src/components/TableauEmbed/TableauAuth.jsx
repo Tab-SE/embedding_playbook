@@ -40,6 +40,8 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     embed_token = user.embed_token;
   }
   console.log("token", embed_token)
+      console.log('Link to decode JWT: https://jwt.io/#debugger-io?token=' + embed_token);
+
 
   return (
     <div>
