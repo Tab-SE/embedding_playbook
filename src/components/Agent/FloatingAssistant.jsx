@@ -60,15 +60,15 @@ const FloatingAssistantButton = forwardRef(({ ai_avatar, "data-state": state, ..
       <Image
         src={ai_avatar}
         alt="Assistant"
-        width={24}
-        height={24}
+        width={48}
+        height={48}
         data-state={state}
         className="absolute inset-0 m-auto transition-all data-[state=closed]:rotate-0 data-[state=open]:rotate-90 data-[state=closed]:scale-100 data-[state=open]:scale-0"
       />
-      <div className="absolute size-6">
+      <div className="absolute size-10">
         <ChevronDownIcon
           data-state={state}
-          className="absolute size-6 transition-all data-[state=closed]:-rotate-90 data-[state=open]:rotate-0 data-[state=closed]:scale-0 data-[state=open]:scale-100"
+          className="absolute size-10 transition-all data-[state=closed]:-rotate-90 data-[state=open]:rotate-0 data-[state=closed]:scale-0 data-[state=open]:scale-100"
         />
       </div>
       <span className="sr-only">{tooltip}</span>

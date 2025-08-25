@@ -59,6 +59,6 @@ export class UserModel {
     }
 
     // Extract roles as an array
-    return Object.values(demo.roles);
+    return Object.values(demo.roles).filter((role): role is Role => role !== undefined);
   }
 }

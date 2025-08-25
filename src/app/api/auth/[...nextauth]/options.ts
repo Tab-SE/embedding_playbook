@@ -84,6 +84,7 @@ export const authOptions: AuthOptions = {
               "tableau:insight_definitions_metrics:read",
               "tableau:insight_metrics:read",
               "tableau:metrics:download",
+              "tableau:views:embed_authoring"
             ];
             const rest_options = {
               jwt_secret: rest_secret,
