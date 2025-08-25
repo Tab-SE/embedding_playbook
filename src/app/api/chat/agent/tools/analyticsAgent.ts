@@ -1,5 +1,5 @@
 import { Client } from "@langchain/langgraph-sdk";
-import { DynamicTool } from "langchain/tools";
+import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 
 // Define a type for the stream chunk
@@ -12,7 +12,7 @@ const client = new Client({
   apiUrl: process.env.LANGGRAPH_API_URL || 'http://localhost:8123'
 });
 
-export const analyticsAgent = new DynamicTool({
+export const analyticsAgent = new DynamicStructuredTool({
   name: "analytics_agent",
   description: `AI Analyst performing ad-hoc analysis. Prioritize this tool for analytics and data queries.
   Describe the user query thoroughly in natural language. You can ask for relative dates such as last week,
@@ -30,17 +30,20 @@ export const analyticsAgent = new DynamicTool({
   Agent: 'can you clarify what you mean by not doing well? does that mean with regards to sales or profits?'
   User: yes this category is the least profitable
   Input: 'the user wants to understand why the home office category is not profitable, look at sales, orders and other data to understand the issue'`,
-  func: async (input) => {
+  schema: z.object({
+    query: z.string().describe("The user's query for the analytics agent")
+  }),
+  func: async ({ query }) => {
     try {
-      const streamResponse = client.runs.stream(
-        null, // threadId
-        "a585b681-26dd-5c0a-b77f-47a0e69b1bbd", // assistantId
-        {
-          input: {
-            messages: [{ role: "assistant", content: input }]
+              const streamResponse = client.runs.stream(
+          null, // threadId
+          "a585b681-26dd-5c0a-b77f-47a0e69b1bbd", // assistantId
+          {
+            input: {
+              messages: [{ role: "assistant", content: query }]
+            }
           }
-        }
-      );
+        );
 
       let chunks: StreamChunk[] = [];
       for await (const chunk of streamResponse) {
