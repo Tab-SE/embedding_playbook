@@ -34,7 +34,7 @@ export const Users = [
         picture: "/img/users/mackenzie_day.png",
         role: 0,
         vector_store: 'superstore_jmorris',
-        uaf: {},
+        uaf: {"Region": ["West", "East", "Central","South"]},
       }
     ]
   },
