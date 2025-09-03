@@ -19,13 +19,13 @@ const killSession = async (queryClient, router, demo, base_path) => {
 
     if (demo === 'documentation') {
       // sign the user out without redirecting to standard auth page
-      await signOut({ redirect: false, callbackUrl: '/' });
+      await signOut({ redirect: false });
       await signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
     } else {
       const authUrl = `${base_path}/auth`;
 
       // sign the user out without redirecting to standard auth page
-      await signOut({ redirect: false, callbackUrl: base_path });
+      await signOut({ redirect: false });
       // redirect to local demo /auth page
       router.push(authUrl);
     }

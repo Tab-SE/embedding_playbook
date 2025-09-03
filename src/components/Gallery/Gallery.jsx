@@ -29,10 +29,9 @@ export const Gallery = (props) => {
       }
     );
 
-    const callbackUrl = `/demo/${item.id}`;
     const authUrl = `/demo/${item.id}/auth`;
     // sign the user out without redirecting to standard auth page
-    signOut({ redirect: false, callbackUrl: callbackUrl });
+    signOut({ redirect: false });
     router.push(authUrl);
   };
 

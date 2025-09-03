@@ -143,9 +143,17 @@ export const authOptions: AuthOptions = {
       }
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
+      // Use the public URL from environment variable if available, otherwise use baseUrl
+      let publicUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL || baseUrl;
+
+      // If we're in production and the baseUrl contains railway.internal, use the public URL
+      if (process.env.NODE_ENV === 'production' && baseUrl.includes('railway.internal')) {
+        publicUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL || 'https://embedding-playbook.railway.app';
+      }
+
+      if (url.startsWith("/")) return `${publicUrl}${url}`;
+      else if (new URL(url).origin === publicUrl) return url;
+      return publicUrl;
     },
     async jwt({ token, user }: { token: JWT; user?: DemoUser }) {
       if (user) {
