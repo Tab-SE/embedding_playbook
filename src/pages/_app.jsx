@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
 
 import '../global.css';
-import { SessionProvider, VercelAgentRuntimeProvider, AuthGuard, FloatingAssistant } from '@/components';
+import { SessionProvider, VercelAgentRuntimeProvider, AuthGuard, FloatingAssistant, SessionWarning } from '@/components';
 
 export default function App({
   Component,
@@ -39,6 +39,7 @@ export default function App({
             <VercelAgentRuntimeProvider>
               <AuthGuard demo={'documentation'} base_path={'/'} />
               <Component {...pageProps} />
+              <SessionWarning demo={'documentation'} base_path={'/'} />
               <FloatingAssistant
                 settings={docs_settings}
               />
