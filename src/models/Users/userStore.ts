@@ -148,5 +148,42 @@ export const Users = [
         uaf: {}
       },
     ]
+  },
+  {
+    demo: 'southwest',
+    roles: {
+      0: { title: 'Flight Operations', description: 'Basic flight data & analytics'},
+      1: { title: 'Operations Manager', description: 'Advanced analytics & reporting'},
+      2: { title: 'Senior Leadership', description: 'Full strategic analytics & insights'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Sarah Johnson",
+        email: "sjohnson@southwest.com",
+        picture: "/img/users/kim_johnson.png",
+        role: 0,
+        vector_store: 'southwest_sjohnson',
+        uaf: {"Region": ["West", "Central"]}
+      },
+      {
+        id: 'b',
+        name: "Michael Rodriguez",
+        email: "mrodriguez@southwest.com",
+        picture: "/img/users/richard_bennet.png",
+        role: 1,
+        vector_store: 'southwest_mrodriguez',
+        uaf: {"Region": ["East", "South"]}
+      },
+      {
+        id: 'c',
+        name: "Jennifer Martinez",
+        email: "jmartinez@southwest.com",
+        picture: "/img/users/rachel_morris.png",
+        role: 2,
+        vector_store: 'southwest_jmartinez',
+        uaf: {"Region": ["West", "East", "Central", "South"]}
+      },
+    ]
   }
 ]

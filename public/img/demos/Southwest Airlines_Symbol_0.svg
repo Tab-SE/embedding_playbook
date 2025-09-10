@@ -1,0 +1,46 @@
+<svg version="1.1" id="Southwest_Logo_1_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 73.1 70.3" style="enable-background:new 0 0 73.1 70.3;" xml:space="preserve">
+ <style type="text/css">
+  .st0{fill:#CCCCCC;}
+	.st1{fill:url(#SVGID_1_);}
+	.st2{fill:url(#SVGID_2_);}
+	.st3{fill:url(#SVGID_3_);}
+ </style>
+ <g>
+  <g>
+   <path class="st0" d="M52.2,0c-6.2,0-11.6,2.2-15.6,4.4C32.5,2.2,27.5,0,20.9,0C8.1,0,0,8.1,0,22.5c0,17.2,16.6,34,36.5,47.8
+			c20-13.4,36.5-30.3,36.5-47.8C73.1,8.1,64.7,0,52.2,0z">
+   </path>
+   <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="2.0114" y1="-737.7712" x2="50.2881" y2="-737.7712" gradientTransform="matrix(1 0 0 -1 0 -694.826)">
+    <stop offset="0" style="stop-color:#3656CC">
+    </stop>
+    <stop offset="0.35" style="stop-color:#304CB2">
+    </stop>
+    <stop offset="0.72" style="stop-color:#283B80">
+    </stop>
+   </linearGradient>
+   <path class="st1" d="M1.9,22.8c0,17.5,18.7,34,34.4,45c4.7-3.1,9.4-6.9,13.7-10.6C29,39.7,9.1,23.7,2.2,18.1
+			C2.2,19.4,1.9,20.9,1.9,22.8z">
+   </path>
+   <linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="8.8874" y1="-699.3901" x2="63.425" y2="-737.578" gradientTransform="matrix(1 0 0 -1 0 -694.826)">
+    <stop offset="0.3" style="stop-color:#E61C23">
+    </stop>
+    <stop offset="0.8" style="stop-color:#C3161C">
+    </stop>
+   </linearGradient>
+   <path class="st2" d="M69.6,30.9c-15.3-12.5-24.4-19.1-34.4-25c-2.8-1.6-8.1-4.1-14.1-4.1c-5.6,0-10.6,1.9-14.1,5.3
+			c-2.2,2.2-3.7,5-4.4,8.4c7.8,5.6,29.4,20.9,50.9,38.1C60.9,46.8,66.8,39,69.6,30.9z">
+   </path>
+   <linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="42.6006" y1="-694.5917" x2="73.7826" y2="-716.4256" gradientTransform="matrix(1 0 0 -1 0 -694.826)">
+    <stop offset="0" style="stop-color:#FDBC11">
+    </stop>
+    <stop offset="0.25" style="stop-color:#FCB415">
+    </stop>
+    <stop offset="0.8" style="stop-color:#F89E1C">
+    </stop>
+   </linearGradient>
+   <path class="st3" d="M65.6,7.2c-3.4-3.4-8.1-5.3-13.7-5.3c-5.9,0-10.3,1.9-13.7,3.7C44,9.1,56.8,16.2,70.3,26.2
+			c0.3-1.2,0.3-2.8,0.3-4.1C70.9,15.9,69,10.6,65.6,7.2z">
+   </path>
+  </g>
+ </g>
+</svg>

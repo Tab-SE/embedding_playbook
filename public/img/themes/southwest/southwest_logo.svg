@@ -1,0 +1,14 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Southwest Airlines Logo -->
+  <rect width="200" height="60" fill="#304CB2"/>
+
+  <!-- Southwest Text -->
+  <text x="20" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">SOUTHWEST</text>
+
+  <!-- Airlines Text -->
+  <text x="20" y="50" font-family="Arial, sans-serif" font-size="14" font-weight="normal" fill="#FFCA4F">AIRLINES</text>
+
+  <!-- Heart symbol (Southwest's signature) -->
+  <path d="M160 20 L170 15 L180 20 L170 25 Z" fill="#FFCA4F"/>
+  <circle cx="170" cy="20" r="8" fill="#FFCA4F"/>
+</svg>

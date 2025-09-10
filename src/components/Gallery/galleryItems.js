@@ -2,7 +2,8 @@ import {
   BriefcaseBusiness,
   ShoppingCart,
   HandCoins,
-  HeartPulse
+  HeartPulse,
+  Plane
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -42,5 +43,14 @@ export const galleryItems = [
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
     icon: <HandCoins size={12} strokeWidth={2} />
+  },
+  {
+    id: 'southwest',
+    link: "/demo/southwest",
+    src: "/img/demos/southwest_airlines_demo.svg",
+    alt: "Southwest Airlines | Flight Analytics",
+    vertical: "Airlines & Transportation",
+    description: "A comprehensive flight analytics platform that provides real-time insights into flight operations, passenger data, and operational performance to optimize airline efficiency",
+    icon: <Plane size={12} strokeWidth={2} />
   }
 ]

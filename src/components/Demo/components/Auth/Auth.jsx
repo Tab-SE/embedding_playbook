@@ -39,7 +39,7 @@ export const Auth = (props) => {
         <Card className="mx-auto w-[480px] max-w-full shadow-lg backdrop-blur-sm loginBackground/95">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <Avatar className="flex items-center justify-center h-16 w-16 bg-logoBackground">
+              <Avatar className="flex items-center justify-center h-8 w-8 bg-logoBackground">
                 <AvatarImage src={app_logo} className="object-cover rounded-full" />
                 <AvatarFallback>APP</AvatarFallback>
               </Avatar>
