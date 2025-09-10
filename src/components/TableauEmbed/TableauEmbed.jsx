@@ -1,7 +1,7 @@
 "use client";
 import { forwardRef, useRef } from 'react';
 
-import { TableauAuth } from 'components';
+import { TableauAuth, TableauPublic } from 'components';
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
@@ -23,21 +23,34 @@ export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
   // Use the forwarded ref if provided, otherwise use the local ref
   const innerRef = ref || localRef;
 
+  // Check if this is a Tableau Public URL
+  const isTableauPublic = src && src.includes('public.tableau.com');
+
   return (
     <div className={className}>
-      <TableauAuth
-        src={src}
-        ref={innerRef}
-        className={className}
-        height={height}
-        width={width}
-        hide-tabs={hideTabs ? true : false}
-        toolbar={toolbar}
-        isPublic={isPublic}
-        WebEdit={WebEdit}
-        customToolbar={customToolbar}
-        layouts={layouts}
-      />
+      {isTableauPublic ? (
+        <TableauPublic
+          src={src}
+          ref={innerRef}
+          className={className}
+          height={height}
+          width={width}
+        />
+      ) : (
+        <TableauAuth
+          src={src}
+          ref={innerRef}
+          className={className}
+          height={height}
+          width={width}
+          hide-tabs={hideTabs ? true : false}
+          toolbar={toolbar}
+          isPublic={isPublic}
+          WebEdit={WebEdit}
+          customToolbar={customToolbar}
+          layouts={layouts}
+        />
+      )}
     </div>
   )
 });

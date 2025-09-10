@@ -47,7 +47,7 @@ export const galleryItems = [
   {
     id: 'southwest',
     link: "/demo/southwest",
-    src: "/img/demos/southwest_airlines_demo.svg",
+    src: "/img/demos/Southwest Airlines_Logo_0.svg",
     alt: "Southwest Airlines | Flight Analytics",
     vertical: "Airlines & Transportation",
     description: "A comprehensive flight analytics platform that provides real-time insights into flight operations, passenger data, and operational performance to optimize airline efficiency",

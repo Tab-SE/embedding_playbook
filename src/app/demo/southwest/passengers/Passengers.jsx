@@ -47,7 +47,7 @@ export const Passengers = (props) => {
         </CardHeader>
         <CardContent className="flex items-center justify-center">
           <TableauEmbed
-            src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
+            src='https://public.tableau.com/views/Flightdelayanalysis_16774540523630/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
             hideTabs={true}
             toolbar='hidden'
             className='

@@ -16,7 +16,7 @@ export const Operations = () => {
           </CardHeader>
           <CardContent className="flex items-center justify-center">
             <TableauEmbed
-              src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
+              src='https://public.tableau.com/views/AirlineCaseStudy_16549430303810/AirlineCaseStudy?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
               hideTabs={true}
               toolbar='hidden'
               className='

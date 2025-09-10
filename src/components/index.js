@@ -15,6 +15,7 @@ export {
   TableauViz,
   TableauWebAuthor,
   TableauAuth,
+  TableauPublic,
   TableauToolbar
 } from './TableauEmbed';
 
