@@ -148,7 +148,7 @@ export const authOptions: AuthOptions = {
 
       // If we're in production and the baseUrl contains railway.internal, use the public URL
       if (process.env.NODE_ENV === 'production' && baseUrl.includes('railway.internal')) {
-        publicUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL || 'https://embedding-playbook.railway.app';
+        publicUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL || 'https://embedding-playbook.up.railway.app';
       }
 
       if (url.startsWith("/")) return `${publicUrl}${url}`;
