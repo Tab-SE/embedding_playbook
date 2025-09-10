@@ -7,12 +7,12 @@ export default function Layout({ children }) {
   return (
     <ThemeProvider
       attribute="data-theme"
-      forcedTheme='makana'
+      forcedTheme='omnicell'
       enableSystem={false}
-      themes={[ 'makana' ]}
+      themes={[ 'omnicell' ]}
     >
       <LanggraphAgentRuntimeProvider
-        agentId='a0bbabff-36ab-5e80-87dc-c73cc0bf8840'
+        agentId='3655ccfb-4a31-5b7e-aeb4-f833a5776ac1'
       >
         <AuthGuard demo={settings.app_id} base_path={settings.base_path} />
         <SessionWarning demo={settings.app_id} base_path={settings.base_path} />

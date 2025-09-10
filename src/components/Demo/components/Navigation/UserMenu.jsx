@@ -2,6 +2,7 @@
 
 import { signIn, signOut } from "next-auth/react";
 import Link from 'next/link';
+import { useState } from 'react';
 
 import {
   Avatar,
@@ -69,20 +70,40 @@ export function UserMenu(props) {
 
 const Logout = (props) => {
   const { status } = props;
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState(null);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      setLogoutError(null);
+      await signOut('credentials', { redirect: false });
+    } catch (error) {
+      console.error('Logout error:', error);
+      setLogoutError('Failed to log out. Please try again.');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   if (status === 'success') {
     return (
       <DropdownMenuItem
         className='hover:cursor-pointer'
-        onClick={async () => await signOut('credentials', { redirect: false })}
+        onClick={handleLogout}
+        disabled={isLoggingOut}
       >
         <Button
           variant="ghost"
           className="h-min p-1"
+          disabled={isLoggingOut}
         >
-        Log out
+        {isLoggingOut ? 'Logging out...' : 'Log out'}
         </Button>
         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        {logoutError && (
+          <div className="text-xs text-red-500 mt-1">{logoutError}</div>
+        )}
       </DropdownMenuItem>
     )
   }

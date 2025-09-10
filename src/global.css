@@ -193,6 +193,57 @@
     --metrics-neutral: 280 70% 75%;
     --metrics-negative: 280 60% 33% ;
   }
+
+  /* Define variables for the 'omnicell' theme */
+[data-theme="omnicell"] {
+  /* Core Palette: White background, near-black text, and Omnicell greens */
+  --background: 222 47% 11%;                 /* Near Black / Dark Slate */
+  --foreground: 222 47% 11%;                /* Near Black / Dark Slate */
+
+  /* Layout & Navigation */
+  --demo-background: 222 47% 11%;          /* Light Gray for contrasting demos */
+  --nav-background: 222 47% 11%;            /* Near Black for left hand nav */
+  --logo-background: 0 0% 100%;             /* White for transparent logo files */
+  --icon-background: 131 41% 94%;           /* Very Light Green for icon backgrounds */
+  --login-card-background: 0 0% 100%;       /* White for login card */
+
+  /* Icons & Text Elements */
+  --nav-icons: 222 47% 11%;                 /* Near Black for left hand nav */
+  --ai-icons: 130 44% 50%;                  /* Omnicell Green for special icons */
+  --breadcrumbs: 215 16% 47%;               /* Mid Gray for breadcrumbs */
+
+  /* Component Palette */
+  --card: 0 0% 100%;                        /* White */
+  --card-foreground: 222 47% 11%;           /* Near Black */
+  --popover: 0 0% 100%;                     /* White */
+  --popover-foreground: 222 47% 11%;        /* Near Black */
+
+  /* Interactive Elements: Primary (Omnicell Green) */
+  --primary: 130 44% 50%;                   /* Omnicell Green (#46b557) */
+  --primary-foreground: 0 0% 100%;          /* White */
+
+  /* Interactive Elements: Secondary (Light Green & Dark Green) */
+  --secondary: 131 41% 94%;                 /* Very Light Mint Green */
+  --secondary-foreground: 120 95% 13%;      /* Omnicell Dark Green (#024002) */
+
+  /* Muted & Accent Elements */
+  --muted: 210 40% 96%;                     /* Light Gray */
+  --muted-foreground: 215 16% 47%;          /* Mid Gray */
+  --accent: 131 41% 94%;                    /* Using light mint green as accent */
+  --accent-foreground: 120 95% 13%;         /* Dark Green text on accent */
+
+  /* State Colors */
+  --destructive: 0 84% 60%;                 /* Standard Bright Red for errors */
+  --destructive-foreground: 0 0% 100%;      /* White */
+  --border: 214 32% 91%;                    /* Light Gray Border */
+  --input: 214 32% 91%;                     /* Light Gray Input Background */
+  --ring: 130 44% 50%;                      /* Omnicell Green for focus rings */
+
+  /* Custom Metrics/Dashboard Colors */
+  --metrics-positive: 130 44% 50%;          /* Omnicell Green */
+  --metrics-neutral: 38 92% 50%;            /* A neutral Amber/Gold */
+  --metrics-negative: 0 84% 60%;            /* Standard Bright Red */
+}
 } /* End of @layer base containing themes */
 
 @layer base {

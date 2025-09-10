@@ -4,27 +4,40 @@ import { useEffect } from 'react';
 import { signOut, signIn, useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from 'next/navigation';
+import { useSessionTimeout } from 'hooks';
 
 const killSession = async (queryClient, router, demo, base_path) => {
-  // Invalidate the useTableauSession query
-  await queryClient.invalidateQueries(
-    {
+  try {
+    // Invalidate all tableau-related queries
+    await queryClient.invalidateQueries({
       queryKey: ['tableau'],
       refetchType: 'none',
+    });
+
+    // Clear all cached data
+    await queryClient.clear();
+
+    if (demo === 'documentation') {
+      // sign the user out without redirecting to standard auth page
+      await signOut({ redirect: false });
+      await signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
+    } else {
+      const authUrl = `${base_path}/auth`;
+
+      // sign the user out without redirecting to standard auth page
+      await signOut({ redirect: false });
+      // redirect to local demo /auth page
+      router.push(authUrl);
     }
-  );
-
-  if (demo === 'documentation') {
-    // sign the user out without redirecting to standard auth page
-    signOut({ redirect: false, callbackUrl: '/' });
-    signIn('demo-user', { redirect: false, ID: 'a', demo: 'documentation' });
-  } else {
-    const authUrl = `${base_path}/auth`;
-
-    // sign the user out without redirecting to standard auth page
-    signOut({ redirect: false, callbackUrl: base_path });
-    // redirect to local demo /auth page
-    router.push(authUrl);
+  } catch (error) {
+    console.error('Error during session cleanup:', error);
+    // Force redirect even if cleanup fails
+    if (demo === 'documentation') {
+      router.push('/');
+    } else {
+      const authUrl = `${base_path}/auth`;
+      router.push(authUrl);
+    }
   }
 }
 
@@ -37,6 +50,9 @@ export const AuthGuard = (props) => {
 
   const signedIn = session_status === 'authenticated';
   const signedOut = session_status === 'unauthenticated';
+
+  // Use session timeout hook to handle automatic logout
+  useSessionTimeout(demo, base_path);
 
   useEffect(() => {
     if (signedOut) {

@@ -51,3 +51,4 @@ export { SessionProvider, VercelAgentRuntimeProvider, LanggraphAgentRuntimeProvi
 export { FloatingAssistant, Thread, Agent } from './Agent';
 
 export { AuthGuard } from './AuthGuard';
+export { SessionWarning } from './SessionWarning';

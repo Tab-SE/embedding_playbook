@@ -42,5 +42,14 @@ export const galleryItems = [
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
     icon: <HandCoins size={12} strokeWidth={2} />
+  },
+   {
+    id: 'omnicell',
+    link: "https://omnicell.vercel.app",
+    src: "/img/demos/omnicell_hero.png",
+    alt: "Omnicell | Medication Management",
+    vertical: "Financial Services",
+    description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
+    icon: <HandCoins size={12} strokeWidth={2} />
   }
 ]
