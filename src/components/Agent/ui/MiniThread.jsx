@@ -6,6 +6,7 @@ import {
   useMessage
 } from "@assistant-ui/react";
 import { SendHorizontalIcon } from "lucide-react";
+import { useRef, useEffect } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { TooltipIconButton, MarkdownText } from ".";
@@ -13,6 +14,7 @@ import { TooltipIconButton, MarkdownText } from ".";
 
 export const MiniThread = (props) => {
   const { ai_avatar, user_avatar, sample_questions = [] } = props;
+  const inputRef = useRef(null);
 
   return (
     (<ThreadPrimitive.Root className="bg-white h-full dark:bg-stone-950">
@@ -21,6 +23,7 @@ export const MiniThread = (props) => {
         <WelcomeMessage
           ai_avatar={ai_avatar}
           sample_questions={sample_questions}
+          inputRef={inputRef}
         />
 
         {/* <ThreadPrimitive.Messages
@@ -41,7 +44,7 @@ export const MiniThread = (props) => {
 
         <div
           className="sticky bottom-0 mt-3 flex w-full max-w-2xl flex-col items-center justify-end rounded-t-lg bg-inherit pb-4">
-          <MyComposer />
+          <MyComposer inputRef={inputRef} />
         </div>
       </ThreadPrimitive.Viewport>
     </ThreadPrimitive.Root>)
@@ -49,18 +52,38 @@ export const MiniThread = (props) => {
 };
 
 const WelcomeMessage = (props) => {
-  const { ai_avatar, sample_questions = [] } = props;
+  const { ai_avatar, sample_questions = [], inputRef } = props;
 
   const handleQuestionClick = (question) => {
-    // Find the input field and set its value
-    const inputElement = document.querySelector('textarea[placeholder="Write a message..."]');
-    if (inputElement) {
-      // Set the value
-      inputElement.value = question;
+    if (inputRef.current) {
+      // Set the value directly on the input element
+      inputRef.current.value = question;
       
-      // Trigger input event to update the state
-      const inputEvent = new Event('input', { bubbles: true });
-      inputElement.dispatchEvent(inputEvent);
+      // Create and dispatch a proper React synthetic event
+      const syntheticEvent = {
+        target: inputRef.current,
+        currentTarget: inputRef.current,
+        type: 'input',
+        bubbles: true,
+        cancelable: true,
+        defaultPrevented: false,
+        eventPhase: 2,
+        isTrusted: false,
+        nativeEvent: new Event('input', { bubbles: true }),
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        timeStamp: Date.now(),
+        type: 'input'
+      };
+      
+      // Trigger the input event
+      inputRef.current.dispatchEvent(new Event('input', { bubbles: true }));
+      
+      // Also trigger change event
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+      
+      // Focus the input to ensure it's active
+      inputRef.current.focus();
       
       // Find and click the send button
       const sendButton = document.querySelector('button[aria-label="Send"], button[title="Send"]');
@@ -79,7 +102,7 @@ const WelcomeMessage = (props) => {
           fallback='AI'
         />
         <p className="mt-4 font-medium">How can I help you with your analytics?</p>
-        
+
         {sample_questions.length > 0 && (
           <div className="mt-6 w-full max-w-md">
             <p className="text-sm text-gray-600 mb-3 text-center">Try asking:</p>
@@ -101,11 +124,14 @@ const WelcomeMessage = (props) => {
   );
 };
 
-const MyComposer = () => {
+const MyComposer = (props) => {
+  const { inputRef } = props;
+  
   return (
     (<ComposerPrimitive.Root
       className="focus-within:border-aui-ring/20 flex w-full flex-wrap items-end rounded-lg border border-stone-200 bg-inherit px-2.5 shadow-sm transition-colors ease-in dark:border-stone-800">
       <ComposerPrimitive.Input
+        ref={inputRef}
         autoFocus
         placeholder="Write a message..."
         rows={1}
