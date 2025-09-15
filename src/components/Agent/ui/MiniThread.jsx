@@ -51,6 +51,25 @@ export const MiniThread = (props) => {
 const WelcomeMessage = (props) => {
   const { ai_avatar, sample_questions = [] } = props;
 
+  const handleQuestionClick = (question) => {
+    // Find the input field and set its value
+    const inputElement = document.querySelector('textarea[placeholder="Write a message..."]');
+    if (inputElement) {
+      // Set the value
+      inputElement.value = question;
+      
+      // Trigger input event to update the state
+      const inputEvent = new Event('input', { bubbles: true });
+      inputElement.dispatchEvent(inputEvent);
+      
+      // Find and click the send button
+      const sendButton = document.querySelector('button[aria-label="Send"], button[title="Send"]');
+      if (sendButton) {
+        sendButton.click();
+      }
+    }
+  };
+
   return (
     (<ThreadPrimitive.Empty>
       <div className="flex flex-grow flex-col items-center justify-center">
@@ -69,10 +88,7 @@ const WelcomeMessage = (props) => {
                 <button
                   key={index}
                   className="w-full text-left p-3 text-sm bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors"
-                  onClick={() => {
-                    // This would need to be connected to the chat input
-                    console.log('Sample question clicked:', question);
-                  }}
+                  onClick={() => handleQuestionClick(question)}
                 >
                   {question}
                 </button>
