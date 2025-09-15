@@ -15,6 +15,14 @@ export const settings = {
   auth_hero: '/img/themes/cumulus/cumulus_hero.png',
   ai_chat: true,
   ai_avatar: '/img/themes/cumulus/cumulus-core-mid-logo-wealth-blue.png',
+  sample_questions: [
+    "What's our portfolio performance this quarter?",
+    "How are our client assets growing?",
+    "Show me risk analysis by investment type",
+    "What's our client retention rate?",
+    "Which investment strategies are most profitable?",
+    "How is our wealth management program performing?"
+  ],
   sections: [
     {
       name: 'Home',

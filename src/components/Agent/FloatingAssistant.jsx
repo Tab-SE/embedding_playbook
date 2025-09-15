@@ -38,6 +38,7 @@ export const FloatingAssistant = (props) => {
           <MiniThread
             ai_avatar={settings.ai_avatar}
             user_avatar={user.picture}
+            sample_questions={settings.sample_questions}
           /> : null
         }
       </AssistantModalPrimitive.Content>

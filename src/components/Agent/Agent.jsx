@@ -27,6 +27,7 @@ export const Agent = (props) => {
           <Thread
             ai_avatar={settings.ai_avatar}
             user_avatar={user.picture}
+            sample_questions={settings.sample_questions}
           /> : null
         }
       </div>

@@ -27,7 +27,7 @@ import { cn } from "utils";
 
 
 export const Thread = (props) => {
-  const { ai_avatar, user_avatar } = props;
+  const { ai_avatar, user_avatar, sample_questions = [] } = props;
 
   return (
     (<ThreadPrimitive.Root className="bg-white h-full dark:bg-stone-950">
@@ -35,6 +35,7 @@ export const Thread = (props) => {
         className="flex h-full flex-col items-center overflow-y-scroll scroll-smooth bg-inherit px-4 pt-3">
         <MyThreadWelcome
           ai_avatar={ai_avatar}
+          sample_questions={sample_questions}
         />
 
         <ThreadPrimitive.Messages
@@ -74,7 +75,7 @@ const MyThreadScrollToBottom = () => {
 };
 
 const MyThreadWelcome = (props) => {
-  const { ai_avatar } = props;
+  const { ai_avatar, sample_questions = [] } = props;
 
   return (
     (<ThreadPrimitive.Empty>
@@ -85,6 +86,26 @@ const MyThreadWelcome = (props) => {
           fallback='AI'
         />
         <p className="mt-4 font-medium">How can I help you with your analytics?</p>
+        
+        {sample_questions.length > 0 && (
+          <div className="mt-6 w-full max-w-md">
+            <p className="text-sm text-gray-600 mb-3 text-center">Try asking:</p>
+            <div className="space-y-2">
+              {sample_questions.slice(0, 3).map((question, index) => (
+                <button
+                  key={index}
+                  className="w-full text-left p-3 text-sm bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors"
+                  onClick={() => {
+                    // This would need to be connected to the chat input
+                    console.log('Sample question clicked:', question);
+                  }}
+                >
+                  {question}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </ThreadPrimitive.Empty>)
   );

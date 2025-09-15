@@ -14,6 +14,14 @@ export const settings = {
   auth_hero: 'https://images.unsplash.com/photo-1590859808308-3d2d9c515b1a?q=80&w=2948&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   ai_chat: true,
   ai_avatar: '/img/themes/superstore/superstore.png',
+  sample_questions: [
+    "What are our top-selling products this quarter?",
+    "How is sales performance by region?",
+    "Show me customer segment analysis",
+    "What's our profit margin by category?",
+    "Which products have the highest returns?",
+    "How are we performing against targets?"
+  ],
   sections: [
     {
       name: 'Home',

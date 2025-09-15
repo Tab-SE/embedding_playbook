@@ -14,6 +14,14 @@ export const settings = {
   auth_hero: 'https://images.unsplash.com/photo-1666886573301-b5d526cfd518?q=80&w=3072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   ai_chat: true,
   ai_avatar: '/img/themes/makana/makanaHealth_SmallLogo.png',
+  sample_questions: [
+    "What's our member satisfaction score this month?",
+    "How are claim processing times trending?",
+    "Show me member demographics by region",
+    "What's our average claim value by department?",
+    "Which procedures have the highest costs?",
+    "How is our mother-baby program performing?"
+  ],
   sections: [
     {
       name: 'Home',
