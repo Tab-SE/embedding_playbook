@@ -193,6 +193,41 @@
     --metrics-neutral: 280 70% 75%;
     --metrics-negative: 280 60% 33% ;
   }
+
+  /* Define variables for the 'southwest' theme (Southwest Airlines Blue & Yellow) */
+  [data-theme="southwest"] {
+    --background: 0 0% 100%; /* White */
+    --foreground: 227 58% 44%; /* Southwest Blue (#304CB2) */
+    --demo-background: 0 0% 100%; /* White background for demos */
+    --nav-background: 227 58% 44%; /* Southwest Blue for nav */
+    --logo-background: 0 0% 100%; /* White for logo background */
+    --icon-background: 42 100% 65%; /* Southwest Yellow (#FFCA4F) */
+    --login-card-background: 0 0% 100%; /* White for login cards */
+    --nav-icons: 0 0% 100%; /* White icons on blue nav */
+    --ai-icons: 42 100% 65%; /* Yellow for AI icons */
+    --breadcrumbs: 42 100% 65%; /* Yellow for breadcrumbs */
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 227 58% 44%; /* Southwest Blue text */
+    --popover: 0 0% 100%; /* White popovers */
+    --popover-foreground: 227 58% 44%; /* Southwest Blue text */
+    --primary: 227 58% 44%; /* Southwest Blue primary */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
+    --secondary: 42 100% 95%; /* Very Light Yellow */
+    --secondary-foreground: 227 58% 44%; /* Southwest Blue text */
+    --muted: 42 100% 98%; /* Almost White Yellow */
+    --muted-foreground: 227 30% 60%; /* Muted Southwest Blue */
+    --accent: 42 100% 85%; /* Light Yellow accent */
+    --accent-foreground: 227 58% 44%; /* Southwest Blue text */
+    --destructive: 0 70% 60%; /* Red for destructive actions */
+    --destructive-foreground: 0 0% 100%; /* White text */
+    --border: 42 100% 90%; /* Light Yellow border */
+    --input: 42 100% 95%; /* Very Light Yellow input */
+    --ring: 227 58% 44%; /* Southwest Blue ring */
+
+    --metrics-positive: 42 100% 65%; /* Southwest Yellow for positive metrics */
+    --metrics-neutral: 227 30% 60%; /* Muted Southwest Blue for neutral */
+    --metrics-negative: 0 70% 60%; /* Red for negative metrics */
+  }
 } /* End of @layer base containing themes */
 
 @layer base {

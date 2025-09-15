@@ -127,7 +127,7 @@ const MessageAvatar = (props) => {
   const { src, alt, fallback } = props;
 
   return (
-    <Avatar className="col-start-1 row-span-full row-start-1 mr-4">
+    <Avatar className="col-start-1 row-span-full row-start-1 mr-4 h-16 w-16">
       <AvatarImage src={src} alt={alt} />
       <AvatarFallback>{fallback}</AvatarFallback>
     </Avatar>

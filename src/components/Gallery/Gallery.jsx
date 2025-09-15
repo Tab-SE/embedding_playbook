@@ -56,7 +56,7 @@ export const Gallery = (props) => {
                     src={item.src}
                     alt={item.alt}
                     fill
-                    className="w-full object-cover"
+                    className={`w-full ${item.id === 'southwest' ? 'object-contain p-4' : 'object-cover'}`}
                   />
                 </CardContent>
               </Card>

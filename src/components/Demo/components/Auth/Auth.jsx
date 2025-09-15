@@ -14,7 +14,7 @@ export const description = "A login page with a full-screen background image and
 export const Auth = (props) => {
   const { settings } = props;
 
-  const { app_id, base_path, app_name, app_logo, auth_hero } = settings;
+  const { app_id, base_path, app_name, app_logo, auth_logo, auth_hero } = settings;
 
   const demoManager = new UserModel();
   const users = demoManager.getUsersForDemo(app_id);
@@ -39,10 +39,15 @@ export const Auth = (props) => {
         <Card className="mx-auto w-[480px] max-w-full shadow-lg backdrop-blur-sm loginBackground/95">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <Avatar className="flex items-center justify-center h-16 w-16 bg-logoBackground">
-                <AvatarImage src={app_logo} className="object-cover rounded-full" />
-                <AvatarFallback>APP</AvatarFallback>
-              </Avatar>
+              <div className="h-32 w-32 bg-logoBackground rounded-full flex items-center justify-center p-4">
+                <Image
+                  src={auth_logo || app_logo}
+                  alt="Southwest Airlines"
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                />
+              </div>
             </div>
             <CardTitle className="text-3xl font-bold">{app_name}</CardTitle>
             <CardDescription className="text-balance">Select a user to login</CardDescription>
