@@ -14,12 +14,12 @@ export default function App({
   const docs_settings = {
     ai_avatar: '/img/themes/superstore/superstore.png',
     sample_questions: [
-      "How do I embed Tableau dashboards?",
-      "What are the different embedding methods?",
-      "Show me examples of Tableau Public embeds",
-      "How do I authenticate with Tableau Server?",
-      "What are the best practices for embedding?",
-      "How do I customize the Tableau toolbar?"
+      "What are our top-selling products this quarter?",
+      "How is sales performance by region?",
+      "Show me customer segment analysis",
+      "What's our profit margin by category?",
+      "Which products have the highest returns?",
+      "How are we performing against targets?"
     ]
   };
 
