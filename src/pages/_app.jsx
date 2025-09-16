@@ -12,7 +12,15 @@ export default function App({
 }) {
 
   const docs_settings = {
-    ai_avatar: '/img/themes/superstore/superstore.png'
+    ai_avatar: '/img/themes/superstore/superstore.png',
+    sample_questions: [
+      "How do I embed Tableau dashboards?",
+      "What are the different embedding methods?",
+      "Show me examples of Tableau Public embeds",
+      "How do I authenticate with Tableau Server?",
+      "What are the best practices for embedding?",
+      "How do I customize the Tableau toolbar?"
+    ]
   };
 
   // This file imports global CSS and defines providers wrapping the App component
