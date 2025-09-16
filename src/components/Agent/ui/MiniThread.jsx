@@ -55,41 +55,24 @@ const WelcomeMessage = (props) => {
   const { ai_avatar, sample_questions = [], inputRef } = props;
 
   const handleQuestionClick = (question) => {
-    if (inputRef.current) {
-      // Set the value directly on the input element
-      inputRef.current.value = question;
-      
-      // Create and dispatch a proper React synthetic event
-      const syntheticEvent = {
-        target: inputRef.current,
-        currentTarget: inputRef.current,
-        type: 'input',
-        bubbles: true,
-        cancelable: true,
-        defaultPrevented: false,
-        eventPhase: 2,
-        isTrusted: false,
-        nativeEvent: new Event('input', { bubbles: true }),
-        preventDefault: () => {},
-        stopPropagation: () => {},
-        timeStamp: Date.now(),
-        type: 'input'
-      };
-      
-      // Trigger the input event
-      inputRef.current.dispatchEvent(new Event('input', { bubbles: true }));
-      
-      // Also trigger change event
-      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
-      
-      // Focus the input to ensure it's active
-      inputRef.current.focus();
-      
-      // Find and click the send button
-      const sendButton = document.querySelector('button[aria-label="Send"], button[title="Send"]');
-      if (sendButton) {
-        sendButton.click();
-      }
+    const inputElement = inputRef.current || document.querySelector('textarea[placeholder="Write a message..."]');
+
+    if (inputElement) {
+      // Use the native setter to ensure React detects the change
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLTextAreaElement.prototype,
+        'value'
+      ).set;
+      nativeInputValueSetter.call(inputElement, question);
+
+      // Dispatch an input event to trigger React's onChange
+      const inputEvent = new Event('input', { bubbles: true });
+      inputElement.dispatchEvent(inputEvent);
+
+      // Focus the input
+      inputElement.focus();
+
+      // Now the input should recognize the text and allow Enter to send
     }
   };
 
@@ -126,7 +109,7 @@ const WelcomeMessage = (props) => {
 
 const MyComposer = (props) => {
   const { inputRef } = props;
-  
+
   return (
     (<ComposerPrimitive.Root
       className="focus-within:border-aui-ring/20 flex w-full flex-wrap items-end rounded-lg border border-stone-200 bg-inherit px-2.5 shadow-sm transition-colors ease-in dark:border-stone-800">
