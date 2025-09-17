@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
 
 import '../global.css';
-import { SessionProvider, VercelAgentRuntimeProvider, AuthGuard, FloatingAssistant } from '@/components';
+import { SessionProvider, LanggraphAgentRuntimeProvider, AuthGuard, FloatingAssistant } from '@/components';
 
 export default function App({
   Component,
@@ -44,13 +44,15 @@ export default function App({
             enableSystem={false}
             themes={[ 'light' ]}
           >
-            <VercelAgentRuntimeProvider>
+            <LanggraphAgentRuntimeProvider
+              agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
+            >
               <AuthGuard demo={'documentation'} base_path={'/'} />
               <Component {...pageProps} />
               <FloatingAssistant
                 settings={docs_settings}
               />
-            </VercelAgentRuntimeProvider>
+            </LanggraphAgentRuntimeProvider>
           </ThemeProvider>
       </QueryClientProvider>
     </SessionProvider>
