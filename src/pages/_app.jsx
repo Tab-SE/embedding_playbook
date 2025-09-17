@@ -4,14 +4,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
 
 import '../global.css';
-import { SessionProvider, LanggraphAgentRuntimeProvider, AuthGuard, FloatingAssistant } from '@/components';
+import { SessionProvider, FloatingAssistant } from '@/components';
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
 
-  const docs_settings = {
+  const homepage_settings = {
     ai_avatar: '/img/themes/superstore/superstore.png',
     sample_questions: [
       "What are our top-selling products this quarter?",
@@ -38,22 +38,10 @@ export default function App({
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
-          <ThemeProvider
-            attribute="data-theme"
-            forcedTheme='light'
-            enableSystem={false}
-            themes={[ 'light' ]}
-          >
-            <LanggraphAgentRuntimeProvider
-              agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
-            >
-              <AuthGuard demo={'documentation'} base_path={'/'} />
-              <Component {...pageProps} />
-              <FloatingAssistant
-                settings={docs_settings}
-              />
-            </LanggraphAgentRuntimeProvider>
-          </ThemeProvider>
+        <Component {...pageProps} />
+        <FloatingAssistant
+          settings={homepage_settings}
+        />
       </QueryClientProvider>
     </SessionProvider>
   )
