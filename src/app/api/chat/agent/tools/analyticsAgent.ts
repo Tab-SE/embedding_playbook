@@ -12,58 +12,74 @@ const client = new Client({
   apiUrl: process.env.LANGGRAPH_API_URL || 'http://localhost:8123'
 });
 
-export const analyticsAgent = new DynamicTool({
-  name: "analytics_agent",
-  description: `AI Analyst performing ad-hoc analysis. Prioritize this tool for analytics and data queries.
-  Describe the user query thoroughly in natural language. You can ask for relative dates such as last week,
-  3 days ago, current year, previous 3 quarters or specific dates like March 12 1980
+// Map demo names to their corresponding agent IDs
+const getAgentIdForDemo = (demo: string): string => {
+  const agentIdMap: { [key: string]: string } = {
+    'superstore': 'a585b681-26dd-5c0a-b77f-47a0e69b1bbd',
+    'makana': 'a0bbabff-36ab-5e80-87dc-c73cc0bf8840',
+    'cumulus': '730bfbd6-9543-5e48-9f2b-bcb009fbb33e',
+    'documentation': 'a585b681-26dd-5c0a-b77f-47a0e69b1bbd' // fallback to superstore for documentation
+  };
 
-  Data Fetching:
-  User: show me the total sales, profits and average discount by region and category
-  Input: 'the user wants to see total sales, profits and average discount broken down by region and category
+  return agentIdMap[demo] || agentIdMap['documentation'];
+};
 
-  User: what were conects and disconnects for jan 15th 2025?
-  Input: 'the user wants to see connects & disconnects for January 15 2025'
+export const analyticsAgent = (demo: string = 'documentation') => {
+  const agentId = getAgentIdForDemo(demo);
 
-  Analysis:
-  User: why is the home office category not doing well?
-  Agent: 'can you clarify what you mean by not doing well? does that mean with regards to sales or profits?'
-  User: yes this category is the least profitable
-  Input: 'the user wants to understand why the home office category is not profitable, look at sales, orders and other data to understand the issue'`,
-  func: async (input) => {
-    try {
-      const streamResponse = client.runs.stream(
-        null, // threadId
-        "a585b681-26dd-5c0a-b77f-47a0e69b1bbd", // assistantId
-        {
-          input: {
-            messages: [{ role: "assistant", content: input }]
+  return new DynamicTool({
+    name: "analytics_agent",
+    description: `AI Analyst performing ad-hoc analysis. Prioritize this tool for analytics and data queries.
+    Describe the user query thoroughly in natural language. You can ask for relative dates such as last week,
+    3 days ago, current year, previous 3 quarters or specific dates like March 12 1980
+
+    Data Fetching:
+    User: show me the total sales, profits and average discount by region and category
+    Input: 'the user wants to see total sales, profits and average discount broken down by region and category
+
+    User: what were conects and disconnects for jan 15th 2025?
+    Input: 'the user wants to see connects & disconnects for January 15 2025'
+
+    Analysis:
+    User: why is the home office category not doing well?
+    Agent: 'can you clarify what you mean by not doing well? does that mean with regards to sales or profits?'
+    User: yes this category is the least profitable
+    Input: 'the user wants to understand why the home office category is not profitable, look at sales, orders and other data to understand the issue'`,
+    func: async (input) => {
+      try {
+        const streamResponse = client.runs.stream(
+          null, // threadId
+          agentId, // Use the demo-specific agent ID
+          {
+            input: {
+              messages: [{ role: "assistant", content: input }]
+            }
           }
+        );
+
+        let chunks: StreamChunk[] = [];
+        for await (const chunk of streamResponse) {
+          chunks.push(chunk);
         }
-      );
 
-      let chunks: StreamChunk[] = [];
-      for await (const chunk of streamResponse) {
-        chunks.push(chunk);
-      }
-
-      // Process chunks in reverse order to find the last non-empty AI message
-      for (let i = chunks.length - 1; i >= 0; i--) {
-        const chunk = chunks[i];
-        if (chunk.event === 'values' && chunk.data && chunk.data.messages) {
-          for (let j = chunk.data.messages.length - 1; j >= 0; j--) {
-            const message = chunk.data.messages[j];
-            if (message.type === 'ai' && message.content && message.content.trim() !== '') {
-              return message.content;
+        // Process chunks in reverse order to find the last non-empty AI message
+        for (let i = chunks.length - 1; i >= 0; i--) {
+          const chunk = chunks[i];
+          if (chunk.event === 'values' && chunk.data && chunk.data.messages) {
+            for (let j = chunk.data.messages.length - 1; j >= 0; j--) {
+              const message = chunk.data.messages[j];
+              if (message.type === 'ai' && message.content && message.content.trim() !== '') {
+                return message.content;
+              }
             }
           }
         }
-      }
 
-      return "No valid response found from the Analytics Agent.";
-    } catch (error) {
-      console.error('Error communicating with Analytics Agent:', error);
-      return 'Failed to communicate with Analytics Agent';
+        return "No valid response found from the Analytics Agent.";
+      } catch (error) {
+        console.error('Error communicating with Analytics Agent:', error);
+        return 'Failed to communicate with Analytics Agent';
+      }
     }
-  }
-});
+  });
+};

@@ -1,2 +1,1 @@
-export { initializeRetrievers } from "./retrievers";
-export { analyticsAgent  } from "./analyticsAgent";
+export { analyticsAgent } from "./analyticsAgent.ts";

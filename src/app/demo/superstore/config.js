@@ -15,12 +15,9 @@ export const settings = {
   ai_chat: true,
   ai_avatar: '/img/themes/superstore/superstore.png',
   sample_questions: [
-    "What are our top-selling products this quarter?",
-    "How is sales performance by region?",
-    "Show me customer segment analysis",
+    "What are the total sales across each region?",
     "What's our profit margin by category?",
-    "Which products have the highest returns?",
-    "How are we performing against targets?"
+    "List the Datasources",
   ],
   sections: [
     {

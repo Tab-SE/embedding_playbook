@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Message as VercelChatMessage, LangChainAdapter } from "ai";
+import { getToken } from "next-auth/jwt";
 
 import { bootstrapAgent } from "./agent";
 import { convertVercelMessageToLangChainMessage, convertLangChainMessageToVercelMessage } from "./utils";
@@ -17,6 +18,11 @@ export const runtime = "edge";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
+    // Get user session to determine demo context
+    const token = await getToken({ req });
+    const demo = (token?.demo as string) || 'documentation';
+
     /**
      * We represent intermediate steps as system messages for display purposes,
      * but don't want them in the chat history.
@@ -29,7 +35,7 @@ export async function POST(req: NextRequest) {
       .map(convertVercelMessageToLangChainMessage);
     const returnIntermediateSteps = body.show_intermediate_steps;
 
-    const agent = await bootstrapAgent();
+    const agent = await bootstrapAgent(demo);
 
     if (!returnIntermediateSteps) {
       /**

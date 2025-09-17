@@ -27,7 +27,7 @@ export const Head = (props) => {
       <meta name="twitter:image" content={previewImage} alt="embed tableau preview" />
       <meta name="twitter:site:domain" content={url} />
       <meta name="twitter:url" content={url} />
-      
+
       <meta name="apple-mobile-web-app-title" content={formattedTitle} />
 
       <link rel="canonical" href={url} />

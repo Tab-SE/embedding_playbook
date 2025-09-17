@@ -89,7 +89,7 @@ export const Users = [
         email: "rmorris@makana.com",
         picture: "/img/users/rachel_morris.png",
         role: 0,
-        vector_store: 'superstore_rmorris',
+        vector_store: 'makana_rmorris',
         uaf: {}
       },
       {
@@ -98,7 +98,7 @@ export const Users = [
         email: "dpatel@makana.com",
         picture: "/img/users/debi_patel.png",
         role: 1,
-        vector_store: 'superstore_dpatel',
+        vector_store: 'makana_dpatel',
         uaf: {}
       },
       {
@@ -107,7 +107,7 @@ export const Users = [
         email: "mwells@makana.com",
         picture: "/img/users/matthew_wells.png",
         role: 2,
-        vector_store: 'superstore_mwells',
+        vector_store: 'makana_mwells',
         uaf: {}
       },
     ]
