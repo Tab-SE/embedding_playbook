@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
 
 import '../global.css';
-import { SessionProvider, FloatingAssistant } from '@/components';
+import { SessionProvider, LanggraphAgentRuntimeProvider, AuthGuard, FloatingAssistant } from '@/components';
 
 export default function App({
   Component,
@@ -38,10 +38,22 @@ export default function App({
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
-        <Component {...pageProps} />
-        <FloatingAssistant
-          settings={homepage_settings}
-        />
+        <ThemeProvider
+          attribute="data-theme"
+          forcedTheme='superstore'
+          enableSystem={false}
+          themes={[ 'superstore' ]}
+        >
+          <LanggraphAgentRuntimeProvider
+            agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
+          >
+            <AuthGuard demo={'superstore'} base_path={'/'} />
+            <Component {...pageProps} />
+            <FloatingAssistant
+              settings={homepage_settings}
+            />
+          </LanggraphAgentRuntimeProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </SessionProvider>
   )
