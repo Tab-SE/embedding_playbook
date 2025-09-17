@@ -47,7 +47,7 @@ export default function App({
           <LanggraphAgentRuntimeProvider
             agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
           >
-            <AuthGuard demo={'superstore'} base_path={'/'} />
+            <AuthGuard demo={'documentation'} base_path={'/'} />
             <Component {...pageProps} />
             <FloatingAssistant
               settings={homepage_settings}
