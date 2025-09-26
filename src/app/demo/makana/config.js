@@ -15,12 +15,9 @@ export const settings = {
   ai_chat: true,
   ai_avatar: '/img/themes/makana/makanaHealth_SmallLogo.png',
   sample_questions: [
-    "What's our member satisfaction score this month?",
-    "How are claim processing times trending?",
-    "Show me member demographics by region",
-    "What's our average claim value by department?",
-    "Which procedures have the highest costs?",
-    "How is our mother-baby program performing?"
+    "What are the top three reasons for claim denials, and how do they vary by provider?",
+    "How does the average processing time for claims correlate with the type of plan and denial rates?",
+    "How do sales trends for specific products vary over time, and what factors contribute to these trends?",
   ],
   sections: [
     {

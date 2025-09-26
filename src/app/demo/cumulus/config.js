@@ -16,12 +16,9 @@ export const settings = {
   ai_chat: true,
   ai_avatar: '/img/themes/cumulus/cumulus-core-mid-logo-wealth-blue.png',
   sample_questions: [
-    "What's our portfolio performance this quarter?",
-    "How are our client assets growing?",
-    "Show me risk analysis by investment type",
-    "What's our client retention rate?",
-    "Which investment strategies are most profitable?",
-    "How is our wealth management program performing?"
+    "What's the AUM by client segment?",
+    "Which advisors have the highest client retention rates?",
+    "What are the NPS scores by market segment?"
   ],
   sections: [
     {
