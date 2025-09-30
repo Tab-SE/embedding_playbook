@@ -81,7 +81,6 @@ export const Users = [
       0: { title: 'Support', description: 'Basic billing support access'},
       1: { title: 'Account Manager', description: 'Customer account management'},
       2: { title: 'Business Analyst', description: 'Full analytics access'},
-      3: { title: 'Network Admin', description: 'Complete system access'},
     },
     users: [
       {
@@ -116,7 +115,7 @@ export const Users = [
         name: "Taylor Washington",
         email: "taylor.washington@tmobile.com",
         picture: "/img/users/tawnia_williams.png",
-        role: 3,
+        role: 2,
         vector_store: 'tmobile_twashington',
         uaf: {"BusinessSegment": ["Enterprise"]}
       },
