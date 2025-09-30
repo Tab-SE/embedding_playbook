@@ -1,10 +1,16 @@
 import { httpPost } from 'utils';
+import { mockInsights } from './mock';
 
 const tableau_domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN; // URL for Tableau environment
 const pulse_path = '/api/-/pulse'; // path to resource
 
 // returns stringified payload to form responses
 export const makePayload = async (rest_key, metric) => {
+  // For T-Mobile demo, use mock insights with correct sentiment colors
+  if (metric && metric.id && mockInsights[metric.id]) {
+    return mockInsights[metric.id];
+  }
+
   if (rest_key && metric) {
     let bundle;
     try {

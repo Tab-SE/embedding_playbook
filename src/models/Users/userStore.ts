@@ -76,6 +76,53 @@ export const Users = [
     ]
   },
   {
+    demo: 'tmobile',
+    roles: {
+      0: { title: 'Support', description: 'Basic billing support access'},
+      1: { title: 'Account Manager', description: 'Customer account management'},
+      2: { title: 'Business Analyst', description: 'Full analytics access'},
+      3: { title: 'Network Admin', description: 'Complete system access'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Alex Johnson",
+        email: "alex.johnson@tmobile.com",
+        picture: "/img/users/richard_bennet.png",
+        role: 0,
+        vector_store: 'tmobile_ajohnson',
+        uaf: {"BusinessSegment": ["SMB"]}
+      },
+      {
+        id: 'b',
+        name: "Sarah Martinez",
+        email: "sarah.martinez@tmobile.com",
+        picture: "/img/users/sofia_lopez.png",
+        role: 1,
+        vector_store: 'tmobile_smartinez',
+        uaf: {"BusinessSegment": ["SMB", "Mid-Market"]}
+      },
+      {
+        id: 'c',
+        name: "Michael Kim",
+        email: "michael.kim@tmobile.com",
+        picture: "/img/users/justin_chen.png",
+        role: 2,
+        vector_store: 'tmobile_mkim',
+        uaf: {"BusinessSegment": ["Mid-Market", "Enterprise"]}
+      },
+      {
+        id: 'd',
+        name: "Taylor Washington",
+        email: "taylor.washington@tmobile.com",
+        picture: "/img/users/tawnia_williams.png",
+        role: 3,
+        vector_store: 'tmobile_twashington',
+        uaf: {"BusinessSegment": ["Enterprise"]}
+      },
+    ]
+  },
+  {
     demo: 'makana',
     roles: {
       0: { title: 'Hobby', description: 'Basic data & analytics'},

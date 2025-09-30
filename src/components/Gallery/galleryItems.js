@@ -2,7 +2,8 @@ import {
   BriefcaseBusiness,
   ShoppingCart,
   HandCoins,
-  HeartPulse
+  HeartPulse,
+  Signal
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -24,6 +25,15 @@ export const galleryItems = [
     vertical: "Healthcare & Life Sciences",
     description: "A healthcare payer portal app that helps users make data-driven decisions related to claims, costs, utilization, and quality measures to improve patient outcomes",
     icon: <HeartPulse size={12} strokeWidth={2} />
+  },
+  {
+    id: 'tmobile',
+    link: "/demo/tmobile",
+    src: "/img/demos/tmosmall.svg",
+    alt: "T-Mobile | Business Portal",
+    vertical: "Telecommunications",
+    description: "A B2B telecom portal that helps businesses manage billing, connectivity solutions, and network performance for SMB to Enterprise customers",
+    icon: <Signal size={12} strokeWidth={2} />
   },
   // {
   //   id: 'pacifica',

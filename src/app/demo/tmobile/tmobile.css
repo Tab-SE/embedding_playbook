@@ -1,0 +1,32 @@
+/* T-Mobile specific styles */
+
+/* Navigation icon hover effect */
+[data-theme="tmobile"] .nav-link svg {
+  color: hsl(var(--nav-icons));
+  transition: color 0.2s ease-in-out;
+}
+
+[data-theme="tmobile"] .nav-link:hover svg,
+[data-theme="tmobile"] .nav-link.active svg {
+  color: hsl(var(--nav-icons-hover));
+}
+
+/* Make sure the active link has magenta text */
+[data-theme="tmobile"] .nav-link.active {
+  color: hsl(var(--nav-icons-hover));
+}
+
+/* Add a magenta border to the active link */
+[data-theme="tmobile"] .nav-link.active::before {
+  background-color: hsl(var(--nav-icons-hover));
+}
+
+/* Ensure text elements use the correct magenta color where needed */
+[data-theme="tmobile"] .text-primary {
+  color: hsl(var(--primary));
+}
+
+/* Make sure buttons have the correct magenta background */
+[data-theme="tmobile"] .bg-primary {
+  background-color: hsl(var(--primary));
+}
