@@ -3,7 +3,6 @@ import {
   Signal,
   Receipt,
   Building2,
-  Network,
   BrainCircuit,
   MessageSquare
 } from "lucide-react";
@@ -56,13 +55,6 @@ export const settings = {
       path: '/customers',
       min_role: 3,
       description: 'manage business accounts and analyze customer segments'
-    },
-    {
-      name: 'Network',
-      icon: <Network className="h-5 w-5"/>,
-      path: '/network',
-      min_role: 3,
-      description: 'analyze network coverage and performance metrics'
     },
     {
       name: 'Support',

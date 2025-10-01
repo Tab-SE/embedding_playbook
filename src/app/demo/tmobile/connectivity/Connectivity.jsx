@@ -124,17 +124,17 @@ export const Connectivity = () => {
           </CardHeader>
           <CardContent className="pl-2">
             <TableauEmbed
-              src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/TowerMonitoring-West/NetworkPerformance'
+              src='https://public.tableau.com/views/4GNetworkPerformance/4GPerformanceDashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
               hideTabs={true}
               toolbar='hidden'
-              isPublic={false}
+              isPublic={true}
               className='
               min-w-[300px] min-h-[400px]
               sm:min-w-[350px] sm:min-h-[450px]
               md:min-w-[400px] md:min-h-[500px]
               lg:min-w-[450px] lg:min-h-[550px]
-              xl:min-w-[500px] xl:min-h-[600px]
-              2xl:min-w-[550px] 2xl:min-h-[650px]
+              xl:min-w-[700px] xl:min-h-[600px]
+              2xl:min-w-[900px] 2xl:min-h-[700px]
               '
               layouts = {{
                 'xs': { 'device': 'phone' },
@@ -156,17 +156,17 @@ export const Connectivity = () => {
           </CardHeader>
           <CardContent>
             <TableauEmbed
-              src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/TowerMonitoring-West/ConnectivitySolutions'
+              src='https://public.tableau.com/views/TradeConnectivityHeatmap/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
               hideTabs={true}
               toolbar='hidden'
-              isPublic={false}
+              isPublic={true}
               className='
               min-w-[300px] min-h-[400px]
               sm:min-w-[300px] sm:min-h-[400px]
               md:min-w-[350px] md:min-h-[450px]
               lg:min-w-[400px] lg:min-h-[500px]
               xl:min-w-[450px] xl:min-h-[550px]
-              2xl:min-w-[500px] 2xl:min-h-[600px]
+              2xl:min-w-[650px] 2xl:min-h-[700px]
               '
               layouts = {{
                 'xs': { 'device': 'phone' },

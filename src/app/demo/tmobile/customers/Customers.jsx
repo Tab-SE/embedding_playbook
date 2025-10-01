@@ -89,59 +89,38 @@ export const Customers = () => {
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4 dark:bg-stone-900 shadow-xl">
-          <CardHeader>
-            <CardTitle>Customer Segments</CardTitle>
-            <CardDescription>
-              Analysis of business customer segments and their performance
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <TableauEmbed
-              src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/BusinessCustomers/CustomerSegments'
-              hideTabs={true}
-              toolbar='hidden'
-              isPublic={false}
-              className='
-              min-w-[300px] min-h-[400px]
-              sm:min-w-[350px] sm:min-h-[450px]
-              md:min-w-[400px] md:min-h-[500px]
-              lg:min-w-[450px] lg:min-h-[550px]
-              xl:min-w-[500px] xl:min-h-[600px]
-              2xl:min-w-[550px] 2xl:min-h-[650px]
-              '
-              layouts = {{
-                'xs': { 'device': 'phone' },
-                'sm': { 'device': 'phone' },
-                'md': { 'device': 'phone' },
-                'lg': { 'device': 'tablet' },
-                'xl': { 'device': 'tablet' },
-                'xl2': { 'device': 'desktop' }
-              }}
-            />
-          </CardContent>
-        </Card>
-        <Card className="col-span-3 dark:bg-stone-900 shadow-xl">
-          <CardHeader>
-            <CardTitle>Top Business Customers</CardTitle>
-            <CardDescription>
-              Key accounts by revenue and service utilization
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ProductsTable
-              title="Top Business Customers"
-              columns={[
-                { name: "Account", key: "name" },
-                { name: "Industry", key: "category" },
-                { name: "Lines", key: "stock" },
-                { name: "Monthly Revenue", key: "price" }
-              ]}
-            />
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="dark:bg-stone-900 shadow-xl">
+        <CardHeader>
+          <CardTitle>Customer Segments</CardTitle>
+          <CardDescription>
+            Analysis of business customer segments and their performance
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pl-1">
+          <TableauEmbed
+            src='https://public.tableau.com/views/TelecomCustomerChurnDashboardRegionalOverview/REGIONAL?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
+            hideTabs={true}
+            toolbar='hidden'
+            isPublic={true}
+            className='
+            min-w-[500px] min-h-[600px]
+            sm:min-w-[600px] sm:min-h-[700px]
+            md:min-w-[800px] md:min-h-[800px]
+            lg:min-w-[1000px] lg:min-h-[900px]
+            xl:min-w-[1200px] xl:min-h-[1000px]
+            2xl:min-w-[1500px] 2xl:min-h-[1100px]
+            '
+            layouts = {{
+              'xs': { 'device': 'phone' },
+              'sm': { 'device': 'phone' },
+              'md': { 'device': 'tablet' },
+              'lg': { 'device': 'desktop' },
+              'xl': { 'device': 'desktop' },
+              'xl2': { 'device': 'desktop' }
+            }}
+          />
+        </CardContent>
+      </Card>
     </div>
   )
 }
