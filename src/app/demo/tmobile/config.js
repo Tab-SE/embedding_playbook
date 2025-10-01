@@ -17,9 +17,9 @@ export const settings = {
   ai_chat: true,
   ai_avatar: '/img/themes/tmobile/tmosmall.svg',
   sample_questions: [
-    "What are the top billing issues reported by enterprise customers?",
-    "How does data usage vary across different business segments?",
-    "What's the average resolution time for billing inquiries?",
+    "Show me customer segment analysis",
+    "How is sales performance by region?",
+    "What are our top-selling products this quarter?",
   ],
   sections: [
     {
