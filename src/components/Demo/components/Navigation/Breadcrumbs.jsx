@@ -7,13 +7,15 @@ import {
   BreadcrumbSeparator
 } from 'components/ui';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { generateBreadcrumbs } from '../../utils';
 
 export const Breadcrumbs = (props) => {
   const {
     base_path,
-    crumbs
+    crumbs,
+    app_logo
   } = props;
 
   const breadcrumbItems = generateBreadcrumbs(base_path, crumbs);
@@ -25,8 +27,18 @@ export const Breadcrumbs = (props) => {
           <React.Fragment key={index}>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href={item.href} className="text-breadcrumbs">
-                  {item.title}
+                <Link href={item.href} className="text-breadcrumbs flex items-center gap-2">
+                  {index === 0 && app_logo ? (
+                    <Image
+                      src={app_logo}
+                      alt={item.title}
+                      width={48}
+                      height={48}
+                      className="h-12 w-auto"
+                    />
+                  ) : (
+                    item.title
+                  )}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>

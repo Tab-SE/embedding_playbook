@@ -19,7 +19,7 @@ export const Home = () => {
           basis='sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5'
         />
         <div className="grid gap-4 md:gap-8">
-          <Card className='dark:bg-stone-900 shadow-xl'>
+          <Card className='bg-slate-800 shadow-xl'>
             <CardHeader>
               <CardTitle>Care Programs</CardTitle>
               <CardDescription>Centralizes patient care programs, goals, and tasks for streamlined management. It features key metrics and visual summaries of care plan performance alongside detailed lists of recent patient activities. Designed to help care teams monitor progress and coordinate effective, goal-driven care.</CardDescription>
@@ -29,22 +29,9 @@ export const Home = () => {
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/MakanaHealthCarePlanPerformance1/CarePlanPerformanceSummary'
                 hideTabs={true}
                 toolbar='hidden'
-                className='
-                min-w-[1300px] min-h-[800px]
-                sm:min-w-[1300px] sm:min-h-[800px]
-                md:min-w-[1300px] md:min-h-[800px]
-                lg:min-w-[1300px] lg:min-h-[800px]
-                xl:min-w-[1300px] xl:min-h-[800px]
-                2xl:min-w-[1300px] 2xl:min-h-[800px]
-                '
-                layouts = {{
-                  'xs': { 'device': 'phone' },
-                  'sm': { 'device': 'default' },
-                  'md': { 'device': 'default' },
-                  'lg': { 'device': 'default' },
-                  'xl': { 'device': 'default' },
-                  'xl2': { 'device': 'default' },
-                }}
+                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                width='100%'
+                height='100%'
               />
             </CardContent>
           </Card>
