@@ -42,6 +42,9 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     embed_token = user.embed_token;
   }
 
+  // Check if Mike is logged in
+  const isMikeLoggedIn = isSessionSuccess && user?.email === 'mchen@veriforce.com';
+
   // For public URLs, render immediately without authentication
   if (isPublicTableauUrl) {
     return (
@@ -54,7 +57,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
         hide-tabs={hideTabs ? true : false}
         toolbar={toolbar}
         isPublic={isPublic}
-        customToolbar={customToolbar}
+        customToolbar={customToolbar && !isMikeLoggedIn}
         height={height}
         width={width}
       />
@@ -75,7 +78,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
         hide-tabs={hideTabs ? true : false}
         toolbar={toolbar}
         isPublic={isPublic}
-        customToolbar={customToolbar}
+        customToolbar={customToolbar && !isMikeLoggedIn}
         height={height}
         width={width}
       /> :

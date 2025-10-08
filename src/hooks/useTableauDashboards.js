@@ -115,7 +115,7 @@ export const useTableauDashboards = () => {
     } else {
       console.log('⏸️ User not authenticated yet, waiting...');
     }
-  }, [fetchWorkbooksViaREST]);
+  }, [fetchWorkbooksViaREST, user?.user_id, user?.site_id, user?.rest_key]);
 
   // Use the existing metadata hook to get workbooks and dashboards
   const {

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getToken } from "next-auth/jwt";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   try {
     // Get JWT token which contains the Tableau authentication data

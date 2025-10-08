@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Demo, FloatingAssistant } from '@/components';
 
 import { SafetyDashboard } from './SafetyDashboard';
@@ -11,7 +12,9 @@ const Page = () => {
       settings={settings}
       pageName={pageName}
     >
-      <SafetyDashboard/>
+      <Suspense fallback={<div className="flex items-center justify-center h-64 text-white">Loading...</div>}>
+        <SafetyDashboard/>
+      </Suspense>
       <FloatingAssistant
         settings={settings}
       />

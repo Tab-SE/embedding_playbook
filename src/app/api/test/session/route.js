@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]/options';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
   try {
     // Get the session to see if user is authenticated
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
 
     console.log('🔍 Test API - Session check:', {
       hasSession: !!session,

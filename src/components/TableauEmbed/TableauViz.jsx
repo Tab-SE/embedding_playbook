@@ -5,7 +5,6 @@ import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 import { tab_embed } from 'libs';
 
 import { TableauToolbar } from 'components';
-import { useTableauSession } from 'hooks';
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
@@ -22,13 +21,6 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     height,
     width
   } = props;
-
-  // Get user session data to check if Mike is logged in
-  const { data: user, isSuccess: isSessionSuccess } = useTableauSession();
-
-  // Check if Mike is logged in
-  const isMikeLoggedIn = isSessionSuccess && user?.email === 'mchen@veriforce.com';
-
   // creates a unique identifier for the embed
   const id = `id-${useId()}`;
   // to be used if parent did not forward a ref
@@ -74,7 +66,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
 
   return (
     <div>
-      {customToolbar && !isMikeLoggedIn ? <TableauToolbar src={src} ref={innerRef} /> : null}
+      {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
       <tableau-viz
         ref={innerRef}
         id="tableauViz"
