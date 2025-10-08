@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/options';
+import { authOptions } from '../../auth/[...nextauth]/options';
 
 export const dynamic = 'force-dynamic';
 
