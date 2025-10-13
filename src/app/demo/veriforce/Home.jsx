@@ -44,14 +44,14 @@ export const Home = () => {
 
 
         {/* Main Dashboard */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Compliance Overview */}
-          <div className="lg:col-span-2">
+        <div className="flex flex-col gap-6">
+          {/* Executive Summary */}
+          <div>
             <Card className="bg-slate-800 shadow-lg border-slate-700">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Shield className="h-5 w-5 text-blue-400" />
-                  Compliance Overview
+                  Compliance and Safety Executive Summary
                 </CardTitle>
                 <CardDescription className="text-slate-300">
                   Real-time compliance tracking across all contractors and safety metrics
@@ -59,11 +59,35 @@ export const Home = () => {
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
                 <TableauEmbed
-                  src='https://public.tableau.com/views/ConstructionDashboard_16557576575100/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV'
                   hideTabs={true}
                   toolbar='hidden'
-                  isPublic={true}
-                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                  isPublic={false}
+                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
+                  width='100%'
+                  height='100%'
+                />
+              </CardContent>
+            </Card>
+          </div>
+          {/* {Compliance Center} */}
+          <div>
+            <Card className="bg-slate-800 shadow-lg border-slate-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Shield className="h-5 w-5 text-blue-400" />
+                  Compliance Center
+                </CardTitle>
+                <CardDescription className="text-slate-300">
+                Contractor Compliance and Certification Status Overview                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
+                <TableauEmbed
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV'
+                  hideTabs={true}
+                  toolbar='hidden'
+                  isPublic={false}
+                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
                   width='100%'
                   height='100%'
                 />
@@ -72,9 +96,9 @@ export const Home = () => {
           </div>
 
           {/* Quick Actions & Alerts */}
-          <div className="space-y-6">
+          {/* <div className="space-y-6"> */}
             {/* Critical Alerts */}
-            <Card className="bg-slate-800 shadow-lg border-slate-700">
+            {/* <Card className="bg-slate-800 shadow-lg border-slate-700">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-400">
                   <AlertTriangle className="h-5 w-5" />
@@ -110,10 +134,10 @@ export const Home = () => {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Quick Actions */}
-            <Card className="bg-slate-800 shadow-lg border-slate-700">
+            {/* <Card className="bg-slate-800 shadow-lg border-slate-700">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <TrendingUp className="h-5 w-5 text-blue-400" />
@@ -138,8 +162,8 @@ export const Home = () => {
                   <p className="text-xs text-slate-300">Use self-service tools</p>
                 </button>
               </CardContent>
-            </Card>
-          </div>
+            </Card> */}
+          {/* </div> */}
         </div>
       </main>
     </div>

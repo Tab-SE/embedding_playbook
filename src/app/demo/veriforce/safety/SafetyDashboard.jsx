@@ -97,7 +97,7 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Header with Navigation Toggle */}
-      <div className="bg-slate-800 border-b border-slate-700 p-4 flex-shrink-0">
+      <div className="bg-slate-800 border-b border-slate-700 p-4 flex-shrink-0 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
@@ -120,7 +120,7 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
       </div>
 
       {/* Main Dashboard Area */}
-      <div className="flex-1 overflow-auto p-0 xs:p-6">
+      <div className="flex-1 overflow-auto p-0 xs:p-6 scroll-smooth">
         {selectedDashboard ? (
           <DynamicDashboardViewer
             selectedDashboard={selectedDashboard}
@@ -128,70 +128,71 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
             siteId={siteId}
           />
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
-            {/* Main Visualizations - 2/3 width on large screens */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Safety Overview */}
-              <Card className="bg-slate-800 border-slate-700 overflow-hidden flex flex-col">
-                <CardHeader className="bg-slate-800 border-b border-slate-700">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <CardTitle className="text-white">Safety Overview</CardTitle>
-                      <CardDescription className="text-slate-400">Regional safety metrics and compliance status</CardDescription>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Main Visualizations - 2/3 width on large screens */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Safety Overview */}
+                <Card id="safety-overview" className="bg-slate-800 border-slate-700 overflow-hidden flex flex-col scroll-mt-6">
+                  <CardHeader className="bg-slate-800 border-b border-slate-700">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <CardTitle className="text-white">Safety Overview</CardTitle>
+                        <CardDescription className="text-slate-400">Regional safety metrics and compliance status</CardDescription>
+                      </div>
+                      <Button variant="outline" className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600">
+                        Export Report
+                      </Button>
                     </div>
-                    <Button variant="outline" className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600">
-                      Export Report
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">
-                  <TableauEmbed
-                    src='https://public.tableau.com/views/RegionalSampleWorkbook/Storms?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
-                    hideTabs={true}
-                    toolbar='hidden'
-                    isPublic={true}
-                    className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[850px] 2xl:h-[700px]'
-                    width='90%'
-                    height='85%'
-                  />
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">
+                    <TableauEmbed
+                      src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/IncidentsV'
+                      hideTabs={true}
+                      toolbar='hidden'
+                      isPublic={false}
+                      className='w-full h-[500px] sm:h-[600px] md:h-[1200px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
+                      width='95%'
+                      height='95%'
+                    />
+                  </CardContent>
+                </Card>
 
-              {/* Incident Tracking */}
-              {/* <Card className="bg-slate-800 border-slate-700 overflow-hidden flex flex-col">
-                <CardHeader className="bg-slate-800 border-b border-slate-700">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <CardTitle className="text-white">Incident Tracking</CardTitle>
-                      <CardDescription className="text-slate-400">Monthly incident reports and trends</CardDescription>
+                {/* Incident Tracking */}
+                {/* <Card className="bg-slate-800 border-slate-700 overflow-hidden flex flex-col">
+                  <CardHeader className="bg-slate-800 border-b border-slate-700">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <CardTitle className="text-white">Incident Tracking</CardTitle>
+                        <CardDescription className="text-slate-400">Monthly incident reports and trends</CardDescription>
+                      </div>
+                      <Tabs defaultValue="all" className="w-[200px]">
+                        <TabsList className="bg-slate-700">
+                          <TabsTrigger value="all" className="data-[state=active]:bg-blue-600">All</TabsTrigger>
+                          <TabsTrigger value="critical" className="data-[state=active]:bg-blue-600">Critical</TabsTrigger>
+                          <TabsTrigger value="resolved" className="data-[state=active]:bg-blue-600">Resolved</TabsTrigger>
+                        </TabsList>
+                      </Tabs>
                     </div>
-                    <Tabs defaultValue="all" className="w-[200px]">
-                      <TabsList className="bg-slate-700">
-                        <TabsTrigger value="all" className="data-[state=active]:bg-blue-600">All</TabsTrigger>
-                        <TabsTrigger value="critical" className="data-[state=active]:bg-blue-600">Critical</TabsTrigger>
-                        <TabsTrigger value="resolved" className="data-[state=active]:bg-blue-600">Resolved</TabsTrigger>
-                      </TabsList>
-                    </Tabs>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">
-                  <TableauEmbed
-                    src='https://public.tableau.com/views/WorldIndicators/GDPpercapita?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
-                    hideTabs={true}
-                    toolbar='hidden'
-                    isPublic={true}
-                    className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
-                    width='90%'
-                    height='85%'
-                  />
-                </CardContent>
-              </Card> */}
-            </div>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">
+                    <TableauEmbed
+                      src='https://public.tableau.com/views/WorldIndicators/GDPpercapita?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
+                      hideTabs={true}
+                      toolbar='hidden'
+                      isPublic={true}
+                      className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                      width='90%'
+                      height='85%'
+                    />
+                  </CardContent>
+                </Card> */}
+              </div>
 
-            {/* Sidebar - 1/3 width on large screens */}
-            <div className="space-y-6">
+              {/* Sidebar - 1/3 width on large screens */}
+              <div className="space-y-6">
               {/* Safety Score Card */}
-              <Card className="bg-slate-800 border-slate-700">
+              <Card className="bg-slate-800 border-slate-700 min-h-[630px] max-h-[630px]">
                 <CardHeader>
                   <CardTitle className="text-white">Safety Score</CardTitle>
                   <CardDescription className="text-slate-400">Current compliance rating</CardDescription>
@@ -253,7 +254,7 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
               </Card>
 
               {/* Quick Actions */}
-              <Card className="bg-slate-800 border-slate-700 min-h-[420px] max-h-[600px]">
+              <Card className="bg-slate-800 border-slate-700 min-h-[630px] max-h-[630px]">
                 <CardHeader>
                   <CardTitle className="text-white">Quick Actions</CardTitle>
                   <CardDescription className="text-slate-400">Common safety tasks</CardDescription>
@@ -277,7 +278,34 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
                   </button>
                 </CardContent>
               </Card>
+              </div>
             </div>
+
+            {/* Full Width Dashboard - Lost Time Injuries */}
+            <Card id="lost-time-injuries" className="bg-slate-800 border-slate-700 overflow-hidden flex flex-col scroll-mt-6">
+              <CardHeader className="bg-slate-800 border-b border-slate-700">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle className="text-white">Lost Time Injuries Analysis</CardTitle>
+                    <CardDescription className="text-slate-400">Comprehensive injury tracking and trends</CardDescription>
+                  </div>
+                  <Button variant="outline" className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600">
+                    Export Report
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">
+                <TableauEmbed
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/LostTimeInjuriesV'
+                  hideTabs={true}
+                  toolbar='hidden'
+                  isPublic={false}
+                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[950px] 2xl:h-[1200px]'
+                  width='100%'
+                  height='100%'
+                />
+              </CardContent>
+            </Card>
           </div>
         )}
       </div>
