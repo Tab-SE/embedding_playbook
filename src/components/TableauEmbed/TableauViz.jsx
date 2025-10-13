@@ -19,10 +19,12 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     customToolbar,
     layouts,
     height,
-    width
+    width,
+    id: customId
   } = props;
   // creates a unique identifier for the embed
-  const id = `id-${useId()}`;
+  const generatedId = `id-${useId()}`;
+  const id = customId || generatedId;
   // to be used if parent did not forward a ref
   const localRef = useRef(null);
   // Use the forwarded ref if provided, otherwise use the local ref
@@ -69,7 +71,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
       <tableau-viz
         ref={innerRef}
-        id="tableauViz"
+        id={id}
         src={src}
         token={!isPublic ? jwt : null}
         height={height || "100%"}

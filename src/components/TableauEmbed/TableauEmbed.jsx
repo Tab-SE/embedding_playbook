@@ -14,7 +14,8 @@ export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
     toolbar,
     isPublic,
     WebEdit = false,
-    customToolbar = true
+    customToolbar = true,
+    id
   } = props;
 
   // to be used if parent did not forward a ref
@@ -35,6 +36,7 @@ export const TableauEmbed = forwardRef(function TableauEmbed(props, ref) {
         isPublic={isPublic}
         WebEdit={WebEdit}
         customToolbar={customToolbar}
+        id={id}
       />
     </div>
   )
