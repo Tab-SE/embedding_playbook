@@ -18,7 +18,8 @@ import {
   XCircle,
   Clock,
   Filter,
-  X
+  X,
+  MessageSquare
 } from 'lucide-react';
 
 export const description = "Veriforce Contractor Risk Management - Comprehensive safety and compliance tracking dashboard with real-time alerts and self-service analytics";
@@ -30,9 +31,68 @@ export const Home = () => {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [emailPreviews, setEmailPreviews] = useState([]);
   const [currentEmailIndex, setCurrentEmailIndex] = useState(0);
+  const [showSlackModal, setShowSlackModal] = useState(false);
+  const [slackMessage, setSlackMessage] = useState('');
+  const [editableSlackMessage, setEditableSlackMessage] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Get language context
   const { t } = useLanguage();
+
+  // Get current user
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.ok) {
+          const userData = await response.json();
+          setCurrentUser(userData);
+          console.log('Current user:', userData);
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  // Prevent page jumping when Tableau dashboards load
+  useEffect(() => {
+    // Store initial scroll position
+    const initialScrollY = window.scrollY;
+
+    // Prevent any scrolling during dashboard load
+    const preventScroll = (e) => {
+      e.preventDefault();
+      window.scrollTo(0, initialScrollY);
+    };
+
+    // Add scroll prevention for a short time
+    window.addEventListener('scroll', preventScroll, { passive: false });
+
+    // Also prevent wheel events that might cause jumping
+    const preventWheel = (e) => {
+      e.preventDefault();
+    };
+    window.addEventListener('wheel', preventWheel, { passive: false });
+
+    // Remove scroll prevention after dashboards have time to load
+    const timer = setTimeout(() => {
+      window.removeEventListener('scroll', preventScroll);
+      window.removeEventListener('wheel', preventWheel);
+    }, 5000); // Increased to 5 seconds to give more time for Tableau to load
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', preventScroll);
+      window.removeEventListener('wheel', preventWheel);
+    };
+  }, []);
 
   // Apply filter to Tableau dashboards when insurance status changes
   useEffect(() => {
@@ -131,6 +191,9 @@ export const Home = () => {
         // Store selected marks for email functionality
         setSelectedMarks(marksData);
 
+        // Just store the marks data - no automatic popup
+        console.log('Selected marks stored for user:', currentUser?.name);
+
         // Log column names
         if (marks.data[0].columns) {
           const columnNames = marks.data[0].columns.map(col => col.fieldName);
@@ -195,7 +258,7 @@ export const Home = () => {
         delete window._vizRefs;
       }
     };
-  }, []);
+  }, [currentUser]);
 
   // Generate emails from selected marks (handles multiple selections)
   const generateEmail = () => {
@@ -259,7 +322,26 @@ ${t.demoEmailGenerated}`
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-slate-900">
+    <>
+      <style jsx global>{`
+        html, body {
+          scroll-behavior: auto !important;
+          overflow-x: hidden;
+        }
+        * {
+          scroll-behavior: auto !important;
+        }
+        tableau-viz {
+          contain: layout style paint !important;
+          isolation: isolate !important;
+        }
+        /* Prevent page jumping when Tableau loads */
+        .tableau-container {
+          min-height: 500px;
+          contain: layout style paint;
+        }
+      `}</style>
+      <div className="flex min-h-screen w-full flex-col bg-slate-900">
       <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
         {/* Header Section */}
         <div className="flex items-center justify-between">
@@ -304,16 +386,18 @@ ${t.demoEmailGenerated}`
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <TableauEmbed
-                  id='executiveSummaryViz'
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV'
-                  hideTabs={true}
-                  toolbar='hidden'
-                  isPublic={false}
-                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
-                  width='100%'
-                  height='100%'
-                />
+                <div className="tableau-container w-full">
+                  <TableauEmbed
+                    id='executiveSummaryViz'
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV'
+                    hideTabs={true}
+                    toolbar='hidden'
+                    isPublic={false}
+                    className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
+                    width='100%'
+                    height='100%'
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -328,14 +412,36 @@ ${t.demoEmailGenerated}`
               <span className="font-medium">Insurance Status: {insuranceStatus.charAt(0).toUpperCase() + insuranceStatus.slice(1)}</span>
             </button>
 
-            {/* Email Button - Shows when marks are selected */}
+            {/* Action Button - Shows when marks are selected */}
             {selectedMarks.length > 0 && (
               <button
-                onClick={generateEmail}
-                className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
+                onClick={currentUser?.name === 'Mike Chen' ? () => {
+                  // Generate just the data for editing
+                  const dataOnly = selectedMarks.map((mark, index) =>
+                    `Record ${index + 1}:
+${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
+                  ).join('\n\n');
+
+                  setEditableSlackMessage(dataOnly);
+                  setShowSlackModal(true);
+                } : generateEmail}
+                className={`flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-colors shadow-lg animate-pulse ${
+                  currentUser?.name === 'Mike Chen'
+                    ? 'bg-[#4A154B] hover:bg-[#3A0F3A]'
+                    : 'bg-red-600 hover:bg-red-700'
+                }`}
               >
-                <AlertTriangle className="h-5 w-5" />
-                <span className="font-medium">Send Expiration Notice ({selectedMarks.length})</span>
+                {currentUser?.name === 'Mike Chen' ? (
+                  <>
+                    <MessageSquare className="h-5 w-5" />
+                    <span className="font-medium">Send Slack Message ({selectedMarks.length})</span>
+                  </>
+                ) : (
+                  <>
+                    <AlertTriangle className="h-5 w-5" />
+                    <span className="font-medium">Send Expiration Notice ({selectedMarks.length})</span>
+                  </>
+                )}
               </button>
             )}
           </div>
@@ -353,16 +459,18 @@ ${t.demoEmailGenerated}`
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <TableauEmbed
-                  id='complianceCenterViz'
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV'
-                  hideTabs={true}
-                  toolbar='hidden'
-                  isPublic={false}
-                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
-                  width='100%'
-                  height='100%'
-                />
+                <div className="tableau-container w-full">
+                  <TableauEmbed
+                    id='complianceCenterViz'
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV'
+                    hideTabs={true}
+                    toolbar='hidden'
+                    isPublic={false}
+                    className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
+                    width='100%'
+                    height='100%'
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -596,6 +704,92 @@ ${t.demoEmailGenerated}`
           </div>
         </div>
       )}
-    </div>
+
+      {/* Slack Message Modal - For Mike Chen */}
+      {showSlackModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowSlackModal(false)}>
+          <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+
+              <button
+                onClick={() => setShowSlackModal(false)}
+                className="text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Slack Header */}
+              <div className="bg-slate-700 p-4 rounded-lg space-y-3">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/img/themes/veriforce/slack-logo.png"
+                    alt="Slack"
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                  <div>
+                    <p className="text-white font-medium">Mike Chen</p>
+                    <p className="text-slate-400 text-sm">to #safety-team</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Slack Message Body */}
+              <div className="bg-slate-700 p-4 rounded-lg">
+                <label className="text-sm font-medium text-slate-400 mb-2 block">Message:</label>
+                <textarea
+                  value={editableSlackMessage}
+                  onChange={(e) => setEditableSlackMessage(e.target.value)}
+                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#4A154B] focus:border-transparent"
+                  placeholder="Type your message here..."
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 justify-between pt-4 border-t border-slate-600">
+                <button
+                  onClick={() => {
+                    setShowSlackModal(false);
+                    setSelectedMarks([]);
+                    setEditableSlackMessage('');
+                  }}
+                  className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      if (!editableSlackMessage.trim()) {
+                        alert('Please enter a message before sending.');
+                        return;
+                      }
+                      alert(`Demo: Slack message sent to #safety-team!\n\nMessage: ${editableSlackMessage}`);
+                      setShowSlackModal(false);
+                      setSelectedMarks([]);
+                      setEditableSlackMessage('');
+                    }}
+                    className="px-4 py-2 bg-[#4A154B] hover:bg-[#3A0F3A] text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                  >
+                    <Image
+                      src="/img/themes/veriforce/slack-logo.png"
+                      alt="Slack"
+                      width={20}
+                      height={20}
+                      className="rounded"
+                    />
+                    Send to Team
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
+    </>
   );
 };
