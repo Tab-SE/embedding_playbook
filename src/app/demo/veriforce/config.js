@@ -21,11 +21,9 @@ export const settings = {
   ai_chat: true,
   ai_avatar: '/img/themes/veriforce/veriforce-logo.jpeg',
   sample_questions: [
-    "Show me contractors with safety compliance issues",
-    "What's our overall risk score across all contractors?",
-    "Which contractors need certification renewals?",
-    "List all procurement metrics for this quarter",
-    "Show me the compliance dashboard for safety team"
+    "What are the total sales across each region?",
+    "What's our profit margin by category?",
+    "List the Datasources",
   ],
   sections: [
     {

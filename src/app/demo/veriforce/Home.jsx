@@ -34,30 +34,6 @@ export const Home = () => {
   // Get language context
   const { t } = useLanguage();
 
-
-
-  // Prevent page jumping by maintaining scroll position
-  useEffect(() => {
-    const initialScrollY = window.scrollY;
-
-    const preventScroll = () => {
-      window.scrollTo(0, initialScrollY);
-    };
-
-    // Prevent any scrolling during dashboard load
-    window.addEventListener('scroll', preventScroll, { passive: false });
-
-    // Remove after 10 seconds to allow normal scrolling
-    const timer = setTimeout(() => {
-      window.removeEventListener('scroll', preventScroll);
-    }, 10000);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', preventScroll);
-    };
-  }, []);
-
   // Apply filter to Tableau dashboards when insurance status changes
   useEffect(() => {
     const applyFilter = async () => {
@@ -283,21 +259,8 @@ ${t.demoEmailGenerated}`
   };
 
   return (
-    <>
-      <style jsx global>{`
-        html, body {
-          scroll-behavior: auto !important;
-        }
-        * {
-          scroll-behavior: auto !important;
-        }
-        tableau-viz {
-          contain: layout style paint !important;
-          isolation: isolate !important;
-        }
-      `}</style>
-      <div className="flex min-h-screen w-full flex-col bg-slate-900">
-        <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
+    <div className="flex min-h-screen w-full flex-col bg-slate-900">
+      <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
         {/* Header Section */}
         <div className="flex items-center justify-between">
           <div>
@@ -341,18 +304,16 @@ ${t.demoEmailGenerated}`
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <div className="w-full h-[800px] overflow-hidden">
-                  <TableauEmbed
-                    id='executiveSummaryViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV'
-                    hideTabs={true}
-                    toolbar='hidden'
-                    isPublic={false}
-                    className='w-full h-full'
-                    width='100%'
-                    height='800px'
-                  />
-                </div>
+                <TableauEmbed
+                  id='executiveSummaryViz'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV'
+                  hideTabs={true}
+                  toolbar='hidden'
+                  isPublic={false}
+                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
+                  width='100%'
+                  height='100%'
+                />
               </CardContent>
             </Card>
           </div>
@@ -364,7 +325,7 @@ ${t.demoEmailGenerated}`
               className="flex items-center gap-2 px-6 py-3 bg-[#CEAB73] hover:bg-[#B89558] text-white rounded-lg transition-colors shadow-lg"
             >
               <Filter className="h-5 w-5" />
-              <span className="font-medium">{t.insuranceStatus}: {t[insuranceStatus]}</span>
+              <span className="font-medium">Insurance Status: {insuranceStatus.charAt(0).toUpperCase() + insuranceStatus.slice(1)}</span>
             </button>
 
             {/* Email Button - Shows when marks are selected */}
@@ -374,7 +335,7 @@ ${t.demoEmailGenerated}`
                 className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
               >
                 <AlertTriangle className="h-5 w-5" />
-                <span className="font-medium">{t.sendExpirationNotice} ({selectedMarks.length})</span>
+                <span className="font-medium">Send Expiration Notice ({selectedMarks.length})</span>
               </button>
             )}
           </div>
@@ -392,18 +353,16 @@ ${t.demoEmailGenerated}`
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <div className="w-full h-[800px] overflow-hidden">
-                  <TableauEmbed
-                    id='complianceCenterViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV'
-                    hideTabs={true}
-                    toolbar='hidden'
-                    isPublic={false}
-                    className='w-full h-full'
-                    width='100%'
-                    height='800px'
-                  />
-                </div>
+                <TableauEmbed
+                  id='complianceCenterViz'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV'
+                  hideTabs={true}
+                  toolbar='hidden'
+                  isPublic={false}
+                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
+                  width='100%'
+                  height='100%'
+                />
               </CardContent>
             </Card>
           </div>
@@ -484,11 +443,11 @@ ${t.demoEmailGenerated}`
       {showFilterPopup && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowFilterPopup(false)}>
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                  <Filter className="h-5 w-5 text-[#CEAB73]" />
-                  {t.filterByInsuranceStatus}
-                </h3>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                <Filter className="h-5 w-5 text-[#CEAB73]" />
+                {t.filterByInsuranceStatus}
+              </h3>
               <button
                 onClick={() => setShowFilterPopup(false)}
                 className="text-slate-400 hover:text-white transition-colors"
@@ -512,16 +471,16 @@ ${t.demoEmailGenerated}`
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium capitalize">{t[status]}</span>
+                    <span className="font-medium capitalize">{status}</span>
                     {insuranceStatus === status && (
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     )}
                   </div>
                   <p className="text-xs mt-1 opacity-75">
-                    {status === 'all' && t.showAllInsuranceStatuses}
-                    {status === 'active' && t.currentlyActiveInsurance}
-                    {status === 'expired' && t.expiredInsurancePolicies}
-                    {status === 'pending' && t.pendingInsuranceVerification}
+                    {status === 'all' && 'Show all insurance statuses'}
+                    {status === 'active' && 'Currently active insurance'}
+                    {status === 'expired' && 'Expired insurance policies'}
+                    {status === 'pending' && 'Pending insurance verification'}
                   </p>
                 </button>
               ))}
@@ -637,7 +596,6 @@ ${t.demoEmailGenerated}`
           </div>
         </div>
       )}
-      </div>
-    </>
+    </div>
   );
 };
