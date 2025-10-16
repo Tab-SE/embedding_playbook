@@ -457,7 +457,7 @@ ${t.demoEmailGenerated}`
             </div>
 
             <div className="space-y-3">
-              {['all', 'active', 'expired', 'pending'].map((status) => (
+              {['All', 'Active', 'Expired', 'Pending'].map((status) => (
                 <button
                   key={status}
                   onClick={() => {
