@@ -6,6 +6,8 @@ import { useSearchParams } from 'next/navigation';
 import { TableauNavigation } from '../../../../components/TableauNavigation/TableauNavigation';
 import { TableauEmbed } from '../../../../components/TableauEmbed';
 import { DynamicDashboardViewer } from '../../../../components/TableauNavigation/DynamicDashboardViewer';
+import { LanguageSelector } from '../../../../components/LanguageSelector';
+import { useLanguage } from '../../../../contexts/LanguageContext';
 import {
   Card,
   CardContent,
@@ -112,6 +114,7 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <LanguageSelector />
             <Badge variant="outline" className="bg-blue-900/30 text-blue-300 border-blue-800 px-3">
               Safety Department
             </Badge>

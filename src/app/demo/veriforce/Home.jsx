@@ -8,7 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { Metrics, TableauEmbed } from '@/components';
+import { Metrics, TableauEmbed, LanguageSelector } from '@/components';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Image from 'next/image';
 import {
   Shield,
@@ -29,6 +30,33 @@ export const Home = () => {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [emailPreviews, setEmailPreviews] = useState([]);
   const [currentEmailIndex, setCurrentEmailIndex] = useState(0);
+
+  // Get language context
+  const { t } = useLanguage();
+
+
+
+  // Prevent page jumping by maintaining scroll position
+  useEffect(() => {
+    const initialScrollY = window.scrollY;
+
+    const preventScroll = () => {
+      window.scrollTo(0, initialScrollY);
+    };
+
+    // Prevent any scrolling during dashboard load
+    window.addEventListener('scroll', preventScroll, { passive: false });
+
+    // Remove after 10 seconds to allow normal scrolling
+    const timer = setTimeout(() => {
+      window.removeEventListener('scroll', preventScroll);
+    }, 10000);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', preventScroll);
+    };
+  }, []);
 
   // Apply filter to Tableau dashboards when insurance status changes
   useEffect(() => {
@@ -222,30 +250,30 @@ export const Home = () => {
       // Generate email content
       return {
         to: emailAddress,
-        subject: 'URGENT: Insurance Status Expired - Action Required',
-        body: `Dear ${contractorName},
+        subject: t.urgentInsuranceStatusExpired,
+        body: `${t.dearContractor} ${contractorName},
 
-This is an urgent notification regarding your insurance status.
+${t.urgentNotification}
 
-Our records indicate that your insurance coverage has EXPIRED. This requires immediate attention to maintain compliance with our contractor requirements.
+${t.recordsIndicate}
 
-Selected Record Details:
+${t.selectedRecordDetails}:
 ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}
 
-Please take the following actions immediately:
-1. Review your current insurance policy
-2. Renew or update your insurance coverage
-3. Submit updated documentation to our compliance team
+${t.pleaseTakeActions}
+${t.reviewPolicy}
+${t.renewCoverage}
+${t.submitDocumentation}
 
-Failure to address this issue may result in suspension of contractor privileges.
+${t.failureWarning}
 
-If you have any questions or need assistance, please contact our compliance department.
+${t.questionsContact}
 
-Best regards,
-Veriforce Compliance Team
+${t.bestRegards}
+${t.complianceTeam}
 
 ---
-This is a demo email generated from Tableau mark selection.`
+${t.demoEmailGenerated}`
       };
     });
 
@@ -255,19 +283,39 @@ This is a demo email generated from Tableau mark selection.`
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-slate-900">
-      <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
+    <>
+      <style jsx global>{`
+        html, body {
+          scroll-behavior: auto !important;
+        }
+        * {
+          scroll-behavior: auto !important;
+        }
+        tableau-viz {
+          contain: layout style paint !important;
+          isolation: isolate !important;
+        }
+      `}</style>
+      <div className="flex min-h-screen w-full flex-col bg-slate-900">
+        <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
         {/* Header Section */}
         <div className="flex items-center justify-between">
           <div>
+            <h1 className="text-3xl font-bold tracking-tight text-white mb-2">
+              {t.title}
+            </h1>
             <p className="text-slate-300">
-              Comprehensive safety and compliance tracking for your contractor network
+              {t.subtitle}
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-800 rounded-lg">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm font-medium">System Healthy</span>
+          <div className="flex items-center gap-4">
+            <LanguageSelector />
+
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-800 rounded-lg">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm font-medium">System Healthy</span>
+              </div>
             </div>
           </div>
         </div>
@@ -286,23 +334,25 @@ This is a demo email generated from Tableau mark selection.`
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Shield className="h-5 w-5 text-blue-400" />
-                  Compliance and Safety Executive Summary
+                  {t.executiveSummary}
                 </CardTitle>
                 <CardDescription className="text-slate-300">
-                  Real-time compliance tracking across all contractors and safety metrics
+                  {t.executiveSummaryDesc}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <TableauEmbed
-                  id='executiveSummaryViz'
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV'
-                  hideTabs={true}
-                  toolbar='hidden'
-                  isPublic={false}
-                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
-                  width='100%'
-                  height='100%'
-                />
+                <div className="w-full h-[800px] overflow-hidden">
+                  <TableauEmbed
+                    id='executiveSummaryViz'
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV'
+                    hideTabs={true}
+                    toolbar='hidden'
+                    isPublic={false}
+                    className='w-full h-full'
+                    width='100%'
+                    height='800px'
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -314,7 +364,7 @@ This is a demo email generated from Tableau mark selection.`
               className="flex items-center gap-2 px-6 py-3 bg-[#CEAB73] hover:bg-[#B89558] text-white rounded-lg transition-colors shadow-lg"
             >
               <Filter className="h-5 w-5" />
-              <span className="font-medium">Insurance Status: {insuranceStatus.charAt(0).toUpperCase() + insuranceStatus.slice(1)}</span>
+              <span className="font-medium">{t.insuranceStatus}: {t[insuranceStatus]}</span>
             </button>
 
             {/* Email Button - Shows when marks are selected */}
@@ -324,7 +374,7 @@ This is a demo email generated from Tableau mark selection.`
                 className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
               >
                 <AlertTriangle className="h-5 w-5" />
-                <span className="font-medium">Send Expiration Notice ({selectedMarks.length})</span>
+                <span className="font-medium">{t.sendExpirationNotice} ({selectedMarks.length})</span>
               </button>
             )}
           </div>
@@ -335,22 +385,25 @@ This is a demo email generated from Tableau mark selection.`
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Shield className="h-5 w-5 text-blue-400" />
-                  Compliance Center
+                  {t.complianceCenter}
                 </CardTitle>
                 <CardDescription className="text-slate-300">
-                Contractor Compliance and Certification Status Overview                </CardDescription>
+                  {t.complianceCenterDesc}
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <TableauEmbed
-                  id='complianceCenterViz'
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV'
-                  hideTabs={true}
-                  toolbar='hidden'
-                  isPublic={false}
-                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
-                  width='100%'
-                  height='100%'
-                />
+                <div className="w-full h-[800px] overflow-hidden">
+                  <TableauEmbed
+                    id='complianceCenterViz'
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV'
+                    hideTabs={true}
+                    toolbar='hidden'
+                    isPublic={false}
+                    className='w-full h-full'
+                    width='100%'
+                    height='800px'
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -431,11 +484,11 @@ This is a demo email generated from Tableau mark selection.`
       {showFilterPopup && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowFilterPopup(false)}>
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <Filter className="h-5 w-5 text-[#CEAB73]" />
-                Filter by Insurance Status
-              </h3>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                  <Filter className="h-5 w-5 text-[#CEAB73]" />
+                  {t.filterByInsuranceStatus}
+                </h3>
               <button
                 onClick={() => setShowFilterPopup(false)}
                 className="text-slate-400 hover:text-white transition-colors"
@@ -445,7 +498,7 @@ This is a demo email generated from Tableau mark selection.`
             </div>
 
             <div className="space-y-3">
-              {['All', 'Active', 'Expired', 'Pending'].map((status) => (
+              {['all', 'active', 'expired', 'pending'].map((status) => (
                 <button
                   key={status}
                   onClick={() => {
@@ -459,16 +512,16 @@ This is a demo email generated from Tableau mark selection.`
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium capitalize">{status}</span>
+                    <span className="font-medium capitalize">{t[status]}</span>
                     {insuranceStatus === status && (
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     )}
                   </div>
                   <p className="text-xs mt-1 opacity-75">
-                    {status === 'all' && 'Show all insurance statuses'}
-                    {status === 'active' && 'Currently active insurance'}
-                    {status === 'expired' && 'Expired insurance policies'}
-                    {status === 'pending' && 'Pending insurance verification'}
+                    {status === 'all' && t.showAllInsuranceStatuses}
+                    {status === 'active' && t.currentlyActiveInsurance}
+                    {status === 'expired' && t.expiredInsurancePolicies}
+                    {status === 'pending' && t.pendingInsuranceVerification}
                   </p>
                 </button>
               ))}
@@ -484,7 +537,7 @@ This is a demo email generated from Tableau mark selection.`
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-500" />
-                Insurance Expiration Notices
+                {t.insuranceExpirationNotices}
               </h3>
               <button
                 onClick={() => setShowEmailModal(false)}
@@ -502,17 +555,17 @@ This is a demo email generated from Tableau mark selection.`
                   disabled={currentEmailIndex === 0}
                   className="px-3 py-1 bg-slate-600 hover:bg-slate-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Previous
+                  {t.previous}
                 </button>
                 <span className="text-white font-medium">
-                  Email {currentEmailIndex + 1} of {emailPreviews.length}
+                  {t.email} {currentEmailIndex + 1} {t.of} {emailPreviews.length}
                 </span>
                 <button
                   onClick={() => setCurrentEmailIndex(Math.min(emailPreviews.length - 1, currentEmailIndex + 1))}
                   disabled={currentEmailIndex === emailPreviews.length - 1}
                   className="px-3 py-1 bg-slate-600 hover:bg-slate-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Next
+                  {t.next}
                 </button>
               </div>
             )}
@@ -521,18 +574,18 @@ This is a demo email generated from Tableau mark selection.`
               {/* Email Header */}
               <div className="bg-slate-700 p-4 rounded-lg space-y-3">
                 <div>
-                  <label className="text-sm font-medium text-slate-400">To:</label>
+                  <label className="text-sm font-medium text-slate-400">{t.to}:</label>
                   <p className="text-white">{emailPreviews[currentEmailIndex].to}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-400">Subject:</label>
+                  <label className="text-sm font-medium text-slate-400">{t.subject}:</label>
                   <p className="text-white font-semibold">{emailPreviews[currentEmailIndex].subject}</p>
                 </div>
               </div>
 
               {/* Email Body */}
               <div className="bg-slate-700 p-4 rounded-lg max-h-[300px] overflow-y-auto">
-                <label className="text-sm font-medium text-slate-400 mb-2 block">Message:</label>
+                <label className="text-sm font-medium text-slate-400 mb-2 block">{t.message}:</label>
                 <pre className="text-slate-200 whitespace-pre-wrap font-sans text-sm leading-relaxed">
                   {emailPreviews[currentEmailIndex].body}
                 </pre>
@@ -547,7 +600,7 @@ This is a demo email generated from Tableau mark selection.`
                   }}
                   className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
                 >
-                  Close
+                  {t.close}
                 </button>
                 <div className="flex gap-3">
                   <button
@@ -565,7 +618,7 @@ This is a demo email generated from Tableau mark selection.`
                     }}
                     className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
                   >
-                    Send This Email
+                    {t.sendThisEmail}
                   </button>
                   <button
                     onClick={() => {
@@ -576,7 +629,7 @@ This is a demo email generated from Tableau mark selection.`
                     }}
                     className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-semibold"
                   >
-                    Send All ({emailPreviews.length})
+                    {t.sendAll} ({emailPreviews.length})
                   </button>
                 </div>
               </div>
@@ -584,6 +637,7 @@ This is a demo email generated from Tableau mark selection.`
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
