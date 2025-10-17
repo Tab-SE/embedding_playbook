@@ -152,8 +152,8 @@ export const Users = [
   {
     demo: 'veriforce',
     roles: {
-      0: { title: 'Safety Team', description: 'Safety compliance tracking and incident monitoring'},
-      1: { title: 'Procurement Team', description: 'Vendor performance and contract management'},
+      0: { title: 'Safety & Compliance Manager', description: 'Oversees contractor compliance, training, and incident reporting'},
+      1: { title: 'Director of Operations', description: 'Monitors overall safety performance and drives vendor accountability'},
       2: { title: 'Management', description: 'Executive oversight and strategic insights'},
     },
     users: [
@@ -174,15 +174,6 @@ export const Users = [
         role: 1,
         vector_store: 'veriforce_mchen',
         uaf: {"Department": ["Procurement"], "Region": ["West"]}
-      },
-      {
-        id: 'c',
-        name: "Lisa Rodriguez",
-        email: "lrodriguez@veriforce.com",
-        picture: "/img/users/rachel_morris.png",
-        role: 2,
-        vector_store: 'veriforce_lrodriguez',
-        uaf: {"Department": ["Management"], "Region": ["South"]}
       },
     ]
   }

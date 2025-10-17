@@ -66,31 +66,70 @@ export const Home = () => {
     // Store initial scroll position
     const initialScrollY = window.scrollY;
 
-    // Prevent any scrolling during dashboard load
+    // Lock the body scroll
+    document.body.classList.add('scroll-locked');
+    document.body.style.top = `-${initialScrollY}px`;
+
+    // More aggressive scroll prevention
     const preventScroll = (e) => {
       e.preventDefault();
+      e.stopPropagation();
       window.scrollTo(0, initialScrollY);
+      return false;
     };
 
-    // Add scroll prevention for a short time
-    window.addEventListener('scroll', preventScroll, { passive: false });
-
-    // Also prevent wheel events that might cause jumping
     const preventWheel = (e) => {
       e.preventDefault();
+      e.stopPropagation();
+      return false;
     };
-    window.addEventListener('wheel', preventWheel, { passive: false });
+
+    const preventTouchMove = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    // Add multiple event listeners for comprehensive prevention
+    window.addEventListener('scroll', preventScroll, { passive: false, capture: true });
+    window.addEventListener('wheel', preventWheel, { passive: false, capture: true });
+    window.addEventListener('touchmove', preventTouchMove, { passive: false, capture: true });
+    document.addEventListener('scroll', preventScroll, { passive: false, capture: true });
+    document.addEventListener('wheel', preventWheel, { passive: false, capture: true });
+    document.addEventListener('touchmove', preventTouchMove, { passive: false, capture: true });
+
+    // Force scroll position periodically
+    const forceScroll = setInterval(() => {
+      window.scrollTo(0, initialScrollY);
+    }, 50); // More frequent forcing
 
     // Remove scroll prevention after dashboards have time to load
     const timer = setTimeout(() => {
-      window.removeEventListener('scroll', preventScroll);
-      window.removeEventListener('wheel', preventWheel);
-    }, 5000); // Increased to 5 seconds to give more time for Tableau to load
+      // Restore body scroll
+      document.body.classList.remove('scroll-locked');
+      document.body.style.top = '';
+      window.scrollTo(0, initialScrollY);
+
+      window.removeEventListener('scroll', preventScroll, { capture: true });
+      window.removeEventListener('wheel', preventWheel, { capture: true });
+      window.removeEventListener('touchmove', preventTouchMove, { capture: true });
+      document.removeEventListener('scroll', preventScroll, { capture: true });
+      document.removeEventListener('wheel', preventWheel, { capture: true });
+      document.removeEventListener('touchmove', preventTouchMove, { capture: true });
+      clearInterval(forceScroll);
+    }, 10000); // Increased to 10 seconds
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('scroll', preventScroll);
-      window.removeEventListener('wheel', preventWheel);
+      clearInterval(forceScroll);
+      document.body.classList.remove('scroll-locked');
+      document.body.style.top = '';
+      window.removeEventListener('scroll', preventScroll, { capture: true });
+      window.removeEventListener('wheel', preventWheel, { capture: true });
+      window.removeEventListener('touchmove', preventTouchMove, { capture: true });
+      document.removeEventListener('scroll', preventScroll, { capture: true });
+      document.removeEventListener('wheel', preventWheel, { capture: true });
+      document.removeEventListener('touchmove', preventTouchMove, { capture: true });
     };
   }, []);
 
@@ -327,6 +366,7 @@ ${t.demoEmailGenerated}`
         html, body {
           scroll-behavior: auto !important;
           overflow-x: hidden;
+          position: relative !important;
         }
         * {
           scroll-behavior: auto !important;
@@ -334,11 +374,30 @@ ${t.demoEmailGenerated}`
         tableau-viz {
           contain: layout style paint !important;
           isolation: isolate !important;
+          transform: translateZ(0) !important;
+          will-change: auto !important;
         }
         /* Prevent page jumping when Tableau loads */
         .tableau-container {
           min-height: 500px;
           contain: layout style paint;
+          transform: translateZ(0);
+          will-change: auto;
+        }
+        /* Force stable layout */
+        main {
+          contain: layout !important;
+        }
+        /* Prevent any smooth scrolling */
+        html {
+          scroll-behavior: auto !important;
+        }
+        /* Lock scroll position during load */
+        body.scroll-locked {
+          overflow: hidden !important;
+          position: fixed !important;
+          width: 100% !important;
+          height: 100% !important;
         }
       `}</style>
       <div className="flex min-h-screen w-full flex-col bg-slate-900">
