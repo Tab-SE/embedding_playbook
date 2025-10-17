@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -8,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { TableauEmbed, SlackShareModal, SlackShareButton } from '@/components';
+import { TableauEmbed } from '@/components';
 import {
   Users2,
   TrendingUp,
@@ -28,19 +27,6 @@ import {
 } from 'lucide-react';
 
 export const ManagementDashboard = () => {
-  const [showSlackModal, setShowSlackModal] = useState(false);
-  const [currentDashboard, setCurrentDashboard] = useState(null);
-
-  const handleSlackShare = (dashboardInfo) => {
-    setCurrentDashboard(dashboardInfo);
-    setShowSlackModal(true);
-  };
-
-  const handleSlackSend = ({ message, user, dashboard }) => {
-    // In a real implementation, this would send to Slack API
-    alert(`Demo: Slack message sent!\n\nTo: ${user.name} (${user.email})\n\nMessage: ${message}\n\nDashboard: ${dashboard.title}`);
-  };
-
   return (
     <div className="flex min-h-screen w-full flex-col bg-slate-900">
       <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
@@ -64,38 +50,25 @@ export const ManagementDashboard = () => {
               <Search className="h-4 w-4 text-slate-300" />
               <span className="text-sm font-medium text-slate-300">Search</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
               <Download className="h-4 w-4" />
               <span className="text-sm font-medium">Export</span>
             </button>
           </div>
         </div>
 
-
         {/* Strategic Overview */}
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Contractor Portfolio Overview */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <PieChart className="h-5 w-5 text-blue-400" />
-                    Contractor Portfolio Overview
-                  </CardTitle>
-                  <CardDescription className="text-slate-300">
-                    Strategic view of contractor distribution, performance, and risk levels
-                  </CardDescription>
-                </div>
-                <SlackShareButton
-                  dashboardInfo={{
-                    title: 'Contractor Portfolio Overview',
-                    description: 'Strategic view of contractor distribution, performance, and risk levels',
-                    type: 'dashboard'
-                  }}
-                  onShare={handleSlackShare}
-                />
-              </div>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <PieChart className="h-5 w-5 text-blue-400" />
+                Contractor Portfolio Overview
+              </CardTitle>
+              <CardDescription className="text-slate-300">
+                Strategic view of contractor distribution, performance, and risk levels
+              </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
@@ -113,25 +86,13 @@ export const ManagementDashboard = () => {
           {/* Risk & Compliance Trends */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <TrendingUp className="h-5 w-5 text-green-400" />
-                    Risk & Compliance Trends
-                  </CardTitle>
-                  <CardDescription className="text-slate-300">
-                    Historical trends and predictive insights for risk management
-                  </CardDescription>
-                </div>
-                <SlackShareButton
-                  dashboardInfo={{
-                    title: 'Risk & Compliance Trends',
-                    description: 'Historical trends and predictive insights for risk management',
-                    type: 'dashboard'
-                  }}
-                  onShare={handleSlackShare}
-                />
-              </div>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <TrendingUp className="h-5 w-5 text-green-400" />
+                Risk & Compliance Trends
+              </CardTitle>
+              <CardDescription className="text-slate-300">
+                Historical trends and predictive insights for risk management
+              </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
@@ -178,74 +139,96 @@ export const ManagementDashboard = () => {
         <div className="grid gap-6 lg:grid-cols-2">
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-400">
-                <BarChart3 className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-white">
+                <Target className="h-5 w-5 text-orange-400" />
                 Strategic Insights
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Key insights and recommendations for executive decision-making
+                AI-powered recommendations and strategic guidance
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h4 className="text-sm font-semibold text-blue-900 mb-2">Top Performing Contractors</h4>
-                <p className="text-xs text-blue-700 mb-2">ABC Construction, XYZ Electric, and DEF Plumbing show consistently high compliance rates and low risk scores.</p>
-                <p className="text-xs text-blue-600">Recommendation: Consider expanding contracts with these vendors.</p>
+              <div className="p-4 bg-green-900/20 rounded-lg border border-green-800">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-green-200">High-Performing Portfolio</p>
+                    <p className="text-xs text-green-300 mt-1">Your contractor portfolio shows excellent risk management with 94% compliance rate</p>
+                  </div>
+                </div>
               </div>
-              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                <h4 className="text-sm font-semibold text-green-900 mb-2">Cost Savings Opportunity</h4>
-                <p className="text-xs text-green-700 mb-2">Consolidating similar contractor categories could reduce costs by an estimated $180K annually.</p>
-                <p className="text-xs text-green-600">Recommendation: Review contractor portfolio for consolidation opportunities.</p>
+              <div className="p-4 bg-blue-900/20 rounded-lg border border-blue-800">
+                <div className="flex items-start gap-3">
+                  <TrendingUp className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-blue-200">Cost Optimization Opportunity</p>
+                    <p className="text-xs text-blue-300 mt-1">Consider consolidating vendors in the electrical category for 15% cost savings</p>
+                  </div>
+                </div>
               </div>
-              <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                <h4 className="text-sm font-semibold text-yellow-900 mb-2">Risk Mitigation</h4>
-                <p className="text-xs text-yellow-700 mb-2">23 contractors require immediate attention due to compliance issues or high risk scores.</p>
-                <p className="text-xs text-yellow-600">Recommendation: Implement targeted improvement plans for at-risk contractors.</p>
+              <div className="p-4 bg-yellow-900/20 rounded-lg border border-yellow-800">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-yellow-200">Risk Mitigation Needed</p>
+                    <p className="text-xs text-yellow-300 mt-1">3 contractors require additional safety training before next project</p>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-slate-300">
-                <FileText className="h-5 w-5" />
-                Executive Actions
+              <CardTitle className="flex items-center gap-2 text-white">
+                <FileText className="h-5 w-5 text-purple-400" />
+                Quick Actions
               </CardTitle>
+              <CardDescription className="text-slate-300">
+                Common management tasks and reports
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Generate Executive Report</p>
-                <p className="text-xs text-slate-300">Comprehensive quarterly summary</p>
+            <CardContent className="space-y-3">
+              <button className="w-full text-left p-4 hover:bg-slate-700 rounded-lg transition-colors border border-slate-600">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Generate Executive Report</p>
+                    <p className="text-xs text-slate-300">Comprehensive risk management summary</p>
+                  </div>
+                  <Download className="h-4 w-4 text-slate-400" />
+                </div>
               </button>
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Review Risk Strategy</p>
-                <p className="text-xs text-slate-300">Update risk management policies</p>
+              <button className="w-full text-left p-4 hover:bg-slate-700 rounded-lg transition-colors border border-slate-600">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Schedule Risk Review</p>
+                    <p className="text-xs text-slate-300">Plan quarterly contractor assessment</p>
+                  </div>
+                  <Clock className="h-4 w-4 text-slate-400" />
+                </div>
               </button>
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Schedule Board Meeting</p>
-                <p className="text-xs text-slate-300">Present contractor risk findings</p>
+              <button className="w-full text-left p-4 hover:bg-slate-700 rounded-lg transition-colors border border-slate-600">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Update Risk Policies</p>
+                    <p className="text-xs text-slate-300">Review and modify contractor requirements</p>
+                  </div>
+                  <Shield className="h-4 w-4 text-slate-400" />
+                </div>
               </button>
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Approve Budget Changes</p>
-                <p className="text-xs text-slate-300">Allocate resources for improvements</p>
-              </button>
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Set Strategic Goals</p>
-                <p className="text-xs text-slate-300">Define next quarter objectives</p>
+              <button className="w-full text-left p-4 hover:bg-slate-700 rounded-lg transition-colors border border-slate-600">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Contractor Performance Review</p>
+                    <p className="text-xs text-slate-300">Analyze individual contractor metrics</p>
+                  </div>
+                  <BarChart3 className="h-4 w-4 text-slate-400" />
+                </div>
               </button>
             </CardContent>
           </Card>
         </div>
       </main>
-
-      {/* Slack Share Modal */}
-      <SlackShareModal
-        isOpen={showSlackModal}
-        onClose={() => setShowSlackModal(false)}
-        dashboardInfo={currentDashboard}
-        onSend={handleSlackSend}
-        shareableUrl={typeof window !== 'undefined' ? window.location.href : ''}
-      />
     </div>
   );
 };

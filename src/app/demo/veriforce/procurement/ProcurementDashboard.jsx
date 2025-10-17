@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -8,12 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { TableauEmbed, SlackShareModal, SlackShareButton } from '@/components';
+import { TableauEmbed } from '@/components';
 import {
   ShoppingCart,
   TrendingUp,
   DollarSign,
   Users,
+  Shield,
   CheckCircle,
   XCircle,
   Clock,
@@ -23,23 +23,11 @@ import {
   Search,
   BarChart3,
   Target,
-  AlertTriangle
+  AlertTriangle,
+  PieChart
 } from 'lucide-react';
 
 export const ProcurementDashboard = () => {
-  const [showSlackModal, setShowSlackModal] = useState(false);
-  const [currentDashboard, setCurrentDashboard] = useState(null);
-
-  const handleSlackShare = (dashboardInfo) => {
-    setCurrentDashboard(dashboardInfo);
-    setShowSlackModal(true);
-  };
-
-  const handleSlackSend = ({ message, user, dashboard }) => {
-    // In a real implementation, this would send to Slack API
-    alert(`Demo: Slack message sent!\n\nTo: ${user.name} (${user.email})\n\nMessage: ${message}\n\nDashboard: ${dashboard.title}`);
-  };
-
   return (
     <div className="flex min-h-screen w-full flex-col bg-slate-900">
       <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
@@ -47,11 +35,11 @@ export const ProcurementDashboard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-              <ShoppingCart className="h-8 w-8 text-blue-400" />
+              <ShoppingCart className="h-8 w-8 text-green-400" />
               Procurement Dashboard
             </h1>
             <p className="text-slate-300 mt-2">
-              Assess contractor performance, manage vendor relationships, and optimize procurement decisions
+              Comprehensive vendor management, cost analysis, and procurement optimization
             </p>
           </div>
           <div className="flex items-center gap-3 pl-4">
@@ -63,38 +51,25 @@ export const ProcurementDashboard = () => {
               <Search className="h-4 w-4 text-slate-300" />
               <span className="text-sm font-medium text-slate-300">Search</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
               <Download className="h-4 w-4" />
               <span className="text-sm font-medium">Export</span>
             </button>
           </div>
         </div>
 
-
         {/* Main Dashboard Grid */}
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Vendor Performance Overview */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <BarChart3 className="h-5 w-5 text-blue-400" />
-                    Vendor Performance Overview
-                  </CardTitle>
-                  <CardDescription className="text-slate-300">
-                    Comprehensive vendor performance metrics and risk assessment
-                  </CardDescription>
-                </div>
-                <SlackShareButton
-                  dashboardInfo={{
-                    title: 'Vendor Performance Overview',
-                    description: 'Comprehensive vendor performance metrics and risk assessment',
-                    type: 'dashboard'
-                  }}
-                  onShare={handleSlackShare}
-                />
-              </div>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <BarChart3 className="h-5 w-5 text-blue-400" />
+                Vendor Performance Overview
+              </CardTitle>
+              <CardDescription className="text-slate-300">
+                Comprehensive vendor performance metrics and risk assessment
+              </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
@@ -112,25 +87,13 @@ export const ProcurementDashboard = () => {
           {/* Cost Analysis & Savings */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <DollarSign className="h-5 w-5 text-green-400" />
-                    Cost Analysis & Savings
-                  </CardTitle>
-                  <CardDescription className="text-slate-300">
-                    Track procurement costs, savings opportunities, and budget performance
-                  </CardDescription>
-                </div>
-                <SlackShareButton
-                  dashboardInfo={{
-                    title: 'Cost Analysis & Savings',
-                    description: 'Track procurement costs, savings opportunities, and budget performance',
-                    type: 'dashboard'
-                  }}
-                  onShare={handleSlackShare}
-                />
-              </div>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <DollarSign className="h-5 w-5 text-green-400" />
+                Cost Analysis & Savings
+              </CardTitle>
+              <CardDescription className="text-slate-300">
+                Track procurement costs, savings opportunities, and budget performance
+              </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
@@ -149,77 +112,65 @@ export const ProcurementDashboard = () => {
         {/* Risk Assessment Matrix */}
         <Card className="bg-slate-800 shadow-lg border-slate-700">
           <CardHeader>
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <Target className="h-5 w-5 text-orange-400" />
-                  Vendor Risk Assessment Matrix
-                </CardTitle>
-                <CardDescription className="text-slate-300">
-                  Comprehensive risk evaluation across all vendor categories and performance indicators
-                </CardDescription>
-              </div>
-              <SlackShareButton
-                dashboardInfo={{
-                  title: 'Vendor Risk Assessment Matrix',
-                  description: 'Comprehensive risk evaluation across all vendor categories and performance indicators',
-                  type: 'dashboard'
-                }}
-                onShare={handleSlackShare}
-              />
-            </div>
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Target className="h-5 w-5 text-orange-400" />
+              Vendor Risk Assessment Matrix
+            </CardTitle>
+            <CardDescription className="text-slate-300">
+              Comprehensive risk evaluation across all vendor categories and performance indicators
+            </CardDescription>
           </CardHeader>
           <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
             <TableauEmbed
-              src='https://public.tableau.com/views/WorldIndicators/EnergyUse?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
+              src='https://public.tableau.com/views/WorldIndicators/InternetUsers?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
               hideTabs={true}
               toolbar='hidden'
               isPublic={true}
               className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
               width='100%'
               height='100%'
-              layouts={{
-                '*': { 'device': 'desktop', 'width': 800, 'height': 600 }
-              }}
             />
           </CardContent>
         </Card>
 
-        {/* Action Items & Quick Actions */}
+        {/* Procurement Insights & Actions */}
         <div className="grid gap-6 lg:grid-cols-2">
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-red-400">
-                <AlertTriangle className="h-5 w-5" />
-                Procurement Alerts
+              <CardTitle className="flex items-center gap-2 text-white">
+                <TrendingUp className="h-5 w-5 text-blue-400" />
+                Procurement Insights
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Critical issues requiring procurement team attention
+                AI-powered recommendations for procurement optimization
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-start gap-3 p-3 bg-red-900/20 rounded-lg border border-red-800">
-                <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-red-200">Contract Expiring Soon</p>
-                  <p className="text-xs text-red-300">ABC Construction - $2.3M contract</p>
-                  <p className="text-xs text-red-400 mt-1">15 days remaining - Renewal needed</p>
+            <CardContent className="space-y-4">
+              <div className="p-4 bg-green-900/20 rounded-lg border border-green-800">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-green-200">Cost Savings Identified</p>
+                    <p className="text-xs text-green-300 mt-1">Consolidating electrical vendors could save $2.3M annually</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start gap-3 p-3 bg-yellow-900/20 rounded-lg border border-yellow-800">
-                <Clock className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-yellow-200">Performance Review Due</p>
-                  <p className="text-xs text-yellow-300">XYZ Electric - Q4 review</p>
-                  <p className="text-xs text-yellow-400 mt-1">7 days remaining</p>
+              <div className="p-4 bg-blue-900/20 rounded-lg border border-blue-800">
+                <div className="flex items-start gap-3">
+                  <Users className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-blue-200">Vendor Diversification</p>
+                    <p className="text-xs text-blue-300 mt-1">Consider adding 2-3 new vendors in the plumbing category</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start gap-3 p-3 bg-orange-900/20 rounded-lg border border-orange-800">
-                <AlertTriangle className="h-4 w-4 text-orange-400 mt-0.5 flex-shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-orange-200">High Risk Vendor</p>
-                  <p className="text-xs text-orange-300">DEF Plumbing - Risk score 4.2</p>
-                  <p className="text-xs text-orange-400 mt-1">Review required</p>
+              <div className="p-4 bg-yellow-900/20 rounded-lg border border-yellow-800">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-yellow-200">Contract Renewal Alert</p>
+                    <p className="text-xs text-yellow-300 mt-1">5 vendor contracts expire in the next 30 days</p>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -227,41 +178,55 @@ export const ProcurementDashboard = () => {
 
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-400">
-                <FileText className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-white">
+                <FileText className="h-5 w-5 text-purple-400" />
                 Quick Actions
               </CardTitle>
+              <CardDescription className="text-slate-300">
+                Common procurement tasks and reports
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Generate Vendor Report</p>
-                <p className="text-xs text-slate-300">Export performance data</p>
+            <CardContent className="space-y-3">
+              <button className="w-full text-left p-4 hover:bg-slate-700 rounded-lg transition-colors border border-slate-600">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Generate Procurement Report</p>
+                    <p className="text-xs text-slate-300">Comprehensive vendor performance summary</p>
+                  </div>
+                  <Download className="h-4 w-4 text-slate-400" />
+                </div>
               </button>
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Schedule Vendor Review</p>
-                <p className="text-xs text-slate-300">Plan performance meetings</p>
+              <button className="w-full text-left p-4 hover:bg-slate-700 rounded-lg transition-colors border border-slate-600">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Schedule Vendor Review</p>
+                    <p className="text-xs text-slate-300">Plan quarterly vendor assessment meeting</p>
+                  </div>
+                  <Clock className="h-4 w-4 text-slate-400" />
+                </div>
               </button>
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Create RFP Template</p>
-                <p className="text-xs text-slate-300">Start new procurement process</p>
+              <button className="w-full text-left p-4 hover:bg-slate-700 rounded-lg transition-colors border border-slate-600">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Update Vendor Contracts</p>
+                    <p className="text-xs text-slate-300">Review and renew expiring agreements</p>
+                  </div>
+                  <Shield className="h-4 w-4 text-slate-400" />
+                </div>
               </button>
-              <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                <p className="text-sm font-medium text-white">Analyze Cost Trends</p>
-                <p className="text-xs text-slate-300">Identify savings opportunities</p>
+              <button className="w-full text-left p-4 hover:bg-slate-700 rounded-lg transition-colors border border-slate-600">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Cost Analysis Report</p>
+                    <p className="text-xs text-slate-300">Detailed financial performance breakdown</p>
+                  </div>
+                  <BarChart3 className="h-4 w-4 text-slate-400" />
+                </div>
               </button>
             </CardContent>
           </Card>
         </div>
       </main>
-
-      {/* Slack Share Modal */}
-      <SlackShareModal
-        isOpen={showSlackModal}
-        onClose={() => setShowSlackModal(false)}
-        dashboardInfo={currentDashboard}
-        onSend={handleSlackSend}
-        shareableUrl={typeof window !== 'undefined' ? window.location.href : ''}
-      />
     </div>
   );
 };

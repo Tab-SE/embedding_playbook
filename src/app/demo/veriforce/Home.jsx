@@ -427,24 +427,10 @@ ${t.demoEmailGenerated}`
           height: 100% !important;
           overflow: hidden !important;
         }
-        /* Completely disable Tableau elements */
+        /* Tableau elements should be interactive */
         tableau-viz {
           contain: layout style paint !important;
           isolation: isolate !important;
-          outline: none !important;
-          tabindex: -1 !important;
-          pointer-events: none !important;
-        }
-        tableau-viz:focus,
-        tableau-viz *:focus {
-          outline: none !important;
-          pointer-events: none !important;
-        }
-        /* Disable all iframes */
-        tableau-viz iframe {
-          pointer-events: none !important;
-          outline: none !important;
-          tabindex: -1 !important;
         }
         /* Prevent ANY element from auto-scrolling */
         * {
