@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -5,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { TableauEmbed } from '@/components';
+import { TableauEmbed, SlackShareModal, SlackShareButton } from '@/components';
 import {
   ShoppingCart,
   TrendingUp,
@@ -24,6 +25,18 @@ import {
 } from 'lucide-react';
 
 export const ProcurementDashboard = () => {
+  const [showSlackModal, setShowSlackModal] = useState(false);
+  const [currentDashboard, setCurrentDashboard] = useState(null);
+
+  const handleSlackShare = (dashboardInfo) => {
+    setCurrentDashboard(dashboardInfo);
+    setShowSlackModal(true);
+  };
+
+  const handleSlackSend = ({ message, user, dashboard }) => {
+    // In a real implementation, this would send to Slack API
+    alert(`Demo: Slack message sent!\n\nTo: ${user.name} (${user.email})\n\nMessage: ${message}\n\nDashboard: ${dashboard.title}`);
+  };
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-slate-900">
@@ -61,13 +74,25 @@ export const ProcurementDashboard = () => {
           {/* Vendor Performance Overview */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <BarChart3 className="h-5 w-5 text-blue-400" />
-                Vendor Performance Overview
-              </CardTitle>
-              <CardDescription className="text-slate-300">
-                Comprehensive vendor performance metrics and risk assessment
-              </CardDescription>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <BarChart3 className="h-5 w-5 text-blue-400" />
+                    Vendor Performance Overview
+                  </CardTitle>
+                  <CardDescription className="text-slate-300">
+                    Comprehensive vendor performance metrics and risk assessment
+                  </CardDescription>
+                </div>
+                <SlackShareButton
+                  dashboardInfo={{
+                    title: 'Vendor Performance Overview',
+                    description: 'Comprehensive vendor performance metrics and risk assessment',
+                    type: 'dashboard'
+                  }}
+                  onShare={handleSlackShare}
+                />
+              </div>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
@@ -85,13 +110,25 @@ export const ProcurementDashboard = () => {
           {/* Cost Analysis & Savings */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <DollarSign className="h-5 w-5 text-green-400" />
-                Cost Analysis & Savings
-              </CardTitle>
-              <CardDescription className="text-slate-300">
-                Track procurement costs, savings opportunities, and budget performance
-              </CardDescription>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <DollarSign className="h-5 w-5 text-green-400" />
+                    Cost Analysis & Savings
+                  </CardTitle>
+                  <CardDescription className="text-slate-300">
+                    Track procurement costs, savings opportunities, and budget performance
+                  </CardDescription>
+                </div>
+                <SlackShareButton
+                  dashboardInfo={{
+                    title: 'Cost Analysis & Savings',
+                    description: 'Track procurement costs, savings opportunities, and budget performance',
+                    type: 'dashboard'
+                  }}
+                  onShare={handleSlackShare}
+                />
+              </div>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
@@ -110,13 +147,25 @@ export const ProcurementDashboard = () => {
         {/* Risk Assessment Matrix */}
         <Card className="bg-slate-800 shadow-lg border-slate-700">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Target className="h-5 w-5 text-orange-400" />
-              Vendor Risk Assessment Matrix
-            </CardTitle>
-            <CardDescription className="text-slate-300">
-              Comprehensive risk evaluation across all vendor categories and performance indicators
-            </CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Target className="h-5 w-5 text-orange-400" />
+                  Vendor Risk Assessment Matrix
+                </CardTitle>
+                <CardDescription className="text-slate-300">
+                  Comprehensive risk evaluation across all vendor categories and performance indicators
+                </CardDescription>
+              </div>
+              <SlackShareButton
+                dashboardInfo={{
+                  title: 'Vendor Risk Assessment Matrix',
+                  description: 'Comprehensive risk evaluation across all vendor categories and performance indicators',
+                  type: 'dashboard'
+                }}
+                onShare={handleSlackShare}
+              />
+            </div>
           </CardHeader>
           <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
             <TableauEmbed
@@ -202,6 +251,15 @@ export const ProcurementDashboard = () => {
           </Card>
         </div>
       </main>
+
+      {/* Slack Share Modal */}
+      <SlackShareModal
+        isOpen={showSlackModal}
+        onClose={() => setShowSlackModal(false)}
+        dashboardInfo={currentDashboard}
+        onSend={handleSlackSend}
+        shareableUrl={typeof window !== 'undefined' ? window.location.href : ''}
+      />
     </div>
   );
 };

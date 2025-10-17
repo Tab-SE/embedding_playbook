@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { TableauEmbed } from '../TableauEmbed';
+import { SlackShareModal, SlackShareButton } from '../SlackShare';
 import {
   AlertCircle,
   Loader2,
@@ -27,6 +28,8 @@ export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId }
   const [error, setError] = useState(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showSlackModal, setShowSlackModal] = useState(false);
+  const [currentDashboard, setCurrentDashboard] = useState(null);
 
   // Create a shareable URL with dashboard information
   const getShareableUrl = () => {
@@ -47,6 +50,16 @@ export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId }
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
+  };
+
+  const handleSlackShare = (dashboardInfo) => {
+    setCurrentDashboard(dashboardInfo);
+    setShowSlackModal(true);
+  };
+
+  const handleSlackSend = ({ message, user, dashboard }) => {
+    // In a real implementation, this would send to Slack API
+    alert(`Demo: Slack message sent!\n\nTo: ${user.name} (${user.email})\n\nMessage: ${message}\n\nDashboard: ${dashboard.title}`);
   };
 
   useEffect(() => {
@@ -118,12 +131,14 @@ export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId }
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              className="p-2 text-slate-400 hover:text-white transition-colors"
-              onClick={() => setShareModalOpen(true)}
-            >
-              <Share2 className="h-4 w-4" />
-            </button>
+            <SlackShareButton
+              dashboardInfo={{
+                title: selectedDashboard.name,
+                description: `Dashboard from ${selectedDashboard.workbookName} workbook`,
+                type: 'dynamic-dashboard'
+              }}
+              onShare={handleSlackShare}
+            />
             <button className="p-2 text-slate-400 hover:text-white transition-colors">
               <Download className="h-4 w-4" />
             </button>
@@ -200,6 +215,15 @@ export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId }
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Slack Share Modal */}
+      <SlackShareModal
+        isOpen={showSlackModal}
+        onClose={() => setShowSlackModal(false)}
+        dashboardInfo={currentDashboard}
+        onSend={handleSlackSend}
+        shareableUrl={getShareableUrl()}
+      />
     </div>
   );
 };

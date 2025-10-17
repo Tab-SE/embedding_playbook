@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -5,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { TableauEmbed } from '@/components';
+import { TableauEmbed, SlackShareModal, SlackShareButton } from '@/components';
 import {
   Users2,
   TrendingUp,
@@ -25,6 +26,18 @@ import {
 } from 'lucide-react';
 
 export const ManagementDashboard = () => {
+  const [showSlackModal, setShowSlackModal] = useState(false);
+  const [currentDashboard, setCurrentDashboard] = useState(null);
+
+  const handleSlackShare = (dashboardInfo) => {
+    setCurrentDashboard(dashboardInfo);
+    setShowSlackModal(true);
+  };
+
+  const handleSlackSend = ({ message, user, dashboard }) => {
+    // In a real implementation, this would send to Slack API
+    alert(`Demo: Slack message sent!\n\nTo: ${user.name} (${user.email})\n\nMessage: ${message}\n\nDashboard: ${dashboard.title}`);
+  };
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-slate-900">
@@ -62,13 +75,25 @@ export const ManagementDashboard = () => {
           {/* Contractor Portfolio Overview */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <PieChart className="h-5 w-5 text-blue-400" />
-                Contractor Portfolio Overview
-              </CardTitle>
-              <CardDescription className="text-slate-300">
-                Strategic view of contractor distribution, performance, and risk levels
-              </CardDescription>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <PieChart className="h-5 w-5 text-blue-400" />
+                    Contractor Portfolio Overview
+                  </CardTitle>
+                  <CardDescription className="text-slate-300">
+                    Strategic view of contractor distribution, performance, and risk levels
+                  </CardDescription>
+                </div>
+                <SlackShareButton
+                  dashboardInfo={{
+                    title: 'Contractor Portfolio Overview',
+                    description: 'Strategic view of contractor distribution, performance, and risk levels',
+                    type: 'dashboard'
+                  }}
+                  onShare={handleSlackShare}
+                />
+              </div>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
@@ -86,13 +111,25 @@ export const ManagementDashboard = () => {
           {/* Risk & Compliance Trends */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <TrendingUp className="h-5 w-5 text-green-400" />
-                Risk & Compliance Trends
-              </CardTitle>
-              <CardDescription className="text-slate-300">
-                Historical trends and predictive insights for risk management
-              </CardDescription>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <TrendingUp className="h-5 w-5 text-green-400" />
+                    Risk & Compliance Trends
+                  </CardTitle>
+                  <CardDescription className="text-slate-300">
+                    Historical trends and predictive insights for risk management
+                  </CardDescription>
+                </div>
+                <SlackShareButton
+                  dashboardInfo={{
+                    title: 'Risk & Compliance Trends',
+                    description: 'Historical trends and predictive insights for risk management',
+                    type: 'dashboard'
+                  }}
+                  onShare={handleSlackShare}
+                />
+              </div>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <TableauEmbed
@@ -198,6 +235,15 @@ export const ManagementDashboard = () => {
           </Card>
         </div>
       </main>
+
+      {/* Slack Share Modal */}
+      <SlackShareModal
+        isOpen={showSlackModal}
+        onClose={() => setShowSlackModal(false)}
+        dashboardInfo={currentDashboard}
+        onSend={handleSlackSend}
+        shareableUrl={typeof window !== 'undefined' ? window.location.href : ''}
+      />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { TableauNavigation } from '../../../../components/TableauNavigation/TableauNavigation';
 import { TableauEmbed } from '../../../../components/TableauEmbed';
 import { DynamicDashboardViewer } from '../../../../components/TableauNavigation/DynamicDashboardViewer';
+import { SlackShareModal, SlackShareButton } from '../../../../components/SlackShare';
 import { LanguageSelector } from '../../../../components/LanguageSelector';
 import { useLanguage } from '../../../../contexts/LanguageContext';
 import {
@@ -27,8 +28,12 @@ import { Badge } from '../../../../components/ui/Badge';
 import {
   Search,
   Menu,
-  X
+  X,
+  Share2,
+  MessageSquare,
+  Copy
 } from 'lucide-react';
+import Image from 'next/image';
 
 export const SafetyDashboard = () => {
   const {
@@ -41,6 +46,20 @@ export const SafetyDashboard = () => {
   const searchParams = useSearchParams();
   const [selectedDashboard, setSelectedDashboard] = useState(null);
   const [showNavigation, setShowNavigation] = useState(true); // Show navigation by default
+  const [showSlackModal, setShowSlackModal] = useState(false);
+  const [slackMessage, setSlackMessage] = useState('');
+  const [currentDashboard, setCurrentDashboard] = useState(null);
+  const [selectedUser, setSelectedUser] = useState('');
+
+  // Available users for Slack sharing
+  const slackUsers = [
+    { id: 'mike', name: 'Mike Chen', email: 'mchen@veriforce.com', role: 'Procurement Team' },
+    { id: 'sarah', name: 'Sarah Johnson', email: 'sjohnson@veriforce.com', role: 'Safety Team' },
+    { id: 'lisa', name: 'Lisa Rodriguez', email: 'lrodriguez@veriforce.com', role: 'Management' },
+    { id: 'david', name: 'David Kim', email: 'dkim@veriforce.com', role: 'Safety Team' },
+    { id: 'jennifer', name: 'Jennifer Martinez', email: 'jmartinez@veriforce.com', role: 'Procurement Team' },
+    { id: 'robert', name: 'Robert Wilson', email: 'rwilson@veriforce.com', role: 'Safety Team' }
+  ];
 
   // Get Tableau session data - these will be available after SSO
   const restToken = user?.rest_key;
@@ -70,6 +89,50 @@ export const SafetyDashboard = () => {
     setSelectedDashboard(dashboard);
   }, []);
 
+  // Handle Slack sharing
+  const handleSlackShare = (dashboardInfo) => {
+    setCurrentDashboard(dashboardInfo);
+    setSelectedUser(''); // Reset user selection
+
+    // Get current page URL
+    const currentUrl = window.location.href;
+
+    // Generate default message with dashboard info and URL
+    const defaultMessage = `📊 **${dashboardInfo.title}**\n\n${dashboardInfo.description}\n\n🔗 Dashboard URL: ${currentUrl}\n\nView the full dashboard for detailed safety metrics and compliance data.`;
+    setSlackMessage(defaultMessage);
+    setShowSlackModal(true);
+  };
+
+  const handleSlackSend = () => {
+    if (slackMessage.trim() && selectedUser) {
+      const selectedUserData = slackUsers.find(user => user.id === selectedUser);
+      // In a real implementation, this would send to Slack API
+      alert(`Demo: Slack message sent!\n\nTo: ${selectedUserData?.name} (${selectedUserData?.email})\n\nMessage: ${slackMessage}\n\nDashboard: ${currentDashboard?.title}`);
+      setShowSlackModal(false);
+      setSlackMessage('');
+      setCurrentDashboard(null);
+      setSelectedUser('');
+    } else if (!selectedUser) {
+      alert('Please select a user to send the message to.');
+    }
+  };
+
+  const handleCopyUrl = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      alert('Dashboard URL copied to clipboard!');
+    }).catch(() => {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = currentUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('Dashboard URL copied to clipboard!');
+    });
+  };
+
   return (
     <div className="flex h-screen w-full bg-slate-900">
       {/* Navigation Sidebar - ALWAYS rendered, isolated from main content */}
@@ -89,13 +152,23 @@ export const SafetyDashboard = () => {
         siteId={siteId}
         showNavigation={showNavigation}
         setShowNavigation={setShowNavigation}
+        onSlackShare={handleSlackShare}
+      />
+
+      {/* Slack Share Modal */}
+      <SlackShareModal
+        isOpen={showSlackModal}
+        onClose={() => setShowSlackModal(false)}
+        dashboardInfo={currentDashboard}
+        onSend={handleSlackSend}
+        shareableUrl={typeof window !== 'undefined' ? window.location.href : ''}
       />
     </div>
   );
 };
 
 // Separate component to isolate Tableau embeds from navigation
-const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, setShowNavigation }) => {
+const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, setShowNavigation, onSlackShare }) => {
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Header with Navigation Toggle */}
@@ -143,9 +216,23 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
                         <CardTitle className="text-white">Safety Overview</CardTitle>
                         <CardDescription className="text-slate-400">Regional safety metrics and compliance status</CardDescription>
                       </div>
-                      <Button variant="outline" className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600">
-                        Export Report
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
+                          onClick={() => onSlackShare({
+                            title: 'Safety Overview',
+                            description: 'Regional safety metrics and compliance status',
+                            type: 'dashboard'
+                          })}
+                        >
+                          <Share2 className="h-4 w-4 mr-2" />
+                          Share
+                        </Button>
+                        <Button variant="outline" className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600">
+                          Export Report
+                        </Button>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">
@@ -279,6 +366,22 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
                     <p className="text-sm font-medium text-white">View Training Calendar</p>
                     <p className="text-xs text-slate-300">Manage certification schedule</p>
                   </button>
+                  <button
+                    className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors"
+                    onClick={() => onSlackShare({
+                      title: 'Safety Dashboard Overview',
+                      description: 'Complete safety compliance dashboard with metrics and incident tracking',
+                      type: 'overview'
+                    })}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Share2 className="h-4 w-4 text-blue-400" />
+                      <div>
+                        <p className="text-sm font-medium text-white">Share Dashboard</p>
+                        <p className="text-xs text-slate-300">Send to Slack team</p>
+                      </div>
+                    </div>
+                  </button>
                 </CardContent>
               </Card>
               </div>
@@ -292,9 +395,23 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
                     <CardTitle className="text-white">Lost Time Injuries Analysis</CardTitle>
                     <CardDescription className="text-slate-400">Comprehensive injury tracking and trends</CardDescription>
                   </div>
-                  <Button variant="outline" className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600">
-                    Export Report
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
+                      onClick={() => onSlackShare({
+                        title: 'Lost Time Injuries Analysis',
+                        description: 'Comprehensive injury tracking and trends',
+                        type: 'dashboard'
+                      })}
+                    >
+                      <Share2 className="h-4 w-4 mr-2" />
+                      Share
+                    </Button>
+                    <Button variant="outline" className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600">
+                      Export Report
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">

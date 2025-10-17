@@ -35,6 +35,7 @@ export const Home = () => {
   const [slackMessage, setSlackMessage] = useState('');
   const [editableSlackMessage, setEditableSlackMessage] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
+  const [userLoaded, setUserLoaded] = useState(false);
 
   // Get language context
   const { t } = useLanguage();
@@ -52,25 +53,79 @@ export const Home = () => {
         if (response.ok) {
           const userData = await response.json();
           setCurrentUser(userData);
+          setUserLoaded(true);
           console.log('Current user:', userData);
+        } else {
+          setUserLoaded(true); // Still mark as loaded even if failed
         }
       } catch (error) {
         console.error('Error fetching user:', error);
+        setUserLoaded(true); // Still mark as loaded even if failed
       }
     };
     fetchUser();
   }, []);
 
-  // Prevent page jumping when Tableau dashboards load
+  // AGGRESSIVE scroll prevention - completely stop Tableau from causing any scroll
   useEffect(() => {
     // Store initial scroll position
     const initialScrollY = window.scrollY;
+    console.log('Initial scroll position:', initialScrollY);
 
-    // Lock the body scroll
-    document.body.classList.add('scroll-locked');
-    document.body.style.top = `-${initialScrollY}px`;
+    // IMMEDIATELY lock the page to prevent ANY scrolling
+    document.body.style.position = 'fixed';
+    document.body.style.top = '0';
+    document.body.style.left = '0';
+    document.body.style.width = '100%';
+    document.body.style.height = '100%';
+    document.body.style.overflow = 'hidden';
 
-    // More aggressive scroll prevention
+    // Prevent ALL focus events globally
+    const preventAllFocus = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.target) {
+        e.target.blur();
+      }
+      return false;
+    };
+
+    // Add aggressive focus prevention to ALL elements
+    const addFocusPrevention = () => {
+      // Prevent focus on all tableau elements
+      const tableauElements = document.querySelectorAll('tableau-viz, tableau-viz *');
+      tableauElements.forEach(el => {
+        el.setAttribute('tabindex', '-1');
+        el.style.outline = 'none';
+        el.addEventListener('focus', preventAllFocus, true);
+        el.addEventListener('click', preventAllFocus, true);
+      });
+
+      // Prevent focus on all iframes
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        iframe.setAttribute('tabindex', '-1');
+        iframe.style.outline = 'none';
+        iframe.addEventListener('focus', preventAllFocus, true);
+        iframe.addEventListener('load', preventAllFocus, true);
+      });
+    };
+
+    // Apply focus prevention immediately and repeatedly
+    addFocusPrevention();
+    const focusTimer = setInterval(addFocusPrevention, 100);
+
+    // Monitor and force scroll position
+    const forceScrollPosition = () => {
+      if (window.scrollY !== initialScrollY) {
+        console.log('Forcing scroll back to initial position');
+        window.scrollTo(0, initialScrollY);
+      }
+    };
+
+    const scrollTimer = setInterval(forceScrollPosition, 50);
+
+    // Prevent ALL scroll events
     const preventScroll = (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -78,58 +133,53 @@ export const Home = () => {
       return false;
     };
 
-    const preventWheel = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    };
-
-    const preventTouchMove = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    };
-
-    // Add multiple event listeners for comprehensive prevention
+    // Add scroll prevention to window and document
     window.addEventListener('scroll', preventScroll, { passive: false, capture: true });
-    window.addEventListener('wheel', preventWheel, { passive: false, capture: true });
-    window.addEventListener('touchmove', preventTouchMove, { passive: false, capture: true });
+    window.addEventListener('wheel', preventScroll, { passive: false, capture: true });
+    window.addEventListener('touchmove', preventScroll, { passive: false, capture: true });
     document.addEventListener('scroll', preventScroll, { passive: false, capture: true });
-    document.addEventListener('wheel', preventWheel, { passive: false, capture: true });
-    document.addEventListener('touchmove', preventTouchMove, { passive: false, capture: true });
 
-    // Force scroll position periodically
-    const forceScroll = setInterval(() => {
-      window.scrollTo(0, initialScrollY);
-    }, 50); // More frequent forcing
+    // Release lock after 8 seconds - Tableau should be fully loaded by then
+    const releaseTimer = setTimeout(() => {
+      console.log('Releasing scroll lock after 8 seconds');
+      clearInterval(focusTimer);
+      clearInterval(scrollTimer);
 
-    // Remove scroll prevention after dashboards have time to load
-    const timer = setTimeout(() => {
-      // Restore body scroll
-      document.body.classList.remove('scroll-locked');
-      document.body.style.top = '';
-      window.scrollTo(0, initialScrollY);
-
+      // Remove scroll prevention
       window.removeEventListener('scroll', preventScroll, { capture: true });
-      window.removeEventListener('wheel', preventWheel, { capture: true });
-      window.removeEventListener('touchmove', preventTouchMove, { capture: true });
+      window.removeEventListener('wheel', preventScroll, { capture: true });
+      window.removeEventListener('touchmove', preventScroll, { capture: true });
       document.removeEventListener('scroll', preventScroll, { capture: true });
-      document.removeEventListener('wheel', preventWheel, { capture: true });
-      document.removeEventListener('touchmove', preventTouchMove, { capture: true });
-      clearInterval(forceScroll);
-    }, 10000); // Increased to 10 seconds
+
+      // Restore body styles
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+      document.body.style.overflow = '';
+
+      // Ensure we're at the top
+      window.scrollTo(0, 0);
+    }, 8000);
 
     return () => {
-      clearTimeout(timer);
-      clearInterval(forceScroll);
-      document.body.classList.remove('scroll-locked');
-      document.body.style.top = '';
+      clearTimeout(releaseTimer);
+      clearInterval(focusTimer);
+      clearInterval(scrollTimer);
+
+      // Cleanup
       window.removeEventListener('scroll', preventScroll, { capture: true });
-      window.removeEventListener('wheel', preventWheel, { capture: true });
-      window.removeEventListener('touchmove', preventTouchMove, { capture: true });
+      window.removeEventListener('wheel', preventScroll, { capture: true });
+      window.removeEventListener('touchmove', preventScroll, { capture: true });
       document.removeEventListener('scroll', preventScroll, { capture: true });
-      document.removeEventListener('wheel', preventWheel, { capture: true });
-      document.removeEventListener('touchmove', preventTouchMove, { capture: true });
+
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+      document.body.style.overflow = '';
     };
   }, []);
 
@@ -363,41 +413,48 @@ ${t.demoEmailGenerated}`
   return (
     <>
       <style jsx global>{`
-        html, body {
+        /* AGGRESSIVE scroll prevention - completely lock everything */
+        html {
           scroll-behavior: auto !important;
-          overflow-x: hidden;
-          position: relative !important;
+          overflow: hidden !important;
         }
-        * {
-          scroll-behavior: auto !important;
+        body {
+          overflow-anchor: none !important;
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          overflow: hidden !important;
         }
+        /* Completely disable Tableau elements */
         tableau-viz {
           contain: layout style paint !important;
           isolation: isolate !important;
-          transform: translateZ(0) !important;
-          will-change: auto !important;
+          outline: none !important;
+          tabindex: -1 !important;
+          pointer-events: none !important;
         }
-        /* Prevent page jumping when Tableau loads */
-        .tableau-container {
-          min-height: 500px;
-          contain: layout style paint;
-          transform: translateZ(0);
-          will-change: auto;
+        tableau-viz:focus,
+        tableau-viz *:focus {
+          outline: none !important;
+          pointer-events: none !important;
         }
-        /* Force stable layout */
-        main {
-          contain: layout !important;
+        /* Disable all iframes */
+        tableau-viz iframe {
+          pointer-events: none !important;
+          outline: none !important;
+          tabindex: -1 !important;
         }
-        /* Prevent any smooth scrolling */
-        html {
+        /* Prevent ANY element from auto-scrolling */
+        * {
+          scroll-margin: 0 !important;
+          scroll-padding: 0 !important;
           scroll-behavior: auto !important;
         }
-        /* Lock scroll position during load */
-        body.scroll-locked {
-          overflow: hidden !important;
-          position: fixed !important;
-          width: 100% !important;
-          height: 100% !important;
+        /* Lock all interactive elements */
+        button, a, input, select, textarea {
+          pointer-events: auto !important;
         }
       `}</style>
       <div className="flex min-h-screen w-full flex-col bg-slate-900">
@@ -448,7 +505,7 @@ ${t.demoEmailGenerated}`
                 <div className="tableau-container w-full">
                   <TableauEmbed
                     id='executiveSummaryViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV'
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV#'
                     hideTabs={true}
                     toolbar='hidden'
                     isPublic={false}
@@ -471,8 +528,8 @@ ${t.demoEmailGenerated}`
               <span className="font-medium">Insurance Status: {insuranceStatus.charAt(0).toUpperCase() + insuranceStatus.slice(1)}</span>
             </button>
 
-            {/* Action Button - Shows when marks are selected */}
-            {selectedMarks.length > 0 && (
+            {/* Action Button - Shows when marks are selected and user is loaded */}
+            {selectedMarks.length > 0 && userLoaded && (
               <button
                 onClick={currentUser?.name === 'Mike Chen' ? () => {
                   // Generate just the data for editing
@@ -521,7 +578,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <div className="tableau-container w-full">
                   <TableauEmbed
                     id='complianceCenterViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV'
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV#'
                     hideTabs={true}
                     toolbar='hidden'
                     isPublic={false}
@@ -608,8 +665,8 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
 
       {/* Filter Popup Modal */}
       {showFilterPopup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowFilterPopup(false)}>
-          <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowFilterPopup(false)}>
+          <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
                 <Filter className="h-5 w-5 text-[#CEAB73]" />
