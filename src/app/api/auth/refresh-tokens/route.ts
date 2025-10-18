@@ -1,6 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { SessionModel } from '@/models';
+import { UAF } from '@/models/Session/controller';
+
+interface TableauToken {
+  username?: string;
+  user_id?: string;
+  embed_token?: string;
+  rest_token?: string;
+  rest_key?: string;
+  site_id?: string;
+  site?: string;
+  created?: Date;
+  expires?: Date;
+  uaf?: UAF;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +25,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    const { tableau } = token;
+    const tableau = token.tableau as TableauToken;
     const userEmail = token.email;
 
     if (!userEmail) {
