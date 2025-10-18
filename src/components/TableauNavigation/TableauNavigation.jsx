@@ -8,7 +8,6 @@ import {
   Search,
   Grid,
   List,
-  RefreshCw
 } from 'lucide-react';
 import { useTableauSession } from '../../hooks';
 import { useTableauDashboards } from '../../hooks/tableauHooks';
@@ -33,7 +32,6 @@ const TableauNavigationComponent = ({ onDashboardSelect, selectedDashboard }) =>
     dashboardsByFolder,
     allViews,
     isLoading,
-    refreshDashboards,
     restApiData,
     restApiLoading,
     restApiError
@@ -168,16 +166,6 @@ const TableauNavigationComponent = ({ onDashboardSelect, selectedDashboard }) =>
             <h3 className="text-lg font-semibold text-white">My Dashboards</h3>
             <p className="text-xs text-slate-400">{user?.name || user?.email}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={refreshDashboards}
-              disabled={isLoading}
-              className="p-1 text-slate-400 hover:text-white transition-colors"
-              title="Refresh dashboards"
-            >
-              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            </button>
-          </div>
         </div>
 
         {/* Search */}
@@ -219,8 +207,7 @@ const TableauNavigationComponent = ({ onDashboardSelect, selectedDashboard }) =>
       <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="p-4 text-center text-slate-400">
-            <RefreshCw className="h-6 w-6 animate-spin mx-auto mb-2" />
-            Loading dashboards...
+            <div className="animate-pulse">Loading dashboards...</div>
           </div>
         ) : searchTerm ? (
           // Search Results from REST API data
@@ -301,7 +288,7 @@ const TableauNavigationComponent = ({ onDashboardSelect, selectedDashboard }) =>
                         workbookName: dashboard.workbook_name,
                         contentUrl: dashboard.content_url
                       })}
-                      className={`p-3 rounded-lg cursor-pointer transition-colors mb-1 ${
+                      className={`p-3 rounded-lg transition-colors mb-1 cursor-pointer ${
                         selectedDashboard?.id === dashboard.dashboard_id
                           ? 'bg-blue-600 text-white'
                           : 'hover:bg-slate-700 text-slate-300'
@@ -322,8 +309,7 @@ const TableauNavigationComponent = ({ onDashboardSelect, selectedDashboard }) =>
               <div className="text-center py-8 text-slate-400">
                 {restApiLoading ? (
                   <div className="space-y-2">
-                    <RefreshCw className="h-6 w-6 animate-spin mx-auto" />
-                    <p>Loading dashboards...</p>
+                    <div className="animate-pulse">Loading dashboards...</div>
                   </div>
                 ) : restApiError ? (
                   <div className="space-y-2">
