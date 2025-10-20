@@ -35,16 +35,23 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     isLoading: isSessionLoading
   } = useTableauSession();
 
-  if (isSessionError) {
-    console.debug('Tableau Auth Error:', sessionError);
-  }
+  // Frontend JWT Debug Logs
+  console.log('🔐 Frontend Tableau Auth Debug:');
+  console.log('Session Status:', sessionStatus);
+  console.log('User Data:', user);
+  console.log('Session Error:', sessionError);
+  console.log('Is Session Success:', isSessionSuccess);
+  console.log('Is Session Error:', isSessionError);
+  console.log('Is Session Loading:', isSessionLoading);
+  console.log('Embed Token:', user?.embed_token);
+  console.log('User Email:', user?.email);
 
   if (isSessionSuccess) {
     embed_token = user.embed_token;
   }
 
   // Check if Mike is logged in
-  const isMikeLoggedIn = isSessionSuccess && user?.email === 'mchen@veriforce.com';
+  const isMikeLoggedIn = isSessionSuccess && user?.email === 'jchen@superstore.com';
 
   // For public URLs, render immediately without authentication
   if (isPublicTableauUrl) {

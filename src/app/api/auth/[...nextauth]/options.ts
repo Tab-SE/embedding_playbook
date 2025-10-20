@@ -40,27 +40,40 @@ export const authOptions: AuthOptions = {
         demo: { label: "Demo", type: "text" }
       },
       async authorize(credentials: any, req) {
+        console.log('🔐 NextAuth Authorize Debug:');
+        console.log('Credentials:', credentials);
+
         let user: any = null;
 
         const demoManager = new UserModel();
         const currentDemo = demoManager.getDemoByName(credentials.demo);
+        console.log('Current Demo:', currentDemo);
 
         if (currentDemo) {
           // Find the user in the users array of the matched demo object
           const matchedUser = currentDemo.users.find(
             (user) => user.id.toUpperCase() === credentials.ID.toUpperCase()
           );
+          console.log('Matched User:', matchedUser);
 
           if (matchedUser) {
             user = { ...matchedUser }; // Clone the matched user object
             user.demo = credentials.demo;
             user.uaf = user.uaf || {};
+            console.log('User UAF:', user.uaf);
 
             const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
             const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
             const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID;
             const rest_secret = process.env.TABLEAU_REST_JWT_SECRET;
             const rest_secret_id = process.env.TABLEAU_REST_JWT_SECRET_ID;
+
+            console.log('JWT Environment Variables:');
+            console.log('JWT Client ID:', jwt_client_id ? 'SET' : 'NOT SET');
+            console.log('Embed Secret:', embed_secret ? 'SET' : 'NOT SET');
+            console.log('Embed Secret ID:', embed_secret_id ? 'SET' : 'NOT SET');
+            console.log('Rest Secret:', rest_secret ? 'SET' : 'NOT SET');
+            console.log('Rest Secret ID:', rest_secret_id ? 'SET' : 'NOT SET');
 
             // Client-safe Connected App scopes
             const embed_scopes = [
@@ -91,8 +104,10 @@ export const authOptions: AuthOptions = {
               jwt_client_id
             };
 
+            console.log('🚀 Creating Tableau session...');
             const session = new SessionModel(user.name);
             await session.jwt(user.email, embed_options, embed_scopes, rest_options, rest_scopes, user.uaf);
+            console.log('Session Authorized:', session.authorized);
 
             if (session.authorized) {
               const {
@@ -118,6 +133,9 @@ export const authOptions: AuthOptions = {
                 created,
                 expires
               };
+              console.log('✅ User tableau data set:', user.tableau);
+            } else {
+              console.error('❌ Session not authorized!');
             }
 
             return user.tableau ? user : null;

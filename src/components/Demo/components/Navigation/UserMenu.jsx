@@ -73,7 +73,7 @@ const Logout = (props) => {
       <DropdownMenuItem
         className='hover:cursor-pointer'
         onClick={async () => {
-          await signOut({ redirect: true, callbackUrl: '/demo/veriforce/auth' });
+          await signOut({ redirect: true, callbackUrl: '/demo/servicedesk/auth' });
         }}
       >
         <Button

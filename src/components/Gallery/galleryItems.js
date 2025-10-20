@@ -3,7 +3,7 @@ import {
   ShoppingCart,
   HandCoins,
   HeartPulse,
-  Shield
+  Headphones
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -45,12 +45,12 @@ export const galleryItems = [
     icon: <HandCoins size={12} strokeWidth={2} />
   },
   {
-    id: 'veriforce',
-    link: "/demo/veriforce",
-    src: "/img/themes/veriforce/veriforce-logo.jpeg",
-    alt: "Veriforce",
-    vertical: "Construction & Safety",
-    description: "A comprehensive contractor risk management solution showcasing safety compliance, procurement analytics, and self-service capabilities that exceed PowerBI",
-    icon: <Shield size={12} strokeWidth={2} />
+    id: 'servicedesk',
+    link: "/demo/servicedesk",
+    src: "/img/themes/servicedesk/servicedesk-logo.png",
+    alt: "Service Excellence Platform",
+    vertical: "Customer Service & Support",
+    description: "Service analytics platform showcasing real-time insights for customer support, training completion, and uptime monitoring to build trust, drive renewals, and create premium offerings",
+    icon: <Headphones size={12} strokeWidth={2} />
   }
 ]

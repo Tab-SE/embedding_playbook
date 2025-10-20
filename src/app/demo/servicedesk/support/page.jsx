@@ -1,17 +1,19 @@
+'use client';
+
 import { Demo, FloatingAssistant } from '@/components';
 
-import { ReportsDashboard } from './ReportsDashboard';
+import { SupportDashboard } from './SupportDashboard';
 import { settings } from '../config';
 
 const Page = () => {
-  const pageName = 'Reports';
+  const pageName = 'Support';
 
   return (
     <Demo
       settings={settings}
       pageName={pageName}
     >
-      <ReportsDashboard/>
+      <SupportDashboard />
       <FloatingAssistant
         settings={settings}
       />
@@ -20,3 +22,4 @@ const Page = () => {
 }
 
 export default Page;
+

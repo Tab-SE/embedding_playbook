@@ -127,7 +127,7 @@ export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId }
           <div>
             <h2 className="text-xl font-semibold text-white">{selectedDashboard.name}</h2>
             <p className="text-sm text-slate-400">
-              {selectedDashboard.workbookName} • {selectedDashboard.projectName || 'Veriforce'}
+              {selectedDashboard.workbookName} • {selectedDashboard.projectName || 'Service Desk'}
             </p>
           </div>
           <div className="flex items-center gap-2">

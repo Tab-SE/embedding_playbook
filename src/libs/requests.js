@@ -7,7 +7,14 @@ const contentUrl = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
 
 // authenticate to Tableau with JSON Web Tokens
 export const tabAuthJWT = async (jwt) => {
+  console.log('🔐 JWT Authentication Debug:');
+  console.log('JWT Token:', jwt);
+  console.log('Tableau Domain:', tableau_domain);
+  console.log('API Version:', api);
+  console.log('Content URL:', contentUrl);
+
   const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
+  console.log('Auth Endpoint:', endpoint);
 
   const body = {
     credentials: {
@@ -17,6 +24,7 @@ export const tabAuthJWT = async (jwt) => {
       }
     }
   };
+  console.log('Auth Body:', JSON.stringify(body, null, 2));
 
   const config = {
     tableau_domain,
@@ -26,13 +34,19 @@ export const tabAuthJWT = async (jwt) => {
     },
   };
 
-  const response = await httpPost(endpoint, body, config);
+  try {
+    const response = await httpPost(endpoint, body, config);
+    console.log('✅ Auth Response:', response);
 
-  const site_id = response.credentials.site.id;
-  const site = response.credentials.site.contentUrl;
-  const user_id = response.credentials.user.id;
-  const rest_key = response.credentials.token; // Embed and REST API authentication supported via JWT
-  return { site_id, site, user_id, rest_key };
+    const site_id = response.credentials.site.id;
+    const site = response.credentials.site.contentUrl;
+    const user_id = response.credentials.user.id;
+    const rest_key = response.credentials.token; // Embed and REST API authentication supported via JWT
+    return { site_id, site, user_id, rest_key };
+  } catch (error) {
+    console.error('❌ JWT Auth Error:', error);
+    throw error;
+  }
 }
 
 // authenticate to Tableau with Personal Access Tokens

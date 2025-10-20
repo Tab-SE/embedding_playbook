@@ -88,13 +88,13 @@ export async function GET(request) {
     const sessionToken = sessionTokenMatch[1];
     console.log('🎯 Got Tableau session token:', sessionToken.substring(0, 20) + '...');
 
-    // Use general workbooks endpoint with filter for Veriforce project only
+    // Use general workbooks endpoint with optional project filter
     const url = `${process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN}/api/3.26/sites/${siteId}/workbooks`;
 
     const params = new URLSearchParams({
       pageSize: pageSize.toString(),
       pageNumber: pageNumber.toString(),
-      // filter: 'projectName:eq:Veriforce'  // Only get workbooks from Veriforce project
+      // filter: 'projectName:eq:ProjectName'  // Optional: Filter by project name
     });
 
     console.log('📡 Backend: Making API call to:', `${url}?${params}`);

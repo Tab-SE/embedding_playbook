@@ -150,30 +150,39 @@ export const Users = [
     ]
   },
   {
-    demo: 'veriforce',
+    demo: 'servicedesk',
     roles: {
-      0: { title: 'Safety & Compliance Manager', description: 'Oversees contractor compliance, training, and incident reporting'},
-      1: { title: 'Director of Operations', description: 'Monitors overall safety performance and drives vendor accountability'},
-      2: { title: 'Management', description: 'Executive oversight and strategic insights'},
+      0: { title: 'Support Specialist', description: 'Manages customer tickets, monitors response times, and ensures service quality'},
+      1: { title: 'Service Manager', description: 'Oversees team performance, customer satisfaction, and service delivery'},
+      2: { title: 'Director of Customer Success', description: 'Strategic oversight, renewals, and premium service offerings'},
     },
     users: [
       {
         id: 'a',
         name: "Sarah Johnson",
-        email: "sjohnson@veriforce.com",
+        email: "sjohnson@servicedesk.com",
         picture: "/img/users/sofia_lopez.png",
         role: 0,
-        vector_store: 'veriforce_sjohnson',
-        uaf: {"Department": ["Safety"], "Region": ["Central"]}
+        vector_store: 'superstore_sjohnson',
+        uaf: {"Department": ["Support"], "Region": ["Central"]}
       },
       {
         id: 'b',
         name: "Mike Chen",
-        email: "mchen@veriforce.com",
+        email: "mchen@servicedesk.com",
         picture: "/img/users/justin_chen.png",
         role: 1,
-        vector_store: 'veriforce_mchen',
-        uaf: {"Department": ["Procurement"], "Region": ["West"]}
+        vector_store: 'superstore_mchen',
+        uaf: {"Department": ["Service Management"], "Region": ["West"]}
+      },
+      {
+        id: 'c',
+        name: "Lisa Martinez",
+        email: "lmartinez@servicedesk.com",
+        picture: "/img/users/rachel_morris.png",
+        role: 2,
+        vector_store: 'superstore_lmartinez',
+        uaf: {"Region": ["Central","East"]}
       },
     ]
   }
