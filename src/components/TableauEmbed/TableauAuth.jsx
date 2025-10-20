@@ -35,17 +35,6 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     isLoading: isSessionLoading
   } = useTableauSession();
 
-  // Frontend JWT Debug Logs
-  console.log('🔐 Frontend Tableau Auth Debug:');
-  console.log('Session Status:', sessionStatus);
-  console.log('User Data:', user);
-  console.log('Session Error:', sessionError);
-  console.log('Is Session Success:', isSessionSuccess);
-  console.log('Is Session Error:', isSessionError);
-  console.log('Is Session Loading:', isSessionLoading);
-  console.log('Embed Token:', user?.embed_token);
-  console.log('User Email:', user?.email);
-
   if (isSessionSuccess) {
     embed_token = user.embed_token;
   }

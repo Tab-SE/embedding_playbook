@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { Demo, FloatingAssistant } from '@/components';
 
 import { SupportDashboard } from './SupportDashboard';
@@ -13,7 +14,9 @@ const Page = () => {
       settings={settings}
       pageName={pageName}
     >
-      <SupportDashboard />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SupportDashboard />
+      </Suspense>
       <FloatingAssistant
         settings={settings}
       />

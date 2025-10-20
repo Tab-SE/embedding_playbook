@@ -15,13 +15,6 @@ import { CustomSession } from "@/types";
 export const useTableauSession = () => {
   const { status: session_status, data: session_data } = useSession({ required: false });
 
-  // Frontend Session Debug Logs
-  console.log('🔑 Frontend Session Debug:');
-  console.log('Session Status:', session_status);
-  console.log('Session Data:', session_data);
-  console.log('User Email:', session_data?.user?.email);
-  console.log('Tableau Data:', (session_data as any)?.tableau);
-
   // controls dependent query
   const signedIn = session_status === 'authenticated';
   const user_data = session_data as CustomSession;
@@ -34,13 +27,10 @@ export const useTableauSession = () => {
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: queryKey,
     queryFn: async () => {
-      console.log('🚀 Frontend Query Function - Getting Client Session...');
       if (session_data?.user?.email) {
         const result = await getClientSession(session_data.user.email);
-        console.log('✅ Frontend Client Session Result:', result);
         return result;
       } else {
-        console.error('❌ Frontend Session Error: No user email');
         throw new Error("useTableauSession Error: Session data not available");
       }
     },
