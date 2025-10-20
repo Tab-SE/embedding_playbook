@@ -10,7 +10,7 @@ export interface User {
   picture: string;
   role?: number;
   vector_store: string;
-  uaf: Record<string, string[]>;
+  uaf: Record<string, string[] | undefined>;
 }
 
 export interface Demo {
