@@ -26,9 +26,10 @@ export const useTableauSession = () => {
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: queryKey,
-    queryFn: () => {
+    queryFn: async () => {
       if (session_data?.user?.email) {
-        return getClientSession(session_data.user.email);
+        const result = await getClientSession(session_data.user.email);
+        return result;
       } else {
         throw new Error("useTableauSession Error: Session data not available");
       }

@@ -160,13 +160,97 @@ export const authOptions: AuthOptions = {
         token.uaf = user.uaf || {};
         token.tableau = user.tableau;
         token.rest_token =  user.rest_token;
+        token.token_created = Date.now();
       }
+
+      // Check if tokens need refresh (JWT tokens expire in 9 minutes)
+      if (token.tableau && token.token_created) {
+        const tokenAge = Date.now() - (token.token_created as number);
+        const refreshThreshold = 8 * 60 * 1000; // 8 minutes in milliseconds
+
+        if (tokenAge > refreshThreshold) {
+          console.log('🔄 JWT tokens are old, refreshing...');
+          try {
+            // Import the refresh function here to avoid circular dependencies
+            const { handleJWT } = await import('@/models/Session/controller');
+
+            const jwt_client_id = process.env.TABLEAU_JWT_CLIENT_ID;
+            const embed_secret = process.env.TABLEAU_EMBED_JWT_SECRET;
+            const embed_secret_id = process.env.TABLEAU_EMBED_JWT_SECRET_ID;
+            const rest_secret = process.env.TABLEAU_REST_JWT_SECRET;
+            const rest_secret_id = process.env.TABLEAU_REST_JWT_SECRET_ID;
+
+            const embed_scopes = [
+              "tableau:views:embed",
+              "tableau:views:embed_authoring",
+              "tableau:insights:embed",
+            ];
+            const embed_options = {
+              jwt_secret: embed_secret,
+              jwt_secret_id: embed_secret_id,
+              jwt_client_id
+            };
+
+            const rest_scopes = [
+              "tableau:content:read",
+              "tableau:datasources:read",
+              "tableau:workbooks:read",
+              "tableau:projects:read",
+              "tableau:insights:read",
+              "tableau:metric_subscriptions:read",
+              "tableau:insight_definitions_metrics:read",
+              "tableau:insight_metrics:read",
+              "tableau:metrics:download",
+            ];
+            const rest_options = {
+              jwt_secret: rest_secret,
+              jwt_secret_id: rest_secret_id,
+              jwt_client_id
+            };
+
+            const { credentials, rest_token, embed_token } = await handleJWT(
+              token.email as string,
+              embed_options,
+              embed_scopes,
+              rest_options,
+              rest_scopes,
+              (token.uaf as any) || {}
+            );
+
+            // Update token with fresh data
+            token.tableau = {
+              ...token.tableau,
+              username: credentials.username,
+              user_id: credentials.user_id,
+              embed_token,
+              rest_token,
+              rest_key: credentials.rest_key,
+              site_id: credentials.site_id,
+              site: credentials.site,
+              created: credentials.created,
+              expires: credentials.expiration
+            };
+            token.rest_token = rest_token;
+            token.token_created = Date.now();
+
+            console.log('✅ JWT tokens refreshed successfully');
+          } catch (error) {
+            console.error('❌ Failed to refresh JWT tokens:', error);
+            // Don't throw error, just log it and continue with existing tokens
+          }
+        }
+      }
+
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT; }) {
       const customSession = session as CustomSession;
       if (customSession.user) {
         customSession.user.demo = token.demo as string;
+        // Add tableau data to session for client-side access
+        (customSession as any).tableau = token.tableau;
+        (customSession as any).rest_token = token.rest_token;
+        (customSession as any).embed_token = (token.tableau as any)?.embed_token;
       }
       return session;
     }

@@ -7,6 +7,7 @@ export const Demo = (props) => {
     base_path,
     app_name,
     app_logo,
+    auth_logo,
     ai_chat,
     ai_avatar,
     sections,
@@ -25,12 +26,13 @@ export const Demo = (props) => {
   }
 
   return (
-    <div className="flex h-full w-full flex-col bg-muted/40 overflow-auto">
+    <div className="flex h-full w-full flex-col bg-background overflow-auto">
       <NavigationMd
         base_path={base_path}
         crumbs={crumbs}
         app_name={app_name}
         app_logo={app_logo}
+        auth_logo={auth_logo}
         ai_chat={ai_chat}
         ai_avatar={ai_avatar}
         sections={sections}

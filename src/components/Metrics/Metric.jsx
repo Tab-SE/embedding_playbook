@@ -7,13 +7,16 @@ import { Skeleton } from "components/ui";
 import { Badge } from "components/ui";
 import { Dialog, DialogTrigger } from "components/ui";
 
-import { useInsights } from "hooks";
+import { useInsights, useTableauTranslation } from "hooks";
 import { parseInsights } from "utils";
 import { InsightsModal } from "components";
 
 
 export const Metric = (props) => {
   const { metric } = props;
+  // Get translation utilities
+  const { translateMetric } = useTableauTranslation();
+
   // distinct count of insights
   const [bundleCount, setBundleCount] = useState(null);
   let result; // contains question, markup and facts
@@ -113,12 +116,24 @@ export const Metric = (props) => {
 
 const Stats = (props) => {
   const { isSuccess, stats, bundleCount, metric } = props;
+  // Get translation utilities
+  const { translateMetric } = useTableauTranslation();
 
   if (isSuccess) {
+    // Debug: Log the original metric name
+    console.log('🔍 Original metric name:', metric.name);
+    console.log('🔍 Full metric object:', metric);
+
+    // Translate the entire metric object
+    const translatedMetric = translateMetric(metric);
+
+    // Debug: Log the translated metric name
+    console.log('🌍 Translated metric name:', translatedMetric.name);
+
     return (
       <div>
         <p className="text-stone-500 dark:text-stone-300 leading-5 font-bold whitespace-nowrap overflow-hidden p-3 pb-0">
-          {metric.name}
+          {translatedMetric.name}
         </p>
         <div className="grid grid-cols-12">
           <div className="col-span-8 grid grid-rows-2">

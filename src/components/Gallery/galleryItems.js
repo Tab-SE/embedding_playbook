@@ -2,7 +2,8 @@ import {
   BriefcaseBusiness,
   ShoppingCart,
   HandCoins,
-  HeartPulse
+  HeartPulse,
+  Shield
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -42,5 +43,14 @@ export const galleryItems = [
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
     icon: <HandCoins size={12} strokeWidth={2} />
+  },
+  {
+    id: 'veriforce',
+    link: "/demo/veriforce",
+    src: "/img/themes/veriforce/veriforce-logo.jpeg",
+    alt: "Veriforce",
+    vertical: "Construction & Safety",
+    description: "A comprehensive contractor risk management solution showcasing safety compliance, procurement analytics, and self-service capabilities that exceed PowerBI",
+    icon: <Shield size={12} strokeWidth={2} />
   }
 ]

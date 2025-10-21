@@ -25,6 +25,7 @@ export const Navigation = (props) => {
       <Breadcrumbs
         base_path={base_path}
         crumbs={crumbs}
+        app_logo={app_logo}
       />
       <div className="relative ml-auto flex-1 md:grow-0"/>
       <UserMenu

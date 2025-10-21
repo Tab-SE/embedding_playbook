@@ -26,8 +26,9 @@ export async function POST(req) {
       vectors,
       uaf,
       embed_token: tableau.embed_token,
-      // rest_token: tableau.rest_token, // only for debugging the JWT on the client
+      rest_key: tableau.rest_token, // REST API token for Tableau API calls
       user_id: tableau.user_id,
+      site_id: tableau.site_id, // Add site_id for API calls
       site: tableau.site,
       created: tableau.created,
       expires: tableau.expires

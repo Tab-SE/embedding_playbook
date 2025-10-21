@@ -22,6 +22,7 @@ export const NavigationMd = (props) => {
     crumbs,
     app_name,
     app_logo,
+    auth_logo,
     ai_chat,
     ai_avatar,
     sections,
@@ -35,7 +36,7 @@ export const NavigationMd = (props) => {
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-logoBackground text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Avatar className="h-8 w-8 p-1 transition-all group-hover:scale-110 bg-logoBackground">
-            <AvatarImage src={app_logo} alt="demo brand logo" />
+            <AvatarImage src={auth_logo || app_logo} alt="demo brand logo" />
             <AvatarFallback>APP</AvatarFallback>
           </Avatar>
           <span className="sr-only">{app_name}</span>
@@ -74,7 +75,7 @@ const NavBarItem = (props) => {
         <TooltipTrigger asChild>
           <Link
             href={base_path + path}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 text-navIcons bg-iconBackground hover:scale-110"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-navIcons transition-colors md:h-8 md:w-8 bg-iconBackground hover:scale-110"
           >
             {icon}
             <span className="sr-only">{name}</span>
