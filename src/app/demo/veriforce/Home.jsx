@@ -40,7 +40,7 @@ export const Home = () => {
   // Get language context
   const { t } = useLanguage();
 
-  // Get current user
+  // Get current user - re-fetch when component mounts or when session might change
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -64,6 +64,72 @@ export const Home = () => {
       }
     };
     fetchUser();
+  }, []); // Initial fetch
+
+  // Also fetch user when the page becomes visible (user might have switched in another tab)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        const fetchUser = async () => {
+          try {
+            const response = await fetch('/api/user', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            if (response.ok) {
+              const userData = await response.json();
+              setCurrentUser(userData);
+              console.log('User updated on visibility change:', userData);
+            }
+          } catch (error) {
+            console.error('Error fetching user on visibility change:', error);
+          }
+        };
+        fetchUser();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  // Re-fetch user when window regains focus or storage changes (user might have switched)
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.ok) {
+          const userData = await response.json();
+          setCurrentUser(userData);
+          console.log('User updated:', userData);
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    const handleFocus = () => fetchUser();
+    const handleStorageChange = () => fetchUser();
+
+    // Listen for focus and storage changes
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check periodically every 2 seconds
+    const interval = setInterval(fetchUser, 2000);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
   }, []);
 
   // AGGRESSIVE scroll prevention - completely stop Tableau from causing any scroll
@@ -352,7 +418,7 @@ export const Home = () => {
   // Generate emails from selected marks (handles multiple selections)
   const generateEmail = () => {
     if (selectedMarks.length === 0) {
-      alert('Please select data points from the dashboard first!');
+      // Just return without showing popup
       return;
     }
 
@@ -774,7 +840,6 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <div className="flex gap-3">
                   <button
                     onClick={() => {
-                      alert(`Demo: Email sent to ${emailPreviews[currentEmailIndex].to}`);
                       // Remove current email from preview list
                       const newPreviews = emailPreviews.filter((_, idx) => idx !== currentEmailIndex);
                       if (newPreviews.length === 0) {
@@ -791,8 +856,6 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                   </button>
                   <button
                     onClick={() => {
-                      const recipients = emailPreviews.map(e => e.to).join(', ');
-                      alert(`Demo: Sending ${emailPreviews.length} emails to:\n${recipients}`);
                       setShowEmailModal(false);
                       setSelectedMarks([]);
                     }}
@@ -865,11 +928,6 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <div className="flex gap-3">
                   <button
                     onClick={() => {
-                      if (!editableSlackMessage.trim()) {
-                        alert('Please enter a message before sending.');
-                        return;
-                      }
-                      alert(`Demo: Slack message sent to #safety-team!\n\nMessage: ${editableSlackMessage}`);
                       setShowSlackModal(false);
                       setSelectedMarks([]);
                       setEditableSlackMessage('');

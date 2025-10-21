@@ -1,6 +1,7 @@
 import { ThemeProvider } from 'next-themes';
 
 import { AuthGuard, LanggraphAgentRuntimeProvider } from '@/components';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 import { settings } from './config';
 
 export const metadata = {
@@ -19,8 +20,10 @@ export default function VeriforceLayout({ children }) {
       <LanggraphAgentRuntimeProvider
         agentId='730bfbd6-9543-5e48-9f2b-bcb009fbb33e'
       >
-        <AuthGuard demo={settings.app_id} base_path={settings.base_path} />
-        {children}
+        <LanguageProvider demo="veriforce">
+          <AuthGuard demo={settings.app_id} base_path={settings.base_path} />
+          {children}
+        </LanguageProvider>
       </LanggraphAgentRuntimeProvider>
     </ThemeProvider>
   );
