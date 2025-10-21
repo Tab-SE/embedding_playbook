@@ -103,25 +103,17 @@ export const SafetyDashboard = () => {
     setShowSlackModal(true);
   };
 
-  const handleSlackSend = () => {
-    if (slackMessage.trim() && selectedUser) {
-      const selectedUserData = slackUsers.find(user => user.id === selectedUser);
-      // In a real implementation, this would send to Slack API
-      alert(`Demo: Slack message sent!\n\nTo: ${selectedUserData?.name} (${selectedUserData?.email})\n\nMessage: ${slackMessage}\n\nDashboard: ${currentDashboard?.title}`);
-      setShowSlackModal(false);
-      setSlackMessage('');
-      setCurrentDashboard(null);
-      setSelectedUser('');
-    } else if (!selectedUser) {
-      alert('Please select a user to send the message to.');
-    }
+  const handleSlackSend = (data) => {
+    // Just close the modal - no popups
+    setShowSlackModal(false);
+    setSlackMessage('');
+    setCurrentDashboard(null);
+    setSelectedUser('');
   };
 
   const handleCopyUrl = () => {
     const currentUrl = window.location.href;
-    navigator.clipboard.writeText(currentUrl).then(() => {
-      alert('Dashboard URL copied to clipboard!');
-    }).catch(() => {
+    navigator.clipboard.writeText(currentUrl).catch(() => {
       // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = currentUrl;
@@ -129,7 +121,6 @@ export const SafetyDashboard = () => {
       textArea.select();
       document.execCommand('copy');
       document.body.removeChild(textArea);
-      alert('Dashboard URL copied to clipboard!');
     });
   };
 

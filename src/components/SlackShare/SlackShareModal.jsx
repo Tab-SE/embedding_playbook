@@ -46,14 +46,15 @@ export const SlackShareModal = ({
       setSlackMessage('');
       setSelectedUser('');
     } else if (!selectedUser) {
-      alert('Please select a user to send the message to.');
+      // Just return without showing popup
+      return;
     }
   };
 
   const handleCopyUrl = () => {
     const urlToUse = shareableUrl || window.location.href;
     navigator.clipboard.writeText(urlToUse).then(() => {
-      alert('Dashboard URL copied to clipboard!');
+      // URL copied silently
     }).catch(() => {
       // Fallback for older browsers
       const textArea = document.createElement('textarea');
@@ -62,7 +63,7 @@ export const SlackShareModal = ({
       textArea.select();
       document.execCommand('copy');
       document.body.removeChild(textArea);
-      alert('Dashboard URL copied to clipboard!');
+      // URL copied silently
     });
   };
 

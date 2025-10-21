@@ -59,7 +59,7 @@ export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId }
 
   const handleSlackSend = ({ message, user, dashboard }) => {
     // In a real implementation, this would send to Slack API
-    alert(`Demo: Slack message sent!\n\nTo: ${user.name} (${user.email})\n\nMessage: ${message}\n\nDashboard: ${dashboard.title}`);
+    // Slack message sent silently
   };
 
   useEffect(() => {
