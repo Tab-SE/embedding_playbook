@@ -20,7 +20,7 @@ export const Home = () => {
         />
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <div className="xl:col-span-2">
-            <Card className='bg-card shadow-xl'>
+            <Card className='bg-card shadow-xl h-fit'>
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>The financial portfolio and client performance overview dashboard offers a snapshot of Assets Under Management (AUM), client count, and total assets. It visually tracks performance over time, highlighting portfolio growth and client engagement, providing a quick assessment of investment effectiveness and client satisfaction.</CardDescription>
@@ -30,7 +30,7 @@ export const Home = () => {
                   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/PortfolioOverview'
                   hideTabs={true}
                   toolbar='hidden'
-                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] xl:h-[950px] 2xl:h-[900px]'
                   width='100%'
                   height='100%'
                 />

@@ -22,7 +22,7 @@ import {
 
 
 export function UserMenu(props) {
-  const { src } = props;
+  const { src, base_path = '/demo/superstore' } = props;
   const avatar = src ? src : 'img/users/mackenzie_day.png';
   const [user, setUser] = useState(undefined);
   // only 2 states: loading and authenticated https://next-auth.js.org/getting-started/client#require-session
@@ -40,7 +40,7 @@ export function UserMenu(props) {
       <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
         <Label />
         <Group />
-        <Logout status={status} />
+        <Logout status={status} base_path={base_path} />
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -48,14 +48,14 @@ export function UserMenu(props) {
 
 
 const Logout = (props) => {
-  const { status } = props;
+  const { status, base_path } = props;
 
   if (status === 'authenticated') {
     return (
       <DropdownMenuItem
         className='hover:cursor-pointer'
         onClick={async () => {
-          await signOut({ redirect: true, callbackUrl: '/demo/servicedesk/auth' });
+          await signOut({ redirect: true, callbackUrl: `${base_path}/auth` });
         }}
       >
         <Button

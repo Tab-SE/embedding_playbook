@@ -10,10 +10,21 @@ export const description = "An orders dashboard with a sidebar navigation. The s
 export const Orders = (props) => {
   const { status, data, error, isError, isSuccess } = useMetrics();
   // define which metrics to store on this page
-  const metricIds = ["da6f99eb-8cda-418f-8d9a-564a0c35bd1f", "54f85f6b-9c68-4e2c-98b7-b2ee8d2e07a9"];
+  const metricIds = ["da6f99eb-8cda-418f-8d9a-564a0c35bd1f", "3ad631b6-565b-449d-974c-e9c007120a97"];
   let metrics;
 
+
   if (isSuccess && data) {
+    // Debug: Log all available metric IDs
+    console.log("Available metric IDs in data:");
+    data.forEach((metric, index) => {
+      console.log(`Metric ${index}:`, {
+        id: metric.id,
+        name: metric.name,
+        type: typeof metric.id
+      });
+    });
+
     // extract metrics if data is available
     metrics = extractMetrics(data, metricIds);
   }
@@ -32,8 +43,8 @@ export const Orders = (props) => {
         <div className="grid gap-3 md:col-span-2 xl:grid-cols-2 lg:col-span-3 xl:col-span-4 flex justify-center items-center">
           {isSuccess ? (
             <>
-              <Metric metric={metrics.orders} />
               <Metric metric={metrics.shippingtime} />
+              <Metric metric={metrics.claimsvolume} />
             </>
           ) : null}
         </div>

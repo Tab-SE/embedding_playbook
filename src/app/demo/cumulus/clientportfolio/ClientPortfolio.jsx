@@ -32,7 +32,7 @@ export const ClientPortfolio = (props) => {
           <ProductsTable />
         </TabsContent> */}
         <TabsContent value="client">
-          <Card className="bg-card shadow-xl">
+          <Card className="bg-card shadow-xl h-fit">
             <CardHeader>
               <CardTitle>Client Performance</CardTitle>
               <CardDescription>
@@ -44,7 +44,7 @@ export const ClientPortfolio = (props) => {
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/ClientPerformance'
                 hideTabs={true}
                 toolbar='hidden'
-                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] xl:h-[950px] 2xl:h-[900px]'
                 width='100%'
                 height='100%'
               />
@@ -52,7 +52,7 @@ export const ClientPortfolio = (props) => {
           </Card>
         </TabsContent>
         <TabsContent value="asset">
-          <Card className="bg-card shadow-xl">
+          <Card className="bg-card shadow-xl h-fit">
             <CardHeader>
               <CardTitle>Asset Performance</CardTitle>
               <CardDescription>
@@ -72,7 +72,7 @@ export const ClientPortfolio = (props) => {
           </Card>
         </TabsContent>
         <TabsContent value="advisor">
-          <Card className="bg-card shadow-xl">
+          <Card className="bg-card shadow-xl h-fit">
             <CardHeader>
               <CardTitle>Advisor Portfolio</CardTitle>
               <CardDescription>
@@ -84,7 +84,7 @@ export const ClientPortfolio = (props) => {
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/InsightsforAdvisors'
                 hideTabs={true}
                 toolbar='hidden'
-                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] xl:h-[950px] 2xl:h-[900px]'
                 width='100%'
                 height='100%'
               />

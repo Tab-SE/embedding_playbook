@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef, forwardRef, useId } from 'react';
+import { useEffect, useState, useRef, forwardRef, useId, useMemo, useCallback } from 'react';
 
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
@@ -41,6 +41,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       const script = document.createElement('script');
       script.type = 'module';
       script.src = 'https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js';
+      script.async = true;
+      script.defer = true;
       document.head.appendChild(script);
     }
   }, []);
@@ -66,6 +68,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       setActiveSheet(innerRef.current.workbook.activeSheet);
     }
   }, [interactive, innerRef, setActiveSheet])
+
+  const memoizedLayouts = useMemo(() => layouts, [layouts]);
 
   return (
     <div>

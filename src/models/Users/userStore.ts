@@ -90,7 +90,7 @@ export const Users = [
         picture: "/img/users/rachel_morris.png",
         role: 0,
         vector_store: 'makana_rmorris',
-        uaf: {}
+        uaf: {"Region": ["Central","East"]}
       },
       {
         id: 'b',
@@ -99,7 +99,7 @@ export const Users = [
         picture: "/img/users/debi_patel.png",
         role: 1,
         vector_store: 'makana_dpatel',
-        uaf: {}
+        uaf: {"Region": ["South"]}
       },
       {
         id: 'c',
@@ -108,7 +108,7 @@ export const Users = [
         picture: "/img/users/matthew_wells.png",
         role: 2,
         vector_store: 'makana_mwells',
-        uaf: {}
+        uaf: {"Region": ["West"]}
       },
     ]
   },

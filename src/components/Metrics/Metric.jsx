@@ -116,10 +116,6 @@ const Stats = (props) => {
   const { isSuccess, stats, bundleCount, metric } = props;
 
   if (isSuccess) {
-    // Debug: Log the original metric name
-    console.log('🔍 Original metric name:', metric.name);
-    console.log('🔍 Full metric object:', metric);
-
     return (
       <div>
         <p className="text-stone-500 dark:text-stone-300 leading-5 font-bold whitespace-nowrap overflow-hidden p-3 pb-0">

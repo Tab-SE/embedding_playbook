@@ -56,7 +56,7 @@ export function UserMenu(props) {
         <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
           <Label app_name={app_name} email={isSessionSuccess && user?.email ? user.email : 'User'} />
           <Group base_path={base_path} />
-          <Logout status={sessionStatus} />
+          <Logout status={sessionStatus} base_path={base_path} />
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -65,7 +65,7 @@ export function UserMenu(props) {
 
 
 const Logout = (props) => {
-  const { status } = props;
+  const { status, base_path } = props;
 
   // Show logout for any non-error status
   if (status === 'success' || status === 'pending' || status === 'idle') {
@@ -73,7 +73,7 @@ const Logout = (props) => {
       <DropdownMenuItem
         className='hover:cursor-pointer'
         onClick={async () => {
-          await signOut({ redirect: true, callbackUrl: '/demo/servicedesk/auth' });
+          await signOut({ redirect: true, callbackUrl: `${base_path}/auth` });
         }}
       >
         <Button
