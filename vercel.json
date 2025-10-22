@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://embeddingplaybook.up.railway.app/",
+      "permanent": true
+    }
+  ]
+}
