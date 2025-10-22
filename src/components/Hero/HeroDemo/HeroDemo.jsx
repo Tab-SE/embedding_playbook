@@ -7,7 +7,7 @@ import { MainNav, MobilePreview } from './index';
 import { Themes } from '../Themes';
 
 export const HeroDemo = (props) => {
-  const { hideMetrics, hideSheets } = props;
+  const { hideMetrics, hideSheets, base_path } = props;
   const [theme, setTheme] = useState(null);
   const [user, setUser] = useState(null);
   const { status: session_status, data: session_data } = useSession({});
@@ -28,7 +28,7 @@ export const HeroDemo = (props) => {
       <MobilePreview />
       <div className="hidden sm:grid grid-col  my-6">
         <div className="overflow-hidden rounded-[0.5rem] border dark:border-stone-600 bg-background shadow-xl h-min-screen">
-          <MainNav setTheme={setTheme} />
+          <MainNav setTheme={setTheme} base_path={base_path} />
           <div className='bg-stone-300 dark:bg-stone-700 pt-6 min-h-[1170px]'>
             <div className='px-6'>
               {hideMetrics ? null : <Metrics basis="sm:basis-1/2 xl:basis-1/3" />}

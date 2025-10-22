@@ -25,8 +25,8 @@ export default function RootLayout({
       <body className='h-screen w-screen'>
         <SessionProvider>
           <QueryClientProvider client={queryClient}>
-            <ReactQueryDevtools initialIsOpen={false} buttonPosition='bottom-left'/>
-            {children}
+              <ReactQueryDevtools initialIsOpen={false} buttonPosition='bottom-left'/>
+              {children}
           </QueryClientProvider>
         </SessionProvider>
       </body>

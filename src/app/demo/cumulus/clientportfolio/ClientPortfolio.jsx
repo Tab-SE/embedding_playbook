@@ -32,7 +32,7 @@ export const ClientPortfolio = (props) => {
           <ProductsTable />
         </TabsContent> */}
         <TabsContent value="client">
-          <Card className="dark:bg-stone-900 shadow-xl">
+          <Card className="bg-card shadow-xl h-fit">
             <CardHeader>
               <CardTitle>Client Performance</CardTitle>
               <CardDescription>
@@ -42,33 +42,17 @@ export const ClientPortfolio = (props) => {
             <CardContent className="flex items-center justify-center px-1">
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/ClientPerformance'
-                width={1260}
-                height={516}
                 hideTabs={true}
-                device='default'
                 toolbar='hidden'
-                className='
-                min-w-[300px] min-h-[500px]
-                sm:min-w-[490px] sm:min-h-[500px]
-                md:min-w-[620px] md:min-h-[500px]
-                lg:min-w-[800px] lg:min-h-[500px]
-                xl:min-w-[1000px] xl:min-h-[700px]
-                2xl:min-w-[1200px] 2xl:min-h-[800px]
-                '
-                layouts = {{
-                  'xs': { 'device': 'default' },
-                  'sm': { 'device': 'default' },
-                  'md': { 'device': 'default' },
-                  'lg': { 'device': 'default' },
-                  'xl': { 'device': 'default' },
-                  'xl2': { 'device': 'default' },
-                }}
+                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] xl:h-[950px] 2xl:h-[900px]'
+                width='100%'
+                height='100%'
               />
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="asset">
-          <Card className="dark:bg-stone-900 shadow-xl">
+          <Card className="bg-card shadow-xl h-fit">
             <CardHeader>
               <CardTitle>Asset Performance</CardTitle>
               <CardDescription>
@@ -77,33 +61,18 @@ export const ClientPortfolio = (props) => {
             </CardHeader>
             <CardContent className="flex items-center justify-center">
               <TableauEmbed
-                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/AssetPerformance'                width={1260}
-                height={516}
+                src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/AssetPerformance'
                 hideTabs={true}
-                device='default'
                 toolbar='hidden'
-                className='
-                min-w-[300px] min-h-[500px]
-                sm:min-w-[490px] sm:min-h-[500px]
-                md:min-w-[620px] md:min-h-[500px]
-                lg:min-w-[800px] lg:min-h-[500px]
-                xl:min-w-[1000px] xl:min-h-[700px]
-                2xl:min-w-[1200px] 2xl:min-h-[800px]
-                '
-                layouts = {{
-                  'xs': { 'device': 'default' },
-                  'sm': { 'device': 'default' },
-                  'md': { 'device': 'default' },
-                  'lg': { 'device': 'default' },
-                  'xl': { 'device': 'default' },
-                  'xl2': { 'device': 'default' },
-                }}
+                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                width='100%'
+                height='100%'
               />
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="advisor">
-          <Card className="dark:bg-stone-900 shadow-xl">
+          <Card className="bg-card shadow-xl h-fit">
             <CardHeader>
               <CardTitle>Advisor Portfolio</CardTitle>
               <CardDescription>
@@ -113,27 +82,11 @@ export const ClientPortfolio = (props) => {
             <CardContent className="flex items-center justify-center px-1">
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/InsightsforAdvisors'
-                width={1340}
-                height={780}
                 hideTabs={true}
-                device='default'
                 toolbar='hidden'
-                className='
-                min-w-[300px] min-h-[500px]
-                sm:min-w-[490px] sm:min-h-[500px]
-                md:min-w-[620px] md:min-h-[500px]
-                lg:min-w-[1400px] lg:min-h-[500px]
-                xl:min-w-[1400px] xl:min-h-[700px]
-                2xl:min-w-[1400px] 2xl:min-h-[800px]
-                '
-                layouts = {{
-                  'xs': { 'device': 'default' },
-                  'sm': { 'device': 'default' },
-                  'md': { 'device': 'default' },
-                  'lg': { 'device': 'default' },
-                  'xl': { 'device': 'default' },
-                  'xl2': { 'device': 'default' },
-                }}
+                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] xl:h-[950px] 2xl:h-[900px]'
+                width='100%'
+                height='100%'
               />
             </CardContent>
           </Card>

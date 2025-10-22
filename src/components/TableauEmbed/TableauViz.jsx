@@ -1,11 +1,10 @@
 "use client";
-import { useEffect, useState, useRef, forwardRef, useId } from 'react';
+import { useEffect, useState, useRef, forwardRef, useId, useMemo, useCallback } from 'react';
 
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
 
-import { TableauToolbar, XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
-import { getLayoutProps, parseClassNameForLayouts } from './vizUtils';
+import { TableauToolbar } from 'components';
 
 
 // handles post authentication logic requiring an initialized <tableau-viz> object to operate
@@ -18,10 +17,15 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     toolbar,
     isPublic,
     customToolbar,
-    layouts
+    layouts,
+    height,
+    width,
+    id: customId,
+    demo = 'default'
   } = props;
   // creates a unique identifier for the embed
-  const id = `id-${useId()}`;
+  const generatedId = `id-${useId()}`;
+  const id = customId || generatedId;
   // to be used if parent did not forward a ref
   const localRef = useRef(null);
   // Use the forwarded ref if provided, otherwise use the local ref
@@ -30,6 +34,18 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   const [interactive, setInteractive] = useState(false);
   // the target of most viz interactions
   const [activeSheet, setActiveSheet] = useState(null);
+
+  useEffect(() => {
+    // Load the Tableau embedding library if not already loaded
+    if (typeof window !== 'undefined' && !window.tableau) {
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+  }, []);
 
   useEffect(() => {
     if (innerRef.current) {
@@ -53,111 +69,24 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     }
   }, [interactive, innerRef, setActiveSheet])
 
-  const layoutSpec = parseClassNameForLayouts(className, layouts);
+  const memoizedLayouts = useMemo(() => layouts, [layouts]);
 
   return (
     <div>
-      <XSLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-        <tableau-viz
-          ref={innerRef}
-          id="tableauViz"
-          src={src}
-          token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layoutSpec, 'xs').height}px`}
-          width={`${getLayoutProps(layoutSpec, 'xs').width}px`}
-          device={getLayoutProps(layoutSpec, 'xs').device}
-          hide-tabs={hideTabs ? true : false}
-          toolbar={toolbar}
-          class='flex justify-center items-center rounded'
-          data-viz={id}
-        />
-      </XSLayout>
-
-      <SMLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-        <tableau-viz
-          ref={innerRef}
-          id="tableauViz"
-          src={src}
-          token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layoutSpec, 'sm').height}px`}
-          width={`${getLayoutProps(layoutSpec, 'sm').width}px`}
-          device={getLayoutProps(layoutSpec, 'sm').device}
-          hide-tabs={hideTabs ? true : false}
-          toolbar={toolbar}
-          class='flex justify-center items-center rounded'
-          data-viz={id}
-        />
-      </SMLayout>
-
-      <MDLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-        <tableau-viz
-          ref={innerRef}
-          id="tableauViz"
-          src={src}
-          token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layoutSpec, 'md').height}px`}
-          width={`${getLayoutProps(layoutSpec, 'md').width}px`}
-          device={getLayoutProps(layoutSpec, 'md').device}
-          hide-tabs={hideTabs ? true : false}
-          toolbar={toolbar}
-          class='flex justify-center items-center rounded'
-          data-viz={id}
-        />
-      </MDLayout>
-
-      <LGLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-        <tableau-viz
-          ref={innerRef}
-          id="tableauViz"
-          src={src}
-          token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layoutSpec, 'lg').height}px`}
-          width={`${getLayoutProps(layoutSpec, 'lg').width}px`}
-          device={getLayoutProps(layoutSpec, 'lg').device}
-          hide-tabs={hideTabs ? true : false}
-          toolbar={toolbar}
-          class='flex justify-center items-center rounded'
-          data-viz={id}
-        />
-      </LGLayout>
-
-      <XLLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-        <tableau-viz
-          ref={innerRef}
-          id="tableauViz"
-          src={src}
-          token={!isPublic ? jwt : null}
-          height={`${getLayoutProps(layoutSpec, 'xl').height}px`}
-          width={`${getLayoutProps(layoutSpec, 'xl').width}px`}
-          device={getLayoutProps(layoutSpec, 'xl').device}
-          hide-tabs={hideTabs ? true : false}
-          toolbar={toolbar}
-          class='flex justify-center items-center rounded'
-          data-viz={id}
-        />
-      </XLLayout>
-
-      <XL2Layout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
-        <tableau-viz
-            ref={innerRef}
-            id="tableauViz"
-            src={src}
-            token={!isPublic ? jwt : null}
-            height={`${getLayoutProps(layoutSpec, 'xl2').height}px`}
-            width={`${getLayoutProps(layoutSpec, 'xl2').width}px`}
-            device={getLayoutProps(layoutSpec, 'xl2').device}
-            hide-tabs={hideTabs ? true : false}
-            toolbar={toolbar}
-            class='flex justify-center items-center rounded'
-            data-viz={id}
-        />
-      </XL2Layout>
+      {customToolbar ? <TableauToolbar src={src} ref={innerRef} demo={demo} /> : null}
+      <tableau-viz
+        ref={innerRef}
+        id={id}
+        src={src}
+        token={!isPublic ? jwt : null}
+        height={height || "100%"}
+        width={width || "100%"}
+        device="desktop"
+        hide-tabs={hideTabs ? true : false}
+        toolbar={toolbar}
+        class={className}
+        data-viz={id}
+      />
     </div>
   )
 })

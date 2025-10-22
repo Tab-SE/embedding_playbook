@@ -14,6 +14,7 @@ import { InsightsModal } from "components";
 
 export const Metric = (props) => {
   const { metric } = props;
+
   // distinct count of insights
   const [bundleCount, setBundleCount] = useState(null);
   let result; // contains question, markup and facts

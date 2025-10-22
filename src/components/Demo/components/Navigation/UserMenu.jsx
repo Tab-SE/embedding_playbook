@@ -40,41 +40,41 @@ export function UserMenu(props) {
     console.debug('Session Error:', sessionError);
   }
 
+  // Debug logging
+  console.debug('UserMenu Debug:', {
+    sessionStatus,
+    isSessionSuccess,
+    isSessionError,
+    isSessionLoading,
+    user: user ? { name: user.name, email: user.email, picture: user.picture } : null
+  });
+
   return (
     <div className="pr-6">
-      {isSessionError || isSessionLoading ?
-          <DropdownMenu>
-            <Trigger src='' />
-            <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-              <Label app_name={app_name} email='' />
-              <Group />
-              <Logout status={sessionStatus} />
-            </DropdownMenuContent>
-          </DropdownMenu>
-      : null}
-      {isSessionSuccess ?
-        <DropdownMenu>
-          <Trigger src={user.picture} />
-          <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-            <Label app_name={app_name} email={user.email} />
-            <Group base_path={base_path} />
-            <Logout status={sessionStatus} />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      : null}
+      <DropdownMenu>
+        <Trigger src={isSessionSuccess && user?.picture ? user.picture : '/img/users/mackenzie_day.png'} />
+        <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
+          <Label app_name={app_name} email={isSessionSuccess && user?.email ? user.email : 'User'} />
+          <Group base_path={base_path} />
+          <Logout status={sessionStatus} base_path={base_path} />
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }
 
 
 const Logout = (props) => {
-  const { status } = props;
+  const { status, base_path } = props;
 
-  if (status === 'success') {
+  // Show logout for any non-error status
+  if (status === 'success' || status === 'pending' || status === 'idle') {
     return (
       <DropdownMenuItem
         className='hover:cursor-pointer'
-        onClick={async () => await signOut('credentials', { redirect: false })}
+        onClick={async () => {
+          await signOut({ redirect: true, callbackUrl: `${base_path}/auth` });
+        }}
       >
         <Button
           variant="ghost"

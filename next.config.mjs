@@ -8,6 +8,12 @@ const withNextra = nextra({
 })
 
 export default withNextra({
+  // Performance optimizations
+  swcMinify: true,
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
+
   images: {
     remotePatterns: [
       {
@@ -23,6 +29,9 @@ export default withNextra({
         pathname: '/**',
       }
     ],
+    // Optimize images
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
   },
   webpack(config) {
     // config.optimization.minimize = false;

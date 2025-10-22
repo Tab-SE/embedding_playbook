@@ -40,8 +40,8 @@ export const Orders = (props) => {
       </div>
       <OrdersTable />
     </div>
-    <div className="grid gap-6">
-      <Card className="dark:bg-stone-900 shadow-xl">
+    <div className="grid gap-6 h-screen">
+      <Card className="bg-card shadow-xl">
         <CardHeader>
           <CardTitle>Shipping Summary</CardTitle>
           <CardDescription>
@@ -53,26 +53,13 @@ export const Orders = (props) => {
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShipSummary'
             hideTabs={true}
             toolbar='hidden'
-            className='
-            min-w-[309px] min-h-[240px]
-            sm:min-w-[486px] sm:min-h-[300px]
-            md:min-w-[600px] md:min-h-[400px]
-            lg:min-w-[240px] lg:min-h-[248px]
-            xl:min-w-[309px] xl:min-h-[226px]
-            2xl:min-w-[400px] 2xl:min-h-[236px]
-            '
-            layouts = {{
-              'xs': { 'device': 'default' },
-              'sm': { 'device': 'phone' },
-              'md': { 'device': 'default' },
-              'lg': { 'device': 'default' },
-              'xl': { 'device': 'tablet' },
-              'xl2': { 'device': 'desktop' }
-            }}
+            className='w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[400px] xl:h-[450px] 2xl:h-[500px]'
+            width='100%'
+            height='100%'
           />
         </CardContent>
       </Card>
-      <Card className="dark:bg-stone-900 shadow-xl">
+      <Card className="bg-card shadow-xl">
         <CardHeader>
           <CardTitle>Shipping Trends</CardTitle>
           <CardDescription>
@@ -84,22 +71,9 @@ export const Orders = (props) => {
             src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'
             hideTabs={true}
             toolbar='hidden'
-            className='
-            min-w-[309px] min-h-[240px]
-            sm:min-w-[486px] sm:min-h-[300px]
-            md:min-w-[600px] md:min-h-[400px]
-            lg:min-w-[240px] lg:min-h-[248px]
-            xl:min-w-[309px] xl:min-h-[226px]
-            2xl:min-w-[400px] 2xl:min-h-[236px]
-            '
-            layouts = {{
-              'xs': { 'device': 'default' },
-              'sm': { 'device': 'phone' },
-              'md': { 'device': 'default' },
-              'lg': { 'device': 'default' },
-              'xl': { 'device': 'tablet' },
-              'xl2': { 'device': 'desktop' }
-            }}
+            className='w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[400px] xl:h-[450px] 2xl:h-[500px]'
+            width='100%'
+            height='100%'
           />
         </CardContent>
       </Card>

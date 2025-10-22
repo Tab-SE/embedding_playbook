@@ -32,7 +32,7 @@ export const Products = (props) => {
           <ProductsTable />
         </TabsContent>
         <TabsContent value="segment">
-          <Card className="dark:bg-stone-900 shadow-xl">
+          <Card className="bg-card shadow-xl">
             <CardHeader>
               <CardTitle>Segment Analysis</CardTitle>
               <CardDescription>
@@ -42,33 +42,17 @@ export const Products = (props) => {
             <CardContent className="flex items-center justify-center px-1">
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductDetails'
-                width={1260}
-                height={516}
                 hideTabs={true}
-                device='default'
                 toolbar='hidden'
-                className='
-                min-w-[300px] min-h-[500px]
-                sm:min-w-[490px] sm:min-h-[500px]
-                md:min-w-[620px] md:min-h-[500px]
-                lg:min-w-[800px] lg:min-h-[500px]
-                xl:min-w-[1000px] xl:min-h-[700px]
-                2xl:min-w-[1200px] 2xl:min-h-[800px]
-                '
-                layouts = {{
-                  'xs': { 'device': 'default' },
-                  'sm': { 'device': 'default' },
-                  'md': { 'device': 'default' },
-                  'lg': { 'device': 'default' },
-                  'xl': { 'device': 'default' },
-                  'xl2': { 'device': 'default' },
-                }}
+                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                width='100%'
+                height='100%'
               />
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="category">
-          <Card className="dark:bg-stone-900 shadow-xl">
+          <Card className="bg-card shadow-xl">
             <CardHeader>
               <CardTitle>Category Performance</CardTitle>
               <CardDescription>
@@ -78,27 +62,11 @@ export const Products = (props) => {
             <CardContent className="flex items-center justify-center">
               <TableauEmbed
                 src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ProductView'
-                width={1260}
-                height={516}
                 hideTabs={true}
-                device='default'
                 toolbar='hidden'
-                className='
-                min-w-[300px] min-h-[500px]
-                sm:min-w-[490px] sm:min-h-[500px]
-                md:min-w-[620px] md:min-h-[500px]
-                lg:min-w-[800px] lg:min-h-[500px]
-                xl:min-w-[1000px] xl:min-h-[700px]
-                2xl:min-w-[1200px] 2xl:min-h-[800px]
-                '
-                layouts = {{
-                  'xs': { 'device': 'default' },
-                  'sm': { 'device': 'default' },
-                  'md': { 'device': 'default' },
-                  'lg': { 'device': 'default' },
-                  'xl': { 'device': 'default' },
-                  'xl2': { 'device': 'default' },
-                }}
+                className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                width='100%'
+                height='100%'
               />
             </CardContent>
           </Card>

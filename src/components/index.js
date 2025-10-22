@@ -51,3 +51,9 @@ export { SessionProvider, VercelAgentRuntimeProvider, LanggraphAgentRuntimeProvi
 export { FloatingAssistant, Thread, Agent } from './Agent';
 
 export { AuthGuard } from './AuthGuard';
+
+export { TableauNavigation } from './TableauNavigation';
+export { DynamicDashboardViewer } from './TableauNavigation/DynamicDashboardViewer';
+
+
+export { SlackShareModal, SlackShareButton } from './SlackShare';

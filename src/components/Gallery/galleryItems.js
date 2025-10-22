@@ -2,7 +2,8 @@ import {
   BriefcaseBusiness,
   ShoppingCart,
   HandCoins,
-  HeartPulse
+  HeartPulse,
+  Headphones
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -42,5 +43,14 @@ export const galleryItems = [
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
     icon: <HandCoins size={12} strokeWidth={2} />
+  },
+  {
+    id: 'servicedesk',
+    link: "/demo/servicedesk",
+    src: "/img/demos/servicedesk.png",
+    alt: "Service Excellence Platform",
+    vertical: "Customer Service & Support",
+    description: "Service analytics platform showcasing real-time insights for customer support, training completion, and uptime monitoring to build trust, drive renewals, and create premium offerings",
+    icon: <Headphones size={12} strokeWidth={2} />
   }
 ]
