@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/",
+      "destination": "https://embeddingplaybook.up.railway.app/",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "destination": "https://embeddingplaybook.up.railway.app/$1",
       "permanent": true
