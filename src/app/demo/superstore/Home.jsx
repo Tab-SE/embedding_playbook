@@ -20,7 +20,7 @@ export const Home = () => {
         />
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <div className="xl:col-span-2">
-            <Card className='bg-slate-800 shadow-xl'>
+            <Card className='bg-card shadow-xl'>
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>Your personal digest of Superstore sales in North America</CardDescription>

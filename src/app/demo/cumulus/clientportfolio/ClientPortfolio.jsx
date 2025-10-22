@@ -32,7 +32,7 @@ export const ClientPortfolio = (props) => {
           <ProductsTable />
         </TabsContent> */}
         <TabsContent value="client">
-          <Card className="bg-slate-800 shadow-xl">
+          <Card className="bg-card shadow-xl">
             <CardHeader>
               <CardTitle>Client Performance</CardTitle>
               <CardDescription>
@@ -52,7 +52,7 @@ export const ClientPortfolio = (props) => {
           </Card>
         </TabsContent>
         <TabsContent value="asset">
-          <Card className="bg-slate-800 shadow-xl">
+          <Card className="bg-card shadow-xl">
             <CardHeader>
               <CardTitle>Asset Performance</CardTitle>
               <CardDescription>
@@ -72,7 +72,7 @@ export const ClientPortfolio = (props) => {
           </Card>
         </TabsContent>
         <TabsContent value="advisor">
-          <Card className="bg-slate-800 shadow-xl">
+          <Card className="bg-card shadow-xl">
             <CardHeader>
               <CardTitle>Advisor Portfolio</CardTitle>
               <CardDescription>

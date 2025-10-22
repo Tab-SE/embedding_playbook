@@ -17,7 +17,8 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     isPublic,
     WebEdit,
     customToolbar,
-    id
+    id,
+    demo = 'default'
   } = props;
 
   let embed_token;
@@ -58,6 +59,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
         height={height}
         width={width}
         id={id}
+        demo={demo}
       />
       </div>
     );
@@ -80,6 +82,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
         height={height}
         width={width}
         id={id}
+        demo={demo}
       /> :
       <TableauWebAuthor
         src={src}

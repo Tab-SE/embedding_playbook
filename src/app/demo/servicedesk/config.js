@@ -14,12 +14,12 @@ import {
 export const settings = {
   app_id: 'servicedesk',
   app_name: 'Service Excellence Platform',
-  app_logo: '/img/themes/servicedesk/servicedesk-logo.png',
-  auth_logo: '/img/themes/servicedesk/servicedesk-logo.png',
+  app_logo: '/img/themes/servicedesk/dataicon.png',
+  auth_logo: '/img/themes/servicedesk/dataicon.png',
   base_path: '/demo/servicedesk',
   auth_hero: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2832&auto=format&fit=crop',
   ai_chat: true,
-  ai_avatar: '/img/themes/servicedesk/servicedesk-logo.png',
+  ai_avatar: '/img/themes/servicedesk/dataicon.png',
   sample_questions: [
     "What's our average response time this month?",
     "Show me open cases by priority",
@@ -34,18 +34,11 @@ export const settings = {
       description: 'Service analytics overview and key metrics'
     },
     {
-      name: 'Support',
-      icon: <Headphones className="h-5 w-5"/>,
-      path: '/support',
+      name: 'Cases',
+      icon: <FileText className="h-5 w-5"/>,
+      path: '/cases',
       min_role: 0,
-      description: 'Customer support metrics and case management'
-    },
-    {
-      name: 'Service Management',
-      icon: <TrendingUp className="h-5 w-5"/>,
-      path: '/management',
-      min_role: 1,
-      description: 'Team performance and service delivery analytics'
+      description: 'Open cases and case creation analytics'
     },
     {
       name: 'Customer Success',
@@ -53,13 +46,6 @@ export const settings = {
       path: '/success',
       min_role: 2,
       description: 'Strategic insights, renewals, and customer health'
-    },
-    {
-      name: 'Uptime',
-      icon: <Clock className="h-5 w-5"/>,
-      path: '/uptime',
-      min_role: 0,
-      description: 'System uptime and availability monitoring'
     },
     {
       name: 'Training',

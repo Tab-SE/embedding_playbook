@@ -159,21 +159,21 @@
     --metrics-negative: 23 93% 51%;
   }
 
-   /* Define variables for the 'makana' theme (Purple) */
+   /* Define variables for the 'makana' theme (Purple) - Light Mode */
   [data-theme="makana"] {
-    --background: 225 19% 31%; /* Very Light Purple */
+    --background: 0 0% 100%; /* White */
     --foreground: 270 20% 20%; /* Dark Purple-Gray */
-    --demo-background: 225 19% 31%; /* contrasts ui components in /demos */
-    --nav-background: 270 20% 20%; /* left hand nav */
-    --logo-background: 225 19% 31%; /* sometimes logo files are transparent */
-    --icon-background: 265 60% 90%; /* same with icon having transparent backgrounds */
+    --demo-background: 60 5% 96%; /* contrasts ui components in /demos */
+    --nav-background: 60 9% 98%; /* left hand nav */
+    --logo-background: 0 0% 100%; /* sometimes logo files are transparent */
+    --icon-background: 0 0% 100%; /* same with icon having transparent backgrounds */
     --login-card-background: 0 0% 100%; /* for the Auth component on login screens */
     --nav-icons: 270 20% 20%; /* to color icons */
-    --ai-icons: 265 60% 90%;
-    --breadcrumbs: 265 60% 90%;
-    --card: 270 80% 99%; /* Almost White Purple */
+    --ai-icons: 260 80% 60%;
+    --breadcrumbs: 260 80% 60%;
+    --card: 0 0% 100%; /* White */
     --card-foreground: 270 20% 20%;
-    --popover: 270 80% 99%;
+    --popover: 0 0% 100%;
     --popover-foreground: 270 20% 20%;
     --primary: 260 80% 60%; /* Strong Purple */
     --primary-foreground: 0 0% 100%; /* White */
@@ -230,5 +230,31 @@
   }
   body {
     @apply bg-background text-foreground; /* Apply base bg/text colors */
+  }
+
+  /* Servicedesk dataicon styling - circular */
+  img[src*="dataicon.png"] {
+    object-fit: contain;
+    background: transparent;
+    border-radius: 50%;
+  }
+
+  /* Servicedesk datalargelogo styling - rectangular */
+  img[src*="datalargelogo.png"] {
+    object-fit: contain;
+    background: transparent !important;
+    border-radius: 0;
+    height: 500px !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+  }
+
+  /* Override Avatar constraints for datalargelogo */
+  .avatar-container img[src*="datalargelogo.png"] {
+    height: 500px !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: none !important;
   }
 }

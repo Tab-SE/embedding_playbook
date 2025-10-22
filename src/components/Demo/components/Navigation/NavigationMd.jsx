@@ -35,7 +35,7 @@ export const NavigationMd = (props) => {
           href='/demos'
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-logoBackground text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
-          <Avatar className="h-8 w-8 p-1 transition-all group-hover:scale-110 bg-logoBackground">
+          <Avatar className="h-8 w-8 p-1 transition-all group-hover:scale-110 bg-logoBackground avatar-container">
             <AvatarImage src={auth_logo || app_logo} alt="demo brand logo" />
             <AvatarFallback>APP</AvatarFallback>
           </Avatar>

@@ -30,6 +30,7 @@ const CustomerSuccessContent = () => {
                   className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px]'
                   width='100%'
                   height='100%'
+                  demo="servicedesk"
                 />
               </div>
             </CardContent>

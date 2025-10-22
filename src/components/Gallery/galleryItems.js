@@ -47,7 +47,7 @@ export const galleryItems = [
   {
     id: 'servicedesk',
     link: "/demo/servicedesk",
-    src: "/img/themes/servicedesk/servicedesk-logo.png",
+    src: "/img/themes/servicedesk/datalargelogo.png",
     alt: "Service Excellence Platform",
     vertical: "Customer Service & Support",
     description: "Service analytics platform showcasing real-time insights for customer support, training completion, and uptime monitoring to build trust, drive renewals, and create premium offerings",

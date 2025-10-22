@@ -32,7 +32,7 @@ export const Products = (props) => {
           <ProductsTable />
         </TabsContent>
         <TabsContent value="segment">
-          <Card className="bg-slate-800 shadow-xl">
+          <Card className="bg-card shadow-xl">
             <CardHeader>
               <CardTitle>Segment Analysis</CardTitle>
               <CardDescription>
@@ -52,7 +52,7 @@ export const Products = (props) => {
           </Card>
         </TabsContent>
         <TabsContent value="category">
-          <Card className="bg-slate-800 shadow-xl">
+          <Card className="bg-card shadow-xl">
             <CardHeader>
               <CardTitle>Category Performance</CardTitle>
               <CardDescription>

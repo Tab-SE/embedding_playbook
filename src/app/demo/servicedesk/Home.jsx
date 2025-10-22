@@ -25,7 +25,7 @@ export const description = "Service Excellence Platform - Customer service analy
 
 export const Home = () => {
   const [showFilterPopup, setShowFilterPopup] = useState(false);
-  const [caseStatus, setCaseStatus] = useState('all');
+  const [casePriority, setCasePriority] = useState('all');
   const [selectedMarks, setSelectedMarks] = useState([]);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [emailPreviews, setEmailPreviews] = useState([]);
@@ -104,11 +104,11 @@ export const Home = () => {
     };
   }, []);
 
-  // Apply filter to Tableau dashboards when case status changes
+  // Apply filter to Tableau dashboards when case priority changes
   useEffect(() => {
     const applyFilter = async () => {
-      const fieldName = 'Case Status';
-      const filterValue = caseStatus === 'all' ? [] : [caseStatus];
+      const fieldName = 'Case Priority';
+      const filterValue = casePriority === 'all' ? [] : [casePriority];
 
       const applyFilterToViz = async (vizId) => {
         const viz = document.getElementById(vizId);
@@ -129,14 +129,14 @@ export const Home = () => {
             const worksheets = activeSheet.worksheets;
 
             for (const worksheet of worksheets) {
-              if (caseStatus === 'all') {
+              if (casePriority === 'all') {
                 await worksheet.clearFilterAsync(fieldName);
               } else {
                 await worksheet.applyFilterAsync(fieldName, filterValue, 'replace');
               }
             }
           } else {
-            if (caseStatus === 'all') {
+            if (casePriority === 'all') {
               await activeSheet.clearFilterAsync(fieldName);
             } else {
               await activeSheet.applyFilterAsync(fieldName, filterValue, 'replace');
@@ -152,7 +152,7 @@ export const Home = () => {
     };
 
     applyFilter();
-  }, [caseStatus]);
+  }, [casePriority]);
 
   return (
     <>
@@ -224,33 +224,6 @@ export const Home = () => {
 
         {/* Main Dashboard */}
         <div className="flex flex-col gap-6">
-          {/* Service Overview */}
-          <div>
-            <Card className="bg-slate-800 shadow-lg border-slate-700">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <Headphones className="h-5 w-5 text-blue-400" />
-                  Service Overview
-                </CardTitle>
-                <CardDescription className="text-slate-300">
-                  Real-time customer service metrics and case management
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <div className="tableau-container w-full">
-                  <TableauEmbed
-                    id='serviceDashboardViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
-                    hideTabs={true}
-                    toolbar='hidden'
-                    className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
-                    width='100%'
-                    height='100%'
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
 
           {/* Case Status Filter Widget */}
           <div className="flex justify-center items-center gap-4 my-4">
@@ -259,7 +232,7 @@ export const Home = () => {
               className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg"
             >
               <Filter className="h-5 w-5" />
-              <span className="font-medium">Case Status: {caseStatus.charAt(0).toUpperCase() + caseStatus.slice(1)}</span>
+              <span className="font-medium">Case Priority: {casePriority.charAt(0).toUpperCase() + casePriority.slice(1)}</span>
             </button>
 
             {/* Action Button - Shows when marks are selected */}
@@ -298,12 +271,14 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <div className="tableau-container w-full">
                   <TableauEmbed
                     id='caseManagementViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
+                    src='https://public.tableau.com/views/SalesforceDataCloudServiceDesk/Users?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
                     hideTabs={true}
                     toolbar='hidden'
+                    isPublic={true}
                     className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
                     width='100%'
                     height='100%'
+                    demo="servicedesk"
                   />
                 </div>
               </CardContent>
@@ -319,7 +294,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
                 <Filter className="h-5 w-5 text-blue-400" />
-                Filter by Case Status
+                Filter by Case Priority
               </h3>
               <button
                 onClick={() => setShowFilterPopup(false)}
@@ -330,31 +305,31 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
             </div>
 
             <div className="space-y-3">
-              {['all', 'open', 'in-progress', 'resolved', 'closed'].map((status) => (
+              {['All', 'Urgent', 'High', 'Medium', 'Low'].map((priority) => (
                 <button
-                  key={status}
+                  key={priority}
                   onClick={() => {
-                    setCaseStatus(status);
+                    setCasePriority(priority);
                     setShowFilterPopup(false);
                   }}
                   className={`w-full text-left p-4 rounded-lg transition-colors border ${
-                    caseStatus === status
+                    casePriority === priority
                       ? 'bg-blue-600 border-blue-600 text-white'
                       : 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium capitalize">{status}</span>
-                    {caseStatus === status && (
+                    <span className="font-medium capitalize">{priority}</span>
+                    {casePriority === priority && (
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     )}
                   </div>
                   <p className="text-xs mt-1 opacity-75">
-                    {status === 'all' && 'Show all case statuses'}
-                    {status === 'open' && 'Newly opened cases'}
-                    {status === 'in-progress' && 'Cases being actively worked'}
-                    {status === 'resolved' && 'Cases pending closure'}
-                    {status === 'closed' && 'Completed cases'}
+                    {priority === 'All'}
+                    {priority === 'Urgent'}
+                    {priority === 'High'}
+                    {priority === 'Medium'}
+                    {priority === 'Low'}
                   </p>
                 </button>
               ))}

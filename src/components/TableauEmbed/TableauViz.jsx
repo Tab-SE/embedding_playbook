@@ -20,7 +20,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     layouts,
     height,
     width,
-    id: customId
+    id: customId,
+    demo = 'default'
   } = props;
   // creates a unique identifier for the embed
   const generatedId = `id-${useId()}`;
@@ -68,7 +69,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
 
   return (
     <div>
-      {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+      {customToolbar ? <TableauToolbar src={src} ref={innerRef} demo={demo} /> : null}
       <tableau-viz
         ref={innerRef}
         id={id}

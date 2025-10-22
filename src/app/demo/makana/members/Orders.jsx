@@ -41,7 +41,7 @@ export const Orders = (props) => {
       <OrdersTable />
     </div>
     <div className="grid gap-6">
-      <Card className="bg-slate-800 shadow-xl">
+      <Card className="bg-card shadow-xl">
         <CardHeader>
           <CardTitle>Shipping Summary</CardTitle>
           <CardDescription>
@@ -59,7 +59,7 @@ export const Orders = (props) => {
           />
         </CardContent>
       </Card>
-      <Card className="bg-slate-800 shadow-xl">
+      <Card className="bg-card shadow-xl">
         <CardHeader>
           <CardTitle>Shipping Trends</CardTitle>
           <CardDescription>

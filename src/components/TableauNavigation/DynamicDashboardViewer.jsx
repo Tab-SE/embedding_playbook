@@ -23,7 +23,7 @@ import {
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 
-export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId }) => {
+export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId, demo = 'default' }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -170,6 +170,7 @@ export const DynamicDashboardViewer = ({ selectedDashboard, embedToken, siteId }
             className="w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]"
             width="100%"
             height="100%"
+            demo={demo}
           />
         </div>
       </div>

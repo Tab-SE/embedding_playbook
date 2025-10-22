@@ -41,7 +41,7 @@ export const NavigationSm = (props) => {
             className="flex items-center gap-4 px-2.5 hover:text-foreground"
           >
             <Avatar className="h-8 w-8 transition-all group-hover:scale-110 bg-logoBackground">
-              <AvatarImage src={auth_logo} alt={app_name} />
+              <AvatarImage src={auth_logo} alt={app_name} className="avatar-container" />
               <AvatarFallback>APP</AvatarFallback>
             </Avatar>
             <span className="sr-only">{app_name}</span>

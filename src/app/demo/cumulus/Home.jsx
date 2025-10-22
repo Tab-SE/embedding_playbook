@@ -20,7 +20,7 @@ export const Home = () => {
         />
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <div className="xl:col-span-2">
-            <Card className='bg-slate-800 shadow-xl'>
+            <Card className='bg-card shadow-xl'>
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>The financial portfolio and client performance overview dashboard offers a snapshot of Assets Under Management (AUM), client count, and total assets. It visually tracks performance over time, highlighting portfolio growth and client engagement, providing a quick assessment of investment effectiveness and client satisfaction.</CardDescription>
