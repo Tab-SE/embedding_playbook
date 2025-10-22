@@ -51,12 +51,11 @@ export const Gallery = (props) => {
           >
             <HoverCardTrigger>
               <Card className="overflow-hidden shadow-2xl h-60 transform transition-transform duration-300 hover:scale-110 cursor-pointer" onClick={() => handleCardClick(item)}>
-                <CardContent className="p-0">
-                  <Image
+                <CardContent className="p-0 relative">
+                  <img
                     src={item.src}
                     alt={item.alt}
-                    fill
-                    className="w-full object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </CardContent>
               </Card>
