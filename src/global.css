@@ -193,6 +193,42 @@
     --metrics-neutral: 280 70% 75%;
     --metrics-negative: 280 60% 33% ;
   }
+
+  /* Define variables for the 'tmobile' theme (Magenta) */
+  [data-theme="tmobile"] {
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 0%; /* Black */
+    --demo-background: 0 0% 97%; /* Light Gray */
+    --nav-background: 330 100% 45%; /* T-Mobile Magenta #E20074 */
+    --logo-background: 330 100% 45%; /* T-Mobile Magenta #E20074 */
+    --icon-background: 0 0% 100%; /* White */
+    --login-card-background: 0 0% 100%; /* White */
+    --nav-icons: 0 0% 0%; /* Black */
+    --nav-icons-hover: 330 100% 45%; /* T-Mobile Magenta #E20074 */
+    --ai-icons: 0 0% 0%; /* Black */
+    --breadcrumbs: 330 100% 45%; /* T-Mobile Magenta #E20074 */
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 0 0% 0%; /* Black */
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 0 0% 0%; /* Black */
+    --primary: 330 100% 45%; /* T-Mobile Magenta #E20074 */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 0 0% 95%; /* Light Gray */
+    --secondary-foreground: 330 100% 45%; /* T-Mobile Magenta #E20074 */
+    --muted: 0 0% 95%; /* Light Gray */
+    --muted-foreground: 0 0% 45%; /* Mid Gray */
+    --accent: 330 100% 90%; /* Light Magenta */
+    --accent-foreground: 330 100% 30%; /* Dark Magenta */
+    --destructive: 0 70% 60%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+    --border: 0 0% 85%; /* Light Gray Border */
+    --input: 0 0% 90%; /* Light Gray Input */
+    --ring: 330 100% 45%; /* T-Mobile Magenta #E20074 */
+
+    --metrics-positive: 145 50% 40%; /* Softer Green */
+    --metrics-neutral: 330 80% 45%; /* Softer T-Mobile Magenta */
+    --metrics-negative: 0 70% 45%; /* Softer Red */
+  }
 } /* End of @layer base containing themes */
 
 @layer base {

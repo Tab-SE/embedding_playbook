@@ -1,0 +1,55 @@
+:root {
+  /* T-Mobile Primary Brand Colors */
+  --tmobile-magenta: #E20074;
+  --tmobile-black: #000000;
+  --tmobile-white: #FFFFFF;
+
+  /* Additional T-Mobile Brand Colors */
+  --tmobile-dark-magenta: #990050;
+  --tmobile-light-magenta: #FF4DA6;
+  --tmobile-gray: #6A6A6A;
+  --tmobile-light-gray: #E0E0E0;
+}
+
+/* T-Mobile Theme Classes */
+.tmobile-bg-primary {
+  background-color: var(--tmobile-magenta);
+}
+
+.tmobile-text-primary {
+  color: var(--tmobile-magenta);
+}
+
+.tmobile-bg-secondary {
+  background-color: var(--tmobile-black);
+}
+
+.tmobile-text-secondary {
+  color: var(--tmobile-black);
+}
+
+.tmobile-btn-primary {
+  background-color: var(--tmobile-magenta);
+  color: var(--tmobile-white);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.tmobile-btn-primary:hover {
+  background-color: var(--tmobile-dark-magenta);
+}
+
+.tmobile-btn-secondary {
+  background-color: var(--tmobile-white);
+  color: var(--tmobile-magenta);
+  border: 2px solid var(--tmobile-magenta);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.tmobile-btn-secondary:hover {
+  background-color: var(--tmobile-light-gray);
+}

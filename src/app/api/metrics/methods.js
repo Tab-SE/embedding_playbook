@@ -1,9 +1,14 @@
 import { MetricsModel } from "models";
+import { mockMetrics } from "./mock";
 
 // makes the response body for the API
 export const makePayload = async (tableau) => {
   const { user_id, rest_key } = tableau;
   if (user_id && rest_key) {
+    // For T-Mobile demo, use mock data to ensure correct colors
+    if (tableau.demo === 'tmobile') {
+      return mockMetrics;
+    }
     // new Metrics model with data obtained using temporary key
     const payload = await makeMetrics(user_id, rest_key);
     return payload;
