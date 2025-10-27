@@ -22,7 +22,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     id
   } = props;
   // creates a unique identifier for the embed if not provided
-  const vizId = id || `id-${useId()}`;
+  const generatedId = useId();
+  const vizId = id || `id-${generatedId}`;
   // to be used if parent did not forward a ref
   const localRef = useRef(null);
   // Use the forwarded ref if provided, otherwise use the local ref
