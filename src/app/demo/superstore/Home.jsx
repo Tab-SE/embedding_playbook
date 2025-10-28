@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { MessageSquare, X } from 'lucide-react';
+import { MessageSquare, X, Filter } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -18,7 +18,8 @@ export const Home = () => {
   const [selectedMarks, setSelectedMarks] = useState([]);
   const [showSlackModal, setShowSlackModal] = useState(false);
   const [editableSlackMessage, setEditableSlackMessage] = useState('');
-  const [selectedState, setSelectedState] = useState('All States');
+  const [selectedStates, setSelectedStates] = useState([]); // Changed to array for multi-select
+  const [showStateFilter, setShowStateFilter] = useState(false);
   const [availableStates, setAvailableStates] = useState([]);
 
   // Function to get available state values from the viz
@@ -149,44 +150,71 @@ export const Home = () => {
     };
   }, []);
 
-  // Apply filter when selectedState changes
+  // Apply filter when selectedStates changes
   useEffect(() => {
     const applyFilter = async () => {
-      const viz = document.getElementById('overviewViz');
+      const fieldName = 'State/Province';
+      const filterValue = selectedStates.length === 0 ? [] : selectedStates;
 
-      if (!viz || !viz.workbook) {
-        return;
-      }
+      const applyFilterToViz = async () => {
+        // Try multiple ways to find the viz element
+        let viz = document.getElementById('overviewViz');
 
-      const fieldName = 'State';
-      const filterValue = selectedState === 'All States' ? [] : [selectedState];
-
-      try {
-        const activeSheet = viz.workbook.activeSheet;
-
-        if (activeSheet.sheetType === 'dashboard') {
-          const worksheets = activeSheet.worksheets;
-          for (const worksheet of worksheets) {
-            if (selectedState === 'All States') {
-              await worksheet.clearFilterAsync(fieldName);
-            } else {
-              await worksheet.applyFilterAsync(fieldName, filterValue, 'replace');
-            }
-          }
-        } else {
-          if (selectedState === 'All States') {
-            await activeSheet.clearFilterAsync(fieldName);
-          } else {
-            await activeSheet.applyFilterAsync(fieldName, filterValue, 'replace');
+        // If not found by ID, try shadow root
+        if (!viz) {
+          const tableauVizElements = document.querySelectorAll('tableau-viz');
+          if (tableauVizElements.length > 0) {
+            viz = tableauVizElements[0];
           }
         }
-      } catch (error) {
-        console.error('Error applying filter:', error);
-      }
+
+        if (!viz) {
+          setTimeout(() => applyFilterToViz(), 500);
+          return;
+        }
+
+        try {
+          // Check if workbook exists by accessing it safely
+          if (!viz.workbook) {
+            setTimeout(() => applyFilterToViz(), 500);
+            return;
+          }
+        } catch (error) {
+          // Viz workbook not ready yet
+          setTimeout(() => applyFilterToViz(), 500);
+          return;
+        }
+
+        try {
+          const activeSheet = viz.workbook.activeSheet;
+
+          if (activeSheet.sheetType === 'dashboard') {
+            const worksheets = activeSheet.worksheets;
+
+            for (const worksheet of worksheets) {
+              if (filterValue.length === 0) {
+                await worksheet.clearFilterAsync(fieldName);
+              } else {
+                await worksheet.applyFilterAsync(fieldName, filterValue, 'replace');
+              }
+            }
+          } else {
+            if (filterValue.length === 0) {
+              await activeSheet.clearFilterAsync(fieldName);
+            } else {
+              await activeSheet.applyFilterAsync(fieldName, filterValue, 'replace');
+            }
+          }
+        } catch (error) {
+          // Filter application failed silently
+        }
+      };
+
+      await applyFilterToViz();
     };
 
     applyFilter();
-  }, [selectedState]);
+  }, [selectedStates]);
 
   const generateSlackMessage = () => {
     if (selectedMarks.length === 0) return;
@@ -219,24 +247,17 @@ export const Home = () => {
 
         {/* State Filter */}
         <div className="flex justify-center">
-          <div className="flex items-center gap-2">
-            <label htmlFor="stateFilter" className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              Filter by State:
-            </label>
-            <select
-              id="stateFilter"
-              value={selectedState}
-              onChange={(e) => setSelectedState(e.target.value)}
-              className="px-4 py-2 border border-slate-300 rounded-lg bg-white dark:bg-slate-800 dark:border-slate-600 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="All States">All States</option>
-              {availableStates.map((state) => (
-                <option key={state} value={state}>
-                  {state}
-                </option>
-              ))}
-            </select>
-          </div>
+          <button
+            onClick={() => setShowStateFilter(true)}
+            className="flex items-center gap-2 px-6 py-3 bg-[hsl(199,99%,39%)] hover:opacity-90 text-white rounded-lg transition-colors shadow-lg"
+          >
+            <Filter className="h-5 w-5" />
+            <span className="font-medium">
+              {selectedStates.length === 0
+                ? 'Select States'
+                : `${selectedStates.length} State${selectedStates.length > 1 ? 's' : ''} Selected`}
+            </span>
+          </button>
         </div>
 
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
@@ -335,6 +356,81 @@ export const Home = () => {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* State Filter Modal */}
+      {showStateFilter && (
+        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowStateFilter(false)}>
+          <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-white dark:bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4 max-h-[70vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                <Filter className="h-5 w-5 text-blue-500" />
+                Select States
+              </h3>
+              <button
+                onClick={() => setShowStateFilter(false)}
+                className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="space-y-2 mb-4">
+              {['All States', ...availableStates].map((state) => {
+                const isAll = state === 'All States';
+                const isSelected = isAll
+                  ? selectedStates.length === 0
+                  : selectedStates.includes(state);
+
+                return (
+                  <button
+                    key={state}
+                    onClick={() => {
+                      if (isAll) {
+                        setSelectedStates([]);
+                      } else if (isSelected) {
+                        setSelectedStates(selectedStates.filter(s => s !== state));
+                      } else {
+                        setSelectedStates([...selectedStates, state]);
+                      }
+                    }}
+                    className={`w-full text-left p-3 rounded-lg transition-colors border ${
+                      isSelected
+                        ? 'bg-[hsl(199,99%,39%)] border-[hsl(199,99%,39%)] text-white'
+                        : 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{state}</span>
+                      {isSelected && (
+                        <div className="w-2 h-2 bg-white dark:bg-blue-200 rounded-full"></div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex gap-3 pt-4 border-t border-slate-300 dark:border-slate-600">
+              <button
+                onClick={() => {
+                  setSelectedStates([]);
+                }}
+                className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors"
+              >
+                Clear All
+              </button>
+              <button
+                onClick={() => {
+                  setShowStateFilter(false);
+                }}
+                className="px-4 py-2 bg-[hsl(199,99%,39%)] hover:opacity-90 text-white rounded-lg transition-colors font-semibold"
+              >
+                Apply Filter
+              </button>
             </div>
           </div>
         </div>
