@@ -27,11 +27,8 @@ export const Orders = (props) => {
   // Listen for mark selection events
   useEffect(() => {
     const handleMarkSelectionChanged = (markSelectionChangedEvent) => {
-      console.log('=== MARK SELECTION CHANGED ===');
-      console.log('Event detail:', markSelectionChangedEvent.detail);
 
       markSelectionChangedEvent.detail.getMarksAsync().then((marks) => {
-        console.log('Selected marks data:', marks);
         const marksData = [];
         for (let markIndex = 0; markIndex < marks.data[0].data.length; markIndex++) {
           const columns = marks.data[0].columns;
@@ -41,9 +38,7 @@ export const Orders = (props) => {
           }
           marksData.push(obj);
         }
-        console.log('Processed marks data:', marksData);
         setSelectedMarks(marksData);
-        console.log('✅ SELECTED MARKS UPDATED:', marksData);
       }).catch((error) => {
         console.error('Error getting selected marks:', error);
       });
@@ -51,34 +46,25 @@ export const Orders = (props) => {
 
     const setupListeners = () => {
       const tableauVizElements = document.querySelectorAll('tableau-viz');
-      console.log('🔍 Found tableau-viz elements:', tableauVizElements.length);
 
       if (tableauVizElements.length === 0) {
-        console.log('❌ No tableau-viz elements found!');
         return [];
       }
 
       // Add listeners to ALL tableau viz elements
       tableauVizElements.forEach((viz, index) => {
-        console.log(`✅ Setting up listener for viz ${index + 1}/${tableauVizElements.length}`);
-
         const addListener = () => {
-          console.log(`✅ Adding markselectionchanged listener to viz ${index + 1}`);
           viz.addEventListener('markselectionchanged', (event) => {
-            console.log(`🔥 MARK SELECTION EVENT FIRED for viz ${index + 1}!`, event);
             handleMarkSelectionChanged(event);
           });
         };
 
         // Check if already interactive
         const isAlreadyInteractive = viz.getIsInteractive?.() || viz.isInteractive || false;
-        console.log(`Viz ${index + 1} is already interactive:`, isAlreadyInteractive);
-
         if (isAlreadyInteractive) {
           addListener();
         } else {
           viz.addEventListener('firstinteractive', (event) => {
-            console.log(`🎉 Viz ${index + 1} is now interactive!`);
             addListener();
           });
         }

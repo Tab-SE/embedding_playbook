@@ -279,12 +279,12 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                     width='100%'
                     height='100%'
                     demo="servicedesk"
-                    layouts={{
+                    layouts = {{
                       'xs': { 'device': 'phone' },
                       'sm': { 'device': 'phone' },
-                      'md': { 'device': 'tablet' },
-                      'lg': { 'device': 'desktop' },
-                      'xl': { 'device': 'desktop' },
+                      'md': { 'device': 'default' },
+                      'lg': { 'device': 'phone' },
+                      'xl': { 'device': 'tablet' },
                       'xl2': { 'device': 'desktop' },
                     }}
                   />
@@ -414,4 +414,3 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
     </>
   );
 };
-
