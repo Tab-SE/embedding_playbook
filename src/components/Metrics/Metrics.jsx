@@ -13,6 +13,7 @@ import {
 import { useMetrics } from 'hooks';
 import { Metric } from "components";
 import { sortPayloadByIds } from './utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const Metrics = (props) => {
   const { basis, sortOrder } = props;

@@ -17,10 +17,13 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     isPublic,
     WebEdit,
     customToolbar,
-    layouts
+    id
   } = props;
 
   let embed_token;
+
+  // Check if this is a public.tableau.com URL that doesn't need authentication
+  const isPublicTableauUrl = src && src.includes('public.tableau.com');
 
   // tanstack query hook to safely represent users on the client
   const {
@@ -39,9 +42,30 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
   if (isSessionSuccess) {
     embed_token = user.embed_token;
   }
-  console.log("token", embed_token)
-      console.log('Link to decode JWT: https://jwt.io/#debugger-io?token=' + embed_token);
 
+  // Check if Mike is logged in
+  const isMikeLoggedIn = isSessionSuccess && user?.email === 'mchen@veriforce.com';
+
+  // For public URLs, render immediately without authentication
+  if (isPublicTableauUrl) {
+    return (
+      <div>
+      <TableauViz
+        src={src}
+        ref={ref}
+        className={className}
+        jwt={null}
+        hide-tabs={hideTabs ? true : false}
+        toolbar={toolbar}
+        isPublic={isPublic}
+        customToolbar={customToolbar && !isMikeLoggedIn}
+        height={height}
+        width={width}
+        id={id}
+      />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -56,8 +80,10 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
         hide-tabs={hideTabs ? true : false}
         toolbar={toolbar}
         isPublic={isPublic}
-        customToolbar={customToolbar}
-        layouts={layouts}
+        customToolbar={customToolbar && !isMikeLoggedIn}
+        height={height}
+        width={width}
+        id={id}
       /> :
       <TableauWebAuthor
         src={src}

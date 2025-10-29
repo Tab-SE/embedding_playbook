@@ -20,7 +20,7 @@ export const Home = () => {
         />
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <div className="xl:col-span-2">
-            <Card className='dark:bg-stone-900 shadow-xl'>
+            <Card className='bg-slate-800 shadow-xl'>
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>The financial portfolio and client performance overview dashboard offers a snapshot of Assets Under Management (AUM), client count, and total assets. It visually tracks performance over time, highlighting portfolio growth and client engagement, providing a quick assessment of investment effectiveness and client satisfaction.</CardDescription>
@@ -30,22 +30,9 @@ export const Home = () => {
                   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/PortfolioPerformance/PortfolioOverview'
                   hideTabs={true}
                   toolbar='hidden'
-                  className='
-                  min-w-[800px] min-h-[800px]
-                  sm:min-w-[800px] sm:min-h-[800px]
-                  md:min-w-[800px] md:min-h-[800px]
-                  lg:min-w-[800px] lg:min-h-[800px]
-                  xl:min-w-[800px] xl:min-h-[800px]
-                  2xl:min-w-[800px] 2xl:min-h-[800px]
-                  '
-                  layouts = {{
-                    'xs': { 'device': 'default' },
-                    'sm': { 'device': 'default' },
-                    'md': { 'device': 'default' },
-                    'lg': { 'device': 'default' },
-                    'xl': { 'device': 'default' },
-                    'xl2': { 'device': 'default' },
-                  }}
+                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px]'
+                  width='100%'
+                  height='100%'
                 />
               </CardContent>
             </Card>
