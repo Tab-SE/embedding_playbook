@@ -193,6 +193,46 @@
     --metrics-neutral: 280 70% 75%;
     --metrics-negative: 280 60% 33% ;
   }
+
+  /* Define variables for the 'servicedesk' theme (Dark mode) */
+  [data-theme="servicedesk"] {
+    --background: 222.2 84% 4.9%; /* Dark Gray */
+    --foreground: 210 40% 98%; /* Light Gray */
+    --demo-background: 222.2 84% 4.9%; /* Dark Gray */
+    --nav-background: 217.2 32.6% 17.5%; /* Darker Gray */
+    --logo-background: 217.2 32.6% 17.5%;
+    --icon-background: 217.2 32.6% 17.5%;
+    --login-card-background: 222.2 84% 4.9%;
+    --nav-icons: 210 40% 98%; /* Light Gray */
+    --card: 217.2 32.6% 17.5%; /* Dark Gray Card */
+    --card-foreground: 210 40% 98%;
+    --popover: 217.2 32.6% 17.5%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 199 99% 39%; /* Blue */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217.2 32.6% 17.5%; /* Darker Gray */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 199 99% 39%;
+
+    --metrics-positive: 199 99% 39% ;
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 23 93% 51%;
+    --breadcrumbs: 210 40% 98%;
+  }
+
+  /* Apply dark class when servicedesk theme is active for Tailwind dark: classes */
+  [data-theme="servicedesk"],
+  [data-theme="servicedesk"] .dark {
+    color-scheme: dark;
+  }
 } /* End of @layer base containing themes */
 
 @layer base {
@@ -201,5 +241,76 @@
   }
   body {
     @apply bg-background text-foreground; /* Apply base bg/text colors */
+  }
+}
+
+/* Dark mode styles for servicedesk demo only */
+@layer components {
+  /* Sidebar navigation (NavigationMd) - dark mode */
+  [data-theme="servicedesk"] aside.bg-navBackground {
+    background-color: hsl(var(--nav-background));
+    border-color: hsl(var(--border));
+  }
+
+  /* Header/Breadcrumbs area - dark mode */
+  [data-theme="servicedesk"] header.bg-navBackground,
+  [data-theme="servicedesk"] header.sticky {
+    background-color: hsl(var(--nav-background));
+    border-color: hsl(var(--border));
+  }
+
+  /* Breadcrumbs text - light color */
+  [data-theme="servicedesk"] .text-breadcrumbs {
+    color: hsl(var(--breadcrumbs));
+  }
+
+  /* TableauToolbar Menubar - dark mode - override Tailwind classes */
+  [data-theme="servicedesk"] .dark [role="menubar"],
+  [data-theme="servicedesk"] [role="menubar"] {
+    background-color: hsl(var(--secondary)) !important;
+    border: 1px solid hsl(217.2 32.6% 30%) !important;
+    color: hsl(var(--foreground));
+  }
+
+  /* Override Tailwind classes more specifically */
+  [data-theme="servicedesk"] .dark .mt-1.mb-3.inline-flex[role="menubar"],
+  [data-theme="servicedesk"] .mt-1.mb-3.inline-flex[role="menubar"] {
+    border: 1px solid hsl(217.2 32.6% 30%) !important;
+  }
+
+  [data-theme="servicedesk"] .dark [data-radix-menubar-trigger],
+  [data-theme="servicedesk"] [data-radix-menubar-trigger] {
+    color: hsl(var(--foreground));
+  }
+
+  [data-theme="servicedesk"] .dark [data-radix-menubar-trigger]:hover,
+  [data-theme="servicedesk"] .dark [data-radix-menubar-trigger]:focus,
+  [data-theme="servicedesk"] .dark [data-radix-menubar-trigger][data-state="open"],
+  [data-theme="servicedesk"] [data-radix-menubar-trigger]:hover,
+  [data-theme="servicedesk"] [data-radix-menubar-trigger]:focus,
+  [data-theme="servicedesk"] [data-radix-menubar-trigger][data-state="open"] {
+    background-color: hsl(var(--secondary) / 0.8);
+    color: hsl(var(--foreground));
+  }
+
+  /* Menubar content dropdowns */
+  [data-theme="servicedesk"] .dark [data-radix-menubar-content],
+  [data-theme="servicedesk"] [data-radix-menubar-content] {
+    background-color: hsl(var(--popover));
+    border-color: hsl(var(--border));
+    color: hsl(var(--popover-foreground));
+  }
+
+  [data-theme="servicedesk"] .dark [data-radix-menubar-item],
+  [data-theme="servicedesk"] [data-radix-menubar-item] {
+    color: hsl(var(--popover-foreground));
+  }
+
+  [data-theme="servicedesk"] .dark [data-radix-menubar-item]:hover,
+  [data-theme="servicedesk"] .dark [data-radix-menubar-item]:focus,
+  [data-theme="servicedesk"] [data-radix-menubar-item]:hover,
+  [data-theme="servicedesk"] [data-radix-menubar-item]:focus {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
   }
 }
