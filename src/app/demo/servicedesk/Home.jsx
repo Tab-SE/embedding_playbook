@@ -280,12 +280,12 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                     height='100%'
                     demo="servicedesk"
                     layouts = {{
-                      'xs': { 'device': 'phone' },
-                      'sm': { 'device': 'phone' },
+                      'xs': { 'device': 'default' },
+                      'sm': { 'device': 'default' },
                       'md': { 'device': 'default' },
-                      'lg': { 'device': 'phone' },
-                      'xl': { 'device': 'tablet' },
-                      'xl2': { 'device': 'desktop' },
+                      'lg': { 'device': 'default' },
+                      'xl': { 'device': 'default' },
+                      'xl2': { 'device': 'default' },
                     }}
                   />
                 </div>

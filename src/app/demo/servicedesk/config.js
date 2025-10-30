@@ -8,7 +8,8 @@ import {
   FileText,
   Settings,
   BarChart3,
-  Clock
+  Clock,
+  Languages
 } from "lucide-react";
 
 export const settings = {
@@ -60,7 +61,14 @@ export const settings = {
       path: '/settings',
       min_role: 2,
       description: 'System configuration and user management'
-    }
+    },
+    {
+      name: 'Translation',
+      icon: <Languages className="h-5 w-5"/>,
+      path: '/translation',
+      min_role: 1,
+      description: 'view dashboard in different languages using parameter controls'
+    },
   ],
   branding: {
     primary_color: '#2563EB', // Professional blue

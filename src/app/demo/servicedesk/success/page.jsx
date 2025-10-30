@@ -176,6 +176,14 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                   width='100%'
                   height='100%'
                   demo="servicedesk"
+                  layouts = {{
+                    'xs': { 'device': 'phone' },
+                    'sm': { 'device': 'default' },
+                    'md': { 'device': 'default' },
+                    'lg': { 'device': 'default' },
+                    'xl': { 'device': 'default' },
+                    'xl2': { 'device': 'default' },
+                  }}
                 />
               </div>
             </CardContent>
