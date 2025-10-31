@@ -14,7 +14,8 @@ export const description = "A login page with a full-screen background image and
 export const Auth = (props) => {
   const { settings } = props;
 
-  const { app_id, base_path, app_name, app_logo, auth_hero } = settings;
+  const { app_id, base_path, app_name, app_logo, auth_logo, auth_hero } = settings;
+  const logoToUse = auth_logo || app_logo;
 
   const demoManager = new UserModel();
   const users = demoManager.getUsersForDemo(app_id);
@@ -40,7 +41,7 @@ export const Auth = (props) => {
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <Avatar className="flex items-center justify-center h-16 w-16 bg-logoBackground">
-                <AvatarImage src={app_logo} className="object-cover rounded-full" />
+                <AvatarImage src={logoToUse} className="object-cover rounded-full" />
                 <AvatarFallback>APP</AvatarFallback>
               </Avatar>
             </div>

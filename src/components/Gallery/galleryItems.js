@@ -2,7 +2,9 @@ import {
   BriefcaseBusiness,
   ShoppingCart,
   HandCoins,
-  HeartPulse, Headphones
+  HeartPulse,
+  Headphones,
+  Building2
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -51,5 +53,14 @@ export const galleryItems = [
     vertical: "Service & Support",
     description: "A customer service portal that helps teams manage tickets, track response times, monitor KPIs, and deliver exceptional customer support",
     icon: <Headphones size={12} strokeWidth={2} />
+  },
+  {
+    id: 'telarus',
+    link: "/demo/telarus",
+    src: "/img/demos/superstore.png", // TODO: Add Telarus-specific image
+    alt: "Telarus | Advisor Portal",
+    vertical: "Technology Distribution",
+    description: "An advisor portal that helps find the right suppliers faster, provides insights into product sales trends, and surfaces cross-sell and upsell opportunities",
+    icon: <Building2 size={12} strokeWidth={2} />
   }
 ]
