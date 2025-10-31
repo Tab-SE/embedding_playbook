@@ -387,10 +387,10 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
 
       {/* Top Opportunities Table - Moved here */}
       {bundlingData.length > 0 && (
-        <div className="bg-white rounded-lg border-2 p-4">
-          <h3 className="text-lg font-semibold mb-2 text-slate-800">
-            🎯 Top Cross-Sell Opportunities{selectedProduct ? ` for ${selectedProduct}` : ''}
-          </h3>
+          <div className="bg-white rounded-lg border-2 p-4">
+            <h3 className="text-lg font-semibold mb-2 text-slate-800">
+              Top Cross-Sell Opportunities{selectedProduct ? ` for ${selectedProduct}` : ''}
+            </h3>
           <p className="text-sm text-slate-600 mb-4">
             {selectedProduct
               ? `Products that sell well with ${selectedProduct} - ranked by probability`
@@ -464,7 +464,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
       {selectedProduct && supplierData.length > 0 && (
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200 p-4">
           <h3 className="text-lg font-semibold mb-2 text-slate-800">
-            💼 Who Should I Go With?
+            Who Should I Go With?
             {selectedProduct && ` - ${selectedProduct}`}
             {selectedRegion && ` in ${selectedRegion}`}
           </h3>
@@ -526,7 +526,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
                     </div>
                     <div>
                       <div className="text-xs text-slate-500">Satisfaction</div>
-                      <div className="text-lg font-semibold text-purple-700">⭐ {topVendor.satisfaction}</div>
+                      <div className="text-lg font-semibold text-purple-700">{topVendor.satisfaction} / 5.0</div>
                     </div>
                     <div>
                       <div className="text-xs text-slate-500">Success Rate</div>
@@ -586,7 +586,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
                       </td>
                       <td className="px-3 py-2">
                         <span className="font-medium text-purple-700">
-                          ⭐ {supplier.satisfaction}
+                          {supplier.satisfaction} / 5.0
                         </span>
                       </td>
                       <td className="px-3 py-2">
@@ -614,7 +614,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
       {selectedProduct && supplierData.length > 0 && (
         <div className="bg-white rounded-lg border-2 p-4">
           <h3 className="text-lg font-semibold mb-2 text-slate-800">
-            📊 Supplier Performance Comparison
+            Supplier Performance Comparison
             {selectedProduct && ` - ${selectedProduct}`}
             {selectedRegion && ` in ${selectedRegion}`}
           </h3>
@@ -676,7 +676,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
         <>
           <div className="bg-white rounded-lg border-2 p-4">
             <h3 className="text-lg font-semibold mb-2 text-slate-800">
-              💡 Product Bundling & Upsell Opportunities
+              Product Bundling & Upsell Opportunities
               {selectedProduct && ` - Cross-Sells for ${selectedProduct}`}
             </h3>
             <p className="text-sm text-slate-600 mb-4">
@@ -696,7 +696,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
 
           <div className="bg-white rounded-lg border-2 p-4">
             <h3 className="text-lg font-semibold mb-2 text-slate-800">
-              📊 {selectedProduct ? `Cross-Sell Probability for ${selectedProduct}` : 'Upsell Probability Matrix'}
+              {selectedProduct ? `Cross-Sell Probability for ${selectedProduct}` : 'Upsell Probability Matrix'}
             </h3>
             <p className="text-sm text-slate-600 mb-4">
               {selectedProduct

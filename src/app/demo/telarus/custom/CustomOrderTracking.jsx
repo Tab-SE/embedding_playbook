@@ -53,7 +53,7 @@ const CustomOrderTrackingContent = () => {
               Order Tracking
             </CardTitle>
             <CardDescription>
-              View order status and tracking information. This page uses custom Vega-Lite dashboards instead of Tableau.
+              View order status and tracking information.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -106,7 +106,7 @@ const CustomOrderTrackingContent = () => {
             <CardHeader>
               <CardTitle className="text-lg">Order Details Dashboard</CardTitle>
               <CardDescription>
-                Interactive dashboard showing detailed order information and tracking data (Custom Vega-Lite Dashboard)
+                Interactive dashboard showing detailed order information and tracking data
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">

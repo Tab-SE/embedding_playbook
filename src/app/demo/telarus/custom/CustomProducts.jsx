@@ -37,7 +37,7 @@ export const CustomProducts = () => {
               Select Product Type
             </CardTitle>
             <CardDescription>
-              Choose a product category to explore suppliers and find cross-sell opportunities. This page uses custom Vega-Lite dashboards instead of Tableau.
+              Choose a product category to explore suppliers and find cross-sell opportunities.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -74,7 +74,7 @@ export const CustomProducts = () => {
                 <CardHeader>
                   <CardTitle className="text-lg">Product Sales & Cross-Sell Insights</CardTitle>
                   <CardDescription>
-                    Interactive dashboard showing product sales trends, cross-sell opportunities, and performance metrics (Custom Vega-Lite Dashboard)
+                    Interactive dashboard showing product sales trends, cross-sell opportunities, and performance metrics
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">

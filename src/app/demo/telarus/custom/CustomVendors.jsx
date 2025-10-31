@@ -52,7 +52,7 @@ const CustomVendorsContent = () => {
               Select Vendor for {product?.name}
             </CardTitle>
             <CardDescription>
-              Choose a supplier based on performance metrics and your past selections. This page uses custom Vega-Lite dashboards instead of Tableau.
+              Choose a supplier based on performance metrics and your past selections.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -86,7 +86,7 @@ const CustomVendorsContent = () => {
                 <CardHeader>
                   <CardTitle className="text-lg">Supplier Performance & Insights</CardTitle>
                   <CardDescription>
-                    Interactive dashboard showing supplier metrics, product sales trends, and cross-sell opportunities (Custom Vega-Lite Dashboard)
+                    Interactive dashboard showing supplier metrics, product sales trends, and cross-sell opportunities
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
