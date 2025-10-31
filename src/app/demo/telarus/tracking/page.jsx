@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Demo, FloatingAssistant } from '@/components';
 
 import { OrderTracking } from './OrderTracking';
@@ -11,7 +12,9 @@ const Page = () => {
       settings={settings}
       pageName={pageName}
     >
-      <OrderTracking />
+      <Suspense fallback={<div>Loading...</div>}>
+        <OrderTracking />
+      </Suspense>
       <FloatingAssistant
         settings={settings}
       />

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Demo, FloatingAssistant } from '@/components';
 
 import { Vendors } from './Vendors';
@@ -11,7 +12,9 @@ const Page = () => {
       settings={settings}
       pageName={pageName}
     >
-      <Vendors />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Vendors />
+      </Suspense>
       <FloatingAssistant
         settings={settings}
       />
