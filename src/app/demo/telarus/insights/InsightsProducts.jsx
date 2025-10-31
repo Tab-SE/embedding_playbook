@@ -12,14 +12,14 @@ import {
 
 import { ProductSalesDashboard } from '@/components/CustomDashboards';
 
-export const description = "Select a product type to find the right supplier - Custom Dashboard Demo";
+export const description = "Select a product type to find the right supplier - Insights Dashboard";
 
 // Color palette for product tiles
 const productColors = ['#0d47a1', '#1565c0', '#1976d2', '#1e88e5', '#2196f3', '#42a5f5', '#64b5f6', '#90caf9'];
 
 const availableProducts = ['Internet', 'Voice', 'Cloud', 'Security', 'Managed Services', 'SD-WAN'];
 
-export const CustomProducts = () => {
+export const InsightsProducts = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleProductSelect = (productName) => {

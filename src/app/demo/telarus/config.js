@@ -49,9 +49,9 @@ export const settings = {
     {
       name: 'Insights',
       icon: <BarChart3 className="h-5 w-5"/>,
-      path: '/custom',
+      path: '/insights',
       min_role: 0,
-      description: 'custom dashboard demo'
+      description: 'product insights and analytics'
     },
   ],
 }

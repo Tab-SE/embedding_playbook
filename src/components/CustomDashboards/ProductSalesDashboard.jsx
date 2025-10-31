@@ -66,6 +66,8 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
     description: 'Cross-Sell Opportunities',
     width: 'container',
     height: 300,
+    autosize: { type: 'fit', contains: 'padding' },
+    padding: { left: 60, top: 10, right: 150, bottom: 60 },
     data: { values: crossSellData },
     mark: {
       type: 'bar',
@@ -387,7 +389,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
 
       {/* Top Opportunities Table - Moved here */}
       {bundlingData.length > 0 && (
-          <div className="bg-white rounded-lg border-2 p-4">
+          <div className="bg-white rounded-lg border-2 p-4 overflow-hidden">
             <h3 className="text-lg font-semibold mb-2 text-slate-800">
               Top Cross-Sell Opportunities{selectedProduct ? ` for ${selectedProduct}` : ''}
             </h3>
@@ -397,59 +399,63 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
               : 'Product bundles with the highest upsell potential - ranked by correlation'
             }
           </p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gradient-to-r from-[#0d47a1] to-[#1565c0] text-white">
-                <tr>
-                  <th className="text-left px-4 py-3 font-semibold">
-                    {selectedProduct ? 'Cross-Sell Product' : 'Product Bundle'}
-                  </th>
-                  <th className="text-left px-4 py-3 font-semibold">Attach Rate</th>
-                  <th className="text-left px-4 py-3 font-semibold">Upsell Probability</th>
-                  <th className="text-left px-4 py-3 font-semibold">Bundle Sales</th>
-                  <th className="text-left px-4 py-3 font-semibold">Expected Revenue</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white">
-                {bundlingData.slice(0, 5).map((pair, idx) => (
-                  <tr
-                    key={`${pair.product1}-${pair.product2}`}
-                    className={`border-b ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}
-                  >
-                    <td className="px-4 py-3 font-semibold text-slate-900">
-                      {selectedProduct
-                        ? pair.product2
-                        : `${pair.product1} + ${pair.product2}`
-                      }
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center px-2 py-1 rounded text-sm font-medium bg-green-100 text-green-800">
-                        {(pair.attachRate * 100).toFixed(1)}%
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center px-2 py-1 rounded text-sm font-medium bg-purple-100 text-purple-800">
-                        {pair.upsellProbability.toFixed(0)}%
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-slate-700">{pair.bundleSales}</td>
-                    <td className="px-4 py-3 font-medium text-slate-900">
-                      ${(pair.expectedRevenue / 1000).toFixed(0)}K
-                    </td>
+          <div className="overflow-x-auto -mx-4 px-4">
+            <div className="min-w-full inline-block align-middle">
+              <table className="min-w-full text-sm">
+                <thead className="bg-gradient-to-r from-[#0d47a1] to-[#1565c0] text-white">
+                  <tr>
+                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">
+                      {selectedProduct ? 'Cross-Sell Product' : 'Product Bundle'}
+                    </th>
+                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Attach Rate</th>
+                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Upsell Probability</th>
+                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Bundle Sales</th>
+                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Expected Revenue</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white divide-y divide-slate-200">
+                  {bundlingData.slice(0, 5).map((pair, idx) => (
+                    <tr
+                      key={`${pair.product1}-${pair.product2}`}
+                      className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}
+                    >
+                      <td className="px-4 py-3 font-semibold text-slate-900 whitespace-nowrap">
+                        {selectedProduct
+                          ? pair.product2
+                          : `${pair.product1} + ${pair.product2}`
+                        }
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2 py-1 rounded text-sm font-medium bg-green-100 text-green-800">
+                          {(pair.attachRate * 100).toFixed(1)}%
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2 py-1 rounded text-sm font-medium bg-purple-100 text-purple-800">
+                          {pair.upsellProbability.toFixed(0)}%
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{pair.bundleSales}</td>
+                      <td className="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+                        ${(pair.expectedRevenue / 1000).toFixed(0)}K
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
 
-      <div className="bg-white rounded-lg border-2 p-4">
+      <div className="bg-white rounded-lg border-2 p-4 overflow-hidden">
         <h3 className="text-lg font-semibold mb-4 text-slate-800">
           Cross-Sell Opportunities
           {selectedProduct && ` - Base Product: ${selectedProduct}`}
         </h3>
-        <VegaLiteViz spec={crossSellSpec} width="100%" height="300px" />
+        <div className="overflow-hidden" style={{ maxHeight: '374px' }}>
+          <VegaLiteViz spec={crossSellSpec} width="100%" height="300px" />
+        </div>
       </div>
 
       {/* <div className="bg-white rounded-lg border-2 p-4">
@@ -611,7 +617,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
       )}
 
       {/* Supplier Performance Visualization */}
-      {selectedProduct && supplierData.length > 0 && (
+      {/* {selectedProduct && supplierData.length > 0 && (
         <div className="bg-white rounded-lg border-2 p-4">
           <h3 className="text-lg font-semibold mb-2 text-slate-800">
             Supplier Performance Comparison
@@ -669,12 +675,12 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
             ],
           }} width="100%" height="400px" />
         </div>
-      )}
+      )} */}
 
       {/* Product Bundling - Key Upsell Section */}
       {bundlingData.length > 0 && bundlingSpec && (
         <>
-          <div className="bg-white rounded-lg border-2 p-4">
+          {/* <div className="bg-white rounded-lg border-2 p-4">
             <h3 className="text-lg font-semibold mb-2 text-slate-800">
               Product Bundling & Upsell Opportunities
               {selectedProduct && ` - Cross-Sells for ${selectedProduct}`}
@@ -692,9 +698,9 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
                 Select a product to see bundling opportunities
               </div>
             )}
-          </div>
+          </div> */}
 
-          <div className="bg-white rounded-lg border-2 p-4">
+          {/* <div className="bg-white rounded-lg border-2 p-4">
             <h3 className="text-lg font-semibold mb-2 text-slate-800">
               {selectedProduct ? `Cross-Sell Probability for ${selectedProduct}` : 'Upsell Probability Matrix'}
             </h3>
@@ -711,7 +717,7 @@ export const ProductSalesDashboard = ({ selectedProduct = null }) => {
                 Select a product to see cross-sell probabilities
               </div>
             )}
-          </div>
+          </div> */}
         </>
       )}
 

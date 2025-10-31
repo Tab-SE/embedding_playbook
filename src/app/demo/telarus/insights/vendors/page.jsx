@@ -1,5 +1,5 @@
 import { Demo, FloatingAssistant } from '@/components';
-import { CustomVendors } from '../CustomVendors';
+import { InsightsVendors } from '../InsightsVendors';
 import { settings } from '../../config';
 
 const Page = () => {
@@ -10,7 +10,7 @@ const Page = () => {
       settings={settings}
       pageName={pageName}
     >
-      <CustomVendors />
+      <InsightsVendors />
       <FloatingAssistant
         settings={settings}
       />

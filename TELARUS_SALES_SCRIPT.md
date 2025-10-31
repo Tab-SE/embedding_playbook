@@ -423,11 +423,11 @@ A: "Absolutely. This runs on Tableau Server/Cloud, which handles the scaling. Th
 5. Click "Vendors" → Show vendor recommendations
 6. Click "Orders" → Show tracking dashboard
 
-### **Custom Dashboards Demo:**
+### **Insights Dashboard Demo:**
 
-- Use same paths but with `/demo/telarus/custom` base URL
-- Emphasize the custom Vega-Lite visualizations
-- Show how it works without Tableau Server access
+- Use same paths but with `/demo/telarus/insights` base URL
+- Emphasize the interactive analytics dashboards
+- Show how analytics answer customer questions
 
 ---
 

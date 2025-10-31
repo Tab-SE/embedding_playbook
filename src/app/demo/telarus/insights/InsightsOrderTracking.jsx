@@ -14,9 +14,9 @@ import {
 import { OrderTrackingDashboard } from '@/components/CustomDashboards';
 import { orders } from '../data/mockData';
 
-export const description = "Track your orders and view order details - Custom Dashboard Demo";
+export const description = "Track your orders and view order details - Insights Dashboard";
 
-const CustomOrderTrackingContent = () => {
+const InsightsOrderTrackingContent = () => {
   const params = useSearchParams();
   const router = useRouter();
   const orderSku = params.get('order');
@@ -38,7 +38,7 @@ const CustomOrderTrackingContent = () => {
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="flex items-center gap-4 mb-4">
           <button
-            onClick={() => router.push(`/demo/telarus/custom/vendors?product=${vendorId || ''}`)}
+            onClick={() => router.push(`/demo/telarus/insights/vendors?product=${vendorId || ''}`)}
             className="flex items-center gap-2 text-slate-600 hover:text-[#0d47a1]"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -119,10 +119,10 @@ const CustomOrderTrackingContent = () => {
   );
 };
 
-export const CustomOrderTracking = () => {
+export const InsightsOrderTracking = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <CustomOrderTrackingContent />
+      <InsightsOrderTrackingContent />
     </Suspense>
   );
 };

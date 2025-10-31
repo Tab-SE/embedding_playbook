@@ -14,9 +14,9 @@ import {
 import { SupplierPerformanceDashboard } from '@/components/CustomDashboards';
 import { vendors, products } from '../data/mockData';
 
-export const description = "Select a vendor and view supplier metrics - Custom Dashboard Demo";
+export const description = "Select a vendor and view supplier metrics - Insights Dashboard";
 
-const CustomVendorsContent = () => {
+const InsightsVendorsContent = () => {
   const params = useSearchParams();
   const router = useRouter();
   const productId = params.get('product') || 'internet';
@@ -37,7 +37,7 @@ const CustomVendorsContent = () => {
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="flex items-center gap-4 mb-4">
           <button
-            onClick={() => router.push('/demo/telarus/custom')}
+            onClick={() => router.push('/demo/telarus/insights')}
             className="flex items-center gap-2 text-slate-600 hover:text-[#0d47a1]"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -60,7 +60,7 @@ const CustomVendorsContent = () => {
               {vendorList.map(vendor => (
                 <button
                   key={vendor.id}
-                  onClick={() => router.push(`/demo/telarus/custom/tracking?vendor=${vendor.id}&product=${productId}`)}
+                  onClick={() => router.push(`/demo/telarus/insights/tracking?vendor=${vendor.id}&product=${productId}`)}
                   className="rounded-xl border-2 border-slate-200 bg-gradient-to-br from-white to-slate-50 p-6 hover:border-[#fb8c00] hover:shadow-lg transition-all text-left group"
                 >
                   <div className="flex items-start gap-4">
@@ -101,10 +101,10 @@ const CustomVendorsContent = () => {
   );
 };
 
-export const CustomVendors = () => {
+export const InsightsVendors = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <CustomVendorsContent />
+      <InsightsVendorsContent />
     </Suspense>
   );
 };

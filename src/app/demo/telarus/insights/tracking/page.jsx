@@ -1,16 +1,16 @@
 import { Demo, FloatingAssistant } from '@/components';
-import { CustomProducts } from './CustomProducts';
-import { settings } from '../config';
+import { InsightsOrderTracking } from '../InsightsOrderTracking';
+import { settings } from '../../config';
 
 const Page = () => {
-  const pageName = 'Insights';
+  const pageName = 'Orders';
 
   return (
     <Demo
       settings={settings}
       pageName={pageName}
     >
-      <CustomProducts />
+      <InsightsOrderTracking />
       <FloatingAssistant
         settings={settings}
       />
