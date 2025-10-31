@@ -4,6 +4,7 @@ import {
   Building2,
   Truck,
   Route,
+  BarChart3,
 } from "lucide-react";
 
 export const settings = {
@@ -44,6 +45,13 @@ export const settings = {
       path: '/journey',
       min_role: 0,
       description: 'complete advisor journey'
+    },
+    {
+      name: 'Insights',
+      icon: <BarChart3 className="h-5 w-5"/>,
+      path: '/custom',
+      min_role: 0,
+      description: 'custom dashboard demo'
     },
   ],
 }

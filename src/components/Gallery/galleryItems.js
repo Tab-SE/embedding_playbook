@@ -57,7 +57,7 @@ export const galleryItems = [
   {
     id: 'telarus',
     link: "/demo/telarus",
-    src: "/img/demos/superstore.png", // TODO: Add Telarus-specific image
+    src: "/img/demos/telarus.png", // TODO: Add Telarus-specific image
     alt: "Telarus | Advisor Portal",
     vertical: "Technology Distribution",
     description: "An advisor portal that helps find the right suppliers faster, provides insights into product sales trends, and surfaces cross-sell and upsell opportunities",
