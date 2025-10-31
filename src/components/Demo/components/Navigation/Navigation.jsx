@@ -6,6 +6,7 @@ export const Navigation = (props) => {
     crumbs,
     app_name,
     app_logo,
+    header_logo,
     ai_chat,
     ai_avatar,
     sections,
@@ -18,10 +19,16 @@ export const Navigation = (props) => {
         crumbs={crumbs}
         app_name={app_name}
         app_logo={app_logo}
+        header_logo={header_logo}
         ai_chat={ai_chat}
         ai_avatar={ai_avatar}
         sections={sections}
       />
+      {header_logo && (
+        <div className="hidden md:flex items-center gap-3">
+          <img src={header_logo} alt={app_name} className="h-8 object-contain" />
+        </div>
+      )}
       <Breadcrumbs
         base_path={base_path}
         crumbs={crumbs}

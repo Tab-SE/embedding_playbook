@@ -7,6 +7,7 @@ export const Demo = (props) => {
     base_path,
     app_name,
     app_logo,
+    header_logo,
     ai_chat,
     ai_avatar,
     sections,
@@ -41,6 +42,7 @@ export const Demo = (props) => {
           crumbs={crumbs}
           app_name={app_name}
           app_logo={app_logo}
+          header_logo={header_logo}
           ai_chat={ai_chat}
           ai_avatar={ai_avatar}
           sections={sections}
