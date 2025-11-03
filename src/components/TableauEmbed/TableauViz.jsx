@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useRef, forwardRef, useId } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 // eslint-disable-next-line no-unused-vars
 import { tab_embed } from 'libs';
@@ -32,6 +33,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   const [interactive, setInteractive] = useState(false);
   // the target of most viz interactions
   const [activeSheet, setActiveSheet] = useState(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (innerRef.current) {
@@ -39,15 +42,17 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
       // const tabScale = new TabScale.Scale(innerRef.current);
       // apply a few inline styles to new iframe
-      const iframe = viz.shadowRoot.querySelector('iframe');
-      iframe.style.margin = "auto";
-      iframe.style.position = "relative";
+      const iframe = viz.shadowRoot?.querySelector('iframe');
+      if (iframe) {
+        iframe.style.margin = "auto";
+        iframe.style.position = "relative";
+      }
 
       // handles all viz event listeners and clears them
-      const eventListeners = handleVizEventListeners(viz, setInteractive);
+      const eventListeners = handleVizEventListeners(viz, setInteractive, router, pathname);
       return eventListeners;
     }
-  },[innerRef, setInteractive])
+  },[innerRef, setInteractive, router, pathname])
 
   useEffect(() => {
     if (interactive) {
@@ -164,7 +169,28 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   )
 })
 
-const handleVizEventListeners = (viz, setInteractive) => {
+// Helper function to determine base path and redirect to auth
+const checkAndRedirectForAuthError = (router, pathname) => {
+  // Determine base path from current pathname
+  // For /demo/telarus/*, base_path is /demo/telarus
+  // For /demo/superstore/*, base_path is /demo/superstore, etc.
+  let basePath = '/demo';
+  if (pathname?.startsWith('/demo/')) {
+    const pathParts = pathname.split('/');
+    if (pathParts.length >= 3) {
+      basePath = `/${pathParts[1]}/${pathParts[2]}`;
+    }
+  }
+
+  // Don't redirect if we're already on the auth page
+  if (!pathname?.endsWith('/auth')) {
+    const authUrl = `${basePath}/auth`;
+    console.log(`Redirecting to: ${authUrl}`);
+    router.push(authUrl);
+  }
+};
+
+const handleVizEventListeners = (viz, setInteractive, router, pathname) => {
   // define named handlers to simplify handling after effects
   const handleInteractive = async (event) => {
     // tabScale.initialize(); // initializing tabScale
@@ -172,6 +198,32 @@ const handleVizEventListeners = (viz, setInteractive) => {
   }
   const handleVizLoadError = async (event) => {
     console.error('Viz Load Error:', event);
+    console.error('Error detail:', event.detail);
+    console.error('Error detail keys:', event.detail ? Object.keys(event.detail) : 'no detail');
+
+    // Check if this is an authentication error (401)
+    const errorDetail = event.detail;
+    const isAuthError =
+      errorDetail?.errorCode === 401 ||
+      errorDetail?.status === 401 ||
+      errorDetail?.statusCode === 401 ||
+      errorDetail?.errorCode === 'UNAUTHORIZED' ||
+      errorDetail?.errorCode === '401' ||
+      (errorDetail?.message && (
+        errorDetail.message.toLowerCase().includes('unauthorized') ||
+        errorDetail.message.toLowerCase().includes('401') ||
+        errorDetail.message.toLowerCase().includes('authentication') ||
+        errorDetail.message.toLowerCase().includes('forbidden')
+      )) ||
+      (typeof errorDetail === 'string' && (
+        errorDetail.toLowerCase().includes('unauthorized') ||
+        errorDetail.toLowerCase().includes('401')
+      ));
+
+    if (isAuthError) {
+      console.error('🚨 Tableau authentication error detected - redirecting to login');
+      checkAndRedirectForAuthError(router, pathname);
+    }
   }
 
    // event listeners can only be added after component mounts

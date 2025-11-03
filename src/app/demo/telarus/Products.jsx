@@ -18,7 +18,7 @@ export const description = "Select a product type to find the right supplier";
 const productColors = ['#0d47a1', '#1565c0', '#1976d2', '#1e88e5', '#2196f3', '#42a5f5', '#64b5f6', '#90caf9'];
 
 export const Products = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [availableProducts, setAvailableProducts] = useState([]);
   const [vizReady, setVizReady] = useState(false);
 
@@ -32,20 +32,10 @@ export const Products = () => {
       const activeSheet = viz.workbook.activeSheet;
       const worksheets = activeSheet.worksheets || [];
 
-      console.log('Number of worksheets:', worksheets.length);
-
       // Try to get product values from all worksheets
       for (const worksheet of worksheets) {
         try {
-          console.log('Getting summary data from worksheet:', worksheet.name);
           const dataTable = await worksheet.getSummaryDataAsync();
-          console.log('Data table:', dataTable);
-          console.log('Data table columns:', dataTable.columns);
-
-          // Log all column names to debug
-          if (dataTable.columns) {
-            console.log('Available columns:', dataTable.columns.map(col => col.fieldName));
-          }
 
           // Look for Product column in the data - try common variations
           const productColumn = dataTable.columns?.find(col =>
@@ -55,21 +45,17 @@ export const Products = () => {
             col.fieldName?.toLowerCase().includes('product')
           );
 
-          console.log('Product column found:', productColumn);
-
           if (productColumn) {
             const productColumnIndex = productColumn.index;
             const productValues = new Set();
 
-            console.log('Processing data rows:', dataTable.data?.length);
-            dataTable.data?.forEach(row => {
+            dataTable.data?.forEach((row, rowIndex) => {
               const cell = row[productColumnIndex];
-              if (cell && cell.value) {
-                productValues.add(cell.value);
+              const productName = cell?.formattedValue || cell?.value;
+              if (cell && productName) {
+                productValues.add(productName);
               }
             });
-
-            console.log('Unique products found:', Array.from(productValues));
 
             if (productValues.size > 0) {
               const sortedProducts = Array.from(productValues).sort();
@@ -78,11 +64,11 @@ export const Products = () => {
             }
           }
         } catch (error) {
-          console.error('Error getting summary data from worksheet:', error);
+          // Continue to next worksheet
         }
       }
     } catch (error) {
-      console.error('Error getting products from viz:', error);
+      // Error getting products from viz
     }
   };
 
@@ -99,19 +85,13 @@ export const Products = () => {
         }
       }
 
-      console.log('🔍 Setting up product listeners...');
-      console.log('🔍 Product Viz found:', !!productViz);
-
       if (productViz) {
         // Remove any existing listeners to avoid duplicates
         const handleFirstInteractive = async (event) => {
-          console.log('🎉 Product dashboard is now interactive!');
           setVizReady(true);
 
           // Get available products once the viz is interactive
-          console.log('Calling getProductsFromViz...');
           await getProductsFromViz(productViz);
-          console.log('getProductsFromViz completed');
         };
 
         productViz.addEventListener('firstinteractive', handleFirstInteractive);
@@ -119,7 +99,6 @@ export const Products = () => {
         // Store reference for cleanup
         window._telarusVizRef = { productViz, handleFirstInteractive };
       } else {
-        console.log('❌ Product Viz NOT FOUND! Retrying...');
         // Retry after a delay if viz not found
         setTimeout(() => setupListeners(), 500);
         return;
@@ -153,7 +132,7 @@ export const Products = () => {
 
     const applyFilter = async () => {
       const fieldName = 'Product'; // Adjust field name if needed
-      const filterValue = selectedProduct ? [selectedProduct] : [];
+      const filterValue = selectedProducts;
 
       const applyFilterToViz = async () => {
         let viz = document.getElementById('telarusProductSales');
@@ -208,7 +187,6 @@ export const Products = () => {
             }
           }
         } catch (error) {
-          console.error('Error applying filter:', error);
           // Try alternative field names if first attempt fails
           try {
             const activeSheet = viz.workbook?.activeSheet;
@@ -252,11 +230,17 @@ export const Products = () => {
     };
 
     applyFilter();
-  }, [selectedProduct, vizReady]);
+  }, [selectedProducts, vizReady]);
 
   const handleProductSelect = (productName) => {
-    // Toggle selection - if same product clicked, deselect it
-    setSelectedProduct(productName === selectedProduct ? null : productName);
+    // Toggle selection - if product is already selected, remove it; otherwise add it
+    setSelectedProducts(prev => {
+      if (prev.includes(productName)) {
+        return prev.filter(p => p !== productName);
+      } else {
+        return [...prev, productName];
+      }
+    });
   };
 
   return (
@@ -269,14 +253,14 @@ export const Products = () => {
               Select Product Type
             </CardTitle>
             <CardDescription>
-              Choose a product category to explore suppliers and find the best fit for your customers
+              Select one or more product categories to explore suppliers and find the best fit for your customers
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {availableProducts.length > 0 ? (
                 availableProducts.map((productName, index) => {
-                  const isSelected = selectedProduct === productName;
+                  const isSelected = selectedProducts.includes(productName);
                   const colorIndex = index % productColors.length;
                   return (
                     <button
