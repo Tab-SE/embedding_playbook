@@ -169,6 +169,41 @@ export const TabNext = () => {
         });
         console.log('[TabNext] AnalyticsDashboard created successfully');
         console.log('[TabNext] Dashboard methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(dashboard)));
+
+        // Add event listeners to capture SDK events (wait for element to be created)
+        setTimeout(() => {
+          const dashboardElement = document.getElementById('analytics-container')?.querySelector('analytics-dashboard');
+          if (dashboardElement) {
+            console.log('[TabNext] Adding event listeners to dashboard element...');
+
+            // Listen for common SDK events
+            const eventTypes = ['load', 'error', 'ready', 'render', 'connected', 'disconnected', 'click', 'change'];
+            eventTypes.forEach(eventType => {
+              dashboardElement.addEventListener(eventType, (e) => {
+                console.log(`[TabNext] 📡 Dashboard element event: ${eventType}`, e);
+              }, true); // Use capture phase to catch all events
+            });
+
+            // Also listen to all events using a catch-all
+            const originalDispatchEvent = dashboardElement.dispatchEvent;
+            dashboardElement.dispatchEvent = function(event) {
+              console.log('[TabNext] 📡 Dashboard element dispatching event:', event.type, event);
+              return originalDispatchEvent.call(this, event);
+            };
+          } else {
+            console.warn('[TabNext] Dashboard element not found after creation');
+          }
+
+          // Also try listening on the dashboard object itself
+          if (dashboard.addEventListener) {
+            const eventTypes = ['load', 'error', 'ready', 'render', 'connected', 'disconnected'];
+            eventTypes.forEach(eventType => {
+              dashboard.addEventListener(eventType, (e) => {
+                console.log(`[TabNext] 📡 Dashboard object event: ${eventType}`, e);
+              });
+            });
+          }
+        }, 100);
       } catch (createError) {
         console.error('[TabNext] Failed to create AnalyticsDashboard:', createError);
         throw createError;
@@ -345,19 +380,32 @@ export const TabNext = () => {
               console.error('[TabNext] ⚠️  Render timeout after 15 seconds');
               console.error('[TabNext] Network errors detected:', networkErrors);
               const container = document.getElementById('analytics-container');
+              const dashboardEl = container?.querySelector('analytics-dashboard');
               console.log('[TabNext] Container during timeout:', {
                 innerHTML: container?.innerHTML?.substring(0, 500),
                 children: container?.children?.length,
                 hasContent: !!container?.innerHTML,
+                dashboardElement: dashboardEl ? 'exists' : 'missing',
+                dashboardInnerHTML: dashboardEl?.innerHTML?.substring(0, 200),
               });
               reject(new Error(`Render timeout - Dashboard "${dashboardIdOrApiName}" may not exist or be accessible. Check Network tab for failed requests.`));
             }, 15000) // Reduced to 15 seconds for faster feedback
           );
 
-          await Promise.race([renderResult, timeoutPromise]);
-          console.log('[TabNext] ✅ Dashboard rendered successfully');
+          // Wait for render promise or timeout
+          try {
+            await Promise.race([renderResult, timeoutPromise]);
+            console.log('[TabNext] ✅ Dashboard render promise resolved');
+          } catch (e) {
+            // Check if it's the timeout or another error
+            if (e.message?.includes('timeout')) {
+              throw e;
+            }
+            console.log('[TabNext] Render promise rejected (may be expected):', e);
+          }
         } else {
           console.log('[TabNext] Render completed synchronously');
+          console.log('[TabNext] ⚠️  Render is synchronous - SDK may use events to signal completion');
         }
 
         // Restore original fetch, XHR, and WebSocket

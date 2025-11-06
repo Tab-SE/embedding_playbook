@@ -185,13 +185,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Use access token directly - frontdoor URL format may be causing CSP issues
-    // The manually constructed frontdoor URL might not be the right format for the SDK
-    const authCredential = access_token; // Use access token directly to avoid frontdoor URL CSP issues
-    console.log('[JWT Auth] Using access_token as authCredential (frontdoor URL may cause CSP issues)');
-    console.log('[JWT Auth] Frontdoor URL was:', frontdoor_url ? 'constructed but not used' : 'not available');
+    // Try frontdoor URL first (SDK may require it), fallback to access token
+    // The SDK documentation suggests using frontdoor URL for better compatibility
+    const authCredential = frontdoor_url || access_token;
     if (frontdoor_url) {
+      console.log('[JWT Auth] Using frontdoor_url as authCredential (SDK preferred)');
       console.log('[JWT Auth] Frontdoor URL format:', frontdoor_url.substring(0, 100) + '...');
+    } else {
+      console.log('[JWT Auth] Using access_token as authCredential (frontdoor URL not available)');
+      console.warn('[JWT Auth] ⚠️  Frontdoor URL generation failed - SDK may not work with access token alone');
     }
     console.log('[JWT Auth] Success! Auth credential length:', authCredential.length);
 
