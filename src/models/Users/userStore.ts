@@ -11,6 +11,7 @@ export interface User {
   role?: number;
   vector_store: string;
   uaf: Record<string, string[] | undefined>;
+  salesforceUsername?: string;
 }
 
 export interface Demo {
@@ -53,7 +54,8 @@ export const Users = [
         picture: "/img/users/sofia_lopez.png",
         role: 0,
         vector_store: 'superstore_slopez',
-        uaf: {"Region": ["West"]}
+        uaf: {"Region": ["West"]},
+        salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
       },
       {
         id: 'b',

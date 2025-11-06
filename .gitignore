@@ -134,3 +134,10 @@ dist
 
 # local vercel config
 .vercel
+
+# Salesforce JWT certificates (keep private key secret!)
+salesforce_private_key.pem
+salesforce_public_cert.pem
+salesforce_public_cert_x509.pem
+generate-salesforce-jwt-cert.sh
+*.pem

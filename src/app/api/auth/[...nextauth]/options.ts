@@ -13,6 +13,7 @@ interface DemoUser extends User {
   uaf?: any;
   tableau?: any;
   rest_token?: string;
+  salesforceUsername?: string;
 }
 
 interface CustomSession extends Session {
@@ -21,6 +22,7 @@ interface CustomSession extends Session {
     email?: string | null;
     image?: string | null;
     demo?: string;
+    salesforceUsername?: string;
   }
 }
 
@@ -160,6 +162,8 @@ export const authOptions: AuthOptions = {
         token.uaf = user.uaf || {};
         token.tableau = user.tableau;
         token.rest_token =  user.rest_token;
+        // Add Salesforce username for TabNext JWT Bearer Flow
+        token.salesforceUsername = user.salesforceUsername;
       }
       return token;
     },
@@ -167,6 +171,7 @@ export const authOptions: AuthOptions = {
       const customSession = session as CustomSession;
       if (customSession.user) {
         customSession.user.demo = token.demo as string;
+        customSession.user.salesforceUsername = token.salesforceUsername as string;
       }
       return session;
     }
