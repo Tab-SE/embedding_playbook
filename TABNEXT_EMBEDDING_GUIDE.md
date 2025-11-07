@@ -127,6 +127,150 @@ JWT Bearer Flow requires users to have a custom permission set:
 
 ## Authentication Flows
 
+### Single Sign-On (SSO) Flow with JWT Bearer
+
+**Use case:** Seamless, zero-click authentication for embedded dashboards.
+
+**How it works:**
+This is the primary authentication flow implemented in this application. It provides a complete SSO experience where users log in once to your application, and the Tableau Next dashboard automatically loads without any additional clicks or redirects.
+
+1. **User logs into the application** (via NextAuth.js)
+2. **Session is established** with user information including Salesforce username
+3. **Auto-authentication triggers** when session becomes authenticated
+4. **JWT token is generated** on the server using:
+   - User's Salesforce username (`sub` claim)
+   - Consumer Key from External Client App (`iss` claim)
+   - Org URL as audience (`aud` claim)
+   - Private key for signing (RS256 algorithm)
+5. **JWT is exchanged** for Salesforce access token
+6. **Frontdoor URL is generated** (preferred credential for Tableau Next SDK)
+7. **SDK initializes** with the frontdoor URL
+8. **Dashboard renders** automatically in the container
+
+**Complete SSO Flow Diagram:**
+
+```
+┌─────────────────┐
+│  User Logs In   │
+│  (NextAuth.js)  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Session Created │
+│ (with Salesforce│
+│  username)      │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Auto-Auth Effect Triggers   │
+│ (when sessionStatus ===     │
+│  'authenticated')           │
+└────────┬─────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Call /api/tabnext/jwt-auth  │
+│ POST { salesforce_username }│
+└────────┬─────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Server Generates JWT Token  │
+│ - iss: Consumer Key          │
+│ - sub: Salesforce Username  │
+│ - aud: Org URL              │
+│ - exp: 5 minutes            │
+│ - Signed with RS256         │
+└────────┬─────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Exchange JWT for Access     │
+│ Token at Salesforce         │
+│ /services/oauth2/token      │
+└────────┬─────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Generate Frontdoor URL      │
+│ (or use access token)       │
+└────────┬─────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Return authCredential to    │
+│ Frontend                     │
+└────────┬─────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Initialize Tableau Next    │
+│ SDK with authCredential    │
+│ and orgUrl                 │
+└────────┬───────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Create AnalyticsDashboard   │
+│ Component                   │
+└────────┬─────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Render Dashboard            │
+│ (automatically displays)    │
+└─────────────────────────────┘
+```
+
+**Key Features:**
+- **Zero-click authentication**: Users don't need to click any buttons
+- **Automatic dashboard loading**: Dashboard appears as soon as user logs in
+- **User-specific access**: Each user authenticates with their own Salesforce credentials
+- **Secure token exchange**: JWT tokens are signed server-side and never exposed to client
+- **Session-based caching**: Credentials are cached in `sessionStorage` for the browser session
+
+**Implementation Details:**
+
+The SSO flow is implemented in `src/app/demo/superstore/tabnext/TabNext.jsx`:
+
+1. **Auto-authentication hook** (`useEffect`):
+   - Monitors session status using `useSession()` from NextAuth.js
+   - Triggers when `sessionStatus === 'authenticated'`
+   - Prevents duplicate authentication attempts using `useRef` flag
+   - Only runs when status is 'idle' (not already authenticating/initializing)
+   - Checks for OAuth callback codes to avoid conflicts
+   - Clears cached credentials to force fresh authentication
+
+2. **JWT authentication** (`handleJWTBearerAuth`):
+   - Calls `/api/tabnext/jwt-auth` endpoint
+   - Passes Salesforce username from session (`session.user.salesforceUsername` or `session.user.email`)
+   - Receives `authCredential` (frontdoor URL or access token)
+   - Caches credential in `sessionStorage` for the browser session
+
+3. **SDK initialization** (`initializeAndRender`):
+   - Initializes `@salesforce/analytics-embedding-sdk` with `authCredential` and `orgUrl`
+   - Sets up container with explicit pixel dimensions (required by SDK)
+   - Creates `AnalyticsDashboard` component with dashboard ID/API name
+   - Renders dashboard in the container
+
+**Requirements:**
+- `SALESFORCE_CLIENT_ID`
+- `SALESFORCE_PRIVATE_KEY` (or `SALESFORCE_PRIVATE_KEY_PATH`)
+- `SALESFORCE_ORG_URL`
+- User must have custom permission set assigned
+- Public certificate must be uploaded to ECA
+- User session must include `salesforceUsername` or `email` field
+- NextAuth.js session management configured
+
+**Advantages:**
+- No redirects or user interaction required
+- Works seamlessly in background
+- User-specific authentication
+- Automatic dashboard loading
+- Secure server-side token generation
+
 ### Client Credentials Flow
 
 **Use case:** Simplest flow, no user-specific authentication needed.
@@ -140,28 +284,6 @@ JWT Bearer Flow requires users to have a custom permission set:
 - `SALESFORCE_CLIENT_ID`
 - `SALESFORCE_CLIENT_SECRET`
 - `SALESFORCE_ORG_URL`
-
-### JWT Bearer Flow
-
-**Use case:** Dynamic authentication without user redirects.
-
-**How it works:**
-- Server generates a JWT token signed with private key
-- JWT contains user's Salesforce username
-- Salesforce validates JWT and returns access token
-- No user interaction required
-
-**Requirements:**
-- `SALESFORCE_CLIENT_ID`
-- `SALESFORCE_PRIVATE_KEY` (or `SALESFORCE_PRIVATE_KEY_PATH`)
-- `SALESFORCE_ORG_URL`
-- User must have custom permission set assigned
-- Public certificate must be uploaded to ECA
-
-**Advantages:**
-- No redirects
-- Works seamlessly in background
-- User-specific authentication
 
 ### PKCE OAuth Flow
 
