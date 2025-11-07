@@ -110,6 +110,11 @@ export async function POST(req: NextRequest) {
       algorithm: 'RS256',
     });
     console.log('[JWT Auth] JWT signed successfully, length:', assertion.length);
+    console.log('[JWT Auth] ========================================');
+    console.log('[JWT Auth] 🔑 JWT Token (for decoding):');
+    console.log('[JWT Auth]', assertion);
+    console.log('[JWT Auth] ========================================');
+    console.log('[JWT Auth] 💡 Decode at: https://jwt.io/');
 
     // Exchange JWT for access token
     console.log('[JWT Auth] Exchanging JWT for access token at:', tokenExchangeUrl);
@@ -215,6 +220,7 @@ export async function POST(req: NextRequest) {
       access_token: access_token, // Also return raw token for reference
       instance_url: issued_instance_url,
       frontdoor_url: frontdoor_url,
+      jwt_token: assertion, // JWT token for debugging (can be decoded at jwt.io)
     });
   } catch (e: any) {
     console.error('[JWT Auth] Unexpected error:', e.message);

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from "@/components/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { AppWindow } from "lucide-react";
 import { initializeAnalyticsSdk, AnalyticsDashboard } from '@salesforce/analytics-embedding-sdk';
 
@@ -192,15 +192,11 @@ export const TabNext = () => {
       }
 
             const data = await resp.json();
+
             console.log('[TabNext] ========================================');
-            console.log('[TabNext] ✅ JWT Auth Response:');
-            console.log('[TabNext]   - Has authCredential:', !!data.authCredential);
-            console.log('[TabNext]   - authCredential length:', data.authCredential?.length);
-            console.log('[TabNext]   - authCredential type:', data.authCredential?.startsWith('https://') ? 'frontdoor_url' : 'access_token');
-            console.log('[TabNext]   - Has access_token:', !!data.access_token);
-            console.log('[TabNext]   - Instance URL:', data.instance_url);
-            console.log('[TabNext]   - Has frontdoor_url:', !!data.frontdoor_url);
-            console.log('[TabNext]   - authCredential preview:', data.authCredential?.substring(0, 100) + '...');
+            console.log('[TabNext] 🔑 JWT Token (for decoding at jwt.io):');
+            console.log('[TabNext]', data.jwt_token || 'Not available');
+            console.log('[TabNext] 💡 Decode at: https://jwt.io/'+ data.jwt_token);
             console.log('[TabNext] ========================================');
 
             const authCredential = data.authCredential;
@@ -281,23 +277,55 @@ export const TabNext = () => {
     run();
   }, [clientId, redirectUri, orgUrl, initializeAndRender]);
 
-  // Attempt seamless authentication: try Client Credentials first, then JWT Bearer (no PKCE fallback)
-  const hasAutoAuthenticated = useRef(false);
+  // Auto-authenticate with Salesforce when user logs in (JWT Bearer Flow)
+  // This runs automatically when session becomes authenticated - same as clicking the button
+  const hasAutoAuthAttempted = useRef(false);
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    // Wait for session to be authenticated
+    if (sessionStatus !== 'authenticated') {
+      return;
+    }
+
+    // Only run once - prevent infinite loops
+    if (hasAutoAuthAttempted.current) {
+      return;
+    }
+
+    // Only run if status is idle (not already authenticating/initializing)
+    if (status !== 'idle') {
+      return;
+    }
+
+    // Check for OAuth callback code first (PKCE flow)
     const url = new URL(window.location.href);
     const hasCode = !!url.searchParams.get('code');
-    const cached = sessionStorage.getItem('tabnext_auth_credential');
-
-    // Prevent duplicate calls (React Strict Mode runs effects twice)
-    if (hasAutoAuthenticated.current) return;
-
-    if (sessionStatus === 'authenticated' && !hasCode && !cached && status === 'idle') {
-      // Try Client Credentials Flow first (simplest), then JWT Bearer (JWT only, no PKCE)
-      hasAutoAuthenticated.current = true;
-      void handleClientCredentialsAuth();
+    if (hasCode) {
+      console.log('[TabNext] OAuth callback detected, skipping auto-auth');
+      // OAuth callback will be handled by the other useEffect
+      return;
     }
-  }, [sessionStatus, status, handleClientCredentialsAuth]);
+
+    // Check for cached credential
+    const cached = sessionStorage.getItem('tabnext_auth_credential');
+    if (cached) {
+      console.log('[TabNext] Found cached credential, but forcing fresh JWT auth to avoid CSP issues...');
+      // Clear cached credential and get a fresh one to avoid CSP/expired token issues
+      sessionStorage.removeItem('tabnext_auth_credential');
+      // Fall through to JWT auth below
+    }
+
+    // Auto-authenticate with JWT if we have a username
+    if (salesforceUsername) {
+      console.log('[TabNext] ✅ Auto-authenticating with Salesforce (JWT Bearer Flow)...');
+      hasAutoAuthAttempted.current = true; // Set flag to prevent re-running
+      // Call the same function the button calls - exactly the same
+      handleJWTBearerAuth();
+    } else {
+      console.warn('[TabNext] ⚠️ No salesforceUsername found. Cannot auto-authenticate.');
+    }
+  }, [sessionStatus, salesforceUsername, handleJWTBearerAuth, status]);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -308,18 +336,9 @@ export const TabNext = () => {
               <AppWindow className="h-5 w-5 text-[hsl(199,99%,39%)]" />
               tabNext Embed
             </CardTitle>
-            <CardDescription>Dynamic authentication: Client Credentials → JWT Bearer → PKCE fallback. Existing auth untouched.</CardDescription>
+            <CardDescription>Auto-authenticates with Salesforce (JWT Bearer Flow) when you log in.</CardDescription>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <Button onClick={handleClientCredentialsAuth} disabled={status !== 'idle'}>
-                {status === 'starting' || status === 'authenticating' ? 'Authenticating…' :
-                 status === 'exchanging' ? 'Exchanging…' :
-                 status === 'initializing' ? 'Initializing…' :
-                 'Authenticate with Salesforce'}
-              </Button>
-              {status !== 'idle' && <span className="text-xs text-slate-500 dark:text-slate-300">{status}</span>}
-            </div>
             {error ? <div className="text-sm text-red-500">{error}</div> : null}
             <div
               id="analytics-container"
