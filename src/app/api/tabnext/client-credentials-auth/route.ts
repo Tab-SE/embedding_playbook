@@ -70,13 +70,8 @@ export async function POST(req: NextRequest) {
       if (fdResp.ok) {
         const fdData = await fdResp.json();
         frontdoor_url = fdData.frontdoor_uri || fdData.url || null;
-      } else {
-        const errorText = await fdResp.text();
-        console.warn('Frontdoor URL generation failed:', errorText);
-        // Continue without frontdoor URL - access token can be used directly
       }
     } catch (e) {
-      console.warn('Frontdoor URL generation error:', e);
       // Continue without frontdoor URL
     }
 
