@@ -154,12 +154,14 @@ export const TabNext = () => {
         idOrApiName: dashboardIdOrApiName,
       });
       console.log('[TabNext] ✅ Dashboard exists and is accessible');
-      console.log('[TabNext] 🔍 Current issue: CSP/iframe blocking (not dashboard ID)');
-      console.log('[TabNext] 📋 Next steps:');
-      console.log('[TabNext]   1. Setup → Session Settings → "Clickjack Protection"');
-      console.log('[TabNext]      Set to: "Allow framing by any page within the same Salesforce org"');
-      console.log('[TabNext]   2. Verify CSP Trusted Sites has frame-src directive selected');
-      console.log('[TabNext]   3. Clear browser cache and try incognito mode');
+      console.log('[TabNext] 🔍 Current issue: CSP blocking iframe with "frame-ancestors \'none\'"');
+      console.log('[TabNext] 📋 BLACKTAB FIX REQUIRED:');
+      console.log('[TabNext]   1. Open blacktab → Find this org:', orgUrl?.replace('.lightning.force.com', ''));
+      console.log('[TabNext]   2. Navigate to: Session Settings → Clickjack Protection');
+      console.log('[TabNext]   3. Find field: "Enable clickjack protection for non-Setup Salesforce pages"');
+      console.log('[TabNext]   4. Set value to: FALSE or DISABLED');
+      console.log('[TabNext]   5. Save changes, wait 2-3 min, then hard refresh');
+      console.log('[TabNext]   Field name in blacktab may be: ClickjackProtectionNonSetupPages or similar');
 
       let dashboard;
       try {
@@ -507,20 +509,17 @@ export const TabNext = () => {
         // Check for CSP/frame-ancestors errors
         const errorString = String(e);
         if (errorString.includes('frame-ancestors') || errorString.includes('iframe') || errorString.includes('CSP') || errorString.includes('LightningOutError')) {
-          const errorMsg = '🔒 CSP Error: Salesforce is blocking the iframe.\n\n' +
-            'Even with CSP Trusted Sites configured, check these:\n\n' +
-            '1. Setup → Session Settings → "Clickjack Protection":\n' +
-            '   - Set to "Allow framing by any page within the same Salesforce org"\n' +
-            '   - OR "Allow framing by the same origin"\n\n' +
-            '2. Verify CSP Trusted Sites:\n' +
-            '   - URL: "http://localhost:3000"\n' +
-            '   - Context: "All" (or "Lightning Out")\n' +
-            '   - Directives: frame-src MUST be selected\n\n' +
-            '3. Setup → My Domain → Routing and Policies:\n' +
-            '   - "Require first-party use of Salesforce cookies" = DISABLED\n\n' +
-            '4. Clear browser cache completely and hard refresh\n\n' +
-            '5. Try in an incognito/private window\n\n' +
-            'The frontdoor URL format may be wrong. We\'re using access_token directly now.';
+          const errorMsg = '🔒 CSP Error: "frame-ancestors \'none\'" is blocking the iframe.\n\n' +
+            'BLACKTAB REQUIRED: Disable Clickjack Protection in blacktab:\n\n' +
+            '1. Open blacktab for org: ' + (orgUrl?.replace('.lightning.force.com', '') || 'your org') + '\n' +
+            '2. Navigate to: Session Settings → Clickjack Protection\n' +
+            '3. Set "Enable clickjack protection for non-Setup Salesforce pages" = FALSE/DISABLED\n' +
+            '4. Save and wait 2-3 minutes\n\n' +
+            'The setting name in blacktab may be:\n' +
+            '- "ClickjackProtectionNonSetupPages"\n' +
+            '- "EnableClickjackProtectionNonSetup"\n' +
+            '- Or similar field name\n\n' +
+            'After disabling, hard refresh (Cmd+Shift+R) to test.';
           console.error('[TabNext]', errorMsg);
           setError(errorMsg);
         } else if (errorString.includes('timeout')) {

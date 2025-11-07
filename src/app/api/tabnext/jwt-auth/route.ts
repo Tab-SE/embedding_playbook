@@ -54,24 +54,36 @@ export async function POST(req: NextRequest) {
     }
 
     // Get private key from file or environment variable
+    // In production (Railway, etc.), prefer environment variable since files may not be available
     let privateKey: string;
-    if (sfPrivateKeyPath) {
+    if (sfPrivateKey) {
+      // Prefer environment variable (works in production)
+      console.log('[JWT Auth] Using private key from SALESFORCE_PRIVATE_KEY environment variable');
+      privateKey = sfPrivateKey.replace(/\\n/g, '\n'); // Handle escaped newlines in env var
+      console.log('[JWT Auth] Private key loaded from env, length:', privateKey.length);
+    } else if (sfPrivateKeyPath) {
+      // Fall back to file if env var not set (for local development)
       try {
         const keyPath = join(process.cwd(), sfPrivateKeyPath);
         console.log('[JWT Auth] Reading private key from file:', keyPath);
         privateKey = readFileSync(keyPath, 'utf8');
-        console.log('[JWT Auth] Private key loaded successfully, length:', privateKey.length);
+        console.log('[JWT Auth] Private key loaded successfully from file, length:', privateKey.length);
       } catch (e: any) {
         console.error('[JWT Auth] Failed to read private key file:', e.message);
-        return NextResponse.json({ error: 'Failed to read private key file', detail: e.message }, { status: 500 });
+        console.error('[JWT Auth] File path attempted:', join(process.cwd(), sfPrivateKeyPath));
+        console.error('[JWT Auth] In production, use SALESFORCE_PRIVATE_KEY environment variable instead');
+        return NextResponse.json({ 
+          error: 'Failed to read private key file', 
+          detail: e.message,
+          hint: 'In production, set SALESFORCE_PRIVATE_KEY environment variable instead of SALESFORCE_PRIVATE_KEY_PATH'
+        }, { status: 500 });
       }
-    } else if (sfPrivateKey) {
-      console.log('[JWT Auth] Using private key from environment variable');
-      privateKey = sfPrivateKey.replace(/\\n/g, '\n'); // Handle escaped newlines in env var
-      console.log('[JWT Auth] Private key loaded from env, length:', privateKey.length);
     } else {
       console.error('[JWT Auth] Missing SALESFORCE_PRIVATE_KEY or SALESFORCE_PRIVATE_KEY_PATH');
-      return NextResponse.json({ error: 'Missing SALESFORCE_PRIVATE_KEY or SALESFORCE_PRIVATE_KEY_PATH' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Missing SALESFORCE_PRIVATE_KEY or SALESFORCE_PRIVATE_KEY_PATH',
+        hint: 'Set SALESFORCE_PRIVATE_KEY environment variable with the full private key content (including -----BEGIN/END----- lines)'
+      }, { status: 500 });
     }
 
     // Generate JWT for Salesforce JWT Bearer Flow
