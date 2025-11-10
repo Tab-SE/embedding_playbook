@@ -38,14 +38,8 @@ const CasesContent = () => {
   // Listen for mark selection events - attach INSIDE firstinteractive (from veriforce)
   useEffect(() => {
     const handleMarkSelectionChanged = (markSelectionChangedEvent) => {
-      console.log('=== MARK SELECTION CHANGED ===');
-      console.log('Event detail:', markSelectionChangedEvent.detail);
-
       // Use the pattern from the working veriforce example
       markSelectionChangedEvent.detail.getMarksAsync().then((marks) => {
-        console.log('Selected marks data:', marks);
-        console.log('Number of data tables:', marks.data.length);
-
         // Process marks data like the veriforce example
         const marksData = [];
 
@@ -60,67 +54,65 @@ const CasesContent = () => {
           marksData.push(obj);
         }
 
-        console.log('Processed marks data:', marksData);
-
         // Store selected marks for Slack functionality
         setSelectedMarks(marksData);
-        console.log('✅ SELECTED MARKS UPDATED:', marksData);
-
-        // Just store the marks data - no automatic popup
-        console.log('Selected marks stored for user:', currentUser?.name);
-
-        // Log column names
-        if (marks.data[0].columns) {
-          const columnNames = marks.data[0].columns.map(col => col.fieldName);
-          console.log('Column names:', columnNames);
-        }
 
       }).catch((error) => {
-        console.error('Error getting selected marks:', error);
-
-        // Fallback: Create mock data when API fails (for public dashboards)
-        console.log('🔄 Creating mock mark data due to API error');
-        const mockMarksData = [{
-          'Urgent Cases': '38',
-          'Priority': 'High',
-          'Status': 'Open',
-          'Assignee': 'Tier 1 Support Team',
-          'Created Date': '2024-01-18',
-          'Last Updated': '2024-01-22',
-          'Description': 'Multiple urgent cases requiring immediate attention from Tier 2 Support Team'
-        }];
-
-        setSelectedMarks(mockMarksData);
-        console.log('✅ MOCK MARKS SET:', mockMarksData);
+        // Mark selection failed - clear selected marks
+        setSelectedMarks([]);
       });
     };
 
     const setupListeners = () => {
-      const openCasesViz = document.getElementById('openCasesViz');
-      const createdCasesViz = document.getElementById('createdCasesViz');
+      // Try multiple ways to find the viz elements
+      let openCasesViz = document.getElementById('openCasesViz');
+      let createdCasesViz = document.getElementById('createdCasesViz');
 
-      console.log('🔍 Setting up listeners...');
-      console.log('🔍 Open Cases Viz found:', !!openCasesViz);
-      console.log('🔍 Created Cases Viz found:', !!createdCasesViz);
+      // If not found by ID, try querySelector
+      if (!openCasesViz || !createdCasesViz) {
+        const tableauVizElements = document.querySelectorAll('tableau-viz');
+        if (tableauVizElements.length > 0) {
+          if (!openCasesViz) {
+            openCasesViz = Array.from(tableauVizElements).find(
+              viz => viz.id === 'openCasesViz' || viz.getAttribute('id') === 'openCasesViz'
+            ) || tableauVizElements[0];
+          }
+          if (!createdCasesViz && tableauVizElements.length > 1) {
+            createdCasesViz = Array.from(tableauVizElements).find(
+              viz => viz.id === 'createdCasesViz' || viz.getAttribute('id') === 'createdCasesViz'
+            ) || tableauVizElements[1];
+          }
+        }
+      }
+
+      const addMarkSelectionListener = (viz) => {
+        viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
+      };
 
       if (openCasesViz) {
-        console.log('✅ Adding firstinteractive listener to Open Cases');
-        openCasesViz.addEventListener('firstinteractive', (event) => {
-          console.log('🎉 Open Cases is now interactive!');
-          // Add mark selection listener INSIDE firstinteractive
-          openCasesViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('✅ Mark selection listener attached to Open Cases');
-        });
+        // Check if already interactive
+        const isAlreadyInteractive = openCasesViz.getIsInteractive?.() || openCasesViz.isInteractive || false;
+
+        if (isAlreadyInteractive) {
+          addMarkSelectionListener(openCasesViz);
+        } else {
+          openCasesViz.addEventListener('firstinteractive', () => {
+            addMarkSelectionListener(openCasesViz);
+          });
+        }
       }
 
       if (createdCasesViz) {
-        console.log('✅ Adding firstinteractive listener to Created Cases');
-        createdCasesViz.addEventListener('firstinteractive', (event) => {
-          console.log('🎉 Created Cases is now interactive!');
-          // Add mark selection listener INSIDE firstinteractive
-          createdCasesViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('✅ Mark selection listener attached to Created Cases');
-        });
+        // Check if already interactive
+        const isAlreadyInteractive = createdCasesViz.getIsInteractive?.() || createdCasesViz.isInteractive || false;
+
+        if (isAlreadyInteractive) {
+          addMarkSelectionListener(createdCasesViz);
+        } else {
+          createdCasesViz.addEventListener('firstinteractive', () => {
+            addMarkSelectionListener(createdCasesViz);
+          });
+        }
       }
 
       return { openCasesViz, createdCasesViz };
@@ -305,18 +297,25 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                   hideTabs={true}
                   toolbar='hidden'
                   isPublic={true}
-                  className='w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]'
                   width='100%'
                   height='100%'
                   demo="servicedesk"
-                  layouts = {{
-                    'xs': { 'device': 'phone' },
-                    'sm': { 'device': 'default' },
-                    'md': { 'device': 'default' },
-                    'lg': { 'device': 'default' },
-                    'xl': { 'device': 'default' },
-                    'xl2': { 'device': 'default' },
-                  }}
+                  className='
+                    min-w-[300px] min-h-[1430px]
+                    sm:min-w-[510px] sm:min-h-[1430px]
+                    md:min-w-[600px] md:min-h-[950px]
+                    lg:min-w-[750px] lg:min-h-[950px]
+                    xl:min-w-[750px] xl:min-h-[950px]
+                    2xl:min-w-[750px] 2xl:min-h-[950px]
+                    '
+                    layouts = {{
+                      'xs': { 'device': 'desktop' },
+                      'sm': { 'device': 'desktop' },
+                      'md': { 'device': 'desktop' },
+                      'lg': { 'device': 'desktop' },
+                      'xl': { 'device': 'desktop' },
+                      'xl2': { 'device': 'desktop' },
+                    }}
                 />
               </div>
             </CardContent>
@@ -341,17 +340,22 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                   hideTabs={true}
                   toolbar='hidden'
                   isPublic={true}
-                  className='w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]'
-                  width='100%'
-                  height='100%'
                   demo="servicedesk"
+                  className='
+                  min-w-[300px] min-h-[1430px]
+                  sm:min-w-[510px] sm:min-h-[1430px]
+                   md:min-w-[600px] md:min-h-[950px]
+                    lg:min-w-[750px] lg:min-h-[950px]
+                    xl:min-w-[750px] xl:min-h-[950px]
+                    2xl:min-w-[750px] 2xl:min-h-[950px]
+                  '
                   layouts = {{
-                    'xs': { 'device': 'phone' },
-                    'sm': { 'device': 'default' },
-                    'md': { 'device': 'default' },
-                    'lg': { 'device': 'default' },
-                    'xl': { 'device': 'default' },
-                    'xl2': { 'device': 'default' },
+                    'xs': { 'device': 'desktop' },
+                    'sm': { 'device': 'desktop' },
+                    'md': { 'device': 'desktop' },
+                    'lg': { 'device': 'desktop' },
+                    'xl': { 'device': 'desktop' },
+                    'xl2': { 'device': 'desktop' },
                   }}
                 />
               </div>

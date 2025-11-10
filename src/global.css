@@ -194,39 +194,6 @@
     --metrics-negative: 280 60% 33% ;
   }
 
-  /* Define variables for the 'telarus' theme (Experience Cloud style - Blue/Orange) */
-  [data-theme="telarus"] {
-    --background: 0 0% 100%; /* White */
-    --foreground: 222.2 84% 4.9%; /* Dark Gray */
-    --demo-background: 210 40% 98%; /* Very Light Blue-Gray */
-    --nav-background: 0 0% 100%; /* White */
-    --logo-background: 0 0% 100%;
-    --icon-background: 0 0% 100%;
-    --login-card-background: 0 0% 100%;
-    --nav-icons: 217 91% 60%; /* Telarus Blue */
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 217 91% 60%; /* Telarus Blue #0d47a1 */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 29 98% 50%; /* Telarus Orange #fb8c00 */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 217 91% 60%;
-
-    --metrics-positive: 217 91% 60%;
-    --metrics-neutral: 215 20.2% 65.1%;
-    --metrics-negative: 0 84.2% 60.2%;
-  }
-
   /* Define variables for the 'servicedesk' theme (Dark mode) */
   [data-theme="servicedesk"] {
     --background: 222.2 84% 4.9%; /* Dark Gray */

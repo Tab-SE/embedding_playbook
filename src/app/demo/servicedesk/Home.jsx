@@ -104,6 +104,104 @@ export const Home = () => {
     };
   }, []);
 
+  // Listen for mark selection events
+  useEffect(() => {
+    const handleMarkSelectionChanged = (markSelectionChangedEvent) => {
+      // Use the pattern from the working veriforce example
+      markSelectionChangedEvent.detail.getMarksAsync().then((marks) => {
+        // Process marks data like the veriforce example
+        const marksData = [];
+
+        for (let markIndex = 0; markIndex < marks.data[0].data.length; markIndex++) {
+          const columns = marks.data[0].columns;
+          const obj = {};
+
+          for (let colIndex = 0; colIndex < columns.length; colIndex++) {
+            obj[columns[colIndex].fieldName] = marks.data[0].data[markIndex][colIndex].formattedValue;
+          }
+
+          marksData.push(obj);
+        }
+
+        // Store selected marks for Slack functionality
+        setSelectedMarks(marksData);
+
+      }).catch((error) => {
+        // Mark selection failed - clear selected marks
+        setSelectedMarks([]);
+      });
+    };
+
+    const setupListeners = () => {
+      // Try multiple ways to find the viz element
+      let caseManagementViz = document.getElementById('caseManagementViz');
+
+      // If not found by ID, try querySelector
+      if (!caseManagementViz) {
+        const tableauVizElements = document.querySelectorAll('tableau-viz');
+        if (tableauVizElements.length > 0) {
+          // Find the one with matching id attribute
+          caseManagementViz = Array.from(tableauVizElements).find(
+            viz => viz.id === 'caseManagementViz' || viz.getAttribute('id') === 'caseManagementViz'
+          ) || tableauVizElements[0];
+        }
+      }
+
+      const addMarkSelectionListener = (viz) => {
+        viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
+      };
+
+      if (caseManagementViz) {
+        // Check if already interactive
+        const isAlreadyInteractive = caseManagementViz.getIsInteractive?.() || caseManagementViz.isInteractive || false;
+
+        if (isAlreadyInteractive) {
+          addMarkSelectionListener(caseManagementViz);
+        } else {
+          caseManagementViz.addEventListener('firstinteractive', () => {
+            addMarkSelectionListener(caseManagementViz);
+          });
+        }
+      }
+
+      return { caseManagementViz };
+    };
+
+    // Delay setup to ensure DOM elements are available - try multiple times
+    let attempts = 0;
+    const maxAttempts = 5;
+    const timers = [];
+
+    const trySetup = () => {
+      attempts++;
+      const { caseManagementViz } = setupListeners();
+
+      if (caseManagementViz) {
+        // Store refs for cleanup
+        window._vizRefs = { caseManagementViz, handleMarkSelectionChanged };
+      } else if (attempts < maxAttempts) {
+        // Retry if not found
+        const timer = setTimeout(trySetup, 1000);
+        timers.push(timer);
+      }
+    };
+
+    const initialTimer = setTimeout(trySetup, 1000);
+    timers.push(initialTimer);
+
+    // Cleanup
+    return () => {
+      timers.forEach(timer => clearTimeout(timer));
+      if (window._vizRefs) {
+        const { caseManagementViz, handleMarkSelectionChanged } = window._vizRefs;
+        if (caseManagementViz) {
+          caseManagementViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
+        }
+        delete window._vizRefs;
+      }
+    };
+  }, [currentUser]);
+
   // Apply filter to Tableau dashboards when case priority changes
   useEffect(() => {
     const applyFilter = async () => {
@@ -111,7 +209,19 @@ export const Home = () => {
       const filterValue = casePriority === 'all' ? [] : [casePriority];
 
       const applyFilterToViz = async (vizId) => {
-        const viz = document.getElementById(vizId);
+        // Try multiple ways to find the viz element
+        let viz = document.getElementById(vizId);
+
+        // If not found by ID, try querySelector
+        if (!viz) {
+          const tableauVizElements = document.querySelectorAll('tableau-viz');
+          if (tableauVizElements.length > 0) {
+            // Find the one with matching id attribute
+            viz = Array.from(tableauVizElements).find(
+              v => v.id === vizId || v.getAttribute('id') === vizId
+            ) || tableauVizElements[0];
+          }
+        }
 
         if (!viz) {
           return;
@@ -147,7 +257,6 @@ export const Home = () => {
         }
       };
 
-      await applyFilterToViz('serviceDashboardViz');
       await applyFilterToViz('caseManagementViz');
     };
 
@@ -275,17 +384,23 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                     hideTabs={true}
                     toolbar='hidden'
                     isPublic={true}
-                    className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
-                    width='100%'
-                    height='100%'
+
                     demo="servicedesk"
+                    className='
+                    min-w-[300px] min-h-[1430px]
+                    sm:min-w-[510px] sm:min-h-[1430px]
+                    md:min-w-[1200px] md:min-h-[1180px]
+                    lg:min-w-[1600px] lg:min-h-[1180px]
+                    xl:min-w-[1600px] xl:min-h-[1180px]
+                    2xl:min-w-[1600px] 2xl:min-h-[1180px]
+                    '
                     layouts = {{
-                      'xs': { 'device': 'default' },
-                      'sm': { 'device': 'default' },
-                      'md': { 'device': 'default' },
-                      'lg': { 'device': 'default' },
-                      'xl': { 'device': 'default' },
-                      'xl2': { 'device': 'default' },
+                      'xs': { 'device': 'desktop' },
+                      'sm': { 'device': 'desktop' },
+                      'md': { 'device': 'desktop' },
+                      'lg': { 'device': 'desktop' },
+                      'xl': { 'device': 'desktop' },
+                      'xl2': { 'device': 'desktop' },
                     }}
                   />
                 </div>

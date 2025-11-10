@@ -38,14 +38,8 @@ const CustomerSuccessContent = () => {
   // Listen for mark selection events - attach INSIDE firstinteractive (from veriforce)
   useEffect(() => {
     const handleMarkSelectionChanged = (markSelectionChangedEvent) => {
-      console.log('=== MARK SELECTION CHANGED ===');
-      console.log('Event detail:', markSelectionChangedEvent.detail);
-
       // Use the pattern from the working veriforce example
       markSelectionChangedEvent.detail.getMarksAsync().then((marks) => {
-        console.log('Selected marks data:', marks);
-        console.log('Number of data tables:', marks.data.length);
-
         // Process marks data like the veriforce example
         const marksData = [];
 
@@ -60,42 +54,45 @@ const CustomerSuccessContent = () => {
           marksData.push(obj);
         }
 
-        console.log('Processed marks data:', marksData);
-
         // Store selected marks for Slack functionality
         setSelectedMarks(marksData);
-        console.log('✅ SELECTED MARKS UPDATED:', marksData);
-
-        // Just store the marks data - no automatic popup
-        console.log('Selected marks stored for user:', currentUser?.name);
-
-        // Log column names
-        if (marks.data[0].columns) {
-          const columnNames = marks.data[0].columns.map(col => col.fieldName);
-          console.log('Column names:', columnNames);
-        }
 
       }).catch((error) => {
-        console.error('Error getting selected marks:', error);
+        // Mark selection failed - clear selected marks
+        setSelectedMarks([]);
       });
     };
 
     const setupListeners = () => {
-      const customerHealthViz = document.getElementById('customerHealthViz');
+      // Try multiple ways to find the viz element
+      let customerHealthViz = document.getElementById('customerHealthViz');
 
-      console.log('🔍 Setting up listeners...');
-      console.log('🔍 Customer Health Viz found:', !!customerHealthViz);
+      // If not found by ID, try shadow root or querySelector
+      if (!customerHealthViz) {
+        const tableauVizElements = document.querySelectorAll('tableau-viz');
+        if (tableauVizElements.length > 0) {
+          // Find the one with matching id attribute
+          customerHealthViz = Array.from(tableauVizElements).find(
+            viz => viz.id === 'customerHealthViz' || viz.getAttribute('id') === 'customerHealthViz'
+          ) || tableauVizElements[0];
+        }
+      }
 
       if (customerHealthViz) {
-        console.log('✅ Adding firstinteractive listener to Customer Health');
-        customerHealthViz.addEventListener('firstinteractive', (event) => {
-          console.log('🎉 Customer Health is now interactive!');
-          // Add mark selection listener INSIDE firstinteractive
+        const addMarkSelectionListener = () => {
           customerHealthViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('✅ Mark selection listener attached to Customer Health');
-        });
-      } else {
-        console.log('❌ Customer Health Viz NOT FOUND!');
+        };
+
+        // Check if already interactive
+        const isAlreadyInteractive = customerHealthViz.getIsInteractive?.() || customerHealthViz.isInteractive || false;
+
+        if (isAlreadyInteractive) {
+          addMarkSelectionListener();
+        } else {
+          customerHealthViz.addEventListener('firstinteractive', () => {
+            addMarkSelectionListener();
+          });
+        }
       }
 
       return { customerHealthViz };
@@ -172,17 +169,23 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
                   hideTabs={true}
                   toolbar='hidden'
-                  className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px]'
-                  width='100%'
-                  height='100%'
+
                   demo="servicedesk"
+                  className='
+                  min-w-[300px] min-h-[1430px]
+                  sm:min-w-[510px] sm:min-h-[1430px]
+                   md:min-w-[600px] md:min-h-[950px]
+                    lg:min-w-[750px] lg:min-h-[950px]
+                    xl:min-w-[750px] xl:min-h-[950px]
+                    2xl:min-w-[750px] 2xl:min-h-[950px]
+                  '
                   layouts = {{
-                    'xs': { 'device': 'phone' },
-                    'sm': { 'device': 'default' },
-                    'md': { 'device': 'default' },
-                    'lg': { 'device': 'default' },
-                    'xl': { 'device': 'default' },
-                    'xl2': { 'device': 'default' },
+                    'xs': { 'device': 'desktop' },
+                    'sm': { 'device': 'desktop' },
+                    'md': { 'device': 'desktop' },
+                    'lg': { 'device': 'desktop' },
+                    'xl': { 'device': 'desktop' },
+                    'xl2': { 'device': 'desktop' },
                   }}
                 />
               </div>

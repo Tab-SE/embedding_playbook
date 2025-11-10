@@ -187,42 +187,5 @@ export const Users = [
         uaf: {"Region": ["Central","East"]}
       },
     ]
-  },
-  {
-    demo: 'telarus',
-    roles: {
-      0: { title: 'Advisor', description: 'Access to product catalogs and vendor selection'},
-      1: { title: 'Senior Advisor', description: 'Advanced analytics and supplier insights'},
-      2: { title: 'Partner Manager', description: 'Full access to cross-sell and upsell opportunities'},
-    },
-    users: [
-      {
-        id: 'a',
-        name: "Alex Johnson",
-        email: "ajohnson@telarus.com",
-        picture: "/img/users/justin_chen.png",
-        role: 0,
-        vector_store: 'telarus_ajohnson',
-        uaf: {}
-      },
-      {
-        id: 'b',
-        name: "Patricia Smith",
-        email: "psmith@telarus.com",
-        picture: "/img/users/debi_patel.png",
-        role: 1,
-        vector_store: 'telarus_psmith',
-        uaf: {}
-      },
-      {
-        id: 'c',
-        name: "Robert Davis",
-        email: "rdavis@telarus.com",
-        picture: "/img/users/matthew_wells.png",
-        role: 2,
-        vector_store: 'telarus_rdavis',
-        uaf: {}
-      },
-    ]
   }
 ]
