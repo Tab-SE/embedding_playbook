@@ -4,7 +4,8 @@ import {
   ShoppingCart,
   Users2,
   BrainCircuit,
-  ChartNoAxesCombined
+  ChartNoAxesCombined,
+  Languages
 } from "lucide-react";
 
 export const settings = {
@@ -41,6 +42,13 @@ export const settings = {
       path: '/agent',
       min_role: 1,
       description: 'a fully tooled agent ready to assist you'
+    },
+    {
+      name: 'Translation',
+      icon: <Languages className="h-5 w-5"/>,
+      path: '/translation',
+      min_role: 1,
+      description: 'view dashboard in different languages using parameter controls'
     },
   ],
 }

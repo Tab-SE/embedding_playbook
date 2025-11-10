@@ -10,7 +10,8 @@ export interface User {
   picture: string;
   role?: number;
   vector_store: string;
-  uaf: Record<string, string[]>;
+  uaf: Record<string, string[] | undefined>;
+  salesforceUsername?: string;
 }
 
 export interface Demo {
@@ -53,7 +54,8 @@ export const Users = [
         picture: "/img/users/sofia_lopez.png",
         role: 0,
         vector_store: 'superstore_slopez',
-        uaf: {"Region": ["West"]}
+        uaf: {"Region": ["West"]},
+        salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
       },
       {
         id: 'b',
@@ -90,7 +92,7 @@ export const Users = [
         picture: "/img/users/rachel_morris.png",
         role: 0,
         vector_store: 'makana_rmorris',
-        uaf: {}
+        uaf: {"Region": ["Central","East"]}
       },
       {
         id: 'b',
@@ -99,7 +101,7 @@ export const Users = [
         picture: "/img/users/debi_patel.png",
         role: 1,
         vector_store: 'makana_dpatel',
-        uaf: {}
+        uaf: {"Region": ["South"]}
       },
       {
         id: 'c',
@@ -108,7 +110,7 @@ export const Users = [
         picture: "/img/users/matthew_wells.png",
         role: 2,
         vector_store: 'makana_mwells',
-        uaf: {}
+        uaf: {"Region": ["West"]}
       },
     ]
   },
@@ -146,6 +148,43 @@ export const Users = [
         role: 2,
         vector_store: 'cumulus_nmorris',
         uaf: {}
+      },
+    ]
+  },
+  {
+    demo: 'servicedesk',
+    roles: {
+      0: { title: 'Support Specialist', description: 'Manages customer tickets, monitors response times, and ensures service quality'},
+      1: { title: 'Service Manager', description: 'Oversees team performance, customer satisfaction, and service delivery'},
+      2: { title: 'Director of Customer Success', description: 'Strategic oversight, renewals, and premium service offerings'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Sarah Johnson",
+        email: "sjohnson@servicedesk.com",
+        picture: "/img/users/sofia_lopez.png",
+        role: 0,
+        vector_store: 'superstore_sjohnson',
+        uaf: {"Department": ["Support"], "Region": ["Central"]}
+      },
+      {
+        id: 'b',
+        name: "Mike Chen",
+        email: "mchen@servicedesk.com",
+        picture: "/img/users/justin_chen.png",
+        role: 1,
+        vector_store: 'superstore_mchen',
+        uaf: {"Department": ["Service Management"], "Region": ["West"]}
+      },
+      {
+        id: 'c',
+        name: "Lisa Martinez",
+        email: "lmartinez@servicedesk.com",
+        picture: "/img/users/rachel_morris.png",
+        role: 2,
+        vector_store: 'superstore_lmartinez',
+        uaf: {"Region": ["Central","East"]}
       },
     ]
   }

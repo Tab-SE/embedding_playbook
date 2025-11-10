@@ -6,5 +6,6 @@ export interface CustomSession extends Session {
     email?: string | null;
     image?: string | null;
     demo?: string;
+    salesforceUsername?: string;
   }
 }

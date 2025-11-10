@@ -3,7 +3,9 @@ import {
   Package,
   ShoppingCart,
   Users2,
-  BrainCircuit
+  BrainCircuit,
+  Languages,
+  AppWindow
 } from "lucide-react";
 
 export const settings = {
@@ -54,6 +56,20 @@ export const settings = {
       path: '/customers',
       min_role: 3,
       description: 'improve customer retention rates and identify critical business partnerships'
+    },
+    {
+      name: 'Translation',
+      icon: <Languages className="h-5 w-5"/>,
+      path: '/translation',
+      min_role: 1,
+      description: 'view dashboard in different languages using parameter controls'
+    },
+    {
+      name: 'tabNext Embed',
+      icon: <AppWindow className="h-5 w-5"/> ,
+      path: '/tabnext',
+      min_role: 1,
+      description: 'experimental Tableau Next embedding'
     },
   ],
 }

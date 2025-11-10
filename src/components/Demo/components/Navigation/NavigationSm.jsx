@@ -20,6 +20,7 @@ export const NavigationSm = (props) => {
     crumbs,
     app_name,
     app_logo,
+    header_logo,
     ai_chat,
     ai_avatar,
     sections,
@@ -39,10 +40,14 @@ export const NavigationSm = (props) => {
             href='/demos'
             className="flex items-center gap-4 px-2.5 hover:text-foreground"
           >
-            <Avatar className="h-6 w-6 transition-all group-hover:scale-110 bg-logoBackground">
-              <AvatarImage src={app_logo} alt="demo brand logo" />
-              <AvatarFallback>APP</AvatarFallback>
-            </Avatar>
+            {header_logo ? (
+              <img src={header_logo} alt={app_name} className="h-6 object-contain" />
+            ) : (
+              <Avatar className="h-6 w-6 transition-all group-hover:scale-110 bg-logoBackground">
+                <AvatarImage src={app_logo} alt="demo brand logo" />
+                <AvatarFallback>APP</AvatarFallback>
+              </Avatar>
+            )}
             <span>{app_name}</span>
           </Link>
           <Separator className="my-4" />

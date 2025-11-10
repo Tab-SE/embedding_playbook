@@ -19,7 +19,7 @@ export const jwtSign = (sub, jwt_options, scopes, claims) => {
         };
 
         // sign the JWT with provided header, payload and secret
-        const token = jwt.sign(payload, jwt_options.jwt_secret, { 
+        const token = jwt.sign(payload, jwt_options.jwt_secret, {
             header: header,
             expiresIn: '9m', // https://github.com/auth0/node-jsonwebtoken?tab=readme-ov-file#token-expiration-exp-claim
         });

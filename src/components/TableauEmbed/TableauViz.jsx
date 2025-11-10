@@ -18,10 +18,12 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
     toolbar,
     isPublic,
     customToolbar,
-    layouts
+    layouts,
+    id
   } = props;
-  // creates a unique identifier for the embed
-  const id = `id-${useId()}`;
+  // creates a unique identifier for the embed if not provided
+  const generatedId = useId();
+  const vizId = id || `id-${generatedId}`;
   // to be used if parent did not forward a ref
   const localRef = useRef(null);
   // Use the forwarded ref if provided, otherwise use the local ref
@@ -61,7 +63,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
         {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
         <tableau-viz
           ref={innerRef}
-          id="tableauViz"
+          id={vizId}
           src={src}
           token={!isPublic ? jwt : null}
           height={`${getLayoutProps(layoutSpec, 'xs').height}px`}
@@ -70,7 +72,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
-          data-viz={id}
+          data-viz={vizId}
         />
       </XSLayout>
 
@@ -87,7 +89,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
-          data-viz={id}
+          data-viz={vizId}
         />
       </SMLayout>
 
@@ -104,7 +106,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
-          data-viz={id}
+          data-viz={vizId}
         />
       </MDLayout>
 
@@ -121,7 +123,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
-          data-viz={id}
+          data-viz={vizId}
         />
       </LGLayout>
 
@@ -138,7 +140,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
           class='flex justify-center items-center rounded'
-          data-viz={id}
+          data-viz={vizId}
         />
       </XLLayout>
 
