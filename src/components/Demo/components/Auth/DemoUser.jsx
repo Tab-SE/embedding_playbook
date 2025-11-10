@@ -17,12 +17,14 @@ export const DemoUser = (props) => {
 
   const { title, description } = getRoleProperties(role);
 
-  const authenticateUser = () => {
+  const authenticateUser = async () => {
     // sign the user in with the selected options
-    signIn('demo-user', { redirect: false, ID: id, demo: demo });
+    const result = await signIn('demo-user', { redirect: false, ID: id, demo: demo });
     // redirect to local demo /auth page using the base_path in config file
-
-    router.push(base_path);
+    // Only redirect if signIn was successful
+    if (result && !result.error) {
+      router.push(base_path);
+    }
   }
 
   return (
