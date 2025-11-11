@@ -17,9 +17,11 @@ Complete guide for embedding Tableau Next dashboards in a Next.js application wi
 Tableau Next is Salesforce's embedded analytics solution that allows you to embed Tableau dashboards directly in your web application. This guide covers the complete setup process, including multiple authentication methods.
 
 **Authentication Flow Priority:**
-1. **Client Credentials Flow** (simplest, no user-specific auth)
-2. **JWT Bearer Flow** (dynamic, no redirects, requires certificate)
-3. **PKCE OAuth Flow** (most secure, requires user redirect)
+1. **JWT Bearer Flow** (primary - dynamic, no redirects, requires certificate) ⭐ **Recommended for SSO**
+2. **PKCE OAuth Flow** (webserver flow - most secure, requires user redirect)
+3. **Client Credentials Flow** (simplest, no user-specific auth - limited use cases)
+
+**Note:** The official documentation recommends **webserver flow** (OAuth Authorization Code with PKCE). This implementation uses **JWT Bearer Flow** as the primary method for seamless SSO without redirects, with PKCE OAuth as a fallback. Both flows generate the required frontdoor URL for the SDK.
 
 ## Prerequisites
 
@@ -143,8 +145,8 @@ This is the primary authentication flow implemented in this application. It prov
    - Org URL as audience (`aud` claim)
    - Private key for signing (RS256 algorithm)
 5. **JWT is exchanged** for Salesforce access token
-6. **Frontdoor URL is generated** (preferred credential for Tableau Next SDK)
-7. **SDK initializes** with the frontdoor URL
+6. **Frontdoor URL is generated** (REQUIRED credential for Tableau Next SDK)
+7. **SDK initializes** with the frontdoor URL as `authCredential`
 8. **Dashboard renders** automatically in the container
 
 **Complete SSO Flow Diagram:**
@@ -195,7 +197,7 @@ This is the primary authentication flow implemented in this application. It prov
          ▼
 ┌─────────────────────────────┐
 │ Generate Frontdoor URL      │
-│ (or use access token)       │
+│ (REQUIRED for SDK)          │
 └────────┬─────────────────────┘
          │
          ▼
@@ -246,7 +248,7 @@ The SSO flow is implemented in `src/app/demo/superstore/tabnext/TabNext.jsx`:
 2. **JWT authentication** (`handleJWTBearerAuth`):
    - Calls `/api/tabnext/jwt-auth` endpoint
    - Passes Salesforce username from session (`session.user.salesforceUsername` or `session.user.email`)
-   - Receives `authCredential` (frontdoor URL or access token)
+   - Receives `authCredential` (frontdoor URL - REQUIRED for SDK)
    - Caches credential in `sessionStorage` for the browser session
 
 3. **SDK initialization** (`initializeAndRender`):
@@ -285,21 +287,24 @@ The SSO flow is implemented in `src/app/demo/superstore/tabnext/TabNext.jsx`:
 - `SALESFORCE_CLIENT_SECRET`
 - `SALESFORCE_ORG_URL`
 
-### PKCE OAuth Flow
+### PKCE OAuth Flow (Webserver Flow)
 
-**Use case:** Most secure flow, requires user authorization.
+**Use case:** Most secure flow, requires user authorization. This is the **webserver flow** (OAuth 2.0 Authorization Code flow with PKCE) recommended in the official documentation.
 
 **How it works:**
 - User is redirected to Salesforce login
 - User authorizes the application
 - Authorization code is exchanged for access token
 - Uses PKCE (Proof Key for Code Exchange) for security
+- Frontdoor URL is generated from access token
 
 **Requirements:**
 - `SALESFORCE_CLIENT_ID`
 - `SALESFORCE_CLIENT_SECRET`
 - `SALESFORCE_REDIRECT_URI` (must match ECA callback URL exactly)
 - User must interact with Salesforce login page
+
+**Note:** This implementation uses JWT Bearer Flow as the primary method (no redirects), with PKCE OAuth as a fallback. Both flows generate the required frontdoor URL for the SDK.
 
 ## Environment Variables
 
@@ -423,7 +428,7 @@ export async function POST(req: NextRequest) {
     const access_token = tokenData.access_token;
     const instance_url = tokenData.instance_url;
 
-    // Generate frontdoor URL (preferred for SDK)
+    // Generate frontdoor URL (REQUIRED for SDK)
     const cleanInstanceUrl = instance_url.replace(/\/+$/, '');
     let frontdoor_url: string | null = null;
 
@@ -451,7 +456,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({
-      authCredential: frontdoor_url || access_token,
+      authCredential: frontdoor_url || access_token, // Frontdoor URL is REQUIRED for SDK, access token is fallback only
       access_token: access_token,
       instance_url: instance_url,
       frontdoor_url: frontdoor_url,
@@ -519,7 +524,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({
-      authCredential: frontdoor_url || access_token,
+      authCredential: frontdoor_url || access_token, // Frontdoor URL is REQUIRED for SDK, access token is fallback only
       access_token: access_token,
       instance_url: instance_url,
       frontdoor_url: frontdoor_url,
@@ -847,9 +852,20 @@ export default Page;
 
 ## Additional Resources
 
-- [Salesforce External Client Apps Documentation](https://help.salesforce.com/s/articleView?id=sf.connected_app_overview.htm)
-- [Tableau Next SDK Documentation](https://developer.salesforce.com/docs/atlas.en-us.tableau_next.meta/tableau_next/)
-- [JWT Bearer Flow Documentation](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm)
+### Official Documentation Links
+
+- **[Tableau Next Embedding SDK (npm)](https://www.npmjs.com/package/@salesforce/analytics-embedding-sdk)** - Official SDK package
+- **[Get Started with Tableau Next Embedding SDK (Beta)](https://developer.salesforce.com/docs/analytics/sdk/guide/sdk-access-token.html)** - SDK Getting Started Guide
+- **[Frontdoor URL Generation Example](https://developer.salesforce.com/docs/analytics/sdk/guide/sdk-access-token.html)** - How to generate frontdoor URLs
+- **[External Client Apps Documentation](https://help.salesforce.com/s/articleView?language=en_US&id=xcloud.external_client_apps.htm&type=5)** - ECA setup guide
+- **[JWT Bearer Flow Documentation](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm)** - JWT authentication flow
+
+### SDK API References
+
+- **[AnalyticsDashboard API](https://developer.salesforce.com/docs/analytics/sdk/references/sdk-js/AnalyticsDashboard.html)** - Dashboard embedding API
+- **[AnalyticsVisualization API](https://developer.salesforce.com/docs/analytics/sdk/references/sdk-js/AnalyticsVisualization.html)** - Visualization embedding API
+- **[AnalyticsMetric API](https://developer.salesforce.com/docs/analytics/sdk/references/sdk-js/AnalyticsMetric.html)** - Metric embedding API
+- **[AnalyticsFilter API](https://developer.salesforce.com/docs/analytics/sdk/references/sdk-js/AnalyticsFilter.html)** - Filter usage reference
 
 ## Security Best Practices
 
