@@ -105,19 +105,7 @@ JWT Bearer Flow requires users to have a custom permission set:
 5. Select **"Lightning Out"** as the IFrame type
 6. Save
 
-### Step 6: Disable Clickjack Protection (Required for Embedding)
-
-**⚠️ This requires blacktab access (Salesforce internal tool)**
-
-1. Open **blacktab** for your org
-2. Navigate to: **Session Settings → Clickjack Protection**
-3. Find field: **"Enable clickjack protection for non-Setup Salesforce pages"**
-4. Set value to: **FALSE** or **DISABLED**
-5. Save and wait 2-3 minutes for changes to propagate
-
-**Note:** If you don't have blacktab access, contact your Salesforce admin. This setting is required for iframe embedding to work.
-
-### Step 7: Get Dashboard ID/API Name
+### Step 6: Get Dashboard ID/API Name
 
 1. Navigate to your Tableau Next dashboard in Salesforce
 2. Check the URL:
@@ -775,9 +763,9 @@ export default Page;
 **Error:** `Framing 'https://your-org.my.salesforce.com/' violates the following Content Security Policy directive: "frame-ancestors 'none'"`
 
 **Solution:**
-- Disable Clickjack Protection in blacktab (see Step 6 in Salesforce Setup)
-- This requires Salesforce internal tool access
-- Contact your Salesforce admin if you don't have access
+- Configure Trusted Domains for Inline Frames (see Step 5 in Salesforce Setup)
+- Add your domain (e.g., `localhost:3000`) with type "Lightning Out"
+- Contact your Salesforce admin if you need assistance with these settings
 
 #### 2. "app_not_found" Error (JWT)
 
@@ -815,7 +803,7 @@ export default Page;
 - Dashboard ID is incorrect (check the dashboard URL in Salesforce)
 - User doesn't have access to the dashboard
 - Container dimensions not set (SDK requires explicit pixel values)
-- CSP/Clickjack Protection blocking the iframe
+- CSP/Framing policy blocking the iframe
 
 **Debug steps:**
 - Check browser console for errors
