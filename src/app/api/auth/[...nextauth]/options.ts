@@ -12,6 +12,7 @@ interface DemoUser extends User {
   vector_store?: any;
   uaf?: any;
   tableau?: any;
+  tableau_eacanada?: any;
   rest_token?: string;
   salesforceUsername?: string;
 }
@@ -122,7 +123,63 @@ export const authOptions: AuthOptions = {
               };
             }
 
-            return user.tableau ? user : null;
+            // Also authenticate to EACanada server if credentials are available
+            const eacanada_jwt_client_id = process.env.EACANADA_JWT_CLIENT_ID;
+            const eacanada_embed_secret = process.env.EACANADA_EMBED_JWT_SECRET;
+            const eacanada_embed_secret_id = process.env.EACANADA_EMBED_JWT_SECRET_ID;
+            const eacanada_rest_secret = process.env.EACANADA_REST_JWT_SECRET;
+            const eacanada_rest_secret_id = process.env.EACANADA_REST_JWT_SECRET_ID;
+
+            if (eacanada_jwt_client_id && eacanada_embed_secret && eacanada_rest_secret) {
+              const eacanada_embed_options = {
+                jwt_secret: eacanada_embed_secret,
+                jwt_secret_id: eacanada_embed_secret_id,
+                jwt_client_id: eacanada_jwt_client_id
+              };
+              const eacanada_rest_options = {
+                jwt_secret: eacanada_rest_secret,
+                jwt_secret_id: eacanada_rest_secret_id,
+                jwt_client_id: eacanada_jwt_client_id
+              };
+
+              const eacanada_session = new SessionModel(user.name);
+              try {
+                await eacanada_session.jwtEACanada(user.email, eacanada_embed_options, embed_scopes, eacanada_rest_options, rest_scopes, user.uaf);
+
+                if (eacanada_session.authorized) {
+                  const {
+                    user_id: eacanada_user_id,
+                    embed_token: eacanada_embed_token,
+                    rest_token: eacanada_rest_token,
+                    rest_key: eacanada_rest_key,
+                    site_id: eacanada_site_id,
+                    site: eacanada_site,
+                    created: eacanada_created,
+                    expires: eacanada_expires
+                  } = eacanada_session;
+
+                  // Use the same username as the regular tableau session, or fallback to user.name
+                  const username = user.tableau?.username || user.name;
+
+                  user.tableau_eacanada = {
+                    username: username,
+                    user_id: eacanada_user_id,
+                    embed_token: eacanada_embed_token,
+                    rest_token: eacanada_rest_token,
+                    rest_key: eacanada_rest_key,
+                    site_id: eacanada_site_id,
+                    site: eacanada_site,
+                    created: eacanada_created,
+                    expires: eacanada_expires
+                  };
+                }
+              } catch (error) {
+                // Continue without eacanada auth if it fails
+              }
+            }
+
+            // Return user if either tableau or eacanada authentication succeeded
+            return (user.tableau || user.tableau_eacanada) ? user : null;
           } else {
             return null;
           }
@@ -161,6 +218,7 @@ export const authOptions: AuthOptions = {
         token.vectors = vectors;
         token.uaf = user.uaf || {};
         token.tableau = user.tableau;
+        token.tableau_eacanada = user.tableau_eacanada;
         token.rest_token =  user.rest_token;
         // Add Salesforce username for TabNext JWT Bearer Flow
         token.salesforceUsername = user.salesforceUsername;
@@ -172,6 +230,8 @@ export const authOptions: AuthOptions = {
       if (customSession.user) {
         customSession.user.demo = token.demo as string;
         customSession.user.salesforceUsername = token.salesforceUsername as string;
+        // tableau_eacanada is stored in the JWT token and accessed via getToken() in API routes
+        // No need to copy to session since API routes read directly from JWT
       }
       return session;
     }

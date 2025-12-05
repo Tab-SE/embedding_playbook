@@ -43,9 +43,23 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       iframe.style.margin = "auto";
       iframe.style.position = "relative";
 
+      // Log dimensions
+      const logDimensions = () => {
+        const rect = viz.getBoundingClientRect();
+        const height = viz.getAttribute('height');
+        const width = viz.getAttribute('width');
+        const iframeRect = iframe?.getBoundingClientRect();
+        console.log('TableauViz size:', width, 'x', height, '| rendered:', rect.width, 'x', rect.height, '| iframe:', iframeRect?.width, 'x', iframeRect?.height);
+      };
+      logDimensions();
+      viz.addEventListener('firstinteractive', logDimensions);
+
       // handles all viz event listeners and clears them
       const eventListeners = handleVizEventListeners(viz, setInteractive);
-      return eventListeners;
+      return () => {
+        eventListeners();
+        viz.removeEventListener('firstinteractive', logDimensions);
+      };
     }
   },[innerRef, setInteractive])
 
