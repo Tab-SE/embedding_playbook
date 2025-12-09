@@ -10,6 +10,7 @@ export const description = "A player administration dashboard with date range fi
 export const PlayStudio = () => {
   const [dateRange, setDateRange] = useState('LTD'); // '7', '30', '90', 'LTD'
   const [vizReady, setVizReady] = useState(false);
+  const [filterApplied, setFilterApplied] = useState(false); // Track if filter has been applied
   const [customerSearch, setCustomerSearch] = useState(''); // Customer name search input
   const [appliedCustomerFilter, setAppliedCustomerFilter] = useState(''); // The actual filter value to apply
   const [dashboardData, setDashboardData] = useState({
@@ -26,8 +27,17 @@ export const PlayStudio = () => {
     myVip: 0
   });
 
+  // Log whenever dashboardData changes
+  useEffect(() => {
+    console.log('🔄 dashboardData state changed:', dashboardData);
+    console.log('🔄 spendInPeriod value:', dashboardData.spendInPeriod);
+  }, [dashboardData]);
+
   // Apply date filter when dateRange changes - following the same pattern as Home.jsx
   useEffect(() => {
+    // Reset filterApplied when dateRange changes so we can track when new filter is applied
+    setFilterApplied(false);
+
     const applyFilter = async () => {
       const fieldName = 'Order Date';
 
@@ -121,19 +131,28 @@ export const PlayStudio = () => {
               await activeSheet.applyFilterAsync(fieldName, filterValue, 'replace');
             }
           }
+
+          // Mark filter as applied
+          setFilterApplied(true);
+          console.log('✅ Date filter applied successfully');
         } catch (error) {
-          // Filter application failed silently
+          console.error('❌ Error applying date filter:', error);
         }
       };
 
       await applyFilterToViz();
     };
 
-    applyFilter();
+    if (vizReady) {
+      applyFilter();
+    }
   }, [dateRange, vizReady]);
 
   // Apply customer name filter when appliedCustomerFilter changes - following the same pattern as date filter
   useEffect(() => {
+    // Reset filterApplied when customer filter changes
+    setFilterApplied(false);
+
     const applyFilter = async () => {
       const fieldName = 'Customer Name';
       const searchValue = appliedCustomerFilter.trim();
@@ -198,9 +217,10 @@ export const PlayStudio = () => {
               await activeSheet.applyFilterAsync(fieldName, filterValue, 'replace');
             }
           }
-          console.log('  - ✅ Filter applied successfully');
+          console.log('  - ✅ Customer filter applied successfully');
+          setFilterApplied(true);
         } catch (error) {
-          console.error('  - ❌ Error applying filter:', error);
+          console.error('  - ❌ Error applying customer filter:', error);
           console.error('  - Error details:', error.message, error.stack);
         }
       };
@@ -208,12 +228,19 @@ export const PlayStudio = () => {
       await applyFilterToViz();
     };
 
-    applyFilter();
+    if (vizReady) {
+      applyFilter();
+    }
   }, [appliedCustomerFilter, vizReady]);
 
   // Function to get data from the dashboard
   const getDataFromViz = useCallback(async (viz) => {
+    console.log('🔍 getDataFromViz called');
+    console.log('  - viz exists:', !!viz);
+    console.log('  - viz.workbook exists:', !!(viz && viz.workbook));
+
     if (!viz || !viz.workbook) {
+      console.log('⚠️ Viz or workbook not ready, returning');
       return;
     }
 
@@ -267,9 +294,28 @@ export const PlayStudio = () => {
                   if (orderDateCol) {
                     const dateIndex = orderDateCol.index;
                     const dateValue = row[dateIndex];
-                    if (dateValue && dateValue.value) {
-                      const orderDate = new Date(dateValue.value);
-                      if (!lastOrderDate || orderDate > lastOrderDate) {
+                    if (dateValue) {
+                      // Try to parse the date - check if it's already a Date object or if we need to parse it
+                      let orderDate = null;
+
+                      // If _nativeValue exists and is a Date object, use it
+                      if (dateValue._nativeValue instanceof Date) {
+                        orderDate = dateValue._nativeValue;
+                      }
+                      // If _formattedValue exists, try to parse it as a date string
+                      else if (dateValue._formattedValue && typeof dateValue._formattedValue === 'string') {
+                        orderDate = new Date(dateValue._formattedValue);
+                      }
+                      // If value is a number that looks like a year (4 digits), skip it - it's not a full date
+                      else if (typeof dateValue.value === 'number' && dateValue.value >= 1900 && dateValue.value <= 2100) {
+                        // Skip this row for date tracking - can't use continue in forEach, so we just don't set orderDate
+                      }
+                      // Otherwise try parsing the value directly
+                      else if (dateValue.value) {
+                        orderDate = new Date(dateValue.value);
+                      }
+
+                      if (orderDate && !isNaN(orderDate.getTime()) && (!lastOrderDate || orderDate > lastOrderDate)) {
                         lastOrderDate = orderDate;
                       }
                     }
@@ -296,14 +342,22 @@ export const PlayStudio = () => {
                 lastSessionFormatted = `${month}/${day}/${year}`;
               }
 
-              setDashboardData(prev => ({
-                ...prev,
-                customerName: customerName,
-                spendInPeriod: totalSales,
-                ltdSpend: ltdSales,
-                lastSession: lastSessionFormatted,
-                chipBalance: Math.floor(ltdSales * 1000000) // Convert to chip balance (example calculation)
-              }));
+              setDashboardData(prev => {
+                const newData = {
+                  ...prev,
+                  customerName: customerName,
+                  spendInPeriod: totalSales,
+                  ltdSpend: ltdSales,
+                  lastSession: lastSessionFormatted,
+                  chipBalance: Math.floor(ltdSales * 1000000) // Convert to chip balance (example calculation)
+                };
+
+                console.log('📊 Dashboard Data Updated:', newData);
+                console.log('📊 spendInPeriod:', totalSales);
+                console.log('📊 ltdSpend:', ltdSales);
+
+                return newData;
+              });
             }
           }
         } catch (error) {
@@ -315,7 +369,7 @@ export const PlayStudio = () => {
     }
   }, []);
 
-  // Setup viz ready listener and fetch data
+  // Setup viz ready listener - WAIT for dashboard to be fully interactive
   useEffect(() => {
     const setupVizListener = () => {
       let viz = document.getElementById('playstudioViz');
@@ -329,19 +383,14 @@ export const PlayStudio = () => {
 
       if (viz) {
         const handleFirstInteractive = async () => {
+          console.log('🎉 Dashboard is now interactive!');
           setVizReady(true);
-          // Wait a bit for the viz to be fully ready, then fetch data
-          setTimeout(() => {
-            getDataFromViz(viz);
-          }, 1500);
+          // Don't fetch data here - wait for filters to be applied first
         };
 
         if (viz.getIsInteractive?.() || viz.isInteractive) {
+          console.log('✅ Dashboard is already interactive');
           setVizReady(true);
-          // Apply filter immediately and fetch data
-          setTimeout(() => {
-            getDataFromViz(viz);
-          }, 1500);
         } else {
           viz.addEventListener('firstinteractive', handleFirstInteractive);
         }
@@ -356,11 +405,12 @@ export const PlayStudio = () => {
 
     const timer = setTimeout(setupVizListener, 1000);
     return () => clearTimeout(timer);
-  }, [getDataFromViz]);
+  }, []);
 
-  // Refetch data when date range or customer filter changes
+  // Fetch data ONLY after viz is ready AND filters are applied
   useEffect(() => {
-    if (vizReady) {
+    if (vizReady && filterApplied) {
+      console.log('📥 Fetching data - Viz ready and filter applied');
       const timer = setTimeout(() => {
         let viz = document.getElementById('playstudioViz');
         if (!viz) {
@@ -369,13 +419,22 @@ export const PlayStudio = () => {
             viz = tableauVizElements[0];
           }
         }
-        if (viz) {
+        if (viz && viz.workbook) {
+          console.log('📊 Calling getDataFromViz...');
           getDataFromViz(viz);
+        } else {
+          console.log('⚠️ Viz not ready for data fetch, retrying...');
+          setTimeout(() => {
+            const retryViz = document.getElementById('playstudioViz') || document.querySelectorAll('tableau-viz')[0];
+            if (retryViz && retryViz.workbook) {
+              getDataFromViz(retryViz);
+            }
+          }, 1000);
         }
-      }, 1500); // Wait for filter to apply
+      }, 2000); // Wait 2 seconds after filter is applied to ensure data is ready
       return () => clearTimeout(timer);
     }
-  }, [dateRange, appliedCustomerFilter, vizReady, getDataFromViz]);
+  }, [vizReady, filterApplied, dateRange, appliedCustomerFilter, getDataFromViz]);
 
   const getDateRangeLabel = (range) => {
     switch (range) {
