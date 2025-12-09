@@ -14,14 +14,12 @@ Complete guide for embedding Tableau Next dashboards in a Next.js application wi
 
 ## Overview
 
-Tableau Next is Salesforce's embedded analytics solution that allows you to embed Tableau dashboards directly in your web application. This guide covers the complete setup process, including multiple authentication methods.
+Tableau Next is Salesforce's embedded analytics solution that allows you to embed Tableau dashboards directly in your web application. This guide covers the complete setup process using JWT Bearer Flow for seamless single sign-on (SSO).
 
-**Authentication Flow Priority:**
-1. **JWT Bearer Flow** (primary - dynamic, no redirects, requires certificate) ⭐ **Recommended for SSO**
-2. **PKCE OAuth Flow** (webserver flow - most secure, requires user redirect)
-3. **Client Credentials Flow** (simplest, no user-specific auth - limited use cases)
+**Authentication Method:**
+- **JWT Bearer Flow** - Dynamic authentication without redirects, perfect for SSO ⭐ **Recommended**
 
-**Note:** The official documentation recommends **webserver flow** (OAuth Authorization Code with PKCE). This implementation uses **JWT Bearer Flow** as the primary method for seamless SSO without redirects, with PKCE OAuth as a fallback. Both flows generate the required frontdoor URL for the SDK.
+**Note:** This implementation uses **JWT Bearer Flow** as the single authentication method for seamless SSO without redirects. The flow generates the required frontdoor URL for the SDK automatically.
 
 ## Prerequisites
 
@@ -230,16 +228,17 @@ The SSO flow is implemented in `src/app/demo/superstore/tabnext/TabNext.jsx`:
    - Triggers when `sessionStatus === 'authenticated'`
    - Prevents duplicate authentication attempts using `useRef` flag
    - Only runs when status is 'idle' (not already authenticating/initializing)
-   - Checks for OAuth callback codes to avoid conflicts
-   - Clears cached credentials to force fresh authentication
+   - Automatically calls JWT Bearer Flow if `salesforceUsername` is available
 
 2. **JWT authentication** (`handleJWTBearerAuth`):
    - Calls `/api/tabnext/jwt-auth` endpoint
    - Passes Salesforce username from session (`session.user.salesforceUsername` or `session.user.email`)
-   - Receives `authCredential` (frontdoor URL - REQUIRED for SDK)
-   - Caches credential in `sessionStorage` for the browser session
+   - Receives `authCredential` (frontdoor URL - REQUIRED for SDK) and `instance_url`
+   - Uses `instance_url` to determine the correct org URL for the SDK
 
 3. **SDK initialization** (`initializeAndRender`):
+   - Uses `instance_url` from OAuth token exchange if available, otherwise falls back to configured `orgUrl`
+   - Converts `.my.salesforce.com` to `.lightning.force.com` for SDK compatibility
    - Initializes `@salesforce/analytics-embedding-sdk` with `authCredential` and `orgUrl`
    - Sets up container with explicit pixel dimensions (required by SDK)
    - Creates `AnalyticsDashboard` component with dashboard ID/API name
@@ -261,38 +260,6 @@ The SSO flow is implemented in `src/app/demo/superstore/tabnext/TabNext.jsx`:
 - Automatic dashboard loading
 - Secure server-side token generation
 
-### Client Credentials Flow
-
-**Use case:** Simplest flow, no user-specific authentication needed.
-
-**How it works:**
-- Uses `client_id` and `client_secret` to get an access token
-- No user interaction required
-- Good for service accounts or public dashboards
-
-**Requirements:**
-- `SALESFORCE_CLIENT_ID`
-- `SALESFORCE_CLIENT_SECRET`
-- `SALESFORCE_ORG_URL`
-
-### PKCE OAuth Flow (Webserver Flow)
-
-**Use case:** Most secure flow, requires user authorization. This is the **webserver flow** (OAuth 2.0 Authorization Code flow with PKCE) recommended in the official documentation.
-
-**How it works:**
-- User is redirected to Salesforce login
-- User authorizes the application
-- Authorization code is exchanged for access token
-- Uses PKCE (Proof Key for Code Exchange) for security
-- Frontdoor URL is generated from access token
-
-**Requirements:**
-- `SALESFORCE_CLIENT_ID`
-- `SALESFORCE_CLIENT_SECRET`
-- `SALESFORCE_REDIRECT_URI` (must match ECA callback URL exactly)
-- User must interact with Salesforce login page
-
-**Note:** This implementation uses JWT Bearer Flow as the primary method (no redirects), with PKCE OAuth as a fallback. Both flows generate the required frontdoor URL for the SDK.
 
 ## Environment Variables
 
@@ -301,10 +268,9 @@ The SSO flow is implemented in `src/app/demo/superstore/tabnext/TabNext.jsx`:
 Add these to your `.env.development.local` (or `.env.local` for production):
 
 ```bash
-# Server-side (required for all flows)
+# Server-side (required for JWT Bearer Flow)
 SALESFORCE_ORG_URL=https://your-org.my.salesforce.com/
 SALESFORCE_CLIENT_ID=your_consumer_key_here
-SALESFORCE_CLIENT_SECRET=your_consumer_secret_here
 
 # For JWT Bearer Flow (choose one):
 # Option 1: File path (local development)
@@ -317,8 +283,6 @@ SALESFORCE_PRIVATE_KEY_PATH=./salesforce_private_key.pem
 
 # Client-side (NEXT_PUBLIC_* variables are exposed to browser)
 NEXT_PUBLIC_SALESFORCE_ORG_URL=https://your-org.my.salesforce.com/
-NEXT_PUBLIC_SALESFORCE_CLIENT_ID=your_consumer_key_here
-NEXT_PUBLIC_SALESFORCE_REDIRECT_URI=http://localhost:3000/getAccessToken
 NEXT_PUBLIC_TABNEXT_DASHBOARD_ID=YourDashboardAPIName
 ```
 
@@ -329,16 +293,13 @@ These have defaults and are not required:
 ```bash
 # Optional (defaults to https://login.salesforce.com)
 # SALESFORCE_LOGIN_URL=https://login.salesforce.com
-# NEXT_PUBLIC_SALESFORCE_LOGIN_URL=https://login.salesforce.com
 ```
 
 ### Where to Get Values
 
 - **SALESFORCE_ORG_URL**: Your Salesforce org URL (e.g., `https://your-org.my.salesforce.com/`)
 - **SALESFORCE_CLIENT_ID**: Consumer Key from your External Client App
-- **SALESFORCE_CLIENT_SECRET**: Consumer Secret from your External Client App
 - **SALESFORCE_PRIVATE_KEY**: Generated private key (see Step 2 above)
-- **NEXT_PUBLIC_SALESFORCE_REDIRECT_URI**: Must match exactly the Callback URL in your ECA
 - **NEXT_PUBLIC_TABNEXT_DASHBOARD_ID**: Dashboard API name from the dashboard URL
 
 ## Code Implementation
@@ -416,103 +377,37 @@ export async function POST(req: NextRequest) {
     const access_token = tokenData.access_token;
     const instance_url = tokenData.instance_url;
 
-    // Generate frontdoor URL (REQUIRED for SDK)
+    // Generate frontdoor URL using the singleaccess endpoint (as per Salesforce documentation)
+    // Reference: https://developer.salesforce.com/docs/analytics/sdk/guide/sdk-access-token.html
     const cleanInstanceUrl = instance_url.replace(/\/+$/, '');
+    const frontdoorServiceUrl = `${cleanInstanceUrl}/services/oauth2/singleaccess`;
     let frontdoor_url: string | null = null;
 
     try {
-      const fdResp = await fetch(`${cleanInstanceUrl}/services/oauth2/singleaccess`, {
+      const response = await fetch(frontdoorServiceUrl, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${access_token}`,
-          'Content-Type': 'application/json'
+          'accept': 'application/json',
+          'authorization': `Bearer ${access_token}`,
+          'content-type': 'application/x-www-form-urlencoded'
         },
+        body: new URLSearchParams() // Empty body is fine for singleaccess
       });
 
-      if (fdResp.ok) {
-        const fdData = await fdResp.json();
-        frontdoor_url = fdData.frontdoor_uri || fdData.url || null;
+      if (response.ok) {
+        const responseData = await response.json();
+        frontdoor_url = responseData.frontdoor_uri || null;
       }
     } catch (e) {
       // Continue without frontdoor URL
     }
 
-    // Construct frontdoor URL manually if needed
-    if (!frontdoor_url) {
-      const lightningUrl = cleanInstanceUrl.replace(/\.my\.salesforce\.com/, '.lightning.force.com');
-      frontdoor_url = `${lightningUrl}/secur/frontdoor.jsp?sid=${access_token}`;
-    }
+    // Use frontdoor URL as authCredential (preferred for SDK)
+    // If frontdoor URL generation fails, fallback to access token
+    const authCredential = frontdoor_url || access_token;
 
     return NextResponse.json({
-      authCredential: frontdoor_url || access_token, // Frontdoor URL is REQUIRED for SDK, access token is fallback only
-      access_token: access_token,
-      instance_url: instance_url,
-      frontdoor_url: frontdoor_url,
-    });
-  } catch (e: any) {
-    return NextResponse.json({ error: 'Unexpected error', detail: e?.message || String(e) }, { status: 500 });
-  }
-}
-```
-
-#### Client Credentials Auth Route (`src/app/api/tabnext/client-credentials-auth/route.ts`)
-
-```typescript
-import { NextRequest, NextResponse } from 'next/server';
-
-export async function POST(req: NextRequest) {
-  try {
-    const salesforceOrgUrl = process.env.SALESFORCE_ORG_URL || process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
-    const sfClientId = process.env.SALESFORCE_CLIENT_ID;
-    const sfClientSecret = process.env.SALESFORCE_CLIENT_SECRET;
-
-    if (!sfClientId || !sfClientSecret || !salesforceOrgUrl) {
-      return NextResponse.json({ error: 'Missing required configuration' }, { status: 500 });
-    }
-
-    // Get access token
-    const tokenUrl = `${salesforceOrgUrl}/services/oauth2/token`;
-    const params = new URLSearchParams();
-    params.set('grant_type', 'client_credentials');
-    params.set('client_id', sfClientId);
-    params.set('client_secret', sfClientSecret);
-
-    const tokenResp = await fetch(tokenUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: params.toString(),
-    });
-
-    if (!tokenResp.ok) {
-      const text = await tokenResp.text();
-      return NextResponse.json({ error: 'Token request failed', detail: text }, { status: 502 });
-    }
-
-    const tokenData = await tokenResp.json();
-    const access_token = tokenData.access_token;
-    const instance_url = tokenData.instance_url || salesforceOrgUrl;
-
-    // Generate frontdoor URL
-    let frontdoor_url: string | null = null;
-    try {
-      const fdResp = await fetch(`${instance_url}/services/oauth2/singleaccess`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${access_token}`,
-          'Content-Type': 'application/json'
-        },
-      });
-
-      if (fdResp.ok) {
-        const fdData = await fdResp.json();
-        frontdoor_url = fdData.frontdoor_uri || fdData.url || null;
-      }
-    } catch (e) {
-      // Continue without frontdoor URL
-    }
-
-    return NextResponse.json({
-      authCredential: frontdoor_url || access_token, // Frontdoor URL is REQUIRED for SDK, access token is fallback only
+      authCredential: authCredential, // Frontdoor URL preferred for SDK
       access_token: access_token,
       instance_url: instance_url,
       frontdoor_url: frontdoor_url,
@@ -532,7 +427,7 @@ Create `src/app/demo/superstore/tabnext/TabNext.jsx`:
 
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from "@/components/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { AppWindow } from "lucide-react";
 import { initializeAnalyticsSdk, AnalyticsDashboard } from '@salesforce/analytics-embedding-sdk';
 
@@ -541,10 +436,10 @@ export const TabNext = () => {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
+  // Convert .my.salesforce.com to .lightning.force.com for SDK compatibility
   const orgUrl = useMemo(() => {
     const url = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL || "";
     if (!url) return "";
-    // Convert .my.salesforce.com to .lightning.force.com for SDK compatibility
     const converted = url.replace(/\.my\.salesforce\.com/, '.lightning.force.com').replace(/\/+$/, '');
     return converted;
   }, []);
@@ -561,18 +456,30 @@ export const TabNext = () => {
   [session]);
 
   // Initialize SDK and render dashboard
-  const initializeAndRender = useCallback(async (authCredential) => {
+  const initializeAndRender = useCallback(async (authCredential, instanceUrlFromAuth) => {
     try {
       setStatus("initializing");
 
-      if (!orgUrl) {
-        throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL');
+      // Use instance_url from OAuth token exchange if available, otherwise fall back to configured orgUrl
+      let sdkOrgUrl = orgUrl;
+      if (instanceUrlFromAuth) {
+        const cleanInstanceUrl = instanceUrlFromAuth.replace(/\/+$/, '');
+        // Convert .my.salesforce.com to .lightning.force.com for SDK compatibility
+        if (cleanInstanceUrl.includes('.my.salesforce.com')) {
+          sdkOrgUrl = cleanInstanceUrl.replace(/\.my\.salesforce\.com/, '.lightning.force.com');
+        } else if (cleanInstanceUrl.includes('.lightning.force.com')) {
+          sdkOrgUrl = cleanInstanceUrl;
+        } else {
+          sdkOrgUrl = cleanInstanceUrl;
+        }
+      } else if (!orgUrl) {
+        throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL and no instance_url from auth');
       }
 
       // Step 1: Initialize SDK
       const config = {
         authCredential: authCredential,
-        orgUrl: orgUrl
+        orgUrl: sdkOrgUrl
       };
       await initializeAnalyticsSdk(config);
 
@@ -609,10 +516,10 @@ export const TabNext = () => {
     }
   }, [orgUrl, dashboardIdOrApiName]);
 
-  // JWT Bearer Flow
+  // JWT Bearer Flow - authenticates with Salesforce using username and certificate
   const handleJWTBearerAuth = useCallback(async () => {
     if (!salesforceUsername) {
-      setError('No Salesforce username available');
+      setError('Salesforce username is required. Please ensure your user profile includes a salesforceUsername.');
       setStatus("idle");
       return;
     }
@@ -629,7 +536,7 @@ export const TabNext = () => {
 
       if (!resp.ok) {
         const text = await resp.text();
-        setError(`JWT Authentication failed: ${text}`);
+        setError(`Authentication failed: ${text}`);
         setStatus("idle");
         return;
       }
@@ -640,55 +547,27 @@ export const TabNext = () => {
         throw new Error('No authCredential in response');
       }
 
-      sessionStorage.setItem('tabnext_auth_credential', authCredential);
-      await initializeAndRender(authCredential);
+      const instanceUrl = data.instance_url;
+      await initializeAndRender(authCredential, instanceUrl);
     } catch (e) {
-      setError(`JWT Authentication error: ${e.message || String(e)}`);
+      setError(`Authentication error: ${e.message || String(e)}`);
       setStatus("idle");
     }
   }, [salesforceUsername, initializeAndRender]);
 
-  // Client Credentials Flow
-  const handleClientCredentialsAuth = useCallback(async () => {
-    try {
-      setError("");
-      setStatus("authenticating");
-
-      const resp = await fetch('/api/tabnext/client-credentials-auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (!resp.ok) {
-        // Fall back to JWT if Client Credentials fails
-        return handleJWTBearerAuth();
-      }
-
-      const data = await resp.json();
-      const authCredential = data.authCredential;
-      sessionStorage.setItem('tabnext_auth_credential', authCredential);
-      await initializeAndRender(authCredential);
-    } catch (e) {
-      // Fall back to JWT on error
-      return handleJWTBearerAuth();
-    }
-  }, [handleJWTBearerAuth, initializeAndRender]);
-
-  // Auto-authenticate on mount
-  const hasAutoAuthenticated = useRef(false);
+  // Auto-authenticate with Salesforce when user logs in (JWT Bearer Flow)
+  const hasAutoAuthAttempted = useRef(false);
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const url = new URL(window.location.href);
-    const hasCode = !!url.searchParams.get('code');
-    const cached = sessionStorage.getItem('tabnext_auth_credential');
+    if (sessionStatus !== 'authenticated') return;
+    if (hasAutoAuthAttempted.current) return;
+    if (status !== 'idle') return;
 
-    if (hasAutoAuthenticated.current) return;
-
-    if (sessionStatus === 'authenticated' && !hasCode && !cached && status === 'idle') {
-      hasAutoAuthenticated.current = true;
-      void handleClientCredentialsAuth();
+    if (salesforceUsername) {
+      hasAutoAuthAttempted.current = true;
+      handleJWTBearerAuth();
     }
-  }, [sessionStatus, status, handleClientCredentialsAuth]);
+  }, [sessionStatus, salesforceUsername, handleJWTBearerAuth, status]);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -697,21 +576,11 @@ export const TabNext = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AppWindow className="h-5 w-5 text-[hsl(199,99%,39%)]" />
-              Tableau Next Embed
+              tabNext Embed
             </CardTitle>
-            <CardDescription>
-              Dynamic authentication: Client Credentials → JWT Bearer → PKCE fallback
-            </CardDescription>
+            <CardDescription>Authenticates with Salesforce using JWT Bearer Flow and embeds the Tableau Next dashboard.</CardDescription>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <Button onClick={handleClientCredentialsAuth} disabled={status !== 'idle'}>
-                {status === 'authenticating' ? 'Authenticating…' :
-                 status === 'initializing' ? 'Initializing…' :
-                 'Authenticate with Salesforce'}
-              </Button>
-              {status !== 'idle' && <span className="text-xs text-slate-500">{status}</span>}
-            </div>
             {error ? <div className="text-sm text-red-500">{error}</div> : null}
             <div
               id="analytics-container"
@@ -785,19 +654,7 @@ export default Page;
 - Check that the permission set is added to the ECA's "Selected Permission Sets"
 - Ensure OAuth Policies → "Permitted Users" is set to "Admin approved users are pre authorized"
 
-#### 4. "redirect_uri_mismatch" Error (PKCE)
-
-**Error:** `error=redirect_uri_mismatch&error_description=redirect_uri must match configuration`
-
-**Solution:**
-- Verify `NEXT_PUBLIC_SALESFORCE_REDIRECT_URI` matches **exactly** the Callback URL in your ECA
-- Check for:
-  - Protocol (`http://` vs `https://`)
-  - Port number (`:3000`)
-  - Trailing slashes
-  - Case sensitivity
-
-#### 5. Dashboard Not Rendering
+#### 4. Dashboard Not Rendering
 
 **Possible causes:**
 - Dashboard ID is incorrect (check the dashboard URL in Salesforce)
@@ -811,7 +668,7 @@ export default Page;
 - Check Network tab for failed requests
 - Verify container has explicit height/width in pixels
 
-#### 6. "Missing salesforce_username" (JWT)
+#### 5. "Missing salesforce_username" (JWT)
 
 **Solution:**
 - Ensure user session includes `salesforceUsername` field
@@ -822,11 +679,8 @@ export default Page;
 
 - [ ] `SALESFORCE_ORG_URL` - Your org URL (not `login.salesforce.com`)
 - [ ] `SALESFORCE_CLIENT_ID` - Consumer Key from ECA
-- [ ] `SALESFORCE_CLIENT_SECRET` - Consumer Secret from ECA
 - [ ] `SALESFORCE_PRIVATE_KEY` or `SALESFORCE_PRIVATE_KEY_PATH` - For JWT
 - [ ] `NEXT_PUBLIC_SALESFORCE_ORG_URL` - Same as above (client-side)
-- [ ] `NEXT_PUBLIC_SALESFORCE_CLIENT_ID` - Same as above (client-side)
-- [ ] `NEXT_PUBLIC_SALESFORCE_REDIRECT_URI` - Must match ECA callback URL exactly
 - [ ] `NEXT_PUBLIC_TABNEXT_DASHBOARD_ID` - Dashboard API name
 
 ### Permission Set Checklist (JWT)

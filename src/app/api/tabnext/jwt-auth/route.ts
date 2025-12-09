@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const cleanOrgUrl = salesforceOrgUrl?.replace(/\/+$/, '');
     const cleanLoginUrl = salesforceLoginUrl?.replace(/\/+$/, '');
     const tokenAudience = cleanOrgUrl || cleanLoginUrl;
-    const tokenExchangeUrl = cleanOrgUrl 
+    const tokenExchangeUrl = cleanOrgUrl
       ? `${cleanOrgUrl}/services/oauth2/token`
       : `${cleanLoginUrl}/services/oauth2/token`;
 
@@ -72,15 +72,15 @@ export async function POST(req: NextRequest) {
         console.error('[JWT Auth] Failed to read private key file:', e.message);
         console.error('[JWT Auth] File path attempted:', join(process.cwd(), sfPrivateKeyPath));
         console.error('[JWT Auth] In production, use SALESFORCE_PRIVATE_KEY environment variable instead');
-        return NextResponse.json({ 
-          error: 'Failed to read private key file', 
+        return NextResponse.json({
+          error: 'Failed to read private key file',
           detail: e.message,
           hint: 'In production, set SALESFORCE_PRIVATE_KEY environment variable instead of SALESFORCE_PRIVATE_KEY_PATH'
         }, { status: 500 });
       }
     } else {
       console.error('[JWT Auth] Missing SALESFORCE_PRIVATE_KEY or SALESFORCE_PRIVATE_KEY_PATH');
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Missing SALESFORCE_PRIVATE_KEY or SALESFORCE_PRIVATE_KEY_PATH',
         hint: 'Set SALESFORCE_PRIVATE_KEY environment variable with the full private key content (including -----BEGIN/END----- lines)'
       }, { status: 500 });
@@ -133,9 +133,9 @@ export async function POST(req: NextRequest) {
     if (!tokenResp.ok) {
       const text = await tokenResp.text();
       console.error('[JWT Auth] Token exchange failed:', text);
-      return NextResponse.json({ 
-        error: 'JWT token exchange failed', 
-        detail: text 
+      return NextResponse.json({
+        error: 'JWT token exchange failed',
+        detail: text
       }, { status: 502 });
     }
 
@@ -152,67 +152,44 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing access_token or instance_url' }, { status: 502 });
     }
 
-    // Generate frontdoor URL if needed
-    // Remove trailing slashes from instance URL
+    // Generate frontdoor URL using the singleaccess endpoint (as per documentation)
+    // Reference: https://developer.salesforce.com/docs/analytics/sdk/guide/sdk-access-token.html
     const cleanInstanceUrl = issued_instance_url.replace(/\/+$/, '');
-    
-    // Try multiple methods to get frontdoor URL
-    let frontdoor_url: string | null = null;
-    
-    // Method 1: Try the singleaccess endpoint (may require specific scopes)
     const frontdoorServiceUrl = `${cleanInstanceUrl}/services/oauth2/singleaccess`;
-    console.log('[JWT Auth] Attempting to generate frontdoor URL at:', frontdoorServiceUrl);
-    
+
+    let frontdoor_url: string | null = null;
+
     try {
-      const fdResp = await fetch(frontdoorServiceUrl, {
+      const myHeaders = new Headers();
+      myHeaders.append('accept', 'application/json');
+      myHeaders.append('authorization', `Bearer ${access_token}`);
+      myHeaders.append('content-type', 'application/x-www-form-urlencoded');
+
+      const urlencoded = new URLSearchParams();
+
+      const response = await fetch(frontdoorServiceUrl, {
         method: 'POST',
-        headers: { 
-          Authorization: `Bearer ${access_token}`,
-          'Content-Type': 'application/json'
-        },
+        headers: myHeaders,
+        body: urlencoded
       });
 
-      console.log('[JWT Auth] Frontdoor URL response status:', fdResp.status);
-
-      if (fdResp.ok) {
-        const fdData = await fdResp.json();
-        frontdoor_url = fdData.frontdoor_uri || fdData.url || null;
-        console.log('[JWT Auth] Frontdoor URL generated successfully:', frontdoor_url ? 'Yes' : 'No');
+      if (!response.ok) {
+        console.warn(`[JWT Auth] Salesforce API responded with ${response.status}`);
       } else {
-        const errorText = await fdResp.text();
-        console.warn('[JWT Auth] Frontdoor URL generation failed:', errorText);
-        console.warn('[JWT Auth] This is often due to missing scopes. The SDK may still work with access_token.');
+        const responseData = await response.json();
+        frontdoor_url = responseData.frontdoor_uri || null;
+        console.log('[JWT Auth] Frontdoor URL generated successfully');
       }
-    } catch (e: any) {
-      console.warn('[JWT Auth] Frontdoor URL generation error:', e.message);
-    }
-    
-    // Method 2: If singleaccess fails, try constructing frontdoor URL manually
-    // Frontdoor URLs typically follow this pattern:
-    // https://<instance>/secur/frontdoor.jsp?sid=<access_token>
-    if (!frontdoor_url) {
-      console.log('[JWT Auth] Attempting to construct frontdoor URL manually...');
-      try {
-        // Convert to Lightning domain if needed
-        const lightningUrl = cleanInstanceUrl.replace(/\.my\.salesforce\.com/, '.lightning.force.com');
-        frontdoor_url = `${lightningUrl}/secur/frontdoor.jsp?sid=${access_token}`;
-        console.log('[JWT Auth] Constructed frontdoor URL manually');
-      } catch (e: any) {
-        console.warn('[JWT Auth] Failed to construct frontdoor URL:', e.message);
-      }
+    } catch (error: any) {
+      console.error('[JWT Auth] Error in getFrontdoorUrl:', error);
     }
 
-    // Try frontdoor URL first (SDK may require it), fallback to access token
-    // The SDK documentation suggests using frontdoor URL for better compatibility
+    // Use frontdoor URL as authCredential (as per documentation)
+    // If frontdoor URL generation fails, fallback to access token
     const authCredential = frontdoor_url || access_token;
-    if (frontdoor_url) {
-      console.log('[JWT Auth] Using frontdoor_url as authCredential (SDK preferred)');
-      console.log('[JWT Auth] Frontdoor URL format:', frontdoor_url.substring(0, 100) + '...');
-    } else {
-      console.log('[JWT Auth] Using access_token as authCredential (frontdoor URL not available)');
-      console.warn('[JWT Auth] ⚠️  Frontdoor URL generation failed - SDK may not work with access token alone');
+    if (!frontdoor_url) {
+      console.warn('[JWT Auth] Frontdoor URL generation failed, using access token as fallback');
     }
-    console.log('[JWT Auth] Success! Auth credential length:', authCredential.length);
 
     // Return frontdoor URL as authCredential (preferred for SDK) or access token as fallback
     return NextResponse.json({
@@ -225,9 +202,9 @@ export async function POST(req: NextRequest) {
   } catch (e: any) {
     console.error('[JWT Auth] Unexpected error:', e.message);
     console.error('[JWT Auth] Stack:', e.stack);
-    return NextResponse.json({ 
-      error: 'Unexpected error', 
-      detail: e?.message || String(e) 
+    return NextResponse.json({
+      error: 'Unexpected error',
+      detail: e?.message || String(e)
     }, { status: 500 });
   }
 }

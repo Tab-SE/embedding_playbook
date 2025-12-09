@@ -64,7 +64,8 @@ export const Users = [
         picture: "/img/users/justin_chen.png",
         role: 1,
         vector_store: 'superstore_jchen',
-        uaf: {"Region": ["Central","East"]}
+        uaf: {"Region": ["Central","East"]},
+        salesforceUsername: "xavier.acme@storm-31c05a56906a6d.com"
       },
       {
         id: 'c',

@@ -42,8 +42,6 @@ export const httpPost = async (endpoint, body, config) => {
       err.code = 504;
       throw err;
     } else {
-      console.log('status', status);
-      console.log('response', response.data);
       throw new Error(`ERROR: Cannot POST for endpoint: ${endpoint}`);
     }
   } catch (error) {
@@ -52,9 +50,13 @@ export const httpPost = async (endpoint, body, config) => {
 };
 
 const formatError = (error) => {
+  const status = error.response?.status;
+  const statusText = error.response?.statusText;
+  const data = error.response?.data;
+  const message = data?.message || data?.error || 'Unknown error';
+
   const errMessage = new Error(
-    `HTTP - ${error.config.method} ${error.response.status} ${error.code}: ${error.response.data.message}`
+    `HTTP - ${error.config?.method || 'unknown'} ${status} ${error.code || 'ERR_BAD_REQUEST'}: ${message}`
   );
-  console.debug('Format Error:', errMessage);
   return errMessage;
 }

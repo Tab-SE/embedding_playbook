@@ -12,9 +12,11 @@ export { Metrics, Metric, extractMetrics } from './Metrics';
 
 export {
   TableauEmbed,
+  TableauEmbedEACanada,
   TableauViz,
   TableauWebAuthor,
   TableauAuth,
+  TableauAuthEACanada,
   TableauToolbar
 } from './TableauEmbed';
 

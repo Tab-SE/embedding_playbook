@@ -6,35 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { AppWindow } from "lucide-react";
 import { initializeAnalyticsSdk, AnalyticsDashboard } from '@salesforce/analytics-embedding-sdk';
 
-// PKCE helpers (frontend-only; verifier is never sent to the server except for token exchange)
-const base64UrlEncode = (arrayBuffer) => {
-  const bytes = new Uint8Array(arrayBuffer);
-  let str = "";
-  for (let i = 0; i < bytes.byteLength; i++) str += String.fromCharCode(bytes[i]);
-  return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-};
-
-const generateCodeVerifier = () => {
-  const array = new Uint32Array(56);
-  crypto.getRandomValues(array);
-  return Array.from(array, (dec) => (dec % 36).toString(36)).join("");
-};
-
-const generateCodeChallenge = async (codeVerifier) => {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(codeVerifier);
-  const digest = await crypto.subtle.digest("SHA-256", data);
-  return base64UrlEncode(digest);
-};
-
 export const TabNext = () => {
   const { status: sessionStatus, data: session } = useSession();
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
-  const salesforceLoginUrl = useMemo(() => process.env.NEXT_PUBLIC_SALESFORCE_LOGIN_URL || "https://login.salesforce.com", []);
-  const clientId = useMemo(() => process.env.NEXT_PUBLIC_SALESFORCE_CLIENT_ID || "", []);
-  const redirectUri = useMemo(() => process.env.NEXT_PUBLIC_SALESFORCE_REDIRECT_URI || (typeof window !== 'undefined' ? `${window.location.origin}/demo/superstore/tabnext` : ""), []);
   // Convert .my.salesforce.com to .lightning.force.com for SDK compatibility
   // The SDK requires the Lightning domain, not the My Domain
   const orgUrl = useMemo(() => {
@@ -75,19 +51,38 @@ export const TabNext = () => {
   // 4. Initialize SDK: initializeAnalyticsSdk(config)
   // 5. Create component: new AnalyticsDashboard({ parentIdOrElement, idOrApiName })
   // 6. Render: dashboard.render()
-  const initializeAndRender = useCallback(async (authCredential) => {
+  const initializeAndRender = useCallback(async (authCredential, instanceUrlFromAuth) => {
     try {
       setStatus("initializing");
 
-      if (!orgUrl) {
-        throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL');
+      // Use instance_url from OAuth token exchange if available, otherwise fall back to configured orgUrl
+      // Convert to Lightning format as required by SDK
+      // Reference: https://developer.salesforce.com/docs/analytics/sdk/guide/sdk-access-token.html
+      let sdkOrgUrl = orgUrl;
+      if (instanceUrlFromAuth) {
+        const cleanInstanceUrl = instanceUrlFromAuth.replace(/\/+$/, '');
+        // Convert .my.salesforce.com to .lightning.force.com for SDK compatibility
+        if (cleanInstanceUrl.includes('.my.salesforce.com')) {
+          sdkOrgUrl = cleanInstanceUrl.replace(/\.my\.salesforce\.com/, '.lightning.force.com');
+        } else if (cleanInstanceUrl.includes('.lightning.force.com')) {
+          sdkOrgUrl = cleanInstanceUrl;
+        } else {
+          sdkOrgUrl = cleanInstanceUrl;
+        }
+      } else if (!orgUrl) {
+        throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL and no instance_url from auth');
       }
 
       // Step 1: Initialize the SDK with auth credential and org URL
       const config = {
         authCredential: authCredential,
-        orgUrl: orgUrl
+        orgUrl: sdkOrgUrl
       };
+      console.log('[TabNext] SDK Config:', {
+        orgUrl: config.orgUrl,
+        authCredentialLength: config.authCredential?.length,
+        authCredentialPreview: config.authCredential?.substring(0, 100) + '...'
+      });
       await initializeAnalyticsSdk(config);
 
       // Step 2: Ensure container has dimensions before creating dashboard
@@ -112,24 +107,56 @@ export const TabNext = () => {
       // Step 3: Create the AnalyticsDashboard component
       let dashboard;
       try {
+        console.log('[TabNext] Creating AnalyticsDashboard with:', {
+          dashboardIdOrApiName: dashboardIdOrApiName,
+          orgUrl: sdkOrgUrl
+        });
         dashboard = new AnalyticsDashboard({
           parentIdOrElement: 'analytics-container',
           idOrApiName: dashboardIdOrApiName
         });
+        console.log('[TabNext] AnalyticsDashboard created successfully');
       } catch (createError) {
+        console.error('[TabNext] Error creating AnalyticsDashboard:', createError);
         throw createError;
       }
 
       // Step 4: Render the dashboard in the container
 
       try {
+        console.log('[TabNext] Rendering dashboard...');
         const renderResult = dashboard.render();
         if (renderResult instanceof Promise) {
           await renderResult;
         }
+        console.log('[TabNext] Dashboard rendered successfully');
         setStatus("ready");
       } catch (renderError) {
+        console.error('[TabNext] Error rendering dashboard:', renderError);
+        const errorMsg = String(renderError);
 
+        // Check for different error types
+        if (errorMsg.includes('pportalid') || errorMsg.includes('portal')) {
+          console.error('[TabNext] ⚠️ Portal/Community access error detected!');
+          console.error('[TabNext] This often indicates a Salesforce configuration issue:');
+          console.error('[TabNext] 1. Partner Community user may not be assigned to a Community/Portal');
+          console.error('[TabNext] 2. User may need different permission sets for Partner Community access');
+          console.error('[TabNext] 3. Community/Portal may not be active or properly configured');
+          console.error('[TabNext] 4. Check Network tab for PortalDoor errors (500 status)');
+          setError(`Partner Community Configuration Issue: The user (${salesforceUsername}) is a Partner Community user but Salesforce cannot resolve the Community/Portal ID. Please check: 1) Community is active and published, 2) User's account is owned by an internal user with a role, 3) User has the Tableau Next permission set assigned. See console for details.`);
+        } else if (errorMsg.includes('failed to load') || errorMsg.includes('UNEXPECTED_ERROR') || errorMsg.includes('getDashboardBundle')) {
+          console.error('[TabNext] ⚠️ Dashboard loading error detected!');
+          console.error('[TabNext] Authentication succeeded, but dashboard cannot be loaded.');
+          console.error('[TabNext] This may indicate:');
+          console.error('[TabNext] 1. Partner Community user may need additional permission sets');
+          console.error('[TabNext] 2. Dashboard may need to be shared with Partner Community users differently');
+          console.error('[TabNext] 3. Object-level or field-level security may be blocking access');
+          console.error('[TabNext] 4. Dashboard API name might be different for Partner Community users');
+          console.error('[TabNext] Current orgUrl:', sdkOrgUrl);
+          console.error('[TabNext] Dashboard ID:', dashboardIdOrApiName);
+          console.error('[TabNext] Username:', salesforceUsername);
+          setError(`Dashboard Access Error: Authentication succeeded, but the dashboard (${dashboardIdOrApiName}) cannot be loaded for Partner Community user (${salesforceUsername}). Please verify: 1) User has Tableau Next permission set with dashboard access, 2) Dashboard is shared/accessible to Partner Community users, 3) No object-level security is blocking access. See console for details.`);
+        }
         throw renderError;
       }
     } catch (e) {
@@ -137,193 +164,61 @@ export const TabNext = () => {
         setStatus("idle");
         throw e;
       }
-  }, [orgUrl, dashboardIdOrApiName]);
+  }, [orgUrl, dashboardIdOrApiName, salesforceUsername]);
 
-  // PKCE OAuth flow (requires redirect)
-  const handleStartLogin = useCallback(async () => {
-    try {
-      setError("");
-      setStatus("starting");
-      const codeVerifier = generateCodeVerifier();
-      const codeChallenge = await generateCodeChallenge(codeVerifier);
-      sessionStorage.setItem('tabnext_code_verifier', codeVerifier);
-
-      const loginHint = session?.user?.email ? `&login_hint=${encodeURIComponent(session.user.email)}` : "";
-      const authUrl = `${salesforceLoginUrl}/services/oauth2/authorize?response_type=code&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=web+lightning+api&code_challenge=${encodeURIComponent(codeChallenge)}&code_challenge_method=S256${loginHint}`;
-      window.location.href = authUrl;
-    } catch (e) {
-      setError(String(e));
-      setStatus("idle");
-    }
-  }, [clientId, redirectUri, salesforceLoginUrl, session]);
-
-        // Try JWT Bearer Flow (requires username and certificate)
-        const handleJWTBearerAuth = useCallback(async () => {
-          console.log('[TabNext] ========================================');
-          console.log('[TabNext] 🔐 JWT Bearer Flow started');
-          console.log('[TabNext] Salesforce username:', salesforceUsername);
-          console.log('[TabNext] ========================================');
-
+  // JWT Bearer Flow - authenticates with Salesforce using username and certificate
+  // Reference: https://developer.salesforce.com/docs/analytics/sdk/guide/sdk-access-token.html
+  const handleJWTBearerAuth = useCallback(async () => {
     if (!salesforceUsername) {
-      console.warn('[TabNext] No salesforce username, falling back to PKCE');
-      // Fall back to PKCE if no username
-      return handleStartLogin();
+      setError('Salesforce username is required. Please ensure your user profile includes a salesforceUsername.');
+      setStatus("idle");
+      return;
     }
 
     try {
       setError("");
       setStatus("authenticating");
 
-      console.log('[TabNext] Calling /api/tabnext/jwt-auth with username:', salesforceUsername);
       const resp = await fetch('/api/tabnext/jwt-auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ salesforce_username: salesforceUsername }),
       });
 
-      console.log('[TabNext] JWT auth response status:', resp.status, resp.statusText);
-
       if (!resp.ok) {
         const text = await resp.text();
-        console.error('[TabNext] JWT Bearer Flow failed:', text);
-        setError(`JWT Authentication failed: ${text}`);
+        setError(`Authentication failed: ${text}`);
         setStatus("idle");
         return;
       }
 
-            const data = await resp.json();
-
-            console.log('[TabNext] ========================================');
-            console.log('[TabNext] 🔑 JWT Token (for decoding at jwt.io):');
-            console.log('[TabNext]', data.jwt_token || 'Not available');
-            console.log('[TabNext] 💡 Decode at: https://jwt.io/'+ data.jwt_token);
-            console.log('[TabNext] ========================================');
-
-            const authCredential = data.authCredential;
-            if (!authCredential) {
-              console.error('[TabNext] ❌ No authCredential in response');
-              throw new Error('No authCredential in response');
-            }
-
-            sessionStorage.setItem('tabnext_auth_credential', authCredential);
-
-            // Load SDK and render
-            await initializeAndRender(authCredential);
-    } catch (e) {
-      console.error('[TabNext] JWT Bearer Flow error:', e);
-      setError(`JWT Authentication error: ${e.message || String(e)}`);
-      setStatus("idle");
-      return;
-    }
-  }, [salesforceUsername, handleStartLogin, initializeAndRender]);
-
-  // Try Client Credentials Flow first (simplest, no user-specific auth needed)
-  const handleClientCredentialsAuth = useCallback(async () => {
-    try {
-      setError("");
-      setStatus("authenticating");
-
-      const resp = await fetch('/api/tabnext/client-credentials-auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (!resp.ok) {
-        const text = await resp.text();
-        // If Client Credentials fails, try JWT Bearer Flow
-        return handleJWTBearerAuth();
-      }
-
-      const data = await resp.json();
-      const authCredential = data.authCredential; // This is the frontdoor URL or access token
-      sessionStorage.setItem('tabnext_auth_credential', authCredential);
-
-      // Load SDK and render
-      await initializeAndRender(authCredential);
-    } catch (e) {
-      return handleJWTBearerAuth();
-    }
-  }, [handleJWTBearerAuth, initializeAndRender]);
-
-  useEffect(() => {
-    const run = async () => {
-      const url = new URL(window.location.href);
-      const code = url.searchParams.get('code');
-      if (!code) return;
-
-      setStatus("exchanging");
-      const codeVerifier = sessionStorage.getItem('tabnext_code_verifier');
-      if (!codeVerifier) { setError('Missing code_verifier'); setStatus("idle"); return; }
-
-      const resp = await fetch('/api/tabnext/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, code_verifier: codeVerifier, client_id: clientId, redirect_uri: redirectUri }),
-      });
-      if (!resp.ok) {
-        const text = await resp.text();
-        setError(`Auth exchange failed: ${text}`);
-        setStatus("idle");
-        return;
-      }
       const data = await resp.json();
       const authCredential = data.authCredential;
-      // cache for current tab session to avoid repeated redirects
-      sessionStorage.setItem('tabnext_auth_credential', authCredential);
+      if (!authCredential) {
+        throw new Error('No authCredential in response');
+      }
 
-      // Load SDK and render
-      await initializeAndRender(authCredential);
-    };
-    run();
-  }, [clientId, redirectUri, orgUrl, initializeAndRender]);
+      const instanceUrl = data.instance_url;
+      await initializeAndRender(authCredential, instanceUrl);
+    } catch (e) {
+      setError(`Authentication error: ${e.message || String(e)}`);
+      setStatus("idle");
+    }
+  }, [salesforceUsername, initializeAndRender]);
+
 
   // Auto-authenticate with Salesforce when user logs in (JWT Bearer Flow)
-  // This runs automatically when session becomes authenticated - same as clicking the button
+  // This runs automatically when session becomes authenticated
   const hasAutoAuthAttempted = useRef(false);
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (sessionStatus !== 'authenticated') return;
+    if (hasAutoAuthAttempted.current) return;
+    if (status !== 'idle') return;
 
-    // Wait for session to be authenticated
-    if (sessionStatus !== 'authenticated') {
-      return;
-    }
-
-    // Only run once - prevent infinite loops
-    if (hasAutoAuthAttempted.current) {
-      return;
-    }
-
-    // Only run if status is idle (not already authenticating/initializing)
-    if (status !== 'idle') {
-      return;
-    }
-
-    // Check for OAuth callback code first (PKCE flow)
-    const url = new URL(window.location.href);
-    const hasCode = !!url.searchParams.get('code');
-    if (hasCode) {
-      console.log('[TabNext] OAuth callback detected, skipping auto-auth');
-      // OAuth callback will be handled by the other useEffect
-      return;
-    }
-
-    // Check for cached credential
-    const cached = sessionStorage.getItem('tabnext_auth_credential');
-    if (cached) {
-      console.log('[TabNext] Found cached credential, but forcing fresh JWT auth to avoid CSP issues...');
-      // Clear cached credential and get a fresh one to avoid CSP/expired token issues
-      sessionStorage.removeItem('tabnext_auth_credential');
-      // Fall through to JWT auth below
-    }
-
-    // Auto-authenticate with JWT if we have a username
     if (salesforceUsername) {
-      console.log('[TabNext] ✅ Auto-authenticating with Salesforce (JWT Bearer Flow)...');
-      hasAutoAuthAttempted.current = true; // Set flag to prevent re-running
-      // Call the same function the button calls - exactly the same
+      hasAutoAuthAttempted.current = true;
       handleJWTBearerAuth();
-    } else {
-      console.warn('[TabNext] ⚠️ No salesforceUsername found. Cannot auto-authenticate.');
     }
   }, [sessionStatus, salesforceUsername, handleJWTBearerAuth, status]);
 
@@ -336,7 +231,7 @@ export const TabNext = () => {
               <AppWindow className="h-5 w-5 text-[hsl(199,99%,39%)]" />
               tabNext Embed
             </CardTitle>
-            <CardDescription>Auto-authenticates with Salesforce (JWT Bearer Flow) when you log in.</CardDescription>
+            <CardDescription>Authenticates with Salesforce using JWT Bearer Flow and embeds the Tableau Next dashboard.</CardDescription>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
             {error ? <div className="text-sm text-red-500">{error}</div> : null}

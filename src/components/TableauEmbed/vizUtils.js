@@ -38,10 +38,12 @@ export const parseClassNameForLayouts = (className, layouts) => {
     '2xl:': 'xl2'
   };
   const updatedLayouts = { ...layouts };
+  // Normalize className to handle newlines and extra whitespace
+  const normalizedClassName = className.replace(/\s+/g, ' ').trim();
 
   Object.entries(breakpointMap).forEach(([prefix, layoutKey]) => {
-    const regex = new RegExp(`${prefix}min-w-\\[(\\d+)px\\]\\s*${prefix}min-h-\\[(\\d+)px\\]`);
-    const match = className.match(regex);
+    const regex = new RegExp(`${prefix}min-w-\\[(\\d+)px\\]\\s+${prefix}min-h-\\[(\\d+)px\\]`);
+    const match = normalizedClassName.match(regex);
 
     if (match) {
       const width = parseInt(match[1], 10);
@@ -56,6 +58,7 @@ export const parseClassNameForLayouts = (className, layouts) => {
         width,
         height
       };
+      console.log(`Parsed ${layoutKey}: ${width}x${height}`);
     }
   });
 

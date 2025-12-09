@@ -5,7 +5,8 @@ import {
   Users2,
   BrainCircuit,
   Languages,
-  AppWindow
+  AppWindow,
+  Activity
 } from "lucide-react";
 
 export const settings = {
@@ -70,6 +71,13 @@ export const settings = {
       path: '/tabnext',
       min_role: 1,
       description: 'experimental Tableau Next embedding'
+    },
+    {
+      name: 'Pulse Discover',
+      icon: <Activity className="h-5 w-5"/> ,
+      path: '/pulse-discover',
+      min_role: 1,
+      description: 'Pulse Discover dashboard from eacanada server'
     },
   ],
 }
