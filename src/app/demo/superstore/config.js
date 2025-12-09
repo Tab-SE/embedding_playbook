@@ -5,7 +5,8 @@ import {
   Users2,
   BrainCircuit,
   Languages,
-  AppWindow
+  AppWindow,
+  Trophy
 } from "lucide-react";
 
 export const settings = {
@@ -70,6 +71,13 @@ export const settings = {
       path: '/tabnext',
       min_role: 1,
       description: 'experimental Tableau Next embedding'
+    },
+    {
+      name: 'PlaySTUDIO',
+      icon: <Trophy className="h-5 w-5"/>,
+      path: '/playstudio',
+      min_role: 1,
+      description: 'player administration dashboard with date range filtering'
     },
   ],
 }
