@@ -174,11 +174,11 @@ export const TabNext = () => {
       setError("");
       setStatus("authenticating");
 
-      console.log('[TabNext] Calling /api/tabnext/jwt-auth with username:', salesforceUsername);
-      const resp = await fetch('/api/tabnext/jwt-auth', {
+      console.log('[TabNext] Calling /api/tabnext/auth with JWT method and username:', salesforceUsername);
+      const resp = await fetch('/api/tabnext/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ salesforce_username: salesforceUsername }),
+        body: JSON.stringify({ method: 'jwt', salesforce_username: salesforceUsername }),
       });
 
       console.log('[TabNext] JWT auth response status:', resp.status, resp.statusText);
@@ -223,9 +223,10 @@ export const TabNext = () => {
       setError("");
       setStatus("authenticating");
 
-      const resp = await fetch('/api/tabnext/client-credentials-auth', {
+      const resp = await fetch('/api/tabnext/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ method: 'client-credentials' }),
       });
 
       if (!resp.ok) {
@@ -258,7 +259,7 @@ export const TabNext = () => {
       const resp = await fetch('/api/tabnext/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, code_verifier: codeVerifier, client_id: clientId, redirect_uri: redirectUri }),
+        body: JSON.stringify({ method: 'auth-code', code, code_verifier: codeVerifier, client_id: clientId, redirect_uri: redirectUri }),
       });
       if (!resp.ok) {
         const text = await resp.text();
