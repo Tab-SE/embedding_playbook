@@ -14,17 +14,44 @@ const base64UrlEncode = (arrayBuffer) => {
   return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 };
 
+const generateRandomString = (length) => {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let text = '';
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
 const generateCodeVerifier = () => {
-  const array = new Uint32Array(56);
-  crypto.getRandomValues(array);
-  return Array.from(array, (dec) => (dec % 36).toString(36)).join("");
+  return generateRandomString(128);
 };
 
 const generateCodeChallenge = async (codeVerifier) => {
+  // Use Web Crypto API for proper SHA256 hashing
   const encoder = new TextEncoder();
   const data = encoder.encode(codeVerifier);
-  const digest = await crypto.subtle.digest("SHA-256", data);
-  return base64UrlEncode(digest);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashBase64 = btoa(String.fromCharCode(...hashArray));
+  return hashBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+};
+
+const storeAuthState = (state, codeVerifier) => {
+  localStorage.setItem('oauth_state', state);
+  localStorage.setItem('oauth_code_verifier', codeVerifier);
+};
+
+const getAuthState = () => {
+  return {
+    state: localStorage.getItem('oauth_state'),
+    codeVerifier: localStorage.getItem('oauth_code_verifier')
+  };
+};
+
+const clearAuthState = () => {
+  localStorage.removeItem('oauth_state');
+  localStorage.removeItem('oauth_code_verifier');
 };
 
 export const TabNext = () => {
@@ -144,13 +171,31 @@ export const TabNext = () => {
     try {
       setError("");
       setStatus("starting");
+
+      // Generate OAuth 2.0 PKCE parameters
+      const state = generateRandomString(32);
       const codeVerifier = generateCodeVerifier();
       const codeChallenge = await generateCodeChallenge(codeVerifier);
-      sessionStorage.setItem('tabnext_code_verifier', codeVerifier);
 
-      const loginHint = session?.user?.email ? `&login_hint=${encodeURIComponent(session.user.email)}` : "";
-      const authUrl = `${salesforceLoginUrl}/services/oauth2/authorize?response_type=code&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=web+lightning+api&code_challenge=${encodeURIComponent(codeChallenge)}&code_challenge_method=S256${loginHint}`;
-      window.location.href = authUrl;
+      // Store state and code verifier in localStorage for persistence across page loads
+      storeAuthState(state, codeVerifier);
+
+      // Build OAuth authorization URL with PKCE using LOGIN_URL from config
+      const authUrl = new URL(`${salesforceLoginUrl}/services/oauth2/authorize`);
+      authUrl.searchParams.set('response_type', 'code');
+      authUrl.searchParams.set('client_id', clientId);
+      authUrl.searchParams.set('redirect_uri', redirectUri);
+      authUrl.searchParams.set('state', state);
+      authUrl.searchParams.set('scope', 'api refresh_token lightning web');
+      authUrl.searchParams.set('code_challenge', codeChallenge);
+      authUrl.searchParams.set('code_challenge_method', 'S256');
+
+      // Add login hint if available
+      if (session?.user?.email) {
+        authUrl.searchParams.set('login_hint', session.user.email);
+      }
+
+      window.location.href = authUrl.toString();
     } catch (e) {
       setError(String(e));
       setStatus("idle");
@@ -250,11 +295,31 @@ export const TabNext = () => {
     const run = async () => {
       const url = new URL(window.location.href);
       const code = url.searchParams.get('code');
+      const returnedState = url.searchParams.get('state');
+
       if (!code) return;
 
       setStatus("exchanging");
-      const codeVerifier = sessionStorage.getItem('tabnext_code_verifier');
-      if (!codeVerifier) { setError('Missing code_verifier'); setStatus("idle"); return; }
+
+      // Retrieve state and code verifier from localStorage
+      const { state: storedState, codeVerifier } = getAuthState();
+
+      if (!codeVerifier) {
+        setError('Missing code_verifier');
+        setStatus("idle");
+        return;
+      }
+
+      // Validate state parameter to prevent CSRF attacks
+      if (!storedState || storedState !== returnedState) {
+        setError('Invalid state parameter. Possible CSRF attack.');
+        clearAuthState();
+        setStatus("idle");
+        return;
+      }
+
+      // Clear state and code verifier after validation
+      clearAuthState();
 
       const resp = await fetch('/api/tabnext/auth', {
         method: 'POST',
