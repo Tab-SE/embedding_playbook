@@ -13,6 +13,8 @@ export const PulseMetrics = () => {
   const container2Ref = useRef(null);
   const pulse1Ref = useRef(null);
   const pulse2Ref = useRef(null);
+  const pulseReady = useRef({ pulse1: false, pulse2: false });
+  const pulseCreated = useRef(false);
 
   const [selectedAccountManager, setSelectedAccountManager] = useState(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -25,9 +27,10 @@ export const PulseMetrics = () => {
     error: sessionError
   } = useTableauSessionEACanada();
 
-  // Initialize/Update Pulse metrics when user or filter changes
+  // Initialize Pulse metrics ONCE when user loads (no filter dependency)
   useEffect(() => {
     if (!user?.embed_token) return;
+    if (pulseCreated.current) return; // Only create once
 
     const container1 = container1Ref.current;
     const container2 = container2Ref.current;
@@ -39,9 +42,7 @@ export const PulseMetrics = () => {
       return;
     }
 
-    // Clear existing pulse elements
-    container1.innerHTML = '';
-    container2.innerHTML = '';
+    pulseCreated.current = true;
 
     // Create Pulse 1
     const pulse1 = new TableauPulse();
@@ -50,10 +51,10 @@ export const PulseMetrics = () => {
     pulse1.width = 500;
     pulse1.height = 400;
 
-    // Add filter if selected
-    if (selectedAccountManager) {
-      pulse1.addFilter('Account Manager', selectedAccountManager);
-    }
+    // Mark as ready when firstinteractive fires
+    pulse1.addEventListener('firstinteractive', () => {
+      pulseReady.current.pulse1 = true;
+    });
 
     pulse1Ref.current = pulse1;
     container1.appendChild(pulse1);
@@ -65,10 +66,10 @@ export const PulseMetrics = () => {
     pulse2.width = 500;
     pulse2.height = 400;
 
-    // Add filter if selected
-    if (selectedAccountManager) {
-      pulse2.addFilter('Account Manager', selectedAccountManager);
-    }
+    // Mark as ready when firstinteractive fires
+    pulse2.addEventListener('firstinteractive', () => {
+      pulseReady.current.pulse2 = true;
+    });
 
     pulse2Ref.current = pulse2;
     container2.appendChild(pulse2);
@@ -77,8 +78,41 @@ export const PulseMetrics = () => {
     return () => {
       container1.innerHTML = '';
       container2.innerHTML = '';
+      pulseCreated.current = false;
+      pulseReady.current = { pulse1: false, pulse2: false };
     };
-  }, [user, selectedAccountManager]);
+  }, [user]);
+
+  // Apply filter to Pulse metrics when selectedAccountManager changes
+  useEffect(() => {
+    const applyPulseFilters = async () => {
+      const pulse1 = pulse1Ref.current;
+      const pulse2 = pulse2Ref.current;
+
+      // Wait for pulse to be ready
+      if (!pulse1 || !pulse2) return;
+
+      // Helper to apply filter to a pulse
+      const applyToPulse = async (pulse) => {
+        try {
+          if (!selectedAccountManager) {
+            await pulse.clearFilterAsync('Account Manager');
+          } else {
+            await pulse.applyFilterAsync('Account Manager', [selectedAccountManager], 'replace', { isExcludeMode: false });
+          }
+        } catch (err) {
+          console.error('Pulse filter error:', err);
+        }
+      };
+
+      // Apply to both pulses
+      await Promise.all([applyToPulse(pulse1), applyToPulse(pulse2)]);
+    };
+
+    // Small delay to ensure pulses are ready
+    const timer = setTimeout(applyPulseFilters, 100);
+    return () => clearTimeout(timer);
+  }, [selectedAccountManager]);
 
   // Apply filter to dashboard when selectedAccountManager changes
   useEffect(() => {
