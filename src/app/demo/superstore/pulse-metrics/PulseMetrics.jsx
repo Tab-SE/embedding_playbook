@@ -49,8 +49,6 @@ export const PulseMetrics = () => {
     pulse1.token = user.embed_token;
     pulse1.width = 500;
     pulse1.height = 400;
-    pulse1.layout = 'card';
-
 
     // Add filter if selected
     if (selectedAccountManager) {
@@ -66,7 +64,6 @@ export const PulseMetrics = () => {
     pulse2.token = user.embed_token;
     pulse2.width = 500;
     pulse2.height = 400;
-    pulse2.layout = 'card';
 
     // Add filter if selected
     if (selectedAccountManager) {
