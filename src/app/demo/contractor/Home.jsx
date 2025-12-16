@@ -22,7 +22,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 
-export const description = "Veriforce Contractor Risk Management - Comprehensive safety and compliance tracking dashboard with real-time alerts and self-service analytics";
+export const description = "Demo Contractor Risk Management - Comprehensive safety and compliance tracking dashboard with real-time alerts and self-service analytics";
 
 export const Home = () => {
   const [showFilterPopup, setShowFilterPopup] = useState(false);
@@ -121,7 +121,7 @@ export const Home = () => {
     // Listen for focus and storage changes
     window.addEventListener('focus', handleFocus);
     window.addEventListener('storage', handleStorageChange);
-    
+
     // Also check periodically every 2 seconds
     const interval = setInterval(fetchUser, 2000);
 
@@ -557,7 +557,9 @@ ${t.demoEmailGenerated}`
                 <div className="tableau-container w-full">
                   <TableauEmbed
                     id='executiveSummaryViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ExecutiveSummaryV#'
+                    src={currentUser?.name === 'Mike Chen'
+                      ? 'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Superstore_17599457090030/Overview'
+                      : 'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'}
                     hideTabs={true}
                     toolbar='hidden'
                     isPublic={false}
@@ -889,8 +891,8 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               <div className="bg-slate-700 p-4 rounded-lg space-y-3">
                 <div className="flex items-center gap-3">
                   <Image
-                    src="/img/themes/veriforce/slack-logo.png"
-                    alt="Slack"
+                    src="/img/themes/superstore/superstore.png"
+                    alt="Logo"
                     width={40}
                     height={40}
                     className="rounded-full"
@@ -935,8 +937,8 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                     className="px-4 py-2 bg-[#4A154B] hover:bg-[#3A0F3A] text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
                   >
                     <Image
-                      src="/img/themes/veriforce/slack-logo.png"
-                      alt="Slack"
+                      src="/img/themes/superstore/superstore.png"
+                      alt="Logo"
                       width={20}
                       height={20}
                       className="rounded"

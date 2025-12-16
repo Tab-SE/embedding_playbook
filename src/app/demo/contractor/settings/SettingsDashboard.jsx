@@ -214,7 +214,7 @@ export const SettingsDashboard = () => {
               Branding & Customization
             </CardTitle>
             <CardDescription>
-              Customize the appearance and branding of your Veriforce instance
+              Customize the appearance and branding of your Demo instance
             </CardDescription>
           </CardHeader>
           <CardContent>

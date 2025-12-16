@@ -16,12 +16,12 @@ export const SlackShareModal = ({
 
   // Available users for Slack sharing
   const slackUsers = [
-    { id: 'mike', name: 'Mike Chen', email: 'mchen@veriforce.com', role: 'Procurement Team' },
-    { id: 'sarah', name: 'Sarah Johnson', email: 'sjohnson@veriforce.com', role: 'Safety Team' },
-    { id: 'lisa', name: 'Lisa Rodriguez', email: 'lrodriguez@veriforce.com', role: 'Management' },
-    { id: 'david', name: 'David Kim', email: 'dkim@veriforce.com', role: 'Safety Team' },
-    { id: 'jennifer', name: 'Jennifer Martinez', email: 'jmartinez@veriforce.com', role: 'Procurement Team' },
-    { id: 'robert', name: 'Robert Wilson', email: 'rwilson@veriforce.com', role: 'Safety Team' }
+    { id: 'mike', name: 'Mike Chen', email: 'mchen@demo.com', role: 'Procurement Team' },
+    { id: 'sarah', name: 'Sarah Johnson', email: 'sjohnson@demo.com', role: 'Safety Team' },
+    { id: 'lisa', name: 'Lisa Rodriguez', email: 'lrodriguez@demo.com', role: 'Management' },
+    { id: 'david', name: 'David Kim', email: 'dkim@demo.com', role: 'Safety Team' },
+    { id: 'jennifer', name: 'Jennifer Martinez', email: 'jmartinez@demo.com', role: 'Procurement Team' },
+    { id: 'robert', name: 'Robert Wilson', email: 'rwilson@demo.com', role: 'Safety Team' }
   ];
 
   // Generate default message when dashboard info changes
@@ -75,8 +75,8 @@ export const SlackShareModal = ({
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-semibold text-white flex items-center gap-2">
             <Image
-              src="/img/themes/veriforce/slack-logo.png"
-              alt="Slack"
+              src="/img/themes/superstore/superstore.png"
+              alt="Logo"
               width={24}
               height={24}
               className="rounded"

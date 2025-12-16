@@ -12,14 +12,14 @@ import {
 } from "lucide-react";
 
 export const settings = {
-  app_id: 'veriforce',
-  app_name: 'Veriforce Contractor Risk Management',
-  app_logo: '/img/demos/Veriforce_contractor_2.svg',
-  auth_logo: '/img/themes/veriforce/veriforce-logo.jpeg',
-  base_path: '/demo/veriforce',
+  app_id: 'contractor',
+  app_name: 'Demo Contractor Risk Management',
+  app_logo: '/img/themes/superstore/superstore.png',
+  auth_logo: '/img/themes/superstore/superstore.png',
+  base_path: '/demo/contractor',
   auth_hero: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2948&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   ai_chat: true,
-  ai_avatar: '/img/themes/veriforce/veriforce-logo.jpeg',
+  ai_avatar: '/img/themes/superstore/superstore.png',
   sample_questions: [
     "What are the total sales across each region?",
     "What's our profit margin by category?",
@@ -84,7 +84,7 @@ export const settings = {
     }
   ],
   branding: {
-    primary_color: '#1E40AF', // Veriforce blue
+    primary_color: '#1E40AF', // Demo blue
     secondary_color: '#3B82F6',
     accent_color: '#F59E0B',
     success_color: '#10B981',

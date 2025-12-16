@@ -109,8 +109,9 @@ export const MyPage = () => {
 
 ## 🎯 Current Pages with Language Selector
 
-- ✅ Home page (`/demo/veriforce`)
-- ✅ Safety Dashboard (`/demo/veriforce/safety`)
+- ✅ Home page (`/demo/contractor`)
+- ✅ Safety Dashboard (`/demo/contractor/safety`)
+
 
 ## 📝 Adding to New Pages
 

@@ -1,4 +1,4 @@
-# Veriforce Contractor Risk Management Demo
+# Demo Contractor Risk Management
 
 ## Overview
 
@@ -25,7 +25,7 @@ This demo showcases a comprehensive contractor risk management solution built wi
 ## User Personas
 
 ### 1. Safety Team Users
-**Dashboard**: `/demo/veriforce/safety`
+**Dashboard**: `/demo/contractor/safety`
 - View contractor safety compliance data
 - Monitor safety metrics and incidents
 - Track contractor certifications and training
@@ -38,7 +38,7 @@ This demo showcases a comprehensive contractor risk management solution built wi
 - Critical safety issues with direct action buttons
 
 ### 2. Procurement Team Users
-**Dashboard**: `/demo/veriforce/procurement`
+**Dashboard**: `/demo/contractor/procurement`
 - Assess contractor performance and risk
 - View procurement-specific metrics
 - Monitor vendor compliance status
@@ -51,7 +51,7 @@ This demo showcases a comprehensive contractor risk management solution built wi
 - Procurement alerts and contract management
 
 ### 3. Client Users (Management)
-**Dashboard**: `/demo/veriforce/management`
+**Dashboard**: `/demo/contractor/management`
 - High-level overview of contractor data
 - Consolidated compliance metrics across all contractors
 - Actionable insights for decision-making
@@ -93,7 +93,7 @@ This demo showcases a comprehensive contractor risk management solution built wi
 
 ### Dashboard Structure
 ```
-/demo/veriforce/
+/demo/contractor/
 ├── config.js              # Demo configuration and navigation
 ├── layout.jsx             # Main layout wrapper
 ├── page.jsx               # Home dashboard
@@ -115,7 +115,7 @@ This demo showcases a comprehensive contractor risk management solution built wi
 - **AI Assistant**: Natural language query interface
 
 ### Branding
-- **Primary Color**: #1E40AF (Veriforce Blue)
+- **Primary Color**: #1E40AF (Demo Blue)
 - **Secondary Color**: #3B82F6
 - **Accent Color**: #F59E0B
 - **Success Color**: #10B981
@@ -154,7 +154,7 @@ This demo showcases a comprehensive contractor risk management solution built wi
 ✅ **Value for Procurement Teams**: Comprehensive vendor performance and cost analysis
 ✅ **Actionable Insights**: Strategic recommendations and decision support
 ✅ **Self-Service Capabilities**: Exceeds PowerBI with templating and customization
-✅ **Professional Branding**: Consistent Veriforce branding throughout
+✅ **Professional Branding**: Consistent Demo branding throughout
 ✅ **Intuitive UX**: User-friendly interface across all personas
 
 ## Future Enhancements
@@ -179,7 +179,7 @@ This demo showcases a comprehensive contractor risk management solution built wi
 
 ## Getting Started
 
-1. Navigate to `/demo/veriforce` to access the main dashboard
+1. Navigate to `/demo/contractor` to access the main dashboard
 2. Use the navigation menu to explore different user personas
 3. Try the AI assistant for natural language queries
 4. Explore the self-service reports section

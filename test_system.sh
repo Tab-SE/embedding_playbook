@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🧪 Testing Tableau Dashboard System"
+echo "🧪 Testing Demo Dashboard System"
 echo "=================================="
 echo ""
 
@@ -23,7 +23,7 @@ echo ""
 
 # Test 2: Check auth page
 echo -e "${BLUE}Test 2: Authentication Page${NC}"
-if curl -s "http://localhost:3001/demo/veriforce/auth" | grep -q "Sarah Johnson"; then
+if curl -s "http://localhost:3001/demo/contractor/auth" | grep -q "Sarah Johnson"; then
     echo -e "${GREEN}✅ Auth page is working - Sarah Johnson found${NC}"
 else
     echo -e "${RED}❌ Auth page issue - Sarah Johnson not found${NC}"
@@ -35,7 +35,7 @@ echo -e "${BLUE}Test 3: Current Session Status${NC}"
 SESSION_RESPONSE=$(curl -s "http://localhost:3001/api/test/session")
 if echo "$SESSION_RESPONSE" | grep -q '"authenticated":false'; then
     echo -e "${YELLOW}⚠️  No user authenticated (expected before login)${NC}"
-    echo "   To authenticate: Go to http://localhost:3001/demo/veriforce/auth and click 'Sarah Johnson'"
+    echo "   To authenticate: Go to http://localhost:3001/demo/contractor/auth and click 'Sarah Johnson'"
 else
     echo -e "${GREEN}✅ User is authenticated${NC}"
     echo "Session: $SESSION_RESPONSE"
@@ -55,7 +55,7 @@ echo ""
 
 # Test 5: Check safety dashboard
 echo -e "${BLUE}Test 5: Safety Dashboard Page${NC}"
-if curl -s "http://localhost:3001/demo/veriforce/safety" | grep -q "No Dashboards Available"; then
+if curl -s "http://localhost:3001/demo/contractor/safety" | grep -q "No Dashboards Available"; then
     echo -e "${YELLOW}⚠️  Safety dashboard shows 'No Dashboards Available' (expected before authentication)${NC}"
 else
     echo -e "${GREEN}✅ Safety dashboard is loading${NC}"
@@ -64,9 +64,9 @@ echo ""
 
 echo "🎯 NEXT STEPS:"
 echo "=============="
-echo "1. 🔑 Go to: http://localhost:3001/demo/veriforce/auth"
+echo "1. 🔑 Go to: http://localhost:3001/demo/contractor/auth"
 echo "2. 👤 Click on 'Sarah Johnson' to authenticate"
-echo "3. 📊 Navigate to: http://localhost:3001/demo/veriforce/safety"
+echo "3. 📊 Navigate to: http://localhost:3001/demo/contractor/safety"
 echo "4. ✨ You should see workbooks in the navigation sidebar"
 echo ""
 echo "If you see workbooks after authentication, the system is working! 🎉"

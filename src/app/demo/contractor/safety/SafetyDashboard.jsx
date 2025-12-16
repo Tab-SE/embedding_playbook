@@ -53,12 +53,12 @@ export const SafetyDashboard = () => {
 
   // Available users for Slack sharing
   const slackUsers = [
-    { id: 'mike', name: 'Mike Chen', email: 'mchen@veriforce.com', role: 'Procurement Team' },
-    { id: 'sarah', name: 'Sarah Johnson', email: 'sjohnson@veriforce.com', role: 'Safety Team' },
-    { id: 'lisa', name: 'Lisa Rodriguez', email: 'lrodriguez@veriforce.com', role: 'Management' },
-    { id: 'david', name: 'David Kim', email: 'dkim@veriforce.com', role: 'Safety Team' },
-    { id: 'jennifer', name: 'Jennifer Martinez', email: 'jmartinez@veriforce.com', role: 'Procurement Team' },
-    { id: 'robert', name: 'Robert Wilson', email: 'rwilson@veriforce.com', role: 'Safety Team' }
+    { id: 'mike', name: 'Mike Chen', email: 'mchen@demo.com', role: 'Procurement Team' },
+    { id: 'sarah', name: 'Sarah Johnson', email: 'sjohnson@demo.com', role: 'Safety Team' },
+    { id: 'lisa', name: 'Lisa Rodriguez', email: 'lrodriguez@demo.com', role: 'Management' },
+    { id: 'david', name: 'David Kim', email: 'dkim@demo.com', role: 'Safety Team' },
+    { id: 'jennifer', name: 'Jennifer Martinez', email: 'jmartinez@demo.com', role: 'Procurement Team' },
+    { id: 'robert', name: 'Robert Wilson', email: 'rwilson@demo.com', role: 'Safety Team' }
   ];
 
   // Get Tableau session data - these will be available after SSO
@@ -144,6 +144,7 @@ export const SafetyDashboard = () => {
         showNavigation={showNavigation}
         setShowNavigation={setShowNavigation}
         onSlackShare={handleSlackShare}
+        user={user}
       />
 
       {/* Slack Share Modal */}
@@ -159,7 +160,7 @@ export const SafetyDashboard = () => {
 };
 
 // Separate component to isolate Tableau embeds from navigation
-const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, setShowNavigation, onSlackShare }) => {
+const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, setShowNavigation, onSlackShare, user }) => {
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Header with Navigation Toggle */}
@@ -172,10 +173,6 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
             >
               {showNavigation ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
-            <div>
-              <h1 className="text-xl font-semibold text-white">Safety Dashboard</h1>
-              <p className="text-sm text-slate-400">Monitor safety compliance and incidents</p>
-            </div>
           </div>
           <div className="flex items-center gap-3">
             <LanguageSelector />
@@ -204,16 +201,14 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
                   <CardHeader className="bg-slate-800 border-b border-slate-700">
                     <div className="flex justify-between items-center">
                       <div>
-                        <CardTitle className="text-white">Safety Overview</CardTitle>
-                        <CardDescription className="text-slate-400">Regional safety metrics and compliance status</CardDescription>
+                        <CardTitle className="text-white">Shipping Trends</CardTitle>
                       </div>
                       <div className="flex gap-2">
                         <Button
                           variant="outline"
                           className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                           onClick={() => onSlackShare({
-                            title: 'Safety Overview',
-                            description: 'Regional safety metrics and compliance status',
+                            title: 'Shipping Trend',
                             type: 'dashboard'
                           })}
                         >
@@ -228,7 +223,9 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
                   </CardHeader>
                   <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">
                     <TableauEmbed
-                      src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/IncidentsV'
+                      src={user?.name === 'Mike Chen'
+                        ? 'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Superstore_17599457090030/Overview'
+                        : 'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/ShippingTrend'}
                       hideTabs={true}
                       toolbar='hidden'
                       isPublic={false}
@@ -407,7 +404,9 @@ const MainContent = ({ selectedDashboard, embedToken, siteId, showNavigation, se
               </CardHeader>
               <CardContent className="flex-1 flex items-center justify-center p-0 xs:p-6 xs:pt-0 min-h-0">
                 <TableauEmbed
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/LostTimeInjuriesV'
+                  src={user?.name === 'Mike Chen'
+                    ? 'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Superstore_17599457090030/Overview'
+                    : 'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/CommissionModel'}
                   hideTabs={true}
                   toolbar='hidden'
                   isPublic={false}

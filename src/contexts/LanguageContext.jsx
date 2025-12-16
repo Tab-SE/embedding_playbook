@@ -4,10 +4,25 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const LanguageContext = createContext();
 
+// Default translations for use outside LanguageProvider
+const defaultTranslations = {
+  title: "Demo",
+  subtitle: "",
+  metrics: {}
+};
+
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
+  // Return default values if used outside LanguageProvider (graceful fallback)
   if (!context) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
+    return {
+      language: 'en',
+      setLanguage: () => {},
+      showLanguageDropdown: false,
+      setShowLanguageDropdown: () => {},
+      t: defaultTranslations,
+      translations: { en: defaultTranslations }
+    };
   }
   return context;
 };
@@ -19,7 +34,7 @@ export const LanguageProvider = ({ children }) => {
   // Language translations
   const translations = {
     en: {
-      title: "Veriforce Contractor Risk Management",
+      title: "Demo Contractor Risk Management",
       subtitle: "Comprehensive safety and compliance tracking dashboard with real-time alerts and self-service analytics",
       executiveSummary: "Executive Summary",
       executiveSummaryDesc: "Real-time compliance tracking across all contractors and safety metrics",
@@ -62,7 +77,7 @@ export const LanguageProvider = ({ children }) => {
       failureWarning: "Failure to address this issue may result in suspension of contractor privileges.",
       questionsContact: "If you have any questions or need assistance, please contact our compliance department.",
       bestRegards: "Best regards,",
-      complianceTeam: "Veriforce Compliance Team",
+      complianceTeam: "Demo Compliance Team",
       demoEmailGenerated: "This is a demo email generated from Tableau mark selection.",
       // Metrics translations
       metrics: {
@@ -96,7 +111,7 @@ export const LanguageProvider = ({ children }) => {
       }
     },
     es: {
-      title: "Gestión de Riesgos de Contratistas Veriforce",
+      title: "Gestión de Riesgos de Contratistas Demo",
       subtitle: "Panel de seguimiento integral de seguridad y cumplimiento con alertas en tiempo real y análisis de autoservicio",
       executiveSummary: "Resumen Ejecutivo",
       executiveSummaryDesc: "Seguimiento de cumplimiento en tiempo real en todos los contratistas y métricas de seguridad",
@@ -139,7 +154,7 @@ export const LanguageProvider = ({ children }) => {
       failureWarning: "La falta de atención a este problema puede resultar en la suspensión de los privilegios de contratista.",
       questionsContact: "Si tiene alguna pregunta o necesita asistencia, por favor contacte a nuestro departamento de cumplimiento.",
       bestRegards: "Saludos cordiales,",
-      complianceTeam: "Equipo de Cumplimiento Veriforce",
+      complianceTeam: "Equipo de Cumplimiento Demo",
       demoEmailGenerated: "Este es un correo de demostración generado desde la selección de marcas de Tableau.",
       // Metrics translations
       metrics: {
@@ -172,7 +187,7 @@ export const LanguageProvider = ({ children }) => {
       }
     },
     fr: {
-      title: "Gestion des Risques Contractuels Veriforce",
+      title: "Gestion des Risques Contractuels Demo",
       subtitle: "Tableau de bord de suivi complet de la sécurité et de la conformité avec alertes en temps réel et analyses en libre-service",
       executiveSummary: "Résumé Exécutif",
       executiveSummaryDesc: "Suivi de conformité en temps réel sur tous les entrepreneurs et métriques de sécurité",
@@ -215,7 +230,7 @@ export const LanguageProvider = ({ children }) => {
       failureWarning: "Le fait de ne pas résoudre ce problème peut entraîner la suspension des privilèges contractuels.",
       questionsContact: "Si vous avez des questions ou avez besoin d'assistance, veuillez contacter notre département de conformité.",
       bestRegards: "Cordialement,",
-      complianceTeam: "Équipe de Conformité Veriforce",
+      complianceTeam: "Équipe de Conformité Demo",
       demoEmailGenerated: "Ceci est un email de démonstration généré à partir de la sélection de marques Tableau.",
       // Metrics translations
       metrics: {

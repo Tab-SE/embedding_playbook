@@ -44,7 +44,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
   }
 
   // Check if Mike is logged in
-  const isMikeLoggedIn = isSessionSuccess && user?.email === 'mchen@veriforce.com';
+  const isMikeLoggedIn = isSessionSuccess && user?.email === 'mchen@demo.com';
 
   // For public URLs, render immediately without authentication
   if (isPublicTableauUrl) {

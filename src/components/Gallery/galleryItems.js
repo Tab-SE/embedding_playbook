@@ -45,12 +45,12 @@ export const galleryItems = [
     icon: <HandCoins size={12} strokeWidth={2} />
   },
   {
-    id: 'veriforce',
-    link: "/demo/veriforce",
-    src: "/img/themes/veriforce/veriforce-logo.jpeg",
-    alt: "Veriforce",
+    id: 'contractor',
+    link: "/demo/contractor",
+    src: "/img/themes/superstore/superstore.png",
+    alt: "Demo",
     vertical: "Construction & Safety",
-    description: "A comprehensive contractor risk management solution showcasing safety compliance, procurement analytics, and self-service capabilities that exceed PowerBI",
+    description: "A comprehensive contractor risk management solution showcasing safety compliance, procurement analytics, and self-service capabilities",
     icon: <Shield size={12} strokeWidth={2} />
   }
 ]
