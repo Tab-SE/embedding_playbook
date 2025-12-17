@@ -22,18 +22,49 @@ export const Auth = (props) => {
   const roles = demoManager.getAllRolesForDemo(app_id);
 
 
+  // Check if auth_hero is a video URL (Vimeo)
+  const isVideo = auth_hero && (
+    auth_hero.includes('vimeo.com') || 
+    auth_hero.includes('youtube.com') || 
+    auth_hero.includes('youtu.be') ||
+    auth_hero.includes('.mp4') ||
+    auth_hero.includes('.webm')
+  );
+
   return (
     <div className="relative w-full min-h-screen">
 
       <div className="absolute inset-0 w-full h-full">
-        <Image
-          src={auth_hero || "/placeholder.svg"}
-          alt="Background"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover dark:brightness-[0.2] dark:grayscale background"
-        />
+        {isVideo ? (
+          <>
+            <iframe
+              src={auth_hero}
+              className="absolute inset-0 w-full h-full"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              title="Background video"
+            />
+            {/* Dark overlay for better contrast */}
+            <div className="absolute inset-0 bg-black/40 dark:bg-black/60 z-0" />
+          </>
+        ) : (
+          <Image
+            src={auth_hero || "/placeholder.svg"}
+            alt="Background"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover dark:brightness-[0.2] dark:grayscale background"
+          />
+        )}
       </div>
 
       <div className="relative z-10 flex items-center justify-center w-full min-h-screen p-4">

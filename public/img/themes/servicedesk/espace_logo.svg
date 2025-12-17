@@ -1,0 +1,26 @@
+<svg width="180" height="40" viewBox="0 0 180 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- E-Space Logo -->
+  <defs>
+    <linearGradient id="spaceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E3A8A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Satellite orbit icon -->
+  <circle cx="20" cy="20" r="15" stroke="url(#spaceGradient)" stroke-width="2" fill="none"/>
+  <circle cx="20" cy="20" r="3" fill="#06B6D4"/>
+  <circle cx="32" cy="12" r="2.5" fill="#06B6D4"/>
+  <line x1="20" y1="20" x2="32" y2="12" stroke="#06B6D4" stroke-width="1.5"/>
+  
+  <!-- E-Space Text -->
+  <text x="45" y="27" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#F1F5F9">
+    E-Space
+  </text>
+  
+  <!-- Tagline -->
+  <text x="45" y="35" font-family="Arial, sans-serif" font-size="8" fill="#06B6D4">
+    SATELLITE CONNECTIVITY
+  </text>
+</svg>
+
