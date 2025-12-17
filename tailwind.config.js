@@ -64,6 +64,15 @@ module.exports = {
         metricsNeutral: 'hsl(var(--metrics-neutral))',
         metricsNegative: 'hsl(var(--metrics-negative))',
 
+        // E-Space primary color variants (#046C93)
+        espace: {
+          300: '#5BA3C0',
+          400: '#3D8BA8',
+          500: '#046C93',
+          600: '#035A7A',
+          700: '#024862',
+        },
+
         // Add any other semantic colors you need
       },
       borderRadius: { // Often useful alongside color theming

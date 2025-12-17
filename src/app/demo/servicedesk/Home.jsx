@@ -310,7 +310,7 @@ export const Home = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-white mb-2">
-              E-Space Support Dashboard
+              E-Space Supply Dashboard
             </h1>
             <p className="text-slate-300">
               Real-time satellite network insights to ensure mission-critical connectivity and customer success
@@ -318,8 +318,8 @@ export const Home = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 px-3 py-2 bg-cyan-900/50 text-cyan-300 rounded-lg border border-cyan-500/30">
-                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+              <div className="flex items-center gap-2 px-3 py-2 bg-espace-700/50 text-espace-300 rounded-lg border border-espace-500/30">
+                <div className="w-2 h-2 bg-espace-400 rounded-full animate-pulse"></div>
                 <span className="text-sm font-medium">Satellite Network Online</span>
               </div>
             </div>
@@ -338,7 +338,7 @@ export const Home = () => {
           <div className="flex justify-center items-center gap-4 my-4">
             <button
               onClick={() => setShowFilterPopup(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors shadow-lg"
+              className="flex items-center gap-2 px-6 py-3 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors shadow-lg"
             >
               <Filter className="h-5 w-5" />
               <span className="font-medium">Ticket Priority: {casePriority.charAt(0).toUpperCase() + casePriority.slice(1)}</span>
@@ -364,26 +364,26 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
             )}
           </div>
 
-          {/* Case Management Dashboard */}
+          {/* Supply Chain Management Dashboard */}
           <div>
             <Card className="bg-slate-800 shadow-lg border-slate-700">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <TrendingUp className="h-5 w-5 text-cyan-400" />
-                  Support Ticket Management
+                  <TrendingUp className="h-5 w-5 text-espace-400" />
+                  Supply Chain Management
                 </CardTitle>
                 <CardDescription className="text-slate-300">
-                  Track open tickets, network issues, and response times
+                  Track inventory, manufacturing, and supply chain operations
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
                 <div className="tableau-container w-full">
                   <TableauEmbed
                     id='caseManagementViz'
-                    src='https://public.tableau.com/views/SalesforceDataCloudServiceDesk/Users?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VehicleSupplyChain/Manufacturingdemo1-Inventory'
                     hideTabs={true}
                     toolbar='hidden'
-                    isPublic={true}
+                    isPublic={false}
 
                     demo="servicedesk"
                     className='
@@ -416,7 +416,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <Filter className="h-5 w-5 text-cyan-400" />
+                <Filter className="h-5 w-5 text-espace-400" />
                 Filter by Ticket Priority
               </h3>
               <button
@@ -437,7 +437,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                   }}
                   className={`w-full text-left p-4 rounded-lg transition-colors border ${
                     casePriority === priority
-                      ? 'bg-cyan-600 border-cyan-600 text-white'
+                      ? 'bg-espace-500 border-espace-500 text-white'
                       : 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
                   }`}
                 >
@@ -467,7 +467,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-cyan-400" />
+                <MessageSquare className="h-5 w-5 text-espace-400" />
                 Share Ticket Update
               </h3>
               <button
@@ -485,7 +485,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <textarea
                   value={editableSlackMessage}
                   onChange={(e) => setEditableSlackMessage(e.target.value)}
-                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-espace-500 focus:border-transparent"
                   placeholder="Type your message here..."
                 />
               </div>
@@ -514,7 +514,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                       setSelectedMarks([]);
                       setEditableSlackMessage('');
                     }}
-                    className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                    className="px-4 py-2 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Send to Team

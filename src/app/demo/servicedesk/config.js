@@ -15,12 +15,12 @@ import {
 export const settings = {
   app_id: 'servicedesk',
   app_name: 'E-Space Support Hub',
-  app_logo: '/img/themes/servicedesk/espace_logo.svg',
-  auth_logo: '/img/themes/servicedesk/espace_logo.svg',
+  app_logo: '/img/themes/servicedesk/e-space_small.png',
+  auth_logo: 'https://cdn.brandfetch.io/idypK-MB6o/w/200/h/200/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1762890670211',
   base_path: '/demo/servicedesk',
   auth_hero: 'https://player.vimeo.com/video/753626640?h=23d74e3691&&autoplay=1&loop=1&autopause=0&api=1&background=1',
   ai_chat: true,
-  ai_avatar: '/img/themes/servicedesk/espace_logo.svg',
+  ai_avatar: 'https://cdn.brandfetch.io/idypK-MB6o/w/200/h/200/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1762890670211',
   sample_questions: [
     "What's our satellite network uptime this month?",
     "Show me open support tickets by priority",
@@ -35,11 +35,11 @@ export const settings = {
       description: 'E-Space support analytics overview and key metrics'
     },
     {
-      name: 'Support Tickets',
+      name: 'Shipping Tracker',
       icon: <FileText className="h-5 w-5"/>,
       path: '/cases',
       min_role: 0,
-      description: 'Open tickets and satellite network support analytics'
+      description: 'Track shipments and delivery status'
     },
     {
       name: 'Customer Success',
@@ -71,9 +71,9 @@ export const settings = {
     },
   ],
   branding: {
-    primary_color: '#0A2540', // Deep space blue
+    primary_color: '#046C93', // E-Space primary blue
     secondary_color: '#1E3A8A', // Rich blue
-    accent_color: '#06B6D4', // Cyan/teal
+    accent_color: '#046C93', // Primary blue
     success_color: '#10B981',
     warning_color: '#F59E0B',
     danger_color: '#EF4444',

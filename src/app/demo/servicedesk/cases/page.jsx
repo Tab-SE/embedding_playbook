@@ -64,24 +64,16 @@ const CasesContent = () => {
     };
 
     const setupListeners = () => {
-      // Try multiple ways to find the viz elements
-      let openCasesViz = document.getElementById('openCasesViz');
-      let createdCasesViz = document.getElementById('createdCasesViz');
+      // Try multiple ways to find the viz element
+      let trackingViz = document.getElementById('trackingViz');
 
       // If not found by ID, try querySelector
-      if (!openCasesViz || !createdCasesViz) {
+      if (!trackingViz) {
         const tableauVizElements = document.querySelectorAll('tableau-viz');
         if (tableauVizElements.length > 0) {
-          if (!openCasesViz) {
-            openCasesViz = Array.from(tableauVizElements).find(
-              viz => viz.id === 'openCasesViz' || viz.getAttribute('id') === 'openCasesViz'
-            ) || tableauVizElements[0];
-          }
-          if (!createdCasesViz && tableauVizElements.length > 1) {
-            createdCasesViz = Array.from(tableauVizElements).find(
-              viz => viz.id === 'createdCasesViz' || viz.getAttribute('id') === 'createdCasesViz'
-            ) || tableauVizElements[1];
-          }
+          trackingViz = Array.from(tableauVizElements).find(
+            viz => viz.id === 'trackingViz' || viz.getAttribute('id') === 'trackingViz'
+          ) || tableauVizElements[0];
         }
       }
 
@@ -89,53 +81,37 @@ const CasesContent = () => {
         viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
       };
 
-      if (openCasesViz) {
+      if (trackingViz) {
         // Check if already interactive
-        const isAlreadyInteractive = openCasesViz.getIsInteractive?.() || openCasesViz.isInteractive || false;
+        const isAlreadyInteractive = trackingViz.getIsInteractive?.() || trackingViz.isInteractive || false;
 
         if (isAlreadyInteractive) {
-          addMarkSelectionListener(openCasesViz);
+          addMarkSelectionListener(trackingViz);
         } else {
-          openCasesViz.addEventListener('firstinteractive', () => {
-            addMarkSelectionListener(openCasesViz);
+          trackingViz.addEventListener('firstinteractive', () => {
+            addMarkSelectionListener(trackingViz);
           });
         }
       }
 
-      if (createdCasesViz) {
-        // Check if already interactive
-        const isAlreadyInteractive = createdCasesViz.getIsInteractive?.() || createdCasesViz.isInteractive || false;
-
-        if (isAlreadyInteractive) {
-          addMarkSelectionListener(createdCasesViz);
-        } else {
-          createdCasesViz.addEventListener('firstinteractive', () => {
-            addMarkSelectionListener(createdCasesViz);
-          });
-        }
-      }
-
-      return { openCasesViz, createdCasesViz };
+      return { trackingViz };
     };
 
     // Delay setup to ensure DOM elements are available
     const timer = setTimeout(() => {
-      const { openCasesViz, createdCasesViz } = setupListeners();
+      const { trackingViz } = setupListeners();
 
       // Store refs for cleanup
-      window._vizRefs = { openCasesViz, createdCasesViz, handleMarkSelectionChanged };
+      window._vizRefs = { trackingViz, handleMarkSelectionChanged };
     }, 1000);
 
     // Cleanup
     return () => {
       clearTimeout(timer);
       if (window._vizRefs) {
-        const { openCasesViz, createdCasesViz, handleMarkSelectionChanged } = window._vizRefs;
-        if (openCasesViz) {
-          openCasesViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
-        }
-        if (createdCasesViz) {
-          createdCasesViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
+        const { trackingViz, handleMarkSelectionChanged } = window._vizRefs;
+        if (trackingViz) {
+          trackingViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
         }
         delete window._vizRefs;
       }
@@ -150,7 +126,7 @@ const CasesContent = () => {
 
     // Generate message content for each selected mark
     const dataOnly = selectedMarks.map((mark, index) =>
-      `Ticket ${index + 1}:
+      `Shipment ${index + 1}:
 ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
     ).join('\n\n');
 
@@ -182,7 +158,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-300">In Progress</span>
-                  <span className="text-2xl font-bold text-cyan-400">47</span>
+                  <span className="text-2xl font-bold text-espace-400">47</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-300">Awaiting Customer</span>
@@ -233,7 +209,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <div className="h-5 w-5 bg-cyan-500 rounded-full"></div>
+                <div className="h-5 w-5 bg-espace-500 rounded-full"></div>
                 Support Engineer Performance
               </CardTitle>
               <CardDescription className="text-slate-300">
@@ -244,19 +220,19 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-slate-300">Sarah Chen</span>
-                  <span className="text-sm font-bold text-cyan-400">47 tickets</span>
+                  <span className="text-sm font-bold text-espace-400">47 tickets</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-300">Mike Rodriguez</span>
-                  <span className="text-sm font-bold text-cyan-400">42 tickets</span>
+                  <span className="text-sm font-bold text-espace-400">42 tickets</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-300">Emily Johnson</span>
-                  <span className="text-sm font-bold text-cyan-400">38 tickets</span>
+                  <span className="text-sm font-bold text-espace-400">38 tickets</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-300">David Kim</span>
-                  <span className="text-sm font-bold text-cyan-400">35 tickets</span>
+                  <span className="text-sm font-bold text-espace-400">35 tickets</span>
                 </div>
               </div>
             </CardContent>
@@ -268,35 +244,34 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="flex justify-center">
             <button
               onClick={generateSlackMessage}
-              className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
+              className="flex items-center gap-2 px-6 py-3 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors shadow-lg animate-pulse"
             >
               <MessageSquare className="h-5 w-5" />
-              <span className="font-medium">Share Ticket Update ({selectedMarks.length})</span>
+              <span className="font-medium">Share Shipment Update ({selectedMarks.length})</span>
             </button>
           </div>
         )}
 
-        {/* Tableau Dashboards Row */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Open Tickets Dashboard */}
+        {/* Tableau Dashboard */}
+        <div>
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <FileText className="h-5 w-5 text-cyan-400" />
-                Open Support Tickets
+                <FileText className="h-5 w-5 text-espace-400" />
+                E-Space Tracking
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Current open tickets and their status across satellite network support
+                Track shipments and delivery status
               </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
               <div className="tableau-container w-full">
                 <TableauEmbed
-                  id='openCasesViz'
-                  src='https://public.tableau.com/views/SalesforceDataCloudServiceDesk/OpenCases?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
+                  id='trackingViz'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/ShippingDashboard/PersonalTracker'
                   hideTabs={true}
                   toolbar='hidden'
-                  isPublic={true}
+                  isPublic={false}
                   width='100%'
                   height='100%'
                   demo="servicedesk"
@@ -304,9 +279,9 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                     min-w-[300px] min-h-[1430px]
                     sm:min-w-[510px] sm:min-h-[1430px]
                     md:min-w-[600px] md:min-h-[950px]
-                    lg:min-w-[750px] lg:min-h-[950px]
-                    xl:min-w-[750px] xl:min-h-[950px]
-                    2xl:min-w-[750px] 2xl:min-h-[950px]
+                    lg:min-w-[1200px] lg:min-h-[950px]
+                    xl:min-w-[1600px] xl:min-h-[1180px]
+                    2xl:min-w-[1600px] 2xl:min-h-[1180px]
                     '
                     layouts = {{
                       'xs': { 'device': 'desktop' },
@@ -320,47 +295,6 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               </div>
             </CardContent>
           </Card>
-
-          {/* Created Tickets Dashboard */}
-          <Card className="bg-slate-800 shadow-lg border-slate-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <Clock className="h-5 w-5 text-cyan-400" />
-                Created Support Tickets
-              </CardTitle>
-              <CardDescription className="text-slate-300">
-                Ticket creation trends and volume analysis over time
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-              <div className="tableau-container w-full">
-                <TableauEmbed
-                  id='createdCasesViz'
-                  src='https://public.tableau.com/views/SalesforceDataCloudServiceDesk/CreatedCases?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
-                  hideTabs={true}
-                  toolbar='hidden'
-                  isPublic={true}
-                  demo="servicedesk"
-                  className='
-                  min-w-[300px] min-h-[1430px]
-                  sm:min-w-[510px] sm:min-h-[1430px]
-                   md:min-w-[600px] md:min-h-[950px]
-                    lg:min-w-[750px] lg:min-h-[950px]
-                    xl:min-w-[750px] xl:min-h-[950px]
-                    2xl:min-w-[750px] 2xl:min-h-[950px]
-                  '
-                  layouts = {{
-                    'xs': { 'device': 'desktop' },
-                    'sm': { 'device': 'desktop' },
-                    'md': { 'device': 'desktop' },
-                    'lg': { 'device': 'desktop' },
-                    'xl': { 'device': 'desktop' },
-                    'xl2': { 'device': 'desktop' },
-                  }}
-                />
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </main>
 
@@ -370,8 +304,8 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-cyan-400" />
-                Share Ticket Update
+                <MessageSquare className="h-5 w-5 text-espace-400" />
+                Share Shipment Update
               </h3>
               <button
                 onClick={() => setShowSlackModal(false)}
@@ -388,7 +322,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <textarea
                   value={editableSlackMessage}
                   onChange={(e) => setEditableSlackMessage(e.target.value)}
-                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-espace-500 focus:border-transparent"
                   placeholder="Type your message here..."
                 />
               </div>
@@ -417,7 +351,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                       setSelectedMarks([]);
                       setEditableSlackMessage('');
                     }}
-                    className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                    className="px-4 py-2 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Send to Team
@@ -434,7 +368,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
 
 export default function CasesPage() {
   return (
-    <Demo settings={settings} pageName="Support Tickets">
+    <Demo settings={settings} pageName="Shipping Tracker">
       <CasesContent />
       <FloatingAssistant settings={settings} />
     </Demo>

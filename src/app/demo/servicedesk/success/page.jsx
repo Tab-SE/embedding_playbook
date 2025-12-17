@@ -143,7 +143,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="flex justify-center">
             <button
               onClick={generateSlackMessage}
-              className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
+              className="flex items-center gap-2 px-6 py-3 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors shadow-lg animate-pulse"
             >
               <MessageSquare className="h-5 w-5" />
               <span className="font-medium">Share Customer Update ({selectedMarks.length})</span>
@@ -155,7 +155,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <Users2 className="h-5 w-5 text-cyan-400" />
+                <Users2 className="h-5 w-5 text-espace-400" />
                 Customer Health Score
               </CardTitle>
               <CardDescription className="text-slate-300">
@@ -204,17 +204,17 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <div className="p-4 bg-slate-700 rounded-lg">
                   <p className="text-slate-400 text-sm">Renewal Rate</p>
                   <p className="text-3xl font-bold text-white mt-1">94%</p>
-                  <p className="text-cyan-400 text-sm mt-1">↑ 5% from last quarter</p>
+                  <p className="text-espace-400 text-sm mt-1">↑ 5% from last quarter</p>
                 </div>
                 <div className="p-4 bg-slate-700 rounded-lg">
                   <p className="text-slate-400 text-sm">Customer Satisfaction</p>
                   <p className="text-3xl font-bold text-white mt-1">4.8/5</p>
-                  <p className="text-cyan-400 text-sm mt-1">↑ 0.3 from last month</p>
+                  <p className="text-espace-400 text-sm mt-1">↑ 0.3 from last month</p>
                 </div>
                 <div className="p-4 bg-slate-700 rounded-lg">
                   <p className="text-slate-400 text-sm">Network Expansion</p>
                   <p className="text-3xl font-bold text-white mt-1">23%</p>
-                  <p className="text-cyan-400 text-sm mt-1">↑ 8% this quarter</p>
+                  <p className="text-espace-400 text-sm mt-1">↑ 8% this quarter</p>
                 </div>
               </div>
             </CardContent>
@@ -228,7 +228,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-cyan-400" />
+                <MessageSquare className="h-5 w-5 text-espace-400" />
                 Share Customer Update
               </h3>
               <button
@@ -246,7 +246,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <textarea
                   value={editableSlackMessage}
                   onChange={(e) => setEditableSlackMessage(e.target.value)}
-                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-espace-500 focus:border-transparent"
                   placeholder="Type your message here..."
                 />
               </div>
@@ -275,7 +275,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                       setSelectedMarks([]);
                       setEditableSlackMessage('');
                     }}
-                    className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                    className="px-4 py-2 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Send to Team

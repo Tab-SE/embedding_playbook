@@ -144,7 +144,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               <CardTitle className="text-sm font-medium text-slate-400">Overall Completion</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-cyan-400">87%</div>
+              <div className="text-2xl font-bold text-espace-400">87%</div>
               <p className="text-xs text-slate-500 mt-1">All onboarding programs</p>
             </CardContent>
           </Card>
@@ -155,7 +155,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">1,247</div>
-              <p className="text-xs text-cyan-400 mt-1">↑ 15% from last month</p>
+              <p className="text-xs text-espace-400 mt-1">↑ 15% from last month</p>
             </CardContent>
           </Card>
 
@@ -165,7 +165,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">3.2 days</div>
-              <p className="text-xs text-cyan-400 mt-1">↓ 0.5 days faster</p>
+              <p className="text-xs text-espace-400 mt-1">↓ 0.5 days faster</p>
             </CardContent>
           </Card>
 
@@ -174,7 +174,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               <CardTitle className="text-sm font-medium text-slate-400">Satisfaction Score</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-cyan-400">4.6/5</div>
+              <div className="text-2xl font-bold text-espace-400">4.6/5</div>
               <p className="text-xs text-slate-500 mt-1">Customer feedback</p>
             </CardContent>
           </Card>
@@ -185,7 +185,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="flex justify-center">
             <button
               onClick={generateSlackMessage}
-              className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
+              className="flex items-center gap-2 px-6 py-3 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors shadow-lg animate-pulse"
             >
               <MessageSquare className="h-5 w-5" />
               <span className="font-medium">Share Onboarding Update ({selectedMarks.length})</span>
@@ -196,7 +196,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
         <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <FileText className="h-5 w-5 text-cyan-400" />
+                <FileText className="h-5 w-5 text-espace-400" />
                 Customer Onboarding Analytics
               </CardTitle>
               <CardDescription className="text-slate-300">
@@ -289,7 +289,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-cyan-400" />
+                <MessageSquare className="h-5 w-5 text-espace-400" />
                 Share Onboarding Update
               </h3>
               <button
@@ -307,7 +307,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <textarea
                   value={editableSlackMessage}
                   onChange={(e) => setEditableSlackMessage(e.target.value)}
-                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-espace-500 focus:border-transparent"
                   placeholder="Type your message here..."
                 />
               </div>
@@ -336,7 +336,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                       setSelectedMarks([]);
                       setEditableSlackMessage('');
                     }}
-                    className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                    className="px-4 py-2 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Send to Team

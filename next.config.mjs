@@ -21,6 +21,18 @@ export default withNextra({
         hostname: 'plus.unsplash.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.brandfetch.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.prod.website-files.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },

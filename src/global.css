@@ -208,24 +208,25 @@
     --card-foreground: 210 40% 98%;
     --popover: 217 33% 17%;
     --popover-foreground: 210 40% 98%;
-    --primary: 189 100% 42%; /* E-Space cyan/teal */
+    --primary: 196 95% 30%; /* E-Space primary blue #046C93 */
     --primary-foreground: 210 40% 98%;
     --secondary: 221 83% 53%; /* Rich blue */
     --secondary-foreground: 210 40% 98%;
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
-    --accent: 189 100% 42%; /* Cyan accent */
+    --accent: 196 95% 30%; /* Primary blue accent */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
     --border: 217 33% 25%;
     --input: 217 33% 17%;
-    --ring: 189 100% 42%;
+    --ring: 196 95% 30%;
 
-    --metrics-positive: 189 100% 42%; /* Cyan for positive */
+    --metrics-positive: 196 95% 30%; /* Primary blue for positive */
     --metrics-neutral: 39 7% 54%;
     --metrics-negative: 23 93% 51%;
     --breadcrumbs: 0 0% 100%; /* White for breadcrumbs */
+    --nav-icons: 0 0% 100%; /* White for icons */
   }
 
   /* Apply dark class when servicedesk theme is active for Tailwind dark: classes */
@@ -276,11 +277,11 @@
     color: hsl(0 0% 100%) !important;
   }
 
-  /* Breadcrumb links hover - primary color (cyan) */
+  /* Breadcrumb links hover - primary color */
   [data-theme="servicedesk"] nav[aria-label="breadcrumb"] a.text-breadcrumbs:hover,
   [data-theme="servicedesk"] nav[aria-label="breadcrumb"] .text-breadcrumbs:hover,
   [data-theme="servicedesk"] nav[aria-label="breadcrumb"] a:hover {
-    color: hsl(189 100% 42%) !important;
+    color: hsl(196 95% 30%) !important;
   }
 
   /* Breadcrumb separator icons - white */
@@ -294,11 +295,11 @@
     color: hsl(0 0% 100%) !important;
   }
 
-  /* Side navigation icons hover - primary color (cyan) */
+  /* Side navigation icons hover - primary color */
   [data-theme="servicedesk"] .text-navIcons:hover,
   [data-theme="servicedesk"] a:hover .text-navIcons,
   [data-theme="servicedesk"] nav a:hover .text-navIcons {
-    color: hsl(189 100% 42%) !important;
+    color: hsl(196 95% 30%) !important;
   }
 
   /* Side navigation text in mobile menu - white */
@@ -325,32 +326,33 @@
   [data-theme="servicedesk"] aside nav a:hover svg.text-navIcons,
   [data-theme="servicedesk"] aside nav a.hover\:text-foreground:hover .text-navIcons,
   [data-theme="servicedesk"] aside nav a.hover\:text-foreground:hover svg {
-    color: hsl(189 100% 42%) !important;
+    color: hsl(196 95% 30%) !important;
   }
 
   /* All navigation icons inside hovered links */
   [data-theme="servicedesk"] aside nav a:hover svg,
   [data-theme="servicedesk"] aside nav a:hover .text-navIcons svg {
-    color: hsl(189 100% 42%) !important;
+    color: hsl(196 95% 30%) !important;
   }
 
-  /* TableauToolbar Menubar - dark mode - override Tailwind classes */
+  /* TableauToolbar Menubar - primary background with white text/icons */
   [data-theme="servicedesk"] .dark [role="menubar"],
   [data-theme="servicedesk"] [role="menubar"] {
-    background-color: hsl(var(--secondary)) !important;
-    border: 1px solid hsl(217.2 32.6% 30%) !important;
-    color: hsl(var(--foreground));
+    background-color: hsl(196 95% 30%) !important; /* Primary blue background */
+    border: 1px solid hsl(196 95% 30%) !important; /* Primary blue border */
+    color: hsl(0 0% 100%) !important; /* White text */
   }
 
   /* Override Tailwind classes more specifically */
   [data-theme="servicedesk"] .dark .mt-1.mb-3.inline-flex[role="menubar"],
   [data-theme="servicedesk"] .mt-1.mb-3.inline-flex[role="menubar"] {
-    border: 1px solid hsl(217.2 32.6% 30%) !important;
+    border: 1px solid hsl(196 95% 30%) !important; /* Primary blue border */
+    background-color: hsl(196 95% 30%) !important; /* Primary blue background */
   }
 
   [data-theme="servicedesk"] .dark [data-radix-menubar-trigger],
   [data-theme="servicedesk"] [data-radix-menubar-trigger] {
-    color: hsl(var(--foreground));
+    color: hsl(0 0% 100%) !important; /* White text */
   }
 
   [data-theme="servicedesk"] .dark [data-radix-menubar-trigger]:hover,
@@ -359,8 +361,13 @@
   [data-theme="servicedesk"] [data-radix-menubar-trigger]:hover,
   [data-theme="servicedesk"] [data-radix-menubar-trigger]:focus,
   [data-theme="servicedesk"] [data-radix-menubar-trigger][data-state="open"] {
-    background-color: hsl(var(--secondary) / 0.8);
-    color: hsl(var(--foreground));
+    background-color: hsl(196 95% 25%) !important; /* Darker blue on hover */
+    color: hsl(0 0% 100%) !important; /* White text */
+  }
+
+  /* Menubar icons - white */
+  [data-theme="servicedesk"] [role="menubar"] svg {
+    color: hsl(0 0% 100%) !important; /* White icons */
   }
 
   /* Menubar content dropdowns */
@@ -382,5 +389,10 @@
   [data-theme="servicedesk"] [data-radix-menubar-item]:focus {
     background-color: hsl(var(--accent));
     color: hsl(var(--accent-foreground));
+  }
+
+  /* Menubar shortcuts - white */
+  [data-theme="servicedesk"] [role="menubar"] [class*="MenubarShortcut"] {
+    color: hsl(0 0% 100%) !important; /* White shortcuts */
   }
 }
