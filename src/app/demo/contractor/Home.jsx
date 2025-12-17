@@ -15,7 +15,7 @@ import {
   Filter,
   X,
   MessageSquare,
-  Copy
+  Send
 } from 'lucide-react';
 
 export const description = "Demo Contractor Risk Management - Comprehensive safety and compliance tracking dashboard with real-time alerts and self-service analytics";
@@ -23,16 +23,17 @@ export const description = "Demo Contractor Risk Management - Comprehensive safe
 export const Home = () => {
   const [selectedMarks, setSelectedMarks] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  const [userLoaded, setUserLoaded] = useState(false);
 
   // Message modal state
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [editableMessage, setEditableMessage] = useState('');
 
-  // State filter
-  const [selectedState, setSelectedState] = useState('all');
+  // State filter - MULTIPLE SELECTION
+  const [selectedStates, setSelectedStates] = useState([]); // Array of selected states
+  const [tempSelectedStates, setTempSelectedStates] = useState([]); // Temporary selection before applying
   const [showStateFilterPopup, setShowStateFilterPopup] = useState(false);
-  const [availableStates] = useState(['California', 'Texas', 'New York', 'Florida', 'Illinois', 'Pennsylvania', 'Ohio', 'Georgia', 'North Carolina', 'Michigan', 'Washington', 'Arizona', 'Colorado', 'Virginia', 'Oregon']);
+  const [availableStates, setAvailableStates] = useState([]); // Will be populated from dashboard
+  const listenersSetupRef = useRef(false);
 
   // Get language context
   const { t } = useLanguage();
@@ -50,14 +51,9 @@ export const Home = () => {
         if (response.ok) {
           const userData = await response.json();
           setCurrentUser(userData);
-          setUserLoaded(true);
-          console.log('Current user:', userData);
-        } else {
-          setUserLoaded(true); // Still mark as loaded even if failed
         }
       } catch (error) {
         console.error('Error fetching user:', error);
-        setUserLoaded(true); // Still mark as loaded even if failed
       }
     };
     fetchUser();
@@ -94,7 +90,11 @@ export const Home = () => {
 
   // Re-fetch user when window regains focus or storage changes (user might have switched)
   useEffect(() => {
+    let isMounted = true;
+
     const fetchUser = async () => {
+      if (!isMounted) return;
+
       try {
         const response = await fetch('/api/user', {
           method: 'POST',
@@ -102,13 +102,20 @@ export const Home = () => {
             'Content-Type': 'application/json',
           },
         });
-        if (response.ok) {
+        if (response.ok && isMounted) {
           const userData = await response.json();
-          setCurrentUser(userData);
-          console.log('User updated:', userData);
+          // Only update if user actually changed
+          setCurrentUser(prev => {
+            if (prev?.email === userData?.email && prev?.name === userData?.name) {
+              return prev; // No change, return same reference
+            }
+            return userData;
+          });
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
+        if (isMounted) {
+          console.error('Error fetching user:', error);
+        }
       }
     };
 
@@ -119,10 +126,11 @@ export const Home = () => {
     window.addEventListener('focus', handleFocus);
     window.addEventListener('storage', handleStorageChange);
 
-    // Also check periodically every 2 seconds
-    const interval = setInterval(fetchUser, 2000);
+    // Also check periodically every 5 seconds (reduced from 2 to prevent excessive re-renders)
+    const interval = setInterval(fetchUser, 5000);
 
     return () => {
+      isMounted = false;
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
@@ -131,9 +139,7 @@ export const Home = () => {
 
   // AGGRESSIVE scroll prevention - completely stop Tableau from causing any scroll
   useEffect(() => {
-    // Store initial scroll position
     const initialScrollY = window.scrollY;
-    console.log('Initial scroll position:', initialScrollY);
 
     // IMMEDIATELY lock the page to prevent ANY scrolling
     document.body.style.position = 'fixed';
@@ -178,10 +184,8 @@ export const Home = () => {
     addFocusPrevention();
     const focusTimer = setInterval(addFocusPrevention, 100);
 
-    // Monitor and force scroll position
     const forceScrollPosition = () => {
       if (window.scrollY !== initialScrollY) {
-        console.log('Forcing scroll back to initial position');
         window.scrollTo(0, initialScrollY);
       }
     };
@@ -202,9 +206,7 @@ export const Home = () => {
     window.addEventListener('touchmove', preventScroll, { passive: false, capture: true });
     document.addEventListener('scroll', preventScroll, { passive: false, capture: true });
 
-    // Release lock after 8 seconds - Tableau should be fully loaded by then
     const releaseTimer = setTimeout(() => {
-      console.log('Releasing scroll lock after 8 seconds');
       clearInterval(focusTimer);
       clearInterval(scrollTimer);
 
@@ -246,63 +248,107 @@ export const Home = () => {
     };
   }, []);
 
-  // Apply State filter to Tableau dashboards when state changes
+  // Apply filter when selectedStates changes
   useEffect(() => {
-    const applyStateFilter = async () => {
-      console.log('State filter changed to:', selectedState);
-      const fieldName = 'State';
-      const filterValue = selectedState === 'all' ? [] : [selectedState];
+    const applyFilter = async () => {
+      const fieldName = 'State/Province';
+      const filterValue = selectedStates.length === 0 ? [] : selectedStates;
 
-      const applyFilterToViz = async (vizId) => {
-        const viz = document.getElementById(vizId);
-        if (!viz) return;
-        if (!viz.workbook) {
-          setTimeout(() => applyFilterToViz(vizId), 500);
+      const applyFilterToViz = async () => {
+        const viz = document.getElementById('executiveSummaryViz');
+
+        if (!viz) {
+          setTimeout(() => applyFilterToViz(), 500);
+          return;
+        }
+
+        try {
+          if (!viz.workbook) {
+            setTimeout(() => applyFilterToViz(), 500);
+            return;
+          }
+        } catch (error) {
+          setTimeout(() => applyFilterToViz(), 500);
           return;
         }
 
         try {
           const activeSheet = viz.workbook.activeSheet;
+
           if (activeSheet.sheetType === 'dashboard') {
             const worksheets = activeSheet.worksheets;
             for (const worksheet of worksheets) {
-              if (selectedState === 'all') {
+              if (filterValue.length === 0) {
                 await worksheet.clearFilterAsync(fieldName);
               } else {
                 await worksheet.applyFilterAsync(fieldName, filterValue, 'replace');
               }
             }
           } else {
-            if (selectedState === 'all') {
+            if (filterValue.length === 0) {
               await activeSheet.clearFilterAsync(fieldName);
             } else {
               await activeSheet.applyFilterAsync(fieldName, filterValue, 'replace');
             }
           }
         } catch (error) {
-          console.error(`Error applying state filter to ${vizId}:`, error);
+          // Filter application failed silently
         }
       };
 
-      await applyFilterToViz('executiveSummaryViz');
-      await applyFilterToViz('complianceCenterViz');
+      await applyFilterToViz();
     };
 
-    applyStateFilter();
-  }, [selectedState]);
+    applyFilter();
+  }, [selectedStates]);
 
-  // Listen for mark selection events - attach INSIDE firstinteractive
+  // Function to get available state values from the viz
+  const getStatesFromViz = async (viz) => {
+    if (!viz || !viz.workbook) {
+      return;
+    }
+
+    try {
+      const activeSheet = viz.workbook.activeSheet;
+      const worksheets = activeSheet.worksheets || [];
+
+      for (const worksheet of worksheets) {
+        try {
+          const dataTable = await worksheet.getSummaryDataAsync();
+          const stateColumn = dataTable.columns?.find(col =>
+            col.fieldName === 'State' || col.fieldName === 'State/Province' || col.fieldName?.toLowerCase().includes('state')
+          );
+
+          if (stateColumn) {
+            const stateColumnIndex = stateColumn.index;
+            const stateValues = new Set();
+
+            dataTable.data?.forEach(row => {
+              const cell = row[stateColumnIndex];
+              if (cell && cell.value) {
+                stateValues.add(cell.value);
+              }
+            });
+
+            if (stateValues.size > 0) {
+              const sortedStates = Array.from(stateValues).sort();
+              setAvailableStates(sortedStates);
+              return;
+            }
+          }
+        } catch (error) {
+          console.error('Error getting summary data from worksheet:', error);
+        }
+      }
+    } catch (error) {
+      console.error('Error getting states from viz:', error);
+    }
+  };
+
+  // Listen for mark selection events
   useEffect(() => {
     const handleMarkSelectionChanged = (markSelectionChangedEvent) => {
-      console.log('=== MARK SELECTION CHANGED ===');
-      console.log('Event detail:', markSelectionChangedEvent.detail);
-
-      // Use the pattern from the working Angular example
       markSelectionChangedEvent.detail.getMarksAsync().then((marks) => {
-        console.log('Selected marks data:', marks);
-        console.log('Number of data tables:', marks.data.length);
-
-        // Process marks data like the Angular example
         const marksData = [];
 
         for (let markIndex = 0; markIndex < marks.data[0].data.length; markIndex++) {
@@ -316,79 +362,67 @@ export const Home = () => {
           marksData.push(obj);
         }
 
-        console.log('Processed marks data:', marksData);
-
-        // Store selected marks for email functionality
         setSelectedMarks(marksData);
-
-        // Just store the marks data - no automatic popup
-        console.log('Selected marks stored for user:', currentUser?.name);
-
-        // Log column names
-        if (marks.data[0].columns) {
-          const columnNames = marks.data[0].columns.map(col => col.fieldName);
-          console.log('Column names:', columnNames);
-        }
-
       }).catch((error) => {
         console.error('Error getting selected marks:', error);
       });
     };
 
+    // Prevent multiple setups
+    if (listenersSetupRef.current) {
+      return;
+    }
+
     const setupListeners = () => {
       const executiveSummaryViz = document.getElementById('executiveSummaryViz');
-      const complianceCenterViz = document.getElementById('complianceCenterViz');
 
-      console.log('Setting up listeners...');
-      console.log('Executive Summary Viz found:', !!executiveSummaryViz);
-      console.log('Compliance Center Viz found:', !!complianceCenterViz);
-
-      if (executiveSummaryViz) {
-        console.log('Adding firstinteractive listener to Executive Summary');
-        executiveSummaryViz.addEventListener('firstinteractive', (event) => {
-          console.log('Executive Summary is now interactive!');
-          // Add mark selection listener INSIDE firstinteractive
-          executiveSummaryViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('Mark selection listener attached to Executive Summary');
-        });
+      if (!executiveSummaryViz) {
+        return null;
       }
 
-      if (complianceCenterViz) {
-        console.log('Adding firstinteractive listener to Compliance Center');
-        complianceCenterViz.addEventListener('firstinteractive', (event) => {
-          console.log('Compliance Center is now interactive!');
-          // Add mark selection listener INSIDE firstinteractive
-          complianceCenterViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('Mark selection listener attached to Compliance Center');
-        });
+      // Check if listener already attached
+      if (executiveSummaryViz.hasAttribute('data-listener-attached')) {
+        return { executiveSummaryViz };
       }
 
-      return { executiveSummaryViz, complianceCenterViz };
+      const handleFirstInteractive = async (event) => {
+        executiveSummaryViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
+        await getStatesFromViz(executiveSummaryViz);
+      };
+
+      executiveSummaryViz.addEventListener('firstinteractive', handleFirstInteractive);
+      executiveSummaryViz.setAttribute('data-listener-attached', 'true');
+
+      return { executiveSummaryViz, handleFirstInteractive };
     };
 
     // Delay setup to ensure DOM elements are available
     const timer = setTimeout(() => {
-      const { executiveSummaryViz, complianceCenterViz } = setupListeners();
-
-      // Store refs for cleanup
-      window._vizRefs = { executiveSummaryViz, complianceCenterViz, handleMarkSelectionChanged };
+      const result = setupListeners();
+      if (result) {
+        listenersSetupRef.current = true;
+        // Store refs for cleanup
+        window._vizRefs = { ...result, handleMarkSelectionChanged };
+      }
     }, 1000);
 
     // Cleanup
     return () => {
       clearTimeout(timer);
       if (window._vizRefs) {
-        const { executiveSummaryViz, complianceCenterViz, handleMarkSelectionChanged } = window._vizRefs;
+        const { executiveSummaryViz, handleFirstInteractive, handleMarkSelectionChanged } = window._vizRefs;
         if (executiveSummaryViz) {
+          if (handleFirstInteractive) {
+            executiveSummaryViz.removeEventListener('firstinteractive', handleFirstInteractive);
+          }
           executiveSummaryViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
-        }
-        if (complianceCenterViz) {
-          complianceCenterViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
+          executiveSummaryViz.removeAttribute('data-listener-attached');
         }
         delete window._vizRefs;
+        listenersSetupRef.current = false;
       }
     };
-  }, [currentUser]);
+  }, []);
 
   return (
     <>
@@ -456,24 +490,28 @@ export const Home = () => {
         <div className="flex flex-wrap justify-center items-center gap-4 py-4">
           {/* State Filter Button */}
           <button
-            onClick={() => setShowStateFilterPopup(true)}
+            onClick={() => {
+              setTempSelectedStates([...selectedStates]); // Initialize temp with current selection
+              setShowStateFilterPopup(true);
+            }}
             className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg"
           >
             <Filter className="h-5 w-5" />
-            <span className="font-medium">State: {selectedState === 'all' ? 'All' : selectedState}</span>
+            <span className="font-medium">
+              State: {selectedStates.length === 0 ? 'All' : `${selectedStates.length} selected`}
+            </span>
           </button>
 
           {/* Selected Marks Display - Clickable to open message modal */}
           {selectedMarks.length > 0 && (
-            <button
-              onClick={() => {
-                // Generate message from selected marks
-                const message = selectedMarks.map((mark, index) =>
-                  `Record ${index + 1}:\n${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
-                ).join('\n\n');
-                setEditableMessage(message);
-                setShowMessageModal(true);
-              }}
+              <button
+                onClick={() => {
+                  const message = selectedMarks.map((mark, index) =>
+                    `Record ${index + 1}:\n${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
+                  ).join('\n\n');
+                  setEditableMessage(message);
+                  setShowMessageModal(true);
+                }}
               className="flex items-center gap-2 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-lg transition-colors cursor-pointer"
             >
               <MessageSquare className="h-5 w-5" />
@@ -515,104 +553,7 @@ export const Home = () => {
             </Card>
           </div>
 
-          {/* {Compliance Center} */}
-          <div>
-            <Card className="bg-slate-800 shadow-lg border-slate-700">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <Shield className="h-5 w-5 text-blue-400" />
-                  {t.complianceCenter}
-                </CardTitle>
-                <CardDescription className="text-slate-300">
-                  {t.complianceCenterDesc}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <div className="tableau-container w-full">
-                  <TableauEmbed
-                    id='complianceCenterViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VeriforceRedesignWorkbookV2/ComplianceV#'
-                    hideTabs={true}
-                    toolbar='hidden'
-                    isPublic={false}
-                    className='w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[1200px] xl:h-[1200px] 2xl:h-[1200px]'
-                    width='100%'
-                    height='100%'
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
 
-          {/* Quick Actions & Alerts */}
-          {/* <div className="space-y-6"> */}
-            {/* Critical Alerts */}
-            {/* <Card className="bg-slate-800 shadow-lg border-slate-700">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-400">
-                  <AlertTriangle className="h-5 w-5" />
-                  Critical Alerts
-                </CardTitle>
-                <CardDescription className="text-slate-300">
-                  Issues requiring immediate attention
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-start gap-3 p-3 bg-red-900/20 rounded-lg border border-red-800">
-                  <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-red-200">Safety Certification Expired</p>
-                    <p className="text-xs text-red-300">ABC Construction - 3 workers</p>
-                    <p className="text-xs text-red-400 mt-1">2 days overdue</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-yellow-900/20 rounded-lg border border-yellow-800">
-                  <Clock className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-yellow-200">Training Due Soon</p>
-                    <p className="text-xs text-yellow-300">XYZ Electric - 12 workers</p>
-                    <p className="text-xs text-yellow-400 mt-1">5 days remaining</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-orange-900/20 rounded-lg border border-orange-800">
-                  <AlertTriangle className="h-4 w-4 text-orange-400 mt-0.5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-orange-200">Incident Report Pending</p>
-                    <p className="text-xs text-orange-300">DEF Plumbing - Site A</p>
-                    <p className="text-xs text-orange-400 mt-1">1 day overdue</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
-
-            {/* Quick Actions */}
-            {/* <Card className="bg-slate-800 shadow-lg border-slate-700">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <TrendingUp className="h-5 w-5 text-blue-400" />
-                  Quick Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                  <p className="text-sm font-medium text-white">Generate Compliance Report</p>
-                  <p className="text-xs text-slate-300">Export current status</p>
-                </button>
-                <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                  <p className="text-sm font-medium text-white">View Risk Assessment</p>
-                  <p className="text-xs text-slate-300">Analyze contractor risk</p>
-                </button>
-                <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                  <p className="text-sm font-medium text-white">Schedule Training</p>
-                  <p className="text-xs text-slate-300">Plan upcoming sessions</p>
-                </button>
-                <button className="w-full text-left p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                  <p className="text-sm font-medium text-white">Create Custom Report</p>
-                  <p className="text-xs text-slate-300">Use self-service tools</p>
-                </button>
-              </CardContent>
-            </Card> */}
-          {/* </div> */}
         </div>
       </main>
 
@@ -633,48 +574,67 @@ export const Home = () => {
               </button>
             </div>
 
-            <div className="space-y-2 max-h-[400px] overflow-y-auto">
+            <div className="space-y-2 mb-4 max-h-[400px] overflow-y-auto">
+              {availableStates.length === 0 ? (
+                <div className="text-center py-8 text-slate-400">
+                  <p>Loading state options from dashboard...</p>
+                  <p className="text-xs mt-2">Please wait for the dashboard to load</p>
+                </div>
+              ) : (
+                ['All States', ...availableStates].map((state) => {
+                const isAll = state === 'All States';
+                const isSelected = isAll
+                  ? tempSelectedStates.length === 0
+                  : tempSelectedStates.includes(state);
+
+                return (
+                  <button
+                    key={state}
+                    onClick={() => {
+                      if (isAll) {
+                        setTempSelectedStates([]);
+                      } else if (isSelected) {
+                        setTempSelectedStates(tempSelectedStates.filter(s => s !== state));
+                      } else {
+                        setTempSelectedStates([...tempSelectedStates, state]);
+                      }
+                    }}
+                    className={`w-full text-left p-3 rounded-lg transition-colors border ${
+                      isSelected
+                        ? 'bg-blue-600 border-blue-600 text-white'
+                        : 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{state}</span>
+                      {isSelected && (
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      )}
+                    </div>
+                  </button>
+                );
+                })
+              )}
+            </div>
+
+            <div className="flex gap-3 pt-4 border-t border-slate-600">
               <button
                 onClick={() => {
-                  setSelectedState('all');
+                  setTempSelectedStates([]);
+                }}
+                className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
+              >
+                Clear All
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedStates([...tempSelectedStates]);
                   setShowStateFilterPopup(false);
                 }}
-                className={`w-full text-left p-4 rounded-lg transition-colors border ${
-                  selectedState === 'all'
-                    ? 'bg-blue-600 border-blue-600 text-white'
-                    : 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
-                }`}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-semibold"
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">All States</span>
-                  {selectedState === 'all' && (
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  )}
-                </div>
-                <p className="text-xs mt-1 opacity-75">Show data for all states</p>
+                Apply Filter
               </button>
-
-              {availableStates.map((state) => (
-                <button
-                  key={state}
-                  onClick={() => {
-                    setSelectedState(state);
-                    setShowStateFilterPopup(false);
-                  }}
-                  className={`w-full text-left p-4 rounded-lg transition-colors border ${
-                    selectedState === state
-                      ? 'bg-blue-600 border-blue-600 text-white'
-                      : 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">{state}</span>
-                    {selectedState === state && (
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    )}
-                  </div>
-                </button>
-              ))}
             </div>
           </div>
         </div>
@@ -698,7 +658,6 @@ export const Home = () => {
             </div>
 
             <div className="space-y-4">
-              {/* Editable Message */}
               <div>
                 <label className="text-sm font-medium text-slate-400 mb-2 block">
                   Message (Editable):
@@ -711,17 +670,15 @@ export const Home = () => {
                 />
               </div>
 
-              {/* Action Buttons */}
               <div className="flex gap-3 justify-between pt-4 border-t border-slate-600">
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(editableMessage);
-                  }}
-                  className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors flex items-center gap-2"
-                >
-                  <Copy className="h-4 w-4" />
-                  Copy to Clipboard
-                </button>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(editableMessage);
+                }}
+                className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
+              >
+                Copy to Clipboard
+              </button>
                 <div className="flex gap-3">
                   <button
                     onClick={() => {
@@ -735,9 +692,10 @@ export const Home = () => {
                   </button>
                   <button
                     onClick={() => setShowMessageModal(false)}
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center gap-2"
                   >
-                    Done
+                    <Send className="h-4 w-4" />
+                    Send to Slack
                   </button>
                 </div>
               </div>

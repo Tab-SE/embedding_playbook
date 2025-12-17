@@ -120,15 +120,8 @@ const Stats = (props) => {
   const { translateMetric } = useTableauTranslation();
 
   if (isSuccess) {
-    // Debug: Log the original metric name
-    console.log('🔍 Original metric name:', metric.name);
-    console.log('🔍 Full metric object:', metric);
-
     // Translate the entire metric object
     const translatedMetric = translateMetric(metric);
-
-    // Debug: Log the translated metric name
-    console.log('🌍 Translated metric name:', translatedMetric.name);
 
     return (
       <div>

@@ -6,16 +6,11 @@
  */
 export const translateMetricName = (metricName, translations) => {
   if (!metricName || !translations?.metrics) {
-    console.log('🚫 No metric name or translations available');
     return metricName;
   }
 
-  console.log('🔍 Looking for translation for:', metricName);
-  console.log('📚 Available metric keys:', Object.keys(translations.metrics));
-
   // Direct lookup in metrics translations
   if (translations.metrics[metricName]) {
-    console.log('✅ Direct match found:', translations.metrics[metricName]);
     return translations.metrics[metricName];
   }
 
@@ -26,13 +21,11 @@ export const translateMetricName = (metricName, translations) => {
   for (const key of metricKeys) {
     if (metricName.toLowerCase().includes(key.toLowerCase()) ||
         key.toLowerCase().includes(metricName.toLowerCase())) {
-      console.log('✅ Partial match found:', key, '->', translations.metrics[key]);
       return translations.metrics[key];
     }
   }
 
   // If no translation found, return original name
-  console.log('❌ No translation found for:', metricName);
   return metricName;
 };
 
