@@ -3,7 +3,7 @@
 import { Demo, FloatingAssistant } from '@/components';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { TableauEmbed } from '@/components';
-import { FileText, Clock, MessageSquare, X } from 'lucide-react';
+import { Truck, Package, MapPin, MessageSquare, X } from 'lucide-react';
 import { settings } from '../config';
 import { useState, useEffect } from 'react';
 
@@ -64,24 +64,16 @@ const CasesContent = () => {
     };
 
     const setupListeners = () => {
-      // Try multiple ways to find the viz elements
-      let openCasesViz = document.getElementById('openCasesViz');
-      let createdCasesViz = document.getElementById('createdCasesViz');
+      // Try multiple ways to find the viz element
+      let trackingViz = document.getElementById('trackingViz');
 
       // If not found by ID, try querySelector
-      if (!openCasesViz || !createdCasesViz) {
+      if (!trackingViz) {
         const tableauVizElements = document.querySelectorAll('tableau-viz');
         if (tableauVizElements.length > 0) {
-          if (!openCasesViz) {
-            openCasesViz = Array.from(tableauVizElements).find(
-              viz => viz.id === 'openCasesViz' || viz.getAttribute('id') === 'openCasesViz'
-            ) || tableauVizElements[0];
-          }
-          if (!createdCasesViz && tableauVizElements.length > 1) {
-            createdCasesViz = Array.from(tableauVizElements).find(
-              viz => viz.id === 'createdCasesViz' || viz.getAttribute('id') === 'createdCasesViz'
-            ) || tableauVizElements[1];
-          }
+          trackingViz = Array.from(tableauVizElements).find(
+            viz => viz.id === 'trackingViz' || viz.getAttribute('id') === 'trackingViz'
+          ) || tableauVizElements[0];
         }
       }
 
@@ -89,53 +81,37 @@ const CasesContent = () => {
         viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
       };
 
-      if (openCasesViz) {
+      if (trackingViz) {
         // Check if already interactive
-        const isAlreadyInteractive = openCasesViz.getIsInteractive?.() || openCasesViz.isInteractive || false;
+        const isAlreadyInteractive = trackingViz.getIsInteractive?.() || trackingViz.isInteractive || false;
 
         if (isAlreadyInteractive) {
-          addMarkSelectionListener(openCasesViz);
+          addMarkSelectionListener(trackingViz);
         } else {
-          openCasesViz.addEventListener('firstinteractive', () => {
-            addMarkSelectionListener(openCasesViz);
+          trackingViz.addEventListener('firstinteractive', () => {
+            addMarkSelectionListener(trackingViz);
           });
         }
       }
 
-      if (createdCasesViz) {
-        // Check if already interactive
-        const isAlreadyInteractive = createdCasesViz.getIsInteractive?.() || createdCasesViz.isInteractive || false;
-
-        if (isAlreadyInteractive) {
-          addMarkSelectionListener(createdCasesViz);
-        } else {
-          createdCasesViz.addEventListener('firstinteractive', () => {
-            addMarkSelectionListener(createdCasesViz);
-          });
-        }
-      }
-
-      return { openCasesViz, createdCasesViz };
+      return { trackingViz };
     };
 
     // Delay setup to ensure DOM elements are available
     const timer = setTimeout(() => {
-      const { openCasesViz, createdCasesViz } = setupListeners();
+      const { trackingViz } = setupListeners();
 
       // Store refs for cleanup
-      window._vizRefs = { openCasesViz, createdCasesViz, handleMarkSelectionChanged };
+      window._vizRefs = { trackingViz, handleMarkSelectionChanged };
     }, 1000);
 
     // Cleanup
     return () => {
       clearTimeout(timer);
       if (window._vizRefs) {
-        const { openCasesViz, createdCasesViz, handleMarkSelectionChanged } = window._vizRefs;
-        if (openCasesViz) {
-          openCasesViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
-        }
-        if (createdCasesViz) {
-          createdCasesViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
+        const { trackingViz, handleMarkSelectionChanged } = window._vizRefs;
+        if (trackingViz) {
+          trackingViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
         }
         delete window._vizRefs;
       }
@@ -150,7 +126,7 @@ const CasesContent = () => {
 
     // Generate message content for each selected mark
     const dataOnly = selectedMarks.map((mark, index) =>
-      `Case ${index + 1}:
+      `Shipment ${index + 1}:
 ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
     ).join('\n\n');
 
@@ -161,102 +137,102 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
-        {/* Service Portal Elements Row */}
+        {/* Shipping Metrics Row */}
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Case Queue Status */}
+          {/* Shipment Status */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <div className="h-5 w-5 bg-yellow-500 rounded-full"></div>
-                Queue Status
+                <Package className="h-5 w-5 text-espace-400" />
+                Shipment Status
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Current case queue metrics
+                Current shipment tracking metrics
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Pending Review</span>
-                  <span className="text-2xl font-bold text-yellow-400">23</span>
+                  <span className="text-slate-300">In Transit</span>
+                  <span className="text-2xl font-bold text-espace-400">247</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">In Progress</span>
-                  <span className="text-2xl font-bold text-blue-400">47</span>
+                  <span className="text-slate-300">Out for Delivery</span>
+                  <span className="text-2xl font-bold text-green-400">89</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Awaiting Customer</span>
+                  <span className="text-slate-300">Delivered Today</span>
+                  <span className="text-2xl font-bold text-green-500">156</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-300">Delayed</span>
                   <span className="text-2xl font-bold text-orange-400">12</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Escalated</span>
-                  <span className="text-2xl font-bold text-red-400">5</span>
-                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* SLA Performance */}
+          {/* Delivery Performance */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <div className="h-5 w-5 bg-green-500 rounded-full"></div>
-                SLA Performance
+                <Truck className="h-5 w-5 text-espace-400" />
+                Delivery Performance
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Service level agreement metrics
+                On-time delivery and logistics metrics
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Response Time</span>
-                  <span className="text-2xl font-bold text-green-400">2.3h</span>
+                  <span className="text-slate-300">On-Time Delivery</span>
+                  <span className="text-2xl font-bold text-green-400">94.8%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Resolution Time</span>
-                  <span className="text-2xl font-bold text-green-400">18.5h</span>
+                  <span className="text-slate-300">Avg Transit Time</span>
+                  <span className="text-2xl font-bold text-espace-400">2.4 days</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">SLA Compliance</span>
-                  <span className="text-2xl font-bold text-green-400">94.2%</span>
+                  <span className="text-slate-300">Delivery Success Rate</span>
+                  <span className="text-2xl font-bold text-green-400">98.2%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">First Call Resolution</span>
-                  <span className="text-2xl font-bold text-green-400">78.1%</span>
+                  <span className="text-slate-300">Same-Day Delivery</span>
+                  <span className="text-2xl font-bold text-green-400">23.5%</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Agent Performance */}
+          {/* Top Shipping Routes */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <div className="h-5 w-5 bg-purple-500 rounded-full"></div>
-                Agent Performance
+                <MapPin className="h-5 w-5 text-espace-400" />
+                Top Shipping Routes
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Top performing agents this week
+                Most active shipping corridors this week
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Sarah Chen</span>
-                  <span className="text-sm font-bold text-green-400">47 cases</span>
+                  <span className="text-slate-300">NYC → LA</span>
+                  <span className="text-sm font-bold text-espace-400">342 shipments</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Mike Rodriguez</span>
-                  <span className="text-sm font-bold text-green-400">42 cases</span>
+                  <span className="text-slate-300">Chicago → Miami</span>
+                  <span className="text-sm font-bold text-espace-400">287 shipments</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Emily Johnson</span>
-                  <span className="text-sm font-bold text-green-400">38 cases</span>
+                  <span className="text-slate-300">Seattle → Boston</span>
+                  <span className="text-sm font-bold text-espace-400">198 shipments</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">David Kim</span>
-                  <span className="text-sm font-bold text-green-400">35 cases</span>
+                  <span className="text-slate-300">Atlanta → Denver</span>
+                  <span className="text-sm font-bold text-espace-400">156 shipments</span>
                 </div>
               </div>
             </CardContent>
@@ -268,35 +244,34 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="flex justify-center">
             <button
               onClick={generateSlackMessage}
-              className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
+              className="flex items-center gap-2 px-6 py-3 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors shadow-lg animate-pulse"
             >
               <MessageSquare className="h-5 w-5" />
-              <span className="font-medium">Share Case Update ({selectedMarks.length})</span>
+              <span className="font-medium">Share Shipment Update ({selectedMarks.length})</span>
             </button>
           </div>
         )}
 
-        {/* Tableau Dashboards Row */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Open Cases Dashboard */}
+        {/* Tableau Dashboard */}
+        <div>
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <FileText className="h-5 w-5 text-blue-400" />
-                Open Cases
+                <Truck className="h-5 w-5 text-espace-400" />
+                E-Space Tracking
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Current open cases and their status across all service channels
+                Real-time shipment tracking and logistics analytics
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
+            <CardContent className="p-0">
               <div className="tableau-container w-full">
                 <TableauEmbed
-                  id='openCasesViz'
-                  src='https://public.tableau.com/views/SalesforceDataCloudServiceDesk/OpenCases?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
+                  id='trackingViz'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/ShippingDashboard/BusinessTracker'
                   hideTabs={true}
                   toolbar='hidden'
-                  isPublic={true}
+                  isPublic={false}
                   width='100%'
                   height='100%'
                   demo="servicedesk"
@@ -304,9 +279,9 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                     min-w-[300px] min-h-[1430px]
                     sm:min-w-[510px] sm:min-h-[1430px]
                     md:min-w-[600px] md:min-h-[950px]
-                    lg:min-w-[750px] lg:min-h-[950px]
-                    xl:min-w-[750px] xl:min-h-[950px]
-                    2xl:min-w-[750px] 2xl:min-h-[950px]
+                    lg:min-w-[1200px] lg:min-h-[950px]
+                    xl:min-w-[1600px] xl:min-h-[1180px]
+                    2xl:min-w-[1600px] 2xl:min-h-[1180px]
                     '
                     layouts = {{
                       'xs': { 'device': 'desktop' },
@@ -320,47 +295,6 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               </div>
             </CardContent>
           </Card>
-
-          {/* Created Cases Dashboard */}
-          <Card className="bg-slate-800 shadow-lg border-slate-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <Clock className="h-5 w-5 text-green-400" />
-                Created Cases
-              </CardTitle>
-              <CardDescription className="text-slate-300">
-                Case creation trends and volume analysis over time
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-              <div className="tableau-container w-full">
-                <TableauEmbed
-                  id='createdCasesViz'
-                  src='https://public.tableau.com/views/SalesforceDataCloudServiceDesk/CreatedCases?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'
-                  hideTabs={true}
-                  toolbar='hidden'
-                  isPublic={true}
-                  demo="servicedesk"
-                  className='
-                  min-w-[300px] min-h-[1430px]
-                  sm:min-w-[510px] sm:min-h-[1430px]
-                   md:min-w-[600px] md:min-h-[950px]
-                    lg:min-w-[750px] lg:min-h-[950px]
-                    xl:min-w-[750px] xl:min-h-[950px]
-                    2xl:min-w-[750px] 2xl:min-h-[950px]
-                  '
-                  layouts = {{
-                    'xs': { 'device': 'desktop' },
-                    'sm': { 'device': 'desktop' },
-                    'md': { 'device': 'desktop' },
-                    'lg': { 'device': 'desktop' },
-                    'xl': { 'device': 'desktop' },
-                    'xl2': { 'device': 'desktop' },
-                  }}
-                />
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </main>
 
@@ -370,8 +304,8 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-green-500" />
-                Share Case Update
+                <MessageSquare className="h-5 w-5 text-espace-400" />
+                Share Shipment Update
               </h3>
               <button
                 onClick={() => setShowSlackModal(false)}
@@ -388,7 +322,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <textarea
                   value={editableSlackMessage}
                   onChange={(e) => setEditableSlackMessage(e.target.value)}
-                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-espace-500 focus:border-transparent"
                   placeholder="Type your message here..."
                 />
               </div>
@@ -412,12 +346,12 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                         alert('Please enter a message before sending.');
                         return;
                       }
-                      alert(`Demo: Message sent to team!\n\nMessage: ${editableSlackMessage}`);
+                      alert(`Demo: Message sent to E-Space logistics team!\n\nMessage: ${editableSlackMessage}`);
                       setShowSlackModal(false);
                       setSelectedMarks([]);
                       setEditableSlackMessage('');
                     }}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                    className="px-4 py-2 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Send to Team
@@ -434,7 +368,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
 
 export default function CasesPage() {
   return (
-    <Demo settings={settings} pageName="Cases">
+    <Demo settings={settings} pageName="Shipping Tracker">
       <CasesContent />
       <FloatingAssistant settings={settings} />
     </Demo>

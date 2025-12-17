@@ -36,7 +36,7 @@ export const Demo = (props) => {
         ai_avatar={ai_avatar}
         sections={sections}
       />
-      <main className="flex flex-col sm:pl-14 bg-demoBackground flex-grow">
+      <main className="flex flex-col sm:pl-20 bg-demoBackground flex-grow">
         <Navigation
           base_path={base_path}
           crumbs={crumbs}

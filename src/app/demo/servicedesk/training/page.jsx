@@ -127,7 +127,7 @@ const TrainingContent = () => {
 
     // Generate message content for each selected mark
     const dataOnly = selectedMarks.map((mark, index) =>
-      `Training ${index + 1}:
+      `Onboarding ${index + 1}:
 ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
     ).join('\n\n');
 
@@ -144,18 +144,18 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               <CardTitle className="text-sm font-medium text-slate-400">Overall Completion</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-400">87%</div>
-              <p className="text-xs text-slate-500 mt-1">All training programs</p>
+              <div className="text-2xl font-bold text-espace-400">87%</div>
+              <p className="text-xs text-slate-500 mt-1">All onboarding programs</p>
             </CardContent>
           </Card>
 
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-slate-400">Active Trainees</CardTitle>
+              <CardTitle className="text-sm font-medium text-slate-400">Active Customers</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">1,247</div>
-              <p className="text-xs text-green-400 mt-1">↑ 15% from last month</p>
+              <p className="text-xs text-espace-400 mt-1">↑ 15% from last month</p>
             </CardContent>
           </Card>
 
@@ -165,7 +165,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">3.2 days</div>
-              <p className="text-xs text-green-400 mt-1">↓ 0.5 days faster</p>
+              <p className="text-xs text-espace-400 mt-1">↓ 0.5 days faster</p>
             </CardContent>
           </Card>
 
@@ -174,7 +174,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               <CardTitle className="text-sm font-medium text-slate-400">Satisfaction Score</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-400">4.6/5</div>
+              <div className="text-2xl font-bold text-espace-400">4.6/5</div>
               <p className="text-xs text-slate-500 mt-1">Customer feedback</p>
             </CardContent>
           </Card>
@@ -185,25 +185,25 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="flex justify-center">
             <button
               onClick={generateSlackMessage}
-              className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
+              className="flex items-center gap-2 px-6 py-3 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors shadow-lg animate-pulse"
             >
               <MessageSquare className="h-5 w-5" />
-              <span className="font-medium">Share Training Update ({selectedMarks.length})</span>
+              <span className="font-medium">Share Onboarding Update ({selectedMarks.length})</span>
             </button>
           </div>
         )}
 
         <Card className="bg-slate-800 shadow-lg border-slate-700">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <FileText className="h-5 w-5 text-blue-400" />
-              Training Analytics
-            </CardTitle>
-            <CardDescription className="text-slate-300">
-              Completion rates and effectiveness by training type
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <FileText className="h-5 w-5 text-espace-400" />
+                Customer Onboarding Analytics
+              </CardTitle>
+              <CardDescription className="text-slate-300">
+                Completion rates and effectiveness by onboarding program
+              </CardDescription>
+            </CardHeader>
+          <CardContent className="p-0">
             <div className="tableau-container w-full">
               <TableauEmbed
                 id='trainingViz'
@@ -235,7 +235,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader>
-              <CardTitle className="text-white">Onboarding Training</CardTitle>
+              <CardTitle className="text-white">Satellite Network Basics</CardTitle>
               <CardDescription className="text-slate-400">New customer orientation</CardDescription>
             </CardHeader>
             <CardContent>
@@ -251,8 +251,8 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
 
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader>
-              <CardTitle className="text-white">Advanced Features</CardTitle>
-              <CardDescription className="text-slate-400">Premium tier training</CardDescription>
+              <CardTitle className="text-white">Advanced Connectivity</CardTitle>
+              <CardDescription className="text-slate-400">Enterprise features training</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between mb-2">
@@ -267,7 +267,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
 
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader>
-              <CardTitle className="text-white">Best Practices</CardTitle>
+              <CardTitle className="text-white">Network Optimization</CardTitle>
               <CardDescription className="text-slate-400">Ongoing education</CardDescription>
             </CardHeader>
             <CardContent>
@@ -289,8 +289,8 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-green-500" />
-                Share Training Update
+                <MessageSquare className="h-5 w-5 text-espace-400" />
+                Share Onboarding Update
               </h3>
               <button
                 onClick={() => setShowSlackModal(false)}
@@ -307,7 +307,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <textarea
                   value={editableSlackMessage}
                   onChange={(e) => setEditableSlackMessage(e.target.value)}
-                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-espace-500 focus:border-transparent"
                   placeholder="Type your message here..."
                 />
               </div>
@@ -331,12 +331,12 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                         alert('Please enter a message before sending.');
                         return;
                       }
-                      alert(`Demo: Message sent to team!\n\nMessage: ${editableSlackMessage}`);
+                      alert(`Demo: Message sent to E-Space onboarding team!\n\nMessage: ${editableSlackMessage}`);
                       setShowSlackModal(false);
                       setSelectedMarks([]);
                       setEditableSlackMessage('');
                     }}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                    className="px-4 py-2 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Send to Team
@@ -353,7 +353,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
 
 export default function TrainingPage() {
   return (
-    <Demo settings={settings} pageName="Customer Training">
+    <Demo settings={settings} pageName="Customer Onboarding">
       <TrainingContent />
       <FloatingAssistant settings={settings} />
     </Demo>

@@ -74,7 +74,11 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   return (
     <div>
       <XSLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? (
+          <div className="flex justify-end mx-auto" style={{ width: `${getLayoutProps(layoutSpec, 'xs').width}px`, maxWidth: `${getLayoutProps(layoutSpec, 'xs').width}px` }}>
+            <TableauToolbar src={src} ref={innerRef} />
+          </div>
+        ) : null}
         <tableau-viz
           ref={innerRef}
           id={vizId}
@@ -91,7 +95,11 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </XSLayout>
 
       <SMLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? (
+          <div className="flex justify-end mx-auto" style={{ width: `${getLayoutProps(layoutSpec, 'sm').width}px`, maxWidth: `${getLayoutProps(layoutSpec, 'sm').width}px` }}>
+            <TableauToolbar src={src} ref={innerRef} />
+          </div>
+        ) : null}
         <tableau-viz
           ref={innerRef}
           id="tableauViz"
@@ -108,7 +116,11 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </SMLayout>
 
       <MDLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? (
+          <div className="flex justify-end mx-auto" style={{ width: `${getLayoutProps(layoutSpec, 'md').width}px`, maxWidth: `${getLayoutProps(layoutSpec, 'md').width}px` }}>
+            <TableauToolbar src={src} ref={innerRef} />
+          </div>
+        ) : null}
         <tableau-viz
           ref={innerRef}
           id="tableauViz"
@@ -125,7 +137,11 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </MDLayout>
 
       <LGLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? (
+          <div className="flex justify-end mx-auto" style={{ width: `${getLayoutProps(layoutSpec, 'lg').width}px`, maxWidth: `${getLayoutProps(layoutSpec, 'lg').width}px` }}>
+            <TableauToolbar src={src} ref={innerRef} />
+          </div>
+        ) : null}
         <tableau-viz
           ref={innerRef}
           id="tableauViz"
@@ -142,7 +158,11 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </LGLayout>
 
       <XLLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? (
+          <div className="flex justify-end mx-auto" style={{ width: `${getLayoutProps(layoutSpec, 'xl').width}px`, maxWidth: `${getLayoutProps(layoutSpec, 'xl').width}px` }}>
+            <TableauToolbar src={src} ref={innerRef} />
+          </div>
+        ) : null}
         <tableau-viz
           ref={innerRef}
           id="tableauViz"
@@ -159,7 +179,11 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </XLLayout>
 
       <XL2Layout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? (
+          <div className="flex justify-end mx-auto" style={{ width: `${getLayoutProps(layoutSpec, 'xl2').width}px`, maxWidth: `${getLayoutProps(layoutSpec, 'xl2').width}px` }}>
+            <TableauToolbar src={src} ref={innerRef} />
+          </div>
+        ) : null}
         <tableau-viz
             ref={innerRef}
             id="tableauViz"

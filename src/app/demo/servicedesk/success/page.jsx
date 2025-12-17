@@ -3,11 +3,11 @@
 import { Demo, FloatingAssistant } from '@/components';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { TableauEmbed } from '@/components';
-import { Users2, MessageSquare, X } from 'lucide-react';
+import { Leaf, MessageSquare, X } from 'lucide-react';
 import { settings } from '../config';
 import { useState, useEffect } from 'react';
 
-const CustomerSuccessContent = () => {
+const ESGImpactContent = () => {
   // State for mark selection and Slack functionality
   const [selectedMarks, setSelectedMarks] = useState([]);
   const [showSlackModal, setShowSlackModal] = useState(false);
@@ -65,54 +65,54 @@ const CustomerSuccessContent = () => {
 
     const setupListeners = () => {
       // Try multiple ways to find the viz element
-      let customerHealthViz = document.getElementById('customerHealthViz');
+      let esgImpactViz = document.getElementById('esgImpactViz');
 
       // If not found by ID, try shadow root or querySelector
-      if (!customerHealthViz) {
+      if (!esgImpactViz) {
         const tableauVizElements = document.querySelectorAll('tableau-viz');
         if (tableauVizElements.length > 0) {
           // Find the one with matching id attribute
-          customerHealthViz = Array.from(tableauVizElements).find(
-            viz => viz.id === 'customerHealthViz' || viz.getAttribute('id') === 'customerHealthViz'
+          esgImpactViz = Array.from(tableauVizElements).find(
+            viz => viz.id === 'esgImpactViz' || viz.getAttribute('id') === 'esgImpactViz'
           ) || tableauVizElements[0];
         }
       }
 
-      if (customerHealthViz) {
+      if (esgImpactViz) {
         const addMarkSelectionListener = () => {
-          customerHealthViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
+          esgImpactViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
         };
 
         // Check if already interactive
-        const isAlreadyInteractive = customerHealthViz.getIsInteractive?.() || customerHealthViz.isInteractive || false;
+        const isAlreadyInteractive = esgImpactViz.getIsInteractive?.() || esgImpactViz.isInteractive || false;
 
         if (isAlreadyInteractive) {
           addMarkSelectionListener();
         } else {
-          customerHealthViz.addEventListener('firstinteractive', () => {
+          esgImpactViz.addEventListener('firstinteractive', () => {
             addMarkSelectionListener();
           });
         }
       }
 
-      return { customerHealthViz };
+      return { esgImpactViz };
     };
 
     // Delay setup to ensure DOM elements are available
     const timer = setTimeout(() => {
-      const { customerHealthViz } = setupListeners();
+      const { esgImpactViz } = setupListeners();
 
       // Store refs for cleanup
-      window._vizRefs = { customerHealthViz, handleMarkSelectionChanged };
+      window._vizRefs = { esgImpactViz, handleMarkSelectionChanged };
     }, 1000);
 
     // Cleanup
     return () => {
       clearTimeout(timer);
       if (window._vizRefs) {
-        const { customerHealthViz, handleMarkSelectionChanged } = window._vizRefs;
-        if (customerHealthViz) {
-          customerHealthViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
+        const { esgImpactViz, handleMarkSelectionChanged } = window._vizRefs;
+        if (esgImpactViz) {
+          esgImpactViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
         }
         delete window._vizRefs;
       }
@@ -127,7 +127,7 @@ const CustomerSuccessContent = () => {
 
     // Generate message content for each selected mark
     const dataOnly = selectedMarks.map((mark, index) =>
-      `Customer ${index + 1}:
+      `ESG Impact ${index + 1}:
 ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
     ).join('\n\n');
 
@@ -143,41 +143,71 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="flex justify-center">
             <button
               onClick={generateSlackMessage}
-              className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors shadow-lg animate-pulse"
+              className="flex items-center gap-2 px-6 py-3 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors shadow-lg animate-pulse"
             >
               <MessageSquare className="h-5 w-5" />
-              <span className="font-medium">Share Customer Update ({selectedMarks.length})</span>
+              <span className="font-medium">Share ESG Impact Update ({selectedMarks.length})</span>
             </button>
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="flex flex-col gap-6">
+          {/* Key ESG Metrics - Stacked on top */}
+          <Card className="bg-slate-800 shadow-lg border-slate-700">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-white text-lg">Key ESG Metrics</CardTitle>
+              <CardDescription className="text-slate-300 text-xs">
+                Performance indicators
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-3 bg-slate-700 rounded-lg">
+                  <p className="text-slate-400 text-xs">Carbon Reduction</p>
+                  <p className="text-2xl font-bold text-white mt-1">32%</p>
+                  <p className="text-espace-400 text-xs mt-1">↓ 8% from last quarter</p>
+                </div>
+                <div className="p-3 bg-slate-700 rounded-lg">
+                  <p className="text-slate-400 text-xs">Waste Diversion Rate</p>
+                  <p className="text-2xl font-bold text-white mt-1">87%</p>
+                  <p className="text-espace-400 text-xs mt-1">↑ 5% from last month</p>
+                </div>
+                <div className="p-3 bg-slate-700 rounded-lg">
+                  <p className="text-slate-400 text-xs">Renewable Energy</p>
+                  <p className="text-2xl font-bold text-white mt-1">94%</p>
+                  <p className="text-espace-400 text-xs mt-1">↑ 12% this quarter</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Tableau Viz - Full width below */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <Users2 className="h-5 w-5 text-blue-400" />
-                Customer Health Score
+                <Leaf className="h-5 w-5 text-espace-400" />
+                Environmental Impact Tracking
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Track customer satisfaction and renewal likelihood
+                Monitor carbon emissions, waste reduction, and environmental sustainability metrics
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
+            <CardContent className="p-0">
               <div className="tableau-container w-full">
                 <TableauEmbed
-                  id='customerHealthViz'
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
+                  id='esgImpactViz'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/ESGImpact/EnvironmentalImpactTracking'
                   hideTabs={true}
                   toolbar='hidden'
-
+                  isPublic={false}
                   demo="servicedesk"
                   className='
                   min-w-[300px] min-h-[1430px]
                   sm:min-w-[510px] sm:min-h-[1430px]
-                   md:min-w-[600px] md:min-h-[950px]
-                    lg:min-w-[750px] lg:min-h-[950px]
-                    xl:min-w-[750px] xl:min-h-[950px]
-                    2xl:min-w-[750px] 2xl:min-h-[950px]
+                  md:min-w-[800px] md:min-h-[1200px]
+                  lg:min-w-[1000px] lg:min-h-[1200px]
+                  xl:min-w-[1700px] xl:min-h-[1200px]
+                  2xl:min-w-[1700px] 2xl:min-h-[1200px]
                   '
                   layouts = {{
                     'xs': { 'device': 'desktop' },
@@ -191,34 +221,6 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               </div>
             </CardContent>
           </Card>
-
-          <Card className="bg-slate-800 shadow-lg border-slate-700">
-            <CardHeader>
-              <CardTitle className="text-white">Key Success Metrics</CardTitle>
-              <CardDescription className="text-slate-300">
-                Renewal rates and customer engagement
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="p-4 bg-slate-700 rounded-lg">
-                  <p className="text-slate-400 text-sm">Renewal Rate</p>
-                  <p className="text-3xl font-bold text-white mt-1">94%</p>
-                  <p className="text-green-400 text-sm mt-1">↑ 5% from last quarter</p>
-                </div>
-                <div className="p-4 bg-slate-700 rounded-lg">
-                  <p className="text-slate-400 text-sm">Customer Satisfaction</p>
-                  <p className="text-3xl font-bold text-white mt-1">4.8/5</p>
-                  <p className="text-green-400 text-sm mt-1">↑ 0.3 from last month</p>
-                </div>
-                <div className="p-4 bg-slate-700 rounded-lg">
-                  <p className="text-slate-400 text-sm">Premium Upgrades</p>
-                  <p className="text-3xl font-bold text-white mt-1">23%</p>
-                  <p className="text-green-400 text-sm mt-1">↑ 8% this quarter</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </main>
 
@@ -228,8 +230,8 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-green-500" />
-                Share Customer Update
+                <MessageSquare className="h-5 w-5 text-espace-400" />
+                Share ESG Impact Update
               </h3>
               <button
                 onClick={() => setShowSlackModal(false)}
@@ -246,7 +248,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 <textarea
                   value={editableSlackMessage}
                   onChange={(e) => setEditableSlackMessage(e.target.value)}
-                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-espace-500 focus:border-transparent"
                   placeholder="Type your message here..."
                 />
               </div>
@@ -270,12 +272,12 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                         alert('Please enter a message before sending.');
                         return;
                       }
-                      alert(`Demo: Message sent to team!\n\nMessage: ${editableSlackMessage}`);
+                      alert(`Demo: Message sent to E-Space ESG team!\n\nMessage: ${editableSlackMessage}`);
                       setShowSlackModal(false);
                       setSelectedMarks([]);
                       setEditableSlackMessage('');
                     }}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                    className="px-4 py-2 bg-espace-500 hover:bg-espace-600 text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Send to Team
@@ -290,10 +292,10 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
   );
 }
 
-export default function CustomerSuccessPage() {
+export default function ESGImpactPage() {
   return (
-    <Demo settings={settings} pageName="Customer Success">
-      <CustomerSuccessContent />
+    <Demo settings={settings} pageName="ESG Impact">
+      <ESGImpactContent />
       <FloatingAssistant settings={settings} />
     </Demo>
   );
