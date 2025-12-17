@@ -277,12 +277,21 @@ export const Home = () => {
           overflow: hidden;
           contain: layout style paint;
           isolation: isolate;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          margin: 0;
+          padding: 0;
         }
         .tableau-container tableau-viz {
           position: relative !important;
           z-index: 1 !important;
           contain: layout style paint !important;
           isolation: isolate !important;
+          width: 100% !important;
+          height: 100% !important;
+          display: block;
         }
         /* Prevent Tableau from stealing focus and scrolling */
         tableau-viz:focus {
@@ -376,11 +385,11 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                   Track inventory, manufacturing, and supply chain operations
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
+              <CardContent className="p-0">
                 <div className="tableau-container w-full">
                   <TableauEmbed
                     id='caseManagementViz'
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VehicleSupplyChain/Manufacturingdemo1-Inventory'
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/VehicleSupplyChain/Manufacturingdemo3-Suppliers'
                     hideTabs={true}
                     toolbar='hidden'
                     isPublic={false}

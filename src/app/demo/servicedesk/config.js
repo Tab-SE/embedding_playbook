@@ -9,7 +9,9 @@ import {
   Settings,
   BarChart3,
   Clock,
-  Languages
+  Languages,
+  Truck,
+  Leaf
 } from "lucide-react";
 
 export const settings = {
@@ -36,17 +38,17 @@ export const settings = {
     },
     {
       name: 'Shipping Tracker',
-      icon: <FileText className="h-5 w-5"/>,
+      icon: <Truck className="h-5 w-5"/>,
       path: '/cases',
       min_role: 0,
       description: 'Track shipments and delivery status'
     },
     {
-      name: 'Customer Success',
-      icon: <Users2 className="h-5 w-5"/>,
+      name: 'ESG Impact',
+      icon: <Leaf className="h-5 w-5"/>,
       path: '/success',
       min_role: 2,
-      description: 'Strategic insights, renewals, and customer health'
+      description: 'Track environmental, social, and governance impact metrics'
     },
     {
       name: 'Onboarding',

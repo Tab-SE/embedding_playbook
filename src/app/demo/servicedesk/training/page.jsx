@@ -203,7 +203,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                 Completion rates and effectiveness by onboarding program
               </CardDescription>
             </CardHeader>
-          <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
+          <CardContent className="p-0">
             <div className="tableau-container w-full">
               <TableauEmbed
                 id='trainingViz'

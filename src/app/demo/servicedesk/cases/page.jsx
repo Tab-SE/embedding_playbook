@@ -3,7 +3,7 @@
 import { Demo, FloatingAssistant } from '@/components';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { TableauEmbed } from '@/components';
-import { FileText, Clock, MessageSquare, X } from 'lucide-react';
+import { Truck, Package, MapPin, MessageSquare, X } from 'lucide-react';
 import { settings } from '../config';
 import { useState, useEffect } from 'react';
 
@@ -137,102 +137,102 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">
-        {/* Service Portal Elements Row */}
+        {/* Shipping Metrics Row */}
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Ticket Queue Status */}
+          {/* Shipment Status */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <div className="h-5 w-5 bg-yellow-500 rounded-full"></div>
-                Ticket Queue Status
+                <Package className="h-5 w-5 text-espace-400" />
+                Shipment Status
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Current support ticket queue metrics
+                Current shipment tracking metrics
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Pending Review</span>
-                  <span className="text-2xl font-bold text-yellow-400">23</span>
+                  <span className="text-slate-300">In Transit</span>
+                  <span className="text-2xl font-bold text-espace-400">247</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">In Progress</span>
-                  <span className="text-2xl font-bold text-espace-400">47</span>
+                  <span className="text-slate-300">Out for Delivery</span>
+                  <span className="text-2xl font-bold text-green-400">89</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Awaiting Customer</span>
+                  <span className="text-slate-300">Delivered Today</span>
+                  <span className="text-2xl font-bold text-green-500">156</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-300">Delayed</span>
                   <span className="text-2xl font-bold text-orange-400">12</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Escalated</span>
-                  <span className="text-2xl font-bold text-red-400">5</span>
-                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* SLA Performance */}
+          {/* Delivery Performance */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <div className="h-5 w-5 bg-green-500 rounded-full"></div>
-                SLA Performance
+                <Truck className="h-5 w-5 text-espace-400" />
+                Delivery Performance
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Service level agreement metrics
+                On-time delivery and logistics metrics
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Response Time</span>
-                  <span className="text-2xl font-bold text-green-400">2.3h</span>
+                  <span className="text-slate-300">On-Time Delivery</span>
+                  <span className="text-2xl font-bold text-green-400">94.8%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Resolution Time</span>
-                  <span className="text-2xl font-bold text-green-400">18.5h</span>
+                  <span className="text-slate-300">Avg Transit Time</span>
+                  <span className="text-2xl font-bold text-espace-400">2.4 days</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">SLA Compliance</span>
-                  <span className="text-2xl font-bold text-green-400">94.2%</span>
+                  <span className="text-slate-300">Delivery Success Rate</span>
+                  <span className="text-2xl font-bold text-green-400">98.2%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">First Call Resolution</span>
-                  <span className="text-2xl font-bold text-green-400">78.1%</span>
+                  <span className="text-slate-300">Same-Day Delivery</span>
+                  <span className="text-2xl font-bold text-green-400">23.5%</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Support Engineer Performance */}
+          {/* Top Shipping Routes */}
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <div className="h-5 w-5 bg-espace-500 rounded-full"></div>
-                Support Engineer Performance
+                <MapPin className="h-5 w-5 text-espace-400" />
+                Top Shipping Routes
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Top performing engineers this week
+                Most active shipping corridors this week
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Sarah Chen</span>
-                  <span className="text-sm font-bold text-espace-400">47 tickets</span>
+                  <span className="text-slate-300">NYC → LA</span>
+                  <span className="text-sm font-bold text-espace-400">342 shipments</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Mike Rodriguez</span>
-                  <span className="text-sm font-bold text-espace-400">42 tickets</span>
+                  <span className="text-slate-300">Chicago → Miami</span>
+                  <span className="text-sm font-bold text-espace-400">287 shipments</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Emily Johnson</span>
-                  <span className="text-sm font-bold text-espace-400">38 tickets</span>
+                  <span className="text-slate-300">Seattle → Boston</span>
+                  <span className="text-sm font-bold text-espace-400">198 shipments</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">David Kim</span>
-                  <span className="text-sm font-bold text-espace-400">35 tickets</span>
+                  <span className="text-slate-300">Atlanta → Denver</span>
+                  <span className="text-sm font-bold text-espace-400">156 shipments</span>
                 </div>
               </div>
             </CardContent>
@@ -257,18 +257,18 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           <Card className="bg-slate-800 shadow-lg border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <FileText className="h-5 w-5 text-espace-400" />
+                <Truck className="h-5 w-5 text-espace-400" />
                 E-Space Tracking
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Track shipments and delivery status
+                Real-time shipment tracking and logistics analytics
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
+            <CardContent className="p-0">
               <div className="tableau-container w-full">
                 <TableauEmbed
                   id='trackingViz'
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/ShippingDashboard/PersonalTracker'
+                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/ShippingDashboard/BusinessTracker'
                   hideTabs={true}
                   toolbar='hidden'
                   isPublic={false}
@@ -346,7 +346,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
                         alert('Please enter a message before sending.');
                         return;
                       }
-                      alert(`Demo: Message sent to E-Space support team!\n\nMessage: ${editableSlackMessage}`);
+                      alert(`Demo: Message sent to E-Space logistics team!\n\nMessage: ${editableSlackMessage}`);
                       setShowSlackModal(false);
                       setSelectedMarks([]);
                       setEditableSlackMessage('');
