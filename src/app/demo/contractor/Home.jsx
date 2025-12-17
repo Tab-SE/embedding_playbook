@@ -10,32 +10,29 @@ import {
 } from "@/components/ui";
 import { Metrics, TableauEmbed, LanguageSelector } from '@/components';
 import { useLanguage } from '@/contexts/LanguageContext';
-import Image from 'next/image';
 import {
   Shield,
-  AlertTriangle,
-  TrendingUp,
-  XCircle,
-  Clock,
   Filter,
   X,
-  MessageSquare
+  MessageSquare,
+  Copy
 } from 'lucide-react';
 
 export const description = "Demo Contractor Risk Management - Comprehensive safety and compliance tracking dashboard with real-time alerts and self-service analytics";
 
 export const Home = () => {
-  const [showFilterPopup, setShowFilterPopup] = useState(false);
-  const [insuranceStatus, setInsuranceStatus] = useState('all');
   const [selectedMarks, setSelectedMarks] = useState([]);
-  const [showEmailModal, setShowEmailModal] = useState(false);
-  const [emailPreviews, setEmailPreviews] = useState([]);
-  const [currentEmailIndex, setCurrentEmailIndex] = useState(0);
-  const [showSlackModal, setShowSlackModal] = useState(false);
-  const [slackMessage, setSlackMessage] = useState('');
-  const [editableSlackMessage, setEditableSlackMessage] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const [userLoaded, setUserLoaded] = useState(false);
+
+  // Message modal state
+  const [showMessageModal, setShowMessageModal] = useState(false);
+  const [editableMessage, setEditableMessage] = useState('');
+
+  // State filter
+  const [selectedState, setSelectedState] = useState('all');
+  const [showStateFilterPopup, setShowStateFilterPopup] = useState(false);
+  const [availableStates] = useState(['California', 'Texas', 'New York', 'Florida', 'Illinois', 'Pennsylvania', 'Ohio', 'Georgia', 'North Carolina', 'Michigan', 'Washington', 'Arizona', 'Colorado', 'Virginia', 'Oregon']);
 
   // Get language context
   const { t } = useLanguage();
@@ -249,72 +246,50 @@ export const Home = () => {
     };
   }, []);
 
-  // Apply filter to Tableau dashboards when insurance status changes
+  // Apply State filter to Tableau dashboards when state changes
   useEffect(() => {
-    const applyFilter = async () => {
-      console.log('Insurance status changed to:', insuranceStatus);
-      const fieldName = 'Insurance Status'; // Update this to match your actual field name in Tableau
-      const filterValue = insuranceStatus === 'all' ? [] : [insuranceStatus];
+    const applyStateFilter = async () => {
+      console.log('State filter changed to:', selectedState);
+      const fieldName = 'State';
+      const filterValue = selectedState === 'all' ? [] : [selectedState];
 
       const applyFilterToViz = async (vizId) => {
-        // Get the actual tableau-viz web component by ID
         const viz = document.getElementById(vizId);
-
-        if (!viz) {
-          console.log(`Viz with id ${vizId} not found`);
-          return;
-        }
-
-        // Wait for workbook to be available
+        if (!viz) return;
         if (!viz.workbook) {
-          console.log(`Workbook not ready for ${vizId}, waiting...`);
-          // Try again after a short delay
           setTimeout(() => applyFilterToViz(vizId), 500);
           return;
         }
 
         try {
           const activeSheet = viz.workbook.activeSheet;
-          console.log(`Applying filter to ${vizId} - Sheet:`, activeSheet.name, 'Type:', activeSheet.sheetType);
-
-          // Check if the active sheet is a dashboard
           if (activeSheet.sheetType === 'dashboard') {
-            // Apply filter to all worksheets in the dashboard
             const worksheets = activeSheet.worksheets;
-            console.log('Found worksheets in dashboard:', worksheets.length);
-
             for (const worksheet of worksheets) {
-              if (insuranceStatus === 'all') {
+              if (selectedState === 'all') {
                 await worksheet.clearFilterAsync(fieldName);
-                console.log(`Cleared filter on worksheet: ${worksheet.name}`);
               } else {
                 await worksheet.applyFilterAsync(fieldName, filterValue, 'replace');
-                console.log(`Applied filter ${filterValue} to worksheet: ${worksheet.name}`);
               }
             }
           } else {
-            // If it's a single worksheet, apply directly
-            if (insuranceStatus === 'all') {
+            if (selectedState === 'all') {
               await activeSheet.clearFilterAsync(fieldName);
-              console.log('Cleared filter on worksheet');
             } else {
               await activeSheet.applyFilterAsync(fieldName, filterValue, 'replace');
-              console.log('Applied filter to worksheet:', filterValue);
             }
           }
         } catch (error) {
-          console.error(`Error applying filter to ${vizId}:`, error);
-          console.error('Error details:', error.message);
+          console.error(`Error applying state filter to ${vizId}:`, error);
         }
       };
 
-      // Apply filter to both dashboards using their IDs
       await applyFilterToViz('executiveSummaryViz');
       await applyFilterToViz('complianceCenterViz');
     };
 
-    applyFilter();
-  }, [insuranceStatus]);
+    applyStateFilter();
+  }, [selectedState]);
 
   // Listen for mark selection events - attach INSIDE firstinteractive
   useEffect(() => {
@@ -415,67 +390,6 @@ export const Home = () => {
     };
   }, [currentUser]);
 
-  // Generate emails from selected marks (handles multiple selections)
-  const generateEmail = () => {
-    if (selectedMarks.length === 0) {
-      // Just return without showing popup
-      return;
-    }
-
-    // Generate an email for each selected mark
-    const emails = selectedMarks.map((mark, index) => {
-      // Try to find email field (common field names)
-      const emailField = Object.keys(mark).find(key =>
-        key.toLowerCase().includes('email') ||
-        key.toLowerCase().includes('e-mail') ||
-        key.toLowerCase().includes('contact')
-      );
-
-      // Try to find contractor/company name
-      const nameField = Object.keys(mark).find(key =>
-        key.toLowerCase().includes('contractor') ||
-        key.toLowerCase().includes('company') ||
-        key.toLowerCase().includes('name')
-      );
-
-      const emailAddress = emailField ? mark[emailField] : `contractor${index + 1}@example.com`;
-      const contractorName = nameField ? mark[nameField] : `Contractor ${index + 1}`;
-
-      // Generate email content
-      return {
-        to: emailAddress,
-        subject: t.urgentInsuranceStatusExpired,
-        body: `${t.dearContractor} ${contractorName},
-
-${t.urgentNotification}
-
-${t.recordsIndicate}
-
-${t.selectedRecordDetails}:
-${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}
-
-${t.pleaseTakeActions}
-${t.reviewPolicy}
-${t.renewCoverage}
-${t.submitDocumentation}
-
-${t.failureWarning}
-
-${t.questionsContact}
-
-${t.bestRegards}
-${t.complianceTeam}
-
----
-${t.demoEmailGenerated}`
-      };
-    });
-
-    setEmailPreviews(emails);
-    setCurrentEmailIndex(0);
-    setShowEmailModal(true);
-  };
-
   return (
     <>
       <style jsx global>{`
@@ -538,6 +452,35 @@ ${t.demoEmailGenerated}`
           basis='sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5'
         />
 
+        {/* Filter Buttons - Visible at Top */}
+        <div className="flex flex-wrap justify-center items-center gap-4 py-4">
+          {/* State Filter Button */}
+          <button
+            onClick={() => setShowStateFilterPopup(true)}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg"
+          >
+            <Filter className="h-5 w-5" />
+            <span className="font-medium">State: {selectedState === 'all' ? 'All' : selectedState}</span>
+          </button>
+
+          {/* Selected Marks Display - Clickable to open message modal */}
+          {selectedMarks.length > 0 && (
+            <button
+              onClick={() => {
+                // Generate message from selected marks
+                const message = selectedMarks.map((mark, index) =>
+                  `Record ${index + 1}:\n${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
+                ).join('\n\n');
+                setEditableMessage(message);
+                setShowMessageModal(true);
+              }}
+              className="flex items-center gap-2 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-lg transition-colors cursor-pointer"
+            >
+              <MessageSquare className="h-5 w-5" />
+              <span className="font-medium">{selectedMarks.length} mark{selectedMarks.length > 1 ? 's' : ''} selected</span>
+            </button>
+          )}
+        </div>
 
         {/* Main Dashboard */}
         <div className="flex flex-col gap-6">
@@ -570,50 +513,6 @@ ${t.demoEmailGenerated}`
                 </div>
               </CardContent>
             </Card>
-          </div>
-
-          {/* Insurance Status Filter Widget */}
-          <div className="flex justify-center items-center gap-4 my-4">
-            <button
-              onClick={() => setShowFilterPopup(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-[#CEAB73] hover:bg-[#B89558] text-white rounded-lg transition-colors shadow-lg"
-            >
-              <Filter className="h-5 w-5" />
-              <span className="font-medium">Insurance Status: {insuranceStatus.charAt(0).toUpperCase() + insuranceStatus.slice(1)}</span>
-            </button>
-
-            {/* Action Button - Shows when marks are selected and user is loaded */}
-            {selectedMarks.length > 0 && userLoaded && (
-              <button
-                onClick={currentUser?.name === 'Mike Chen' ? () => {
-                  // Generate just the data for editing
-                  const dataOnly = selectedMarks.map((mark, index) =>
-                    `Record ${index + 1}:
-${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n')}`
-                  ).join('\n\n');
-
-                  setEditableSlackMessage(dataOnly);
-                  setShowSlackModal(true);
-                } : generateEmail}
-                className={`flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-colors shadow-lg animate-pulse ${
-                  currentUser?.name === 'Mike Chen'
-                    ? 'bg-[#4A154B] hover:bg-[#3A0F3A]'
-                    : 'bg-red-600 hover:bg-red-700'
-                }`}
-              >
-                {currentUser?.name === 'Mike Chen' ? (
-                  <>
-                    <MessageSquare className="h-5 w-5" />
-                    <span className="font-medium">Send Slack Message ({selectedMarks.length})</span>
-                  </>
-                ) : (
-                  <>
-                    <AlertTriangle className="h-5 w-5" />
-                    <span className="font-medium">Send Expiration Notice ({selectedMarks.length})</span>
-                  </>
-                )}
-              </button>
-            )}
           </div>
 
           {/* {Compliance Center} */}
@@ -717,49 +616,63 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
         </div>
       </main>
 
-      {/* Filter Popup Modal */}
-      {showFilterPopup && (
-        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowFilterPopup(false)}>
+      {/* State Filter Popup Modal */}
+      {showStateFilterPopup && (
+        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowStateFilterPopup(false)}>
           <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <Filter className="h-5 w-5 text-[#CEAB73]" />
-                {t.filterByInsuranceStatus}
+                <Filter className="h-5 w-5 text-blue-400" />
+                Filter by State
               </h3>
               <button
-                onClick={() => setShowFilterPopup(false)}
+                onClick={() => setShowStateFilterPopup(false)}
                 className="text-slate-400 hover:text-white transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <div className="space-y-3">
-              {['All', 'Active', 'Expired', 'Pending'].map((status) => (
+            <div className="space-y-2 max-h-[400px] overflow-y-auto">
+              <button
+                onClick={() => {
+                  setSelectedState('all');
+                  setShowStateFilterPopup(false);
+                }}
+                className={`w-full text-left p-4 rounded-lg transition-colors border ${
+                  selectedState === 'all'
+                    ? 'bg-blue-600 border-blue-600 text-white'
+                    : 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">All States</span>
+                  {selectedState === 'all' && (
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  )}
+                </div>
+                <p className="text-xs mt-1 opacity-75">Show data for all states</p>
+              </button>
+
+              {availableStates.map((state) => (
                 <button
-                  key={status}
+                  key={state}
                   onClick={() => {
-                    setInsuranceStatus(status);
-                    setShowFilterPopup(false);
+                    setSelectedState(state);
+                    setShowStateFilterPopup(false);
                   }}
                   className={`w-full text-left p-4 rounded-lg transition-colors border ${
-                    insuranceStatus === status
-                      ? 'bg-[#CEAB73] border-[#CEAB73] text-white'
+                    selectedState === state
+                      ? 'bg-blue-600 border-blue-600 text-white'
                       : 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium capitalize">{status}</span>
-                    {insuranceStatus === status && (
+                    <span className="font-medium">{state}</span>
+                    {selectedState === state && (
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     )}
                   </div>
-                  <p className="text-xs mt-1 opacity-75">
-                    {status === 'all' && 'Show all insurance statuses'}
-                    {status === 'active' && 'Currently active insurance'}
-                    {status === 'expired' && 'Expired insurance policies'}
-                    {status === 'pending' && 'Pending insurance verification'}
-                  </p>
                 </button>
               ))}
             </div>
@@ -767,119 +680,17 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
         </div>
       )}
 
-      {/* Email Preview Modal - Multiple Recipients */}
-      {showEmailModal && emailPreviews.length > 0 && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowEmailModal(false)}>
+      {/* Message Modal - Shows when mark selection button is clicked */}
+      {showMessageModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowMessageModal(false)}>
           <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-red-500" />
-                {t.insuranceExpirationNotices}
+                <MessageSquare className="h-5 w-5 text-emerald-400" />
+                Selected Data ({selectedMarks.length} mark{selectedMarks.length > 1 ? 's' : ''})
               </h3>
               <button
-                onClick={() => setShowEmailModal(false)}
-                className="text-slate-400 hover:text-white transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Email Counter and Navigation */}
-            {emailPreviews.length > 1 && (
-              <div className="flex items-center justify-between mb-4 bg-slate-700 p-3 rounded-lg">
-                <button
-                  onClick={() => setCurrentEmailIndex(Math.max(0, currentEmailIndex - 1))}
-                  disabled={currentEmailIndex === 0}
-                  className="px-3 py-1 bg-slate-600 hover:bg-slate-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {t.previous}
-                </button>
-                <span className="text-white font-medium">
-                  {t.email} {currentEmailIndex + 1} {t.of} {emailPreviews.length}
-                </span>
-                <button
-                  onClick={() => setCurrentEmailIndex(Math.min(emailPreviews.length - 1, currentEmailIndex + 1))}
-                  disabled={currentEmailIndex === emailPreviews.length - 1}
-                  className="px-3 py-1 bg-slate-600 hover:bg-slate-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {t.next}
-                </button>
-              </div>
-            )}
-
-            <div className="space-y-4">
-              {/* Email Header */}
-              <div className="bg-slate-700 p-4 rounded-lg space-y-3">
-                <div>
-                  <label className="text-sm font-medium text-slate-400">{t.to}:</label>
-                  <p className="text-white">{emailPreviews[currentEmailIndex].to}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-slate-400">{t.subject}:</label>
-                  <p className="text-white font-semibold">{emailPreviews[currentEmailIndex].subject}</p>
-                </div>
-              </div>
-
-              {/* Email Body */}
-              <div className="bg-slate-700 p-4 rounded-lg max-h-[300px] overflow-y-auto">
-                <label className="text-sm font-medium text-slate-400 mb-2 block">{t.message}:</label>
-                <pre className="text-slate-200 whitespace-pre-wrap font-sans text-sm leading-relaxed">
-                  {emailPreviews[currentEmailIndex].body}
-                </pre>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-3 justify-between pt-4 border-t border-slate-600">
-                <button
-                  onClick={() => {
-                    setShowEmailModal(false);
-                    setSelectedMarks([]);
-                  }}
-                  className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
-                >
-                  {t.close}
-                </button>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => {
-                      // Remove current email from preview list
-                      const newPreviews = emailPreviews.filter((_, idx) => idx !== currentEmailIndex);
-                      if (newPreviews.length === 0) {
-                        setShowEmailModal(false);
-                        setSelectedMarks([]);
-                      } else {
-                        setEmailPreviews(newPreviews);
-                        setCurrentEmailIndex(Math.min(currentEmailIndex, newPreviews.length - 1));
-                      }
-                    }}
-                    className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
-                  >
-                    {t.sendThisEmail}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowEmailModal(false);
-                      setSelectedMarks([]);
-                    }}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-semibold"
-                  >
-                    {t.sendAll} ({emailPreviews.length})
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Slack Message Modal - For Mike Chen */}
-      {showSlackModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowSlackModal(false)}>
-          <div className="bg-slate-800 rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
-
-              <button
-                onClick={() => setShowSlackModal(false)}
+                onClick={() => setShowMessageModal(false)}
                 className="text-slate-400 hover:text-white transition-colors"
               >
                 <X className="h-5 w-5" />
@@ -887,31 +698,16 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
             </div>
 
             <div className="space-y-4">
-              {/* Slack Header */}
-              <div className="bg-slate-700 p-4 rounded-lg space-y-3">
-                <div className="flex items-center gap-3">
-                  <Image
-                    src="/img/themes/superstore/superstore.png"
-                    alt="Logo"
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                  />
-                  <div>
-                    <p className="text-white font-medium">Mike Chen</p>
-                    <p className="text-slate-400 text-sm">to #safety-team</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Slack Message Body */}
-              <div className="bg-slate-700 p-4 rounded-lg">
-                <label className="text-sm font-medium text-slate-400 mb-2 block">Message:</label>
+              {/* Editable Message */}
+              <div>
+                <label className="text-sm font-medium text-slate-400 mb-2 block">
+                  Message (Editable):
+                </label>
                 <textarea
-                  value={editableSlackMessage}
-                  onChange={(e) => setEditableSlackMessage(e.target.value)}
-                  className="w-full h-48 bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-200 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#4A154B] focus:border-transparent"
-                  placeholder="Type your message here..."
+                  value={editableMessage}
+                  onChange={(e) => setEditableMessage(e.target.value)}
+                  className="w-full h-64 p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent resize-none font-mono text-sm"
+                  placeholder="Selected data will appear here..."
                 />
               </div>
 
@@ -919,31 +715,29 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               <div className="flex gap-3 justify-between pt-4 border-t border-slate-600">
                 <button
                   onClick={() => {
-                    setShowSlackModal(false);
-                    setSelectedMarks([]);
-                    setEditableSlackMessage('');
+                    navigator.clipboard.writeText(editableMessage);
                   }}
-                  className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors flex items-center gap-2"
                 >
-                  Cancel
+                  <Copy className="h-4 w-4" />
+                  Copy to Clipboard
                 </button>
                 <div className="flex gap-3">
                   <button
                     onClick={() => {
-                      setShowSlackModal(false);
+                      setShowMessageModal(false);
                       setSelectedMarks([]);
-                      setEditableSlackMessage('');
+                      setEditableMessage('');
                     }}
-                    className="px-4 py-2 bg-[#4A154B] hover:bg-[#3A0F3A] text-white rounded-lg transition-colors font-semibold flex items-center gap-2"
+                    className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
                   >
-                    <Image
-                      src="/img/themes/superstore/superstore.png"
-                      alt="Logo"
-                      width={20}
-                      height={20}
-                      className="rounded"
-                    />
-                    Send to Team
+                    Clear & Close
+                  </button>
+                  <button
+                    onClick={() => setShowMessageModal(false)}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                  >
+                    Done
                   </button>
                 </div>
               </div>
@@ -951,6 +745,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
           </div>
         </div>
       )}
+
       </div>
     </>
   );
