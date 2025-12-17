@@ -352,10 +352,6 @@ export const PlayStudio = () => {
                   chipBalance: Math.floor(ltdSales * 1000000) // Convert to chip balance (example calculation)
                 };
 
-                console.log('📊 Dashboard Data Updated:', newData);
-                console.log('📊 spendInPeriod:', totalSales);
-                console.log('📊 ltdSpend:', ltdSales);
-
                 return newData;
               });
             }
@@ -500,41 +496,43 @@ export const PlayStudio = () => {
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Main Chart Area */}
             <div className="lg:col-span-2">
-              <Card className="bg-white dark:bg-slate-800 shadow-xl w-fit">
-                <CardHeader>
-                  <CardTitle className="text-white dark:text-white">Activity Chart</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <TableauEmbed
-                    id="playstudioViz"
-                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Playstudio-Demo/Sheet1'
-                    hideTabs={true}
-                    toolbar='hidden'
-                    className="min-w-[300px] min-h-[400px] sm:min-w-[510px] sm:min-h-[500px] md:min-w-[600px] md:min-h-[600px] lg:min-w-[400px] lg:min-h-[500px] xl:min-w-[1100px] xl:min-h-[600px] 2xl:min-w-[1100px] 2xl:min-h-[600px]"
-                    layouts={{
-                      'xs': { 'device': 'phone' },
-                      'sm': { 'device': 'phone' },
-                      'md': { 'device': 'default' },
-                      'lg': { 'device': 'phone' },
-                      'xl': { 'device': 'tablet' },
-                      'xl2': { 'device': 'desktop' },
-                    }}
-                  />
-                </CardContent>
-              </Card>
+              <div className="w-fit">
+                <Card className="bg-white dark:bg-slate-800 shadow-xl w-full">
+                  <CardHeader className="p-0 pb-2">
+                    <CardTitle className="text-white dark:text-white">Activity Chart</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4">
+                    <TableauEmbed
+                      id="playstudioViz"
+                      src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/Playstudio-Demo/Sheet1'
+                      hideTabs={true}
+                      toolbar='hidden'
+                      className="min-w-[300px] min-h-[400px] sm:min-w-[510px] sm:min-h-[500px] md:min-w-[600px] md:min-h-[600px] lg:min-w-[400px] lg:min-h-[400px] xl:min-w-[1100px] xl:min-h-[400px] 2xl:min-w-[1100px] 2xl:min-h-[400px]"
+                      layouts={{
+                        'xs': { 'device': 'phone' },
+                        'sm': { 'device': 'phone' },
+                        'md': { 'device': 'default' },
+                        'lg': { 'device': 'phone' },
+                        'xl': { 'device': 'tablet' },
+                        'xl2': { 'device': 'desktop' },
+                      }}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Bottom Bar - Matches Card width */}
+                <div className="mt-6 bg-purple-800 dark:bg-purple-900 rounded-lg px-6 py-4 flex items-center justify-between w-full">
+                  <div className="text-white">
+                    <span className="font-medium">Spend:</span> ${dashboardData.spendInPeriod.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </div>
+                  <div className="text-white">
+                    <span className="font-medium">Last Session:</span> {dashboardData.lastSession || 'N/A'}
+                  </div>
+                </div>
+              </div>
             </div>
 
 
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="mt-6 bg-purple-800 dark:bg-purple-900 rounded-lg px-6 py-4 flex items-center justify-between">
-            <div className="text-white">
-              <span className="font-medium">Spend:</span> ${dashboardData.spendInPeriod.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
-            <div className="text-white">
-              <span className="font-medium">Last Session:</span> {dashboardData.lastSession || 'N/A'}
-            </div>
           </div>
         </div>
       </main>
