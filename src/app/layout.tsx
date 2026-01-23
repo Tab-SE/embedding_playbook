@@ -22,6 +22,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js" async></script>
+      </head>
       <body className='h-screen w-screen'>
         <SessionProvider>
           <QueryClientProvider client={queryClient}>

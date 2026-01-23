@@ -1,9 +1,6 @@
 "use client";
 import { useEffect, useState, useRef, forwardRef, useId } from 'react';
 
-// eslint-disable-next-line no-unused-vars
-import { tab_embed } from 'libs';
-
 import { TableauToolbar, XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
 import { getLayoutProps, parseClassNameForLayouts } from './vizUtils';
 
