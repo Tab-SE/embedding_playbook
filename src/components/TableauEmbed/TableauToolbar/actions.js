@@ -1,32 +1,42 @@
-// eslint-disable-next-line no-unused-vars
-import { tab_embed } from 'libs';
-
 export const exportImage = async (viz) => {
   viz.exportImageAsync();
 }
 
 export const exportPDF = async (viz) => {
-  viz.displayDialogAsync(tab_embed.TableauDialogType.ExportPDF);
+  // Access TableauDialogType from the global tableau object (loaded via CDN script)
+  if (typeof window !== 'undefined' && window.tableau) {
+    viz.displayDialogAsync(window.tableau.TableauDialogType.ExportPDF);
+  }
 }
 
 export const exportCrossTab = async (viz) => {
-   viz.displayDialogAsync(tab_embed.TableauDialogType.ExportCrossTab);
+  if (typeof window !== 'undefined' && window.tableau) {
+    viz.displayDialogAsync(window.tableau.TableauDialogType.ExportCrossTab);
+  }
 }
 
 export const exportData = async (viz) => {
-  viz.displayDialogAsync(tab_embed.TableauDialogType.ExportData);
+  if (typeof window !== 'undefined' && window.tableau) {
+    viz.displayDialogAsync(window.tableau.TableauDialogType.ExportData);
+  }
 }
 
 export const exportPPT = async (viz) => {
-  viz.displayDialogAsync(tab_embed.TableauDialogType.ExportPowerPoint);
+  if (typeof window !== 'undefined' && window.tableau) {
+    viz.displayDialogAsync(window.tableau.TableauDialogType.ExportPowerPoint);
+  }
 }
 
 export const exportTWBX = async (viz) => {
-  viz.displayDialogAsync(tab_embed.TableauDialogType.ExportWorkbook);
+  if (typeof window !== 'undefined' && window.tableau) {
+    viz.displayDialogAsync(window.tableau.TableauDialogType.ExportWorkbook);
+  }
 }
 
 export const shareViz = async (viz) => {
-  viz.displayDialogAsync(tab_embed.TableauDialogType.Share);
+  if (typeof window !== 'undefined' && window.tableau) {
+    viz.displayDialogAsync(window.tableau.TableauDialogType.Share);
+  }
 }
 
 export const refreshData = async (viz) => {
