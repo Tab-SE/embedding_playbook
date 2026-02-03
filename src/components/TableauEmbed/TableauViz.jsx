@@ -35,16 +35,21 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       const viz = innerRef.current;
       // passing the viz DOM element to tabScale https://gitlab.com/jhegele/tabscale
       // const tabScale = new TabScale.Scale(innerRef.current);
-      // apply a few inline styles to new iframe
-      const iframe = viz.shadowRoot.querySelector('iframe');
-      iframe.style.margin = "auto";
-      iframe.style.position = "relative";
+      // apply a few inline styles to new iframe - check if shadowRoot exists first
+      if (viz.shadowRoot) {
+        const iframe = viz.shadowRoot.querySelector('iframe');
+        if (iframe) {
+          iframe.style.margin = "auto";
+          iframe.style.position = "relative";
+        }
+      }
 
       // Log dimensions
       const logDimensions = () => {
         const rect = viz.getBoundingClientRect();
         const height = viz.getAttribute('height');
         const width = viz.getAttribute('width');
+        const iframe = viz.shadowRoot?.querySelector('iframe');
         const iframeRect = iframe?.getBoundingClientRect();
         console.log('TableauViz size:', width, 'x', height, '| rendered:', rect.width, 'x', rect.height, '| iframe:', iframeRect?.width, 'x', iframeRect?.height);
       };
