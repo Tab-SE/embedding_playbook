@@ -7,7 +7,7 @@ const Intro = () => {
     <div>
       <h1 className='text-5xl font-bold mb-9'>Embed Tableau</h1>
         <div className='leading-loose space-y-9'>
-          <p>Tableau is the world's leading end-to-end data and analytics platform.</p>
+          <p> the world's leading end-to-end data and analytics platform.</p>
           <Image
             src='/img/tableau/stock/showcase.png'
             width='750'

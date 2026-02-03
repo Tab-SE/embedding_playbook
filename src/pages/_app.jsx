@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Script from 'next/script';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from 'next-themes';
@@ -35,26 +36,34 @@ export default function App({
   // Session Provider: https://next-auth.js.org/getting-started/client#sessionprovider
   // Query Client Provider: https://tanstack.com/query/v4/docs/react/reference/QueryClientProvider
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
-          <ThemeProvider
-            attribute="data-theme"
-            forcedTheme='light'
-            enableSystem={false}
-            themes={[ 'light' ]}
-          >
-            <LanggraphAgentRuntimeProvider
-              agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
+    <>
+      {/* Load Tableau Embedding API v3 from CDN */}
+      <Script
+        src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"
+        strategy="beforeInteractive"
+        type="module"
+      />
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen buttonPosition='bottom-left'/>
+            <ThemeProvider
+              attribute="data-theme"
+              forcedTheme='light'
+              enableSystem={false}
+              themes={[ 'light' ]}
             >
-              <AuthGuard demo={'documentation'} base_path={'/'} />
-              <Component {...pageProps} />
-              <FloatingAssistant
-                settings={docs_settings}
-              />
-            </LanggraphAgentRuntimeProvider>
-          </ThemeProvider>
-      </QueryClientProvider>
-    </SessionProvider>
+              <LanggraphAgentRuntimeProvider
+                agentId='a585b681-26dd-5c0a-b77f-47a0e69b1bbd'
+              >
+                <AuthGuard demo={'documentation'} base_path={'/'} />
+                <Component {...pageProps} />
+                <FloatingAssistant
+                  settings={docs_settings}
+                />
+              </LanggraphAgentRuntimeProvider>
+            </ThemeProvider>
+        </QueryClientProvider>
+      </SessionProvider>
+    </>
   )
 }
