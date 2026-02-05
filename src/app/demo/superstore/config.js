@@ -6,7 +6,8 @@ import {
   BrainCircuit,
   Languages,
   AppWindow,
-  Activity
+  Activity,
+  Sparkles
 } from "lucide-react";
 
 export const settings = {
@@ -78,6 +79,13 @@ export const settings = {
       path: '/pulse-discover',
       min_role: 1,
       description: 'Pulse Discover dashboard from eacanada server'
+    },
+    {
+      name: 'Pulse Metrics',
+      icon: <Sparkles className="h-5 w-5"/> ,
+      path: '/pulse-metrics',
+      min_role: 1,
+      description: 'AI-powered Pulse metrics with custom time filters'
     },
   ],
 }

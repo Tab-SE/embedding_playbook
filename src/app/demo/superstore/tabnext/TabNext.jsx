@@ -37,11 +37,14 @@ export const TabNext = () => {
     return 'MFG_Production_Scraps1';
   }, []);
   // Salesforce username for JWT Bearer Flow (comes from user store via session)
-  const salesforceUsername = useMemo(() =>
-    session?.user?.salesforceUsername ||
-    session?.user?.email?.split('@')[0] ||
-    "",
-  [session]);
+  const salesforceUsername = useMemo(() => {
+    const username = session?.user?.salesforceUsername ||
+      session?.user?.email?.split('@')[0] ||
+      "";
+    console.log('[TabNext] salesforceUsername:', username);
+    console.log('[TabNext] session.user:', session?.user);
+    return username;
+  }, [session]);
 
   // Initialize SDK and render dashboard
   // This follows the Tableau Next embedding pattern:
@@ -169,7 +172,10 @@ export const TabNext = () => {
   // JWT Bearer Flow - authenticates with Salesforce using username and certificate
   // Reference: https://developer.salesforce.com/docs/analytics/sdk/guide/sdk-access-token.html
   const handleJWTBearerAuth = useCallback(async () => {
+    console.log('[TabNext] handleJWTBearerAuth called with username:', salesforceUsername);
+    
     if (!salesforceUsername) {
+      console.error('[TabNext] No salesforceUsername provided');
       setError('Salesforce username is required. Please ensure your user profile includes a salesforceUsername.');
       setStatus("idle");
       return;
@@ -178,6 +184,8 @@ export const TabNext = () => {
     try {
       setError("");
       setStatus("authenticating");
+      
+      console.log('[TabNext] Sending JWT auth request...');
 
       const resp = await fetch('/api/tabnext/jwt-auth', {
         method: 'POST',
@@ -185,14 +193,20 @@ export const TabNext = () => {
         body: JSON.stringify({ salesforce_username: salesforceUsername }),
       });
 
+      console.log('[TabNext] JWT auth response status:', resp.status);
+
       if (!resp.ok) {
         const text = await resp.text();
+        console.error('[TabNext] JWT auth failed:', text);
         setError(`Authentication failed: ${text}`);
         setStatus("idle");
         return;
       }
 
       const data = await resp.json();
+      console.log('[TabNext] JWT auth success, authCredential length:', data.authCredential?.length);
+      console.log('[TabNext] Instance URL:', data.instance_url);
+      
       const authCredential = data.authCredential;
       if (!authCredential) {
         throw new Error('No authCredential in response');
@@ -201,6 +215,7 @@ export const TabNext = () => {
       const instanceUrl = data.instance_url;
       await initializeAndRender(authCredential, instanceUrl);
     } catch (e) {
+      console.error('[TabNext] Authentication error:', e);
       setError(`Authentication error: ${e.message || String(e)}`);
       setStatus("idle");
     }

@@ -65,7 +65,7 @@ export const Users = [
         role: 1,
         vector_store: 'superstore_jchen',
         uaf: {"Region": ["Central","East"]},
-        salesforceUsername: "xavier.acme@storm-31c05a56906a6d.com"
+        salesforceUsername: "yvetteacme.8wplepayv6fh.3s72gsi9ogfp@salesforce.com"
       },
       {
         id: 'c',
