@@ -41,7 +41,14 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     embed_token = user.embed_token;
   }
   console.log("token", embed_token)
-      console.log('Link to decode JWT: https://jwt.io/#debugger-io?token=' + embed_token);
+  const jwtDecodeUrl = `https://jwt.io/#debugger-io?token=${embed_token}`;
+  console.log('🔗 Link to decode JWT (Ctrl/Cmd+Click to open):');
+  console.log(jwtDecodeUrl);
+  console.log('💡 TIP: Type openJWT() in console to open in new tab');
+  // Add helper function to window for easy access
+  if (typeof window !== 'undefined') {
+    window.openJWT = () => window.open(jwtDecodeUrl, '_blank');
+  }
 
 
   return (

@@ -1,0 +1,1 @@
+export { FloatingAnalyticsAgent } from './FloatingAnalyticsAgent';

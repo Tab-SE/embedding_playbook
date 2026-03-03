@@ -1,4 +1,4 @@
-import { Demo, FloatingAssistant } from '@/components';
+import { Demo, FloatingAssistant, FloatingAnalyticsAgent } from '@/components';
 
 import { Home } from './Home';
 import { settings } from './config';
@@ -13,6 +13,9 @@ const Page = () => {
       pageName={pageName}
     >
       <Home/>
+      <FloatingAnalyticsAgent
+        agentId={process.env.NEXT_PUBLIC_ANALYTICS_AGENT_ID || '0XxHu000001Aj8UKAS'}
+      />
       <FloatingAssistant
         settings={settings}
       />

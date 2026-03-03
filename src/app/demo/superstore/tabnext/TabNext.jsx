@@ -11,24 +11,13 @@ export const TabNext = () => {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
-  // Convert .my.salesforce.com to .lightning.force.com for SDK compatibility
-  // The SDK requires the Lightning domain, not the My Domain
   const orgUrl = useMemo(() => {
     const url = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL || "";
     if (!url) return "";
-    // Convert .my.salesforce.com to .lightning.force.com
-    // Example: https://storm-31c05a56906a6d.my.salesforce.com -> https://storm-31c05a56906a6d.lightning.force.com
-    const converted = url.replace(/\.my\.salesforce\.com/, '.lightning.force.com').replace(/\/+$/, '');
-    // Converted orgUrl from .my.salesforce.com to .lightning.force.com
-    return converted;
+    // Remove trailing slashes
+    return url.replace(/\/+$/, '');
   }, []);
-  // Dashboard ID/API Name - find this from the Tableau Next dashboard URL:
-  // Example: https://<salesforce.org>.force.com/tableau/dashboard/<asset-api-name>/view
-  // The asset-api-name is what you use here
-  // Dashboard ID/API Name - MUST match the dashboard API name from Salesforce
-  // To find it: Go to your dashboard in Salesforce and check the URL
-  // Example URL: https://storm-31c05a56906a6d.my.salesforce.com/tableau/dashboard/YourDashboardAPIName/view
-  // Use "YourDashboardAPIName" as the dashboard ID
+
   const dashboardIdOrApiName = useMemo(() => {
     const envId = process.env.NEXT_PUBLIC_TABNEXT_DASHBOARD_ID;
     if (envId) {
@@ -36,6 +25,7 @@ export const TabNext = () => {
     }
     return 'MFG_Production_Scraps1';
   }, []);
+
   // Salesforce username for JWT Bearer Flow (comes from user store via session)
   const salesforceUsername = useMemo(() =>
     session?.user?.salesforceUsername ||
@@ -43,37 +33,18 @@ export const TabNext = () => {
     "",
   [session]);
 
-  // Initialize SDK and render dashboard
-  // This follows the Tableau Next embedding pattern:
-  // 1. Container: <div id='analytics-container'></div> (already in JSX)
-  // 2. SDK config: { authCredential, orgUrl }
-  // 3. Import SDK: from '@salesforce/analytics-embedding-sdk'
-  // 4. Initialize SDK: initializeAnalyticsSdk(config)
-  // 5. Create component: new AnalyticsDashboard({ parentIdOrElement, idOrApiName })
-  // 6. Render: dashboard.render()
+
   const initializeAndRender = useCallback(async (authCredential, instanceUrlFromAuth) => {
     try {
       setStatus("initializing");
 
-      // Use instance_url from OAuth token exchange if available, otherwise fall back to configured orgUrl
-      // Convert to Lightning format as required by SDK
-      // Reference: https://developer.salesforce.com/docs/analytics/sdk/guide/sdk-access-token.html
       let sdkOrgUrl = orgUrl;
       if (instanceUrlFromAuth) {
-        const cleanInstanceUrl = instanceUrlFromAuth.replace(/\/+$/, '');
-        // Convert .my.salesforce.com to .lightning.force.com for SDK compatibility
-        if (cleanInstanceUrl.includes('.my.salesforce.com')) {
-          sdkOrgUrl = cleanInstanceUrl.replace(/\.my\.salesforce\.com/, '.lightning.force.com');
-        } else if (cleanInstanceUrl.includes('.lightning.force.com')) {
-          sdkOrgUrl = cleanInstanceUrl;
-        } else {
-          sdkOrgUrl = cleanInstanceUrl;
-        }
+        sdkOrgUrl = instanceUrlFromAuth.replace(/\/+$/, '');
       } else if (!orgUrl) {
         throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL and no instance_url from auth');
       }
 
-      // Step 1: Initialize the SDK with auth credential and org URL
       const config = {
         authCredential: authCredential,
         orgUrl: sdkOrgUrl
@@ -85,26 +56,21 @@ export const TabNext = () => {
       });
       await initializeAnalyticsSdk(config);
 
-      // Step 2: Ensure container has dimensions before creating dashboard
       const container = document.getElementById('analytics-container');
       if (!container) {
         throw new Error('Container element not found!');
       }
 
-      // Ensure container has explicit pixel dimensions (SDK needs numeric values)
       const parentWidth = container.parentElement?.clientWidth || window.innerWidth;
 
-      // Set explicit pixel dimensions - SDK validates these
       container.style.height = '800px';
       container.style.width = `${Math.max(parentWidth, 600)}px`;
       container.style.minHeight = '800px';
       container.style.minWidth = '600px';
       container.style.display = 'block'; // Ensure it's a block element
 
-      // Wait a tick for DOM to update
       await new Promise(resolve => setTimeout(resolve, 0));
 
-      // Step 3: Create the AnalyticsDashboard component
       let dashboard;
       try {
         console.log('[TabNext] Creating AnalyticsDashboard with:', {
@@ -121,7 +87,6 @@ export const TabNext = () => {
         throw createError;
       }
 
-      // Step 4: Render the dashboard in the container
 
       try {
         console.log('[TabNext] Rendering dashboard...');
