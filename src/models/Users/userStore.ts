@@ -65,7 +65,9 @@ export const Users = [
         role: 1,
         vector_store: 'superstore_jchen',
         uaf: {"Region": ["Central","East"]},
-        salesforceUsername: "xavier.acme@storm-31c05a56906a6d.com"
+        // salesforceUsername: "xavier.acme@storm-31c05a56906a6d.com",
+        salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
+
       },
       {
         id: 'c',
@@ -74,7 +76,9 @@ export const Users = [
         picture: "/img/users/mackenzie_day.png",
         role: 2,
         vector_store: 'superstore_jmorris',
-        uaf: {"Region": ["South"]}
+        uaf: {"Region": ["South"]},
+        salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
+
       },
     ]
   },
