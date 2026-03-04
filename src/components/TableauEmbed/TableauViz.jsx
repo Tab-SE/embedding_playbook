@@ -78,6 +78,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <XSLayout>
         {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
         <tableau-viz
+          key={jwt}
           ref={innerRef}
           id={vizId}
           src={src}
@@ -95,6 +96,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <SMLayout>
         {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
         <tableau-viz
+          key={jwt}
           ref={innerRef}
           id="tableauViz"
           src={src}
@@ -112,6 +114,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <MDLayout>
         {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
         <tableau-viz
+          key={jwt}
           ref={innerRef}
           id="tableauViz"
           src={src}
@@ -129,6 +132,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <LGLayout>
         {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
         <tableau-viz
+          key={jwt}
           ref={innerRef}
           id="tableauViz"
           src={src}
@@ -146,6 +150,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <XLLayout>
         {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
         <tableau-viz
+          key={jwt}
           ref={innerRef}
           id="tableauViz"
           src={src}
@@ -163,6 +168,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       <XL2Layout>
         {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
         <tableau-viz
+            key={jwt}
             ref={innerRef}
             id="tableauViz"
             src={src}

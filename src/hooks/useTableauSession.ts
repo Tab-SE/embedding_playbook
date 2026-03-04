@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -23,15 +24,19 @@ export const useTableauSession = () => {
   const queryKey = signedIn ? ["tableau", "user session", user_data?.user?.name, user_data?.user?.demo ] : [];
 
   // tanstack query hook
-  return useQuery({
+  const result = useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: queryKey,
-    queryFn: () => {
-      if (session_data?.user?.email) {
-        return getClientSession(session_data.user.email);
-      } else {
+    queryFn: async () => {
+      const timestamp = new Date().toISOString();
+      const email = session_data?.user?.email;
+      if (!email) {
         throw new Error("useTableauSession Error: Session data not available");
       }
+      console.log(`[useTableauSession] ${timestamp} - Fetching new token for ${email}`);
+      const clientSession = await getClientSession(email);
+      console.log(`[useTableauSession] ${timestamp} - Got token:`, clientSession?.embed_token?.substring(0, 50) + '...');
+      return clientSession;
     },
     enabled: signedIn,
     staleTime: 5 * 60 * 1000, // Consider data stale after 5 minutes (before token expires)
@@ -39,6 +44,16 @@ export const useTableauSession = () => {
     refetchInterval: 5 * 60 * 1000, // Automatically refetch every 5 minutes to get fresh tokens
     refetchOnWindowFocus: true, // Refetch when window regains focus
   });
+
+  // Log when data changes
+  useEffect(() => {
+    if (result.data?.embed_token) {
+      const timestamp = new Date().toISOString();
+      console.log(`[useTableauSession] ${timestamp} - Token updated in hook:`, result.data.embed_token.substring(0, 50) + '...');
+    }
+  }, [result.data?.embed_token]);
+
+  return result;
 }
 
 // Helper function to fetch client session
