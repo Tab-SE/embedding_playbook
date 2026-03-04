@@ -272,7 +272,7 @@ export const Home = () => {
                   id="overviewViz"
                   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
                   hideTabs={true}
-                  toolbar='hidden'
+                  toolbar='top'
                   className='
                   min-w-[300px] min-h-[1430px]
                   sm:min-w-[510px] sm:min-h-[1430px]

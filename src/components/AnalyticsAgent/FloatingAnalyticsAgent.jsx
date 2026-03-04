@@ -13,17 +13,17 @@ export const FloatingAnalyticsAgent = (props) => {
 
   const salesforceUsername = session?.user?.salesforceUsername || session?.user?.email?.split('@')[0] || "";
 
-  const initializeAgent = useCallback(async (authCredential, instanceUrl) => {
+  const initializeAgent = useCallback(async (authCredential) => {
     try {
       setStatus("initializing");
 
       // Dynamically import the SDK
       const { initializeAnalyticsSdk, AnalyticsAgent } = await import('@salesforce/analytics-embedding-sdk');
 
-      const orgUrl = instanceUrl?.replace(/\/+$/, '') || process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL?.replace(/\/+$/, '');
+      const orgUrl = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
 
       if (!orgUrl) {
-        throw new Error('Missing org URL');
+        throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL environment variable');
       }
 
       const config = {
@@ -94,8 +94,7 @@ export const FloatingAnalyticsAgent = (props) => {
         throw new Error('No authCredential in response');
       }
 
-      const instanceUrl = data.instance_url;
-      await initializeAgent(authCredential, instanceUrl);
+      await initializeAgent(authCredential);
     } catch (e) {
       setError(`Auth error: ${e.message || String(e)}`);
       setStatus("idle");

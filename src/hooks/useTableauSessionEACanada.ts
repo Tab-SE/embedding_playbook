@@ -30,7 +30,10 @@ export const useTableauSessionEACanada = () => {
       }
     },
     enabled: signedIn,
-    gcTime: Infinity, // caches embed token without garbage collection, refresh via auth error handler
+    staleTime: 5 * 60 * 1000, // Consider data stale after 5 minutes (before token expires)
+    gcTime: Infinity, // Keep in cache but mark as stale
+    refetchInterval: 5 * 60 * 1000, // Automatically refetch every 5 minutes to get fresh tokens
+    refetchOnWindowFocus: true, // Refetch when window regains focus
   });
 }
 

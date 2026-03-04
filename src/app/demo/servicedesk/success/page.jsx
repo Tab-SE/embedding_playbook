@@ -166,7 +166,7 @@ ${Object.entries(mark).map(([key, value]) => `  • ${key}: ${value}`).join('\n'
               <div className="tableau-container w-full">
                 <TableauEmbed
                   id='customerHealthViz'
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
+                  src=''
                   hideTabs={true}
                   toolbar='hidden'
 
