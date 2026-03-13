@@ -46,7 +46,7 @@ export function useProgress() {
     return {
       progressSteps: [],
       isStreaming: false,
-      addProgressStep: () => {},
+      addProgressStep: (step) => {},
       clearProgress: () => {},
       startStreaming: () => {},
       stopStreaming: () => {},
