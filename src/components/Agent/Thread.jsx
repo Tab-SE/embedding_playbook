@@ -24,6 +24,8 @@ import {
   StopCircleIcon,
 } from "lucide-react";
 import { MarkdownText, TooltipIconButton } from "./ui";
+import { MarkdownWithChart } from "./ui/MarkdownWithChart";
+import { ProgressIndicator } from "./ui/ProgressIndicator";
 import { cn } from "utils";
 
 
@@ -253,13 +255,13 @@ const AgentMessage = (props) => {
   const { ai_avatar } = props;
   const { message: originalMessage } = useMessage();
 
-  // 2. If the message is not complete, show the "thinking" indicator
+  // 2. If the message is not complete, show the progress indicator
   if (originalMessage.status?.type !== 'complete') {
     return (
       <div className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
         <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
-        <div className="text-stone-950 col-start-2 row-start-1 my-1.5 flex max-w-xl items-center dark:text-stone-50">
-          <ThinkingIndicator />
+        <div className="text-stone-950 col-start-2 row-start-1 my-1.5 w-full dark:text-stone-50">
+          <ProgressIndicator />
         </div>
       </div>
     );
@@ -290,7 +292,7 @@ const AgentMessage = (props) => {
         part.type === 'text' &&
         !part.text?.startsWith('{') && // Skip JSON
         part.text &&
-        part.text.length > 100 // Only substantial responses
+        part.text.trim().length > 10 // Minimum 10 characters
       )
     : [];
 
@@ -320,7 +322,7 @@ const AgentMessage = (props) => {
     >
       <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
       <div className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
-        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+        <MessagePrimitive.Content components={{ Text: MarkdownWithChart }} />
       </div>
     </MessagePrimitive.Root>
   );
@@ -399,7 +401,7 @@ const CircleStopIcon = () => {
   return (
     (<svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 16"
+      viewBox="0 0 16 16"
       fill="currentColor"
       width="16"
       height="16">
