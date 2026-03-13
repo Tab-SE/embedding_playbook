@@ -10,6 +10,8 @@ import { useRef, useEffect } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { TooltipIconButton, MarkdownText } from ".";
+import { MarkdownWithChart } from "./MarkdownWithChart";
+import { ProgressIndicator } from "./ProgressIndicator";
 
 
 export const MiniThread = (props) => {
@@ -163,16 +165,30 @@ const AgentMessage = (props) => {
   const { ai_avatar } = props;
   const { message: originalMessage } = useMessage();
 
-  // If the message is not complete, show the "thinking" indicator
+  // If the message is not complete, show the progress indicator
   if (originalMessage.status?.type !== 'complete') {
     return (
       <div className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
         <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
-        <div className="text-stone-950 col-start-2 row-start-1 my-1.5 flex max-w-xl items-center dark:text-stone-50">
-          <ThinkingIndicator />
+        <div className="text-stone-950 col-start-2 row-start-1 my-1.5 w-full dark:text-stone-50">
+          <ProgressIndicator />
         </div>
       </div>
     );
+  }
+
+  // DEBUG: Log ALL content parts to understand the structure
+  console.log('FULL MESSAGE CONTENT ANALYSIS:');
+  if (Array.isArray(originalMessage.content)) {
+    originalMessage.content.forEach((part, index) => {
+      console.log(`Part ${index}:`, {
+        type: part.type,
+        text: part.type === 'text' ? part.text?.substring(0, 100) + '...' : 'N/A',
+        startsWithJSON: part.type === 'text' && part.text?.startsWith('{'),
+        length: part.type === 'text' ? part.text?.length : 'N/A',
+        fullPart: part
+      });
+    });
   }
 
   // Check the role: Only render if it's an assistant message
@@ -180,39 +196,43 @@ const AgentMessage = (props) => {
     return null;
   }
 
-  // Create a custom Text component that filters content
-  const FilteredText = (props) => {
-    const { text } = props;
+  // IMPROVED FILTERING: Get only the final substantial text response
+  const filteredTextParts = Array.isArray(originalMessage.content)
+    ? originalMessage.content.filter(part =>
+        part.type === 'text' &&
+        !part.text?.startsWith('{') && // Skip JSON
+        part.text &&
+        part.text.trim().length > 10 // Minimum 10 characters
+      )
+    : [];
 
-    // Skip JSON strings
-    if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
-      return null;
-    }
+  console.log('FILTERED PARTS:', filteredTextParts);
 
-    // Skip short text (likely fragments)
-    if (text.length < 50) {
-      return null;
-    }
+  // Get the last substantial text part
+  const finalTextPart = filteredTextParts[filteredTextParts.length - 1];
 
-    // Skip text that contains raw query data indicators
-    if (text.includes('"fields":[') || text.includes('"filters":[')) {
-      return null;
-    }
+  console.log('FINAL PART TO DISPLAY:', finalTextPart);
 
-    // Render the filtered text using MarkdownText
-    return <MarkdownText text={text} />;
+  // If no valid text part, don't render
+  if (!finalTextPart) {
+    console.log('NO VALID TEXT PART FOUND - NOT RENDERING');
+    return null;
+  }
+
+  // Create display message with only the final part
+  const displayMessage = {
+    ...originalMessage,
+    content: [finalTextPart],
   };
 
-  // Use MessagePrimitive.Content with custom filtering
   return (
-    <MessagePrimitive.Root className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4">
+    <MessagePrimitive.Root
+      message={displayMessage}
+      className="relative grid w-full max-w-2xl grid-cols-[auto_1fr] grid-rows-[auto_1fr] py-4"
+    >
       <MessageAvatar src={ai_avatar} alt="AI Avatar" fallback="AI" />
       <div className="text-stone-950 col-start-2 row-start-1 my-1.5 max-w-xl break-words leading-7 dark:text-stone-50">
-        <MessagePrimitive.Content
-          components={{
-            Text: FilteredText
-          }}
-        />
+        <MessagePrimitive.Content components={{ Text: MarkdownWithChart }} />
       </div>
     </MessagePrimitive.Root>
   );
