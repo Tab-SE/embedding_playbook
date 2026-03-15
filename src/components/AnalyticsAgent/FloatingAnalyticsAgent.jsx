@@ -5,7 +5,9 @@ import { Bot } from "lucide-react";
 import { Button } from "@/components/ui";
 
 export const FloatingAnalyticsAgent = (props) => {
-  const { agentId } = props;
+  const { agentId: agentIdProp } = props;
+  // Env is source of truth so NEXT_PUBLIC_ANALYTICS_AGENT_ID always works when set
+  const agentId = process.env.NEXT_PUBLIC_ANALYTICS_AGENT_ID || agentIdProp || '0XxHu000001Aj8UKAS';
   const [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");

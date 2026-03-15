@@ -55,7 +55,9 @@ export const Users = [
         role: 0,
         vector_store: 'superstore_slopez',
         uaf: {"Region": ["West"]},
-        salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
+        salesforceUsername: "slopez@superstore.com"
+        // salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
+
       },
       {
         id: 'b',
@@ -65,8 +67,9 @@ export const Users = [
         role: 1,
         vector_store: 'superstore_jchen',
         uaf: {"Region": ["Central","East"]},
+        // community user that still does not authenticate
         // salesforceUsername: "xavier.acme@storm-31c05a56906a6d.com",
-        salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
+        salesforceUsername: "jchen+123@salesforce.com"
 
       },
       {
@@ -77,7 +80,7 @@ export const Users = [
         role: 2,
         vector_store: 'superstore_jmorris',
         uaf: {"Region": ["South"]},
-        salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
+        salesforceUsername: "jmorris@superstore.com"
 
       },
     ]
