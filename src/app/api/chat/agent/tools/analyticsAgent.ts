@@ -12,6 +12,10 @@ const client = new Client({
   apiUrl: process.env.LANGGRAPH_API_URL || 'http://localhost:8123'
 });
 
+// Store thread IDs per agent to maintain conversation context
+// Key: agentId, Value: threadId
+const threadStore = new Map<string, string>();
+
 // Map demo names to their corresponding agent IDs
 const getAgentIdForDemo = (demo: string): string => {
   const agentIdMap: { [key: string]: string } = {
@@ -22,6 +26,14 @@ const getAgentIdForDemo = (demo: string): string => {
   };
 
   return agentIdMap[demo] || agentIdMap['documentation'];
+};
+
+// Get or create a thread ID for the given agent (uses Web Crypto API for Edge runtime)
+const getThreadId = (agentId: string): string => {
+  if (!threadStore.has(agentId)) {
+    threadStore.set(agentId, crypto.randomUUID());
+  }
+  return threadStore.get(agentId)!;
 };
 
 export const analyticsAgent = (demo: string = 'documentation') => {
@@ -47,20 +59,29 @@ export const analyticsAgent = (demo: string = 'documentation') => {
     Input: 'the user wants to understand why the home office category is not profitable, look at sales, orders and other data to understand the issue'`,
     func: async (input) => {
       try {
+        console.log('🟢 [analyticsAgent] ========== TOOL CALLED ==========');
+        console.log('🟢 [analyticsAgent] Input:', input);
+        console.log('🟢 [analyticsAgent] Agent ID:', agentId);
+
+        const threadId = getThreadId(agentId);
+        console.log('🟢 [analyticsAgent] Using thread:', threadId);
+
         const streamResponse = client.runs.stream(
-          null, // threadId
+          threadId, // Use persistent thread ID for conversation continuity
           agentId, // Use the demo-specific agent ID
           {
             input: {
-              messages: [{ role: "assistant", content: input }]
+              messages: [{ role: "human", content: input }]
             }
           }
         );
 
+        console.log('🟢 [analyticsAgent] Stream started, collecting chunks...');
         let chunks: StreamChunk[] = [];
         for await (const chunk of streamResponse) {
           chunks.push(chunk);
         }
+        console.log('🟢 [analyticsAgent] Collected', chunks.length, 'chunks');
 
         // Process chunks in reverse order to find the last non-empty AI message
         for (let i = chunks.length - 1; i >= 0; i--) {
@@ -69,15 +90,18 @@ export const analyticsAgent = (demo: string = 'documentation') => {
             for (let j = chunk.data.messages.length - 1; j >= 0; j--) {
               const message = chunk.data.messages[j];
               if (message.type === 'ai' && message.content && message.content.trim() !== '') {
+                console.log('🟢 [analyticsAgent] Found response, length:', message.content.length);
                 return message.content;
               }
             }
           }
         }
 
+        console.log('🟡 [analyticsAgent] No valid response found');
         return "No valid response found from the Analytics Agent.";
       } catch (error) {
-        console.error('Error communicating with Analytics Agent:', error);
+        console.error('🔴 [analyticsAgent ERROR]', error);
+        console.error('🔴 [analyticsAgent ERROR] Stack:', error instanceof Error ? error.stack : 'No stack');
         return 'Failed to communicate with Analytics Agent';
       }
     }

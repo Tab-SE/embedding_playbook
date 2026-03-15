@@ -18,10 +18,14 @@ export const runtime = "edge";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    console.log('🔵 [CHAT ROUTE] ============ NEW REQUEST ============');
+    console.log('🔵 [CHAT ROUTE] Received messages count:', body.messages?.length);
+    console.log('🔵 [CHAT ROUTE] Messages:', JSON.stringify(body.messages, null, 2));
 
     // Get user session to determine demo context
     const token = await getToken({ req });
     const demo = (token?.demo as string) || 'documentation';
+    console.log('🔵 [CHAT ROUTE] Demo:', demo);
 
     /**
      * We represent intermediate steps as system messages for display purposes,
@@ -35,7 +39,11 @@ export async function POST(req: NextRequest) {
       .map(convertVercelMessageToLangChainMessage);
     const returnIntermediateSteps = body.show_intermediate_steps;
 
+    console.log('🔵 [CHAT ROUTE] Filtered messages count:', messages.length);
+    console.log('🔵 [CHAT ROUTE] Creating agent for demo:', demo);
+
     const agent = await bootstrapAgent(demo);
+    console.log('🔵 [CHAT ROUTE] Agent created successfully');
 
     if (!returnIntermediateSteps) {
       /**
@@ -50,6 +58,7 @@ export async function POST(req: NextRequest) {
        *
        * See: https://langchain-ai.github.io/langgraphjs/how-tos/stream-tokens/
        */
+      console.log('🔵 [CHAT ROUTE] Starting agent stream...');
       const eventStream = await agent.streamEvents(
         {
           messages,
@@ -60,6 +69,7 @@ export async function POST(req: NextRequest) {
         },
       );
 
+      console.log('🔵 [CHAT ROUTE] Event stream created, returning response');
       return LangChainAdapter.toDataStreamResponse(eventStream);
 
     } else {
@@ -68,7 +78,9 @@ export async function POST(req: NextRequest) {
        * they are generated as JSON objects, so streaming and displaying them with
        * the AI SDK is more complicated.
        */
+      console.log('🔵 [CHAT ROUTE] Invoking agent with intermediate steps...');
       const result = await agent.invoke({ messages });
+      console.log('🔵 [CHAT ROUTE] Agent invoke complete');
       return NextResponse.json(
         {
           messages: result.messages.map(convertLangChainMessageToVercelMessage),
@@ -77,6 +89,8 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (e: any) {
+    console.error('🔴 [CHAT ROUTE ERROR]', e);
+    console.error('🔴 [CHAT ROUTE ERROR] Stack:', e.stack);
     return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
   }
 }

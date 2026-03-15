@@ -34,8 +34,14 @@ export const sendMessage = async (params: {
   messages: LangChainMessage[];
   agentId: string;
 }) => {
+  console.log('🔶 [SEND MESSAGE] threadId:', params.threadId);
+  console.log('🔶 [SEND MESSAGE] agentId:', params.agentId);
+  console.log('🔶 [SEND MESSAGE] messages count:', params.messages.length);
+  console.log('🔶 [SEND MESSAGE] messages:', JSON.stringify(params.messages, null, 2));
+
   const client = createClient();
 
+  console.log('🔶 [SEND MESSAGE] Calling client.runs.stream...');
   return client.runs.stream(
     params.threadId,
     params.agentId!,
@@ -146,15 +152,31 @@ export function LanggraphAgentRuntimeProvider({
   const runtime = useLangGraphRuntime({
     threadId: threadIdRef.current,
     stream: async (messages) => {
+      console.log('🟣 [LANGGRAPH PROVIDER] ========== STREAM CALLED ==========');
+      console.log('🟣 [LANGGRAPH PROVIDER] Messages array length:', messages.length);
+      console.log('🟣 [LANGGRAPH PROVIDER] All messages:', JSON.stringify(messages, null, 2));
+
       if (!threadIdRef.current) {
         const { thread_id } = await createThread();
         threadIdRef.current = thread_id;
-        console.log('[THREAD] Created new thread:', thread_id);
+        console.log('🟣 [LANGGRAPH PROVIDER] Created new thread:', thread_id);
       } else {
-        console.log('[THREAD] Using existing thread:', threadIdRef.current);
+        console.log('🟣 [LANGGRAPH PROVIDER] Using existing thread:', threadIdRef.current);
       }
       const threadId = threadIdRef.current;
-      console.log('[THREAD] Sending message to thread:', threadId, 'Message count:', messages.length);
+
+      // Filter out cancelled tool messages but keep human and ai messages for context
+      const cleanMessages = messages.filter(msg => {
+        if (msg.type === 'tool') {
+          const isCancelled = typeof msg.content === 'string' && msg.content.includes('cancelled');
+          console.log('🟣 [LANGGRAPH PROVIDER] Tool message - cancelled:', isCancelled);
+          return !isCancelled;
+        }
+        return true;
+      });
+
+      console.log('🟣 [LANGGRAPH PROVIDER] Clean messages to send:', JSON.stringify(cleanMessages, null, 2));
+      console.log('🟣 [LANGGRAPH PROVIDER] About to send to LangGraph API...');
 
       // Start tracking progress
       startStreaming();
@@ -164,7 +186,8 @@ export function LanggraphAgentRuntimeProvider({
         timestamp: Date.now()
       });
 
-      const stream = await sendMessage({ threadId, messages, agentId });
+      const stream = await sendMessage({ threadId, messages: cleanMessages, agentId });
+      console.log('🟣 [LANGGRAPH PROVIDER] Stream received from LangGraph');
 
       // Wrap stream to track progress
       return wrapStreamWithProgress(stream, addProgressStep, stopStreaming, clearProgress);
