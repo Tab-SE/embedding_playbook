@@ -3,16 +3,20 @@ import {
   ComposerPrimitive,
   MessagePrimitive,
   ThreadPrimitive,
-  useMessage
+  useMessage,
+  useThreadMessages,
 } from "@assistant-ui/react";
 import { SendHorizontalIcon } from "lucide-react";
 import { useRef, useEffect } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { TooltipIconButton, MarkdownText } from ".";
 import { MarkdownWithChart } from "./MarkdownWithChart";
 import { ProgressIndicator } from "./ProgressIndicator";
+import { useChatActions } from "@/components/Providers/LanggraphAgentRuntimeProvider";
 
+const MAX_QUESTIONS = 3;
 
 export const MiniThread = (props) => {
   const { ai_avatar, user_avatar, sample_questions = [] } = props;
@@ -46,6 +50,8 @@ export const MiniThread = (props) => {
 
         <div
           className="sticky bottom-0 mt-3 flex w-full max-w-2xl flex-col items-center justify-end rounded-t-lg bg-inherit pb-4">
+          <QuestionLimitBanner />
+          <QuestionCounter />
           <MyComposer inputRef={inputRef} />
         </div>
       </ThreadPrimitive.Viewport>
@@ -109,8 +115,78 @@ const WelcomeMessage = (props) => {
   );
 };
 
+const QuestionCounter = () => {
+  const messages = useThreadMessages();
+  const { clearMessages } = useChatActions();
+
+  const questionCount = messages.filter(m => m.role === 'user').length;
+  const hasReachedLimit = questionCount >= MAX_QUESTIONS;
+  const hasMessages = messages.length > 0;
+
+  const handleNewChat = () => {
+    // Clear all messages to start a fresh conversation without closing the modal
+    clearMessages();
+  };
+
+  if (!hasMessages) {
+    return null;
+  }
+
+  return (
+    <div className="flex w-full items-center justify-between mb-2 px-2">
+      <div className="flex items-center gap-3">
+        <span className="text-sm text-stone-600 dark:text-stone-400">
+          Questions: {questionCount}/{MAX_QUESTIONS}
+        </span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleNewChat}
+          className="h-8 text-xs"
+        >
+          New Chat
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+const QuestionLimitBanner = () => {
+  const messages = useThreadMessages();
+  const questionCount = messages.filter(m => m.role === 'user').length;
+  const hasReachedLimit = questionCount >= MAX_QUESTIONS;
+
+  // Only show the banner if we've reached the limit AND the last message is from assistant AND it's complete
+  const lastMessage = messages[messages.length - 1];
+  const lastAnswerComplete = lastMessage?.role === 'assistant' && lastMessage?.status?.type === 'complete';
+
+  if (!hasReachedLimit || !lastAnswerComplete) {
+    return null;
+  }
+
+  return (
+    <div className="w-full mb-3 p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg">
+      <p className="text-sm text-amber-800 dark:text-amber-200 text-center">
+        You've reached the maximum of {MAX_QUESTIONS} questions per conversation. Start a new chat to continue.
+      </p>
+    </div>
+  );
+};
+
 const MyComposer = (props) => {
   const { inputRef } = props;
+  const messages = useThreadMessages();
+
+  const questionCount = messages.filter(m => m.role === 'user').length;
+  const hasReachedLimit = questionCount >= MAX_QUESTIONS;
+
+  // Only disable input if limit reached AND last message is from assistant AND it's complete
+  const lastMessage = messages[messages.length - 1];
+  const shouldDisable = hasReachedLimit && lastMessage?.role === 'assistant' && lastMessage?.status?.type === 'complete';
+
+  const placeholder = shouldDisable
+    ? "Question limit reached. Start a new chat to continue."
+    : "Write a message...";
 
   return (
     (<ComposerPrimitive.Root
@@ -118,13 +194,15 @@ const MyComposer = (props) => {
       <ComposerPrimitive.Input
         ref={inputRef}
         autoFocus
-        placeholder="Write a message..."
+        placeholder={placeholder}
         rows={1}
+        disabled={shouldDisable}
         className="placeholder:text-stone-500 size-full max-h-40 resize-none border-none bg-transparent p-4 pr-12 text-sm outline-none focus:ring-0 disabled:cursor-not-allowed dark:placeholder:text-stone-400" />
       <ComposerPrimitive.Send asChild>
         <TooltipIconButton
           tooltip="Send"
           variant="default"
+          disabled={shouldDisable}
           className="my-2.5 size-8 p-2 transition-opacity ease-in">
           <SendHorizontalIcon />
         </TooltipIconButton>

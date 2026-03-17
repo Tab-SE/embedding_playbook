@@ -16,4 +16,9 @@ export interface ChatHandler {
   stop?: () => void;
   onFileUpload?: (file: File) => Promise<void>;
   onFileError?: (errMsg: string) => void;
+  disabled?: boolean;
+  hasReachedLimit?: boolean;
+  questionCount?: number;
+  maxQuestions?: number;
+  onNewChat?: () => void;
 }

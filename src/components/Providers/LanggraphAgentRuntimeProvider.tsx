@@ -1,10 +1,22 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, createContext, useContext } from "react";
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import { useLangGraphRuntime, LangChainMessage } from "@assistant-ui/react-langgraph";
 import { Client, ThreadState } from "@langchain/langgraph-sdk";
 import { useProgress } from "@/components/Agent/ProgressContext";
+
+const ChatActionsContext = createContext<{
+  clearMessages: () => void;
+} | null>(null);
+
+export const useChatActions = () => {
+  const context = useContext(ChatActionsContext);
+  if (!context) {
+    throw new Error("useChatActions must be used within LanggraphAgentRuntimeProvider");
+  }
+  return context;
+};
 
 const createClient = () => {
   const baseUrl = typeof window !== 'undefined'
@@ -207,9 +219,16 @@ export function LanggraphAgentRuntimeProvider({
     },
   });
 
+  const clearMessages = () => {
+    // Use the runtime's built-in switchToNewThread method
+    runtime.switchToNewThread();
+  };
+
   return (
-    <AssistantRuntimeProvider runtime={runtime}>
-      {children}
-    </AssistantRuntimeProvider>
+    <ChatActionsContext.Provider value={{ clearMessages }}>
+      <AssistantRuntimeProvider runtime={runtime}>
+        {children}
+      </AssistantRuntimeProvider>
+    </ChatActionsContext.Provider>
   );
 }

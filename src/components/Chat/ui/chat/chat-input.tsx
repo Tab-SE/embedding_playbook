@@ -17,11 +17,17 @@ export default function ChatInput(
     | "handleInputChange"
   > & {
     multiModal?: boolean;
+    disabled?: boolean;
+    hasReachedLimit?: boolean;
   },
 ) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (props.disabled) {
+      e.preventDefault();
+      return;
+    }
     if (imageUrl) {
       props.handleSubmit(e, {
         data: { imageUrl: imageUrl },
@@ -55,6 +61,10 @@ export default function ChatInput(
     }
   };
 
+  const placeholder = props.hasReachedLimit
+    ? "Question limit reached. Start a new chat to continue."
+    : "Type a message";
+
   return (
     <form
       onSubmit={onSubmit}
@@ -67,16 +77,17 @@ export default function ChatInput(
         <Input
           autoFocus
           name="message"
-          placeholder="Type a message"
+          placeholder={placeholder}
           className="flex-1"
           value={props.input}
           onChange={props.handleInputChange}
+          disabled={props.disabled}
         />
         <FileUploader
           onFileUpload={handleUploadFile}
           onFileError={props.onFileError}
         />
-        <Button type="submit" disabled={props.isLoading}>
+        <Button type="submit" disabled={props.isLoading || props.disabled}>
           Send message
         </Button>
       </div>
