@@ -79,5 +79,12 @@ export const settings = {
       min_role: 1,
       description: 'Pulse Discover dashboard from eacanada server'
     },
+    {
+      name: 'Pulse Metrics',
+      icon: <Activity className="h-5 w-5"/> ,
+      path: '/pulse-metrics',
+      min_role: 1,
+      description: 'Tableau Pulse metrics with banner layout'
+    },
   ],
 }
