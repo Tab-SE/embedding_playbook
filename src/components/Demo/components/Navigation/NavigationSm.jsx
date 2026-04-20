@@ -20,11 +20,15 @@ export const NavigationSm = (props) => {
     crumbs,
     app_name,
     app_logo,
+    nav_logo,
     header_logo,
     ai_chat,
     ai_avatar,
     sections,
+    nav_logo_style,
   } = props;
+
+  const navLogoSrc = nav_logo || app_logo;
 
   return (
     <Sheet>
@@ -42,9 +46,11 @@ export const NavigationSm = (props) => {
           >
             {header_logo ? (
               <img src={header_logo} alt={app_name} className="h-6 object-contain" />
+            ) : nav_logo_style === 'contain' ? (
+              <img src={navLogoSrc} alt="" className="h-8 max-w-[140px] object-contain" />
             ) : (
               <Avatar className="h-6 w-6 transition-all group-hover:scale-110 bg-logoBackground">
-                <AvatarImage src={app_logo} alt="demo brand logo" />
+                <AvatarImage src={navLogoSrc} alt="demo brand logo" />
                 <AvatarFallback>APP</AvatarFallback>
               </Avatar>
             )}

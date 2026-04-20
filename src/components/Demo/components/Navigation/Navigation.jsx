@@ -6,10 +6,13 @@ export const Navigation = (props) => {
     crumbs,
     app_name,
     app_logo,
+    nav_logo,
     header_logo,
+    header_brand_logo,
     ai_chat,
     ai_avatar,
     sections,
+    nav_logo_style,
   } = props;
 
   return (
@@ -19,10 +22,12 @@ export const Navigation = (props) => {
         crumbs={crumbs}
         app_name={app_name}
         app_logo={app_logo}
+        nav_logo={nav_logo}
         header_logo={header_logo}
         ai_chat={ai_chat}
         ai_avatar={ai_avatar}
         sections={sections}
+        nav_logo_style={nav_logo_style}
       />
       {header_logo && (
         <div className="hidden md:flex items-center gap-3">
@@ -32,6 +37,8 @@ export const Navigation = (props) => {
       <Breadcrumbs
         base_path={base_path}
         crumbs={crumbs}
+        app_name={app_name}
+        header_brand_logo={header_brand_logo}
       />
       <div className="relative ml-auto flex-1 md:grow-0"/>
       <UserMenu

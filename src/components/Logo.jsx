@@ -4,7 +4,7 @@ export const Logo = (props) => {
   const { src, width, height, alt, text } = props;
 
   const imageSize = Number(width) || 40;
-  const imageSrc = src || "/img/tableau/tableau_logo.png";
+  const imageSrc = src || "/img/themes/morgan/morgan2.png";
 
   const imageProps = {
     src: imageSrc,

@@ -13,7 +13,9 @@ import { generateBreadcrumbs } from '../../utils';
 export const Breadcrumbs = (props) => {
   const {
     base_path,
-    crumbs
+    crumbs,
+    app_name,
+    header_brand_logo,
   } = props;
 
   const breadcrumbItems = generateBreadcrumbs(base_path, crumbs);
@@ -25,8 +27,16 @@ export const Breadcrumbs = (props) => {
           <React.Fragment key={index}>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href={item.href} className="text-breadcrumbs">
-                  {item.title}
+                <Link href={item.href} className="text-breadcrumbs inline-flex items-center">
+                  {header_brand_logo && index === 0 ? (
+                    <img
+                      src={header_brand_logo}
+                      alt={app_name || ''}
+                      className="h-7 w-auto max-w-[min(100%,280px)] object-contain object-left"
+                    />
+                  ) : (
+                    item.title
+                  )}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>

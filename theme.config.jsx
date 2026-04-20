@@ -17,15 +17,16 @@ export default {
   },
   logo:
   <Logo
-    src='/img/tableau/tableau_logo.png'
+    src='/img/themes/morgan/morgan2.png'
     width='33'
     text='Embed Tableau'
   />,
   footer: {
     content:
     <Logo
-      src="/img/tableau/logo_text.png"
-      width='300'
+      src="/img/themes/morgan/morgan-wordmark.svg"
+      width='220'
+      height='36'
     />
   },
   search: {
@@ -63,10 +64,9 @@ export default {
           imgHost={imgHost}
         />
         <link rel="icon" href={imgHost + "/svg/logo_color.svg?h=32&w=32"} type="image/svg+xml" />
-        <link rel="icon" href={imgHost + "/img/tableau/tableau.ico?h=32&w=32"} type="image/ico" />
-        <link rel="icon" href={imgHost + "/img/tableau/tableau_logo.png?h=32&w=32"} type="image/png" />
+        <link rel="icon" href={imgHost + "/img/themes/morgan/morgan2.png?h=32&w=32"} type="image/png" />
         <link rel="icon" href={imgHost + "/svg/dark.svg?h=32&w=32"} type="image/svg+xml" media="(prefers-color-scheme: dark)" />
-        <link rel="icon" href={imgHost + "/img/tableau/tableau_logo_dark.png?h=32&w=32"} type="image/png" media="(prefers-color-scheme: dark)" />
+        <link rel="icon" href={imgHost + "/img/themes/morgan/morgan2.png?h=32&w=32"} type="image/png" media="(prefers-color-scheme: dark)" />
       </>
     );
   }
