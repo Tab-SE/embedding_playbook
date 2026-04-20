@@ -12,18 +12,22 @@ import {
 export const settings = {
   app_id: 'morgan',
   app_name: 'Morgan & Morgan | Expert Navigator',
-  /** Primary lockup — sidebar, assistant, auth, payment modal */
+  /** Compact M&M — sidebar, assistant, floating UI */
   app_logo: '/img/themes/morgan/morgan2.png',
-  /** Header breadcrumb: replaces long app title with horizontal wordmark */
-  header_brand_logo: '/img/themes/morgan/morgan1.png',
+  /** Full lockup (wordmark + tagline) — login card; same asset as header for consistency */
+  auth_logo: '/img/themes/morgan/morgan-brand-lockup.png',
+  /** Header breadcrumb: same lockup as login (replaces old morgan1 crop that showed edge artifacts) */
+  header_brand_logo: '/img/themes/morgan/morgan-brand-lockup.png',
   /** Horizontal wordmark SVG — optional surfaces (e.g. long footer). */
   brand_wordmark: '/img/themes/morgan/morgan-wordmark.svg',
-  /** Wide logo on login card instead of circular avatar crop */
+  /** Wide lockup image on login; hide redundant text title below the graphic */
   auth_logo_variant: 'wide',
+  auth_show_title: false,
   /** Sidebar / mobile drawer: show full mark with `object-contain` */
   nav_logo_style: 'contain',
   base_path: '/demo/morgan',
-  auth_hero: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2940&auto=format&fit=crop',
+  /** Login page: solid Blue Zodiac–style navy (theme `navBackground`) instead of a stock photo */
+  auth_solid_background: true,
   ai_chat: true,
   ai_avatar: '/img/themes/morgan/morgan2.png',
   sample_questions: [
