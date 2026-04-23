@@ -1,9 +1,9 @@
 import {
-  BriefcaseBusiness,
   ShoppingCart,
   HandCoins,
   HeartPulse,
-  Headphones
+  Headphones,
+  Scale
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -16,6 +16,15 @@ export const galleryItems = [
     vertical: "Consumer Goods",
     description: "The default demo showcasing embedded AI and analytics via dashboards, metrics, charts and natural language assistants",
     icon: <ShoppingCart size={12} strokeWidth={2} />
+  },
+  {
+    id: 'morgan',
+    link: "/demo/morgan",
+    src: "/img/demos/morgan2.png",
+    alt: "Morgan & Morgan | Expert Navigator",
+    vertical: "Legal",
+    description: "Expert witness navigator with embedded Tableau analytics and a branded payment portal when you select an expert on the dashboard",
+    icon: <Scale size={12} strokeWidth={2} />
   },
   {
     id: 'makana',

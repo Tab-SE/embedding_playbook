@@ -86,6 +86,52 @@ export const Users = [
     ]
   },
   {
+    demo: 'morgan',
+    roles: {
+      0: { title: 'Associate', description: 'Case insights and expert search' },
+      1: { title: 'Partner', description: 'Full navigator and payment workflows' },
+      2: { title: 'Managing Partner', description: 'Strategic oversight and reporting' },
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Sofia Lopez",
+        email: "slopez@superstore.com",
+        picture: "/img/users/sofia_lopez.png",
+        role: 0,
+        vector_store: 'superstore_slopez',
+        uaf: {"Region": ["West"]},
+        salesforceUsername: "slopez@superstore.com"
+        // salesforceUsername: "storm.31c05a56906a6d@salesforce.com"
+
+      },
+      {
+        id: 'b',
+        name: "Justin Chen",
+        email: "jchen@superstore.com",
+        picture: "/img/users/justin_chen.png",
+        role: 1,
+        vector_store: 'superstore_jchen',
+        uaf: {"Region": ["Central","East"]},
+        // community user that still does not authenticate
+        // salesforceUsername: "xavier.acme@storm-31c05a56906a6d.com",
+        salesforceUsername: "jchen+123@salesforce.com"
+
+      },
+      {
+        id: 'c',
+        name: "Julie Morris",
+        email: "jmorris@superstore.com",
+        picture: "/img/users/mackenzie_day.png",
+        role: 2,
+        vector_store: 'superstore_jmorris',
+        uaf: {"Region": ["South"]},
+        salesforceUsername: "jmorris@superstore.com"
+
+      },
+    ],
+  },
+  {
     demo: 'makana',
     roles: {
       0: { title: 'Hobby', description: 'Basic data & analytics'},

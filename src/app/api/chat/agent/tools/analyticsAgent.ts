@@ -20,6 +20,7 @@ const threadStore = new Map<string, string>();
 const getAgentIdForDemo = (demo: string): string => {
   const agentIdMap: { [key: string]: string } = {
     'superstore': 'a585b681-26dd-5c0a-b77f-47a0e69b1bbd',
+    'morgan': 'a585b681-26dd-5c0a-b77f-47a0e69b1bbd',
     'makana': 'a0bbabff-36ab-5e80-87dc-c73cc0bf8840',
     'cumulus': '730bfbd6-9543-5e48-9f2b-bcb009fbb33e',
     'documentation': 'a585b681-26dd-5c0a-b77f-47a0e69b1bbd' // fallback to superstore for documentation

@@ -55,7 +55,7 @@ const FloatingAssistantButton = forwardRef(({ ai_avatar, "data-state": state, ..
       tooltip={tooltip}
       side="left"
       {...rest}
-      className="size-full rounded-full shadow transition-transform hover:scale-110 active:scale-90 bg-background text-aiIcons"
+      className="size-full rounded-full bg-background shadow-md ring-2 ring-stone-500/70 ring-offset-2 ring-offset-background transition-transform hover:scale-110 hover:ring-stone-600 hover:shadow-lg active:scale-90 text-aiIcons dark:ring-stone-400/60 dark:ring-offset-stone-950"
       ref={ref}
     >
       <Image

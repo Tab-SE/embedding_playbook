@@ -4,5 +4,7 @@ export { TooltipIconButton } from './tooltip-icon-button';
 export { MiniThread } from './MiniThread';
 export { EnhancedMarkdownText } from './EnhancedMarkdownText';
 export { MarkdownWithChart } from './MarkdownWithChart';
+export { StaticMarkdownText } from './StaticMarkdownText';
 export { ProgressIndicator } from './ProgressIndicator';
 export { SmartChart, parseMarkdownTable } from './SmartChart';
+export { LocationTableMap } from './LocationTableMap';

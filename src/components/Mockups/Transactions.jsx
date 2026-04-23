@@ -23,15 +23,18 @@ import {
 
 // get demo users via this request: https://randomuser.me/api/?results=15&nat=us&inc=name,id,picture,email
 
-export const Transactions = () => {
+export const Transactions = (props) => {
+  const {
+    title = 'Transactions',
+    description = 'Recent transactions to expert witnesses.',
+  } = props;
+
   return (
     <Card className='shadow-xl' x-chunk="dashboard-01-chunk-4">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
-          <CardTitle>Transactions</CardTitle>
-          <CardDescription>
-            Recent transactions from your store.
-          </CardDescription>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
         </div>
         <Button asChild size="sm" className="ml-auto gap-1">
           <Link href="/clientportfolio">

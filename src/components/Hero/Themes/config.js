@@ -13,7 +13,7 @@ export const settings = {
       name: "superstore",
       component: Superstore,
       type: "default",
-      logo: "/img/tableau/tableau_logo.png",
+      logo: "/img/themes/morgan/morgan2.png",
       styles: "",
       project: {
         name: "superstore",

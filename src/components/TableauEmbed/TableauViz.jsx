@@ -88,6 +88,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
           device={getLayoutProps(layoutSpec, 'xs').device}
           hide-tabs={hideTabs ? true : false}
           toolbar={toolbar}
+
           class='flex justify-center items-center rounded'
           data-viz={vizId}
         />

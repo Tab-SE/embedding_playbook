@@ -14,12 +14,15 @@ import {
 } from "components/ui";
 
 export const RecentSales = (props) => {
-  const { title } = props;
+  const { title, description } = props;
 
   return (
     <Card className='shadow-xl' x-chunk="dashboard-01-chunk-5">
       <CardHeader>
         <CardTitle>{title ? title : 'Recent Sales'}</CardTitle>
+        {description ? (
+          <CardDescription>{description}</CardDescription>
+        ) : null}
       </CardHeader>
       <CardContent className="grid gap-8">
         <div className="flex items-center gap-4">
