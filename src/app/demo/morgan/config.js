@@ -9,6 +9,8 @@ import {
   Activity
 } from "lucide-react";
 
+import { MORGAN_DEMO_CANNED_QUESTION } from './morganDemoCannedResponse';
+
 export const settings = {
   app_id: 'morgan',
   app_name: 'Morgan & Morgan | Expert Navigator',
@@ -31,9 +33,7 @@ export const settings = {
   ai_chat: true,
   ai_avatar: '/img/themes/morgan/morgan2.png',
   sample_questions: [
-    "Which expert witnesses are available for medical malpractice cases?",
-    "Summarize expert availability by specialty.",
-    "List connected data sources for this workspace.",
+    MORGAN_DEMO_CANNED_QUESTION,
   ],
   sections: [
     {

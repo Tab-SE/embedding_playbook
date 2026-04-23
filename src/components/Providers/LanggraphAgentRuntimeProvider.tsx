@@ -2,7 +2,7 @@
 
 import { useRef, createContext, useContext } from "react";
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
-import { useLangGraphRuntime, LangChainMessage } from "@assistant-ui/react-langgraph";
+import { useLangGraphRuntime, type LangChainMessage } from "@assistant-ui/react-langgraph";
 import { Client, ThreadState } from "@langchain/langgraph-sdk";
 import { useProgress } from "@/components/Agent/ProgressContext";
 
@@ -151,12 +151,18 @@ async function* wrapStreamWithProgress(
   }
 }
 
+export type CannedStreamIntercept = (
+  messages: LangChainMessage[],
+) => AsyncGenerator<{ event: string; data: LangChainMessage[] }> | null;
+
 export function LanggraphAgentRuntimeProvider({
   children,
   agentId,
+  cannedStreamIntercept,
 }: Readonly<{
   children: React.ReactNode;
   agentId: string;
+  cannedStreamIntercept?: CannedStreamIntercept;
 }>) {
   const threadIdRef = useRef<string | undefined>();
   const { addProgressStep, startStreaming, stopStreaming, clearProgress } = useProgress();
@@ -188,10 +194,23 @@ export function LanggraphAgentRuntimeProvider({
       });
 
       console.log('🟣 [LANGGRAPH PROVIDER] Clean messages to send:', JSON.stringify(cleanMessages, null, 2));
-      console.log('🟣 [LANGGRAPH PROVIDER] About to send to LangGraph API...');
+
+      const stubStream = cannedStreamIntercept?.(cleanMessages);
 
       // Start tracking progress
       startStreaming();
+
+      if (stubStream) {
+        console.log('🟣 [LANGGRAPH PROVIDER] Streaming local assistant response');
+        addProgressStep({
+          icon: '🎬',
+          message: 'Generating response…',
+          timestamp: Date.now()
+        });
+        return wrapStreamWithProgress(stubStream, addProgressStep, stopStreaming, clearProgress);
+      }
+
+      console.log('🟣 [LANGGRAPH PROVIDER] About to send to LangGraph API...');
       addProgressStep({
         icon: '🔌',
         message: 'Getting available tools...',
