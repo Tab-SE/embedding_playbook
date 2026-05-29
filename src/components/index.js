@@ -13,10 +13,12 @@ export { Metrics, Metric, extractMetrics } from './Metrics';
 export {
   TableauEmbed,
   TableauEmbedEACanada,
+  TableauEmbedUBL,
   TableauViz,
   TableauWebAuthor,
   TableauAuth,
   TableauAuthEACanada,
+  TableauAuthUBL,
   TableauToolbar
 } from './TableauEmbed';
 

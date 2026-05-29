@@ -9,6 +9,10 @@ const contentUrl = process.env.NEXT_PUBLIC_ANALYTICS_SITE; // Tableau site name
 const tableau_domain_eacanada = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN_EACANADA || 'https://prod-ca-a.online.tableau.com'; // URL for EACanada Tableau environment
 const contentUrl_eacanada = process.env.NEXT_PUBLIC_ANALYTICS_SITE_EACANADA || 'eacanada'; // EACanada site name
 
+// UBL server configuration
+const tableau_domain_ubl = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN_UBL; // URL for UBL Tableau environment
+const contentUrl_ubl = process.env.NEXT_PUBLIC_ANALYTICS_SITE_UBL; // UBL site name
+
 // authenticate to Tableau with JSON Web Tokens
 export const tabAuthJWT = async (jwt) => {
   const endpoint = `${tableau_domain}/api/${api}/auth/signin`;
@@ -65,6 +69,44 @@ export const tabAuthJWTEACanada = async (jwt) => {
 
     if (!response || !response.credentials) {
       throw new Error('EACanada authentication failed: Invalid response from server');
+    }
+
+    const site_id = response.credentials.site.id;
+    const site = response.credentials.site.contentUrl;
+    const user_id = response.credentials.user.id;
+    const rest_key = response.credentials.token; // Embed and REST API authentication supported via JWT
+    return { site_id, site, user_id, rest_key };
+  } catch (error) {
+    throw error;
+  }
+}
+
+// authenticate to UBL Tableau with JSON Web Tokens
+export const tabAuthJWTUBL = async (jwt) => {
+  const endpoint = `${tableau_domain_ubl}/api/${api}/auth/signin`;
+
+  const body = {
+    credentials: {
+      jwt: jwt,
+      site: {
+        contentUrl: contentUrl_ubl,
+      }
+    }
+  };
+
+  const config = {
+    tableau_domain: tableau_domain_ubl,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const response = await httpPost(endpoint, body, config);
+
+    if (!response || !response.credentials) {
+      throw new Error('UBL authentication failed: Invalid response from server');
     }
 
     const site_id = response.credentials.site.id;
@@ -250,6 +292,44 @@ export const getUserEACanada = async (userId) => {
   } else {
     // Server-side fallback
     const endpoint = '/api/user/eacanada';
+    const body = { userId };
+    const config = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+    const res = await httpPost(endpoint, body, config);
+    const timeout = isServerlessTimeout(res);
+    return timeout ? null : res;
+  }
+}
+
+// obtains a public token for the frontend from UBL server
+// Uses fetch for client-side calls to ensure cookies are sent
+export const getUserUBL = async (userId) => {
+  // Check if we're on the client side
+  if (typeof window !== 'undefined') {
+    const endpoint = '/api/user/ubl';
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      credentials: 'include', // Ensure cookies are sent
+      body: JSON.stringify({ userId }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ubl session: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } else {
+    // Server-side fallback
+    const endpoint = '/api/user/ubl';
     const body = { userId };
     const config = {
       headers: {

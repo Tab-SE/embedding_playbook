@@ -131,7 +131,7 @@ export const FloatingAnalyticsAgent = (props) => {
       </div>
 
       {isOpen && (
-        <div className="fixed bottom-20 right-4 z-[100] w-[90vw] sm:w-[600px] xl:w-[750px] 2xl:w-[840px] h-[500px] 2xl:h-[570px] bg-white dark:bg-stone-950 rounded-xl border border-stone-200 dark:border-stone-800 shadow-xl overflow-hidden" style={{ position: 'fixed', bottom: '5rem', right: '1rem', zIndex: 100 }}>
+        <div className="fixed bottom-20 right-4 z-[100] w-[min(92vw,520px)] xl:w-[560px] 2xl:w-[600px] h-[min(85vh,720px)] bg-white dark:bg-stone-950 rounded-xl border border-stone-200 dark:border-stone-800 shadow-xl overflow-hidden flex flex-col" style={{ position: 'fixed', bottom: '5rem', right: '1rem', zIndex: 100 }}>
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between p-4 border-b border-stone-200 dark:border-stone-800">
               <div className="flex items-center gap-2">
@@ -148,15 +148,9 @@ export const FloatingAnalyticsAgent = (props) => {
               </Button>
             </div>
 
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 min-h-0 overflow-auto">
               {error && (
                 <div className="p-4 text-sm text-red-500">{error}</div>
-              )}
-              {status === "authenticating" && (
-                <div className="p-4 text-sm">Authenticating...</div>
-              )}
-              {status === "initializing" && (
-                <div className="p-4 text-sm">Loading agent...</div>
               )}
               <div
                 id="floating-agent-container"

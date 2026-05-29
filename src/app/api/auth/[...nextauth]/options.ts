@@ -11,8 +11,10 @@ interface DemoUser extends User {
   role?: string;
   vector_store?: any;
   uaf?: any;
+  groups?: string[];
   tableau?: any;
   tableau_eacanada?: any;
+  tableau_ubl?: any;
   rest_token?: string;
   salesforceUsername?: string;
 }
@@ -178,8 +180,80 @@ export const authOptions: AuthOptions = {
               }
             }
 
-            // Return user if either tableau or eacanada authentication succeeded
-            return (user.tableau || user.tableau_eacanada) ? user : null;
+            // Also authenticate to UBL server if credentials are available
+            const ubl_jwt_client_id = process.env.UBL_JWT_CLIENT_ID;
+            const ubl_embed_secret = process.env.UBL_EMBED_JWT_SECRET;
+            const ubl_embed_secret_id = process.env.UBL_EMBED_JWT_SECRET_ID;
+            const ubl_rest_secret = process.env.UBL_REST_JWT_SECRET;
+            const ubl_rest_secret_id = process.env.UBL_REST_JWT_SECRET_ID;
+
+            // UBL uses a narrower embed scope set: ODA's documented supported scopes are only
+            // `tableau:views:embed` and `tableau:views:embed_authoring`. Including
+            // `tableau:insights:embed` here can cause Tableau to drop custom JWT claims
+            // (UAF / groups) silently for ODA users.
+            const ubl_embed_scopes = [
+              "tableau:views:embed",
+              "tableau:views:embed_authoring",
+            ];
+
+            if (ubl_jwt_client_id && ubl_embed_secret && ubl_rest_secret) {
+              const ubl_embed_options = {
+                jwt_secret: ubl_embed_secret,
+                jwt_secret_id: ubl_embed_secret_id,
+                jwt_client_id: ubl_jwt_client_id
+              };
+              const ubl_rest_options = {
+                jwt_secret: ubl_rest_secret,
+                jwt_secret_id: ubl_rest_secret_id,
+                jwt_client_id: ubl_jwt_client_id
+              };
+
+              // Tableau ODA (On-Demand Access) claims: assert ODA enrollment and the user's
+              // group memberships. Groups come from the user record (per-user dynamic).
+              // TEMP DISABLED for UAF debugging.
+              const ubl_extra_claims: Record<string, unknown> = {
+                // 'https://tableau.com/oda':"true",
+                // 'https://tableau.com/groups': (user as any).groups ?? [],
+              };
+
+              const ubl_session = new SessionModel(user.name);
+              try {
+                await ubl_session.jwtUBL(user.email, ubl_embed_options, ubl_embed_scopes, ubl_rest_options, rest_scopes, user.uaf, ubl_extra_claims);
+
+                if (ubl_session.authorized) {
+                  const {
+                    user_id: ubl_user_id,
+                    embed_token: ubl_embed_token,
+                    rest_token: ubl_rest_token,
+                    rest_key: ubl_rest_key,
+                    site_id: ubl_site_id,
+                    site: ubl_site,
+                    created: ubl_created,
+                    expires: ubl_expires
+                  } = ubl_session;
+
+                  // Use the same username as the regular tableau session, or fallback to user.name
+                  const username = user.tableau?.username || user.name;
+
+                  user.tableau_ubl = {
+                    username: username,
+                    user_id: ubl_user_id,
+                    embed_token: ubl_embed_token,
+                    rest_token: ubl_rest_token,
+                    rest_key: ubl_rest_key,
+                    site_id: ubl_site_id,
+                    site: ubl_site,
+                    created: ubl_created,
+                    expires: ubl_expires
+                  };
+                }
+              } catch (error) {
+                // Continue without ubl auth if it fails
+              }
+            }
+
+            // Return user if any of the tableau authentications succeeded
+            return (user.tableau || user.tableau_eacanada || user.tableau_ubl) ? user : null;
           } else {
             return null;
           }
@@ -217,8 +291,10 @@ export const authOptions: AuthOptions = {
         };
         token.vectors = vectors;
         token.uaf = user.uaf || {};
+        token.groups = user.groups || [];
         token.tableau = user.tableau;
         token.tableau_eacanada = user.tableau_eacanada;
+        token.tableau_ubl = user.tableau_ubl;
         token.rest_token =  user.rest_token;
         // Add Salesforce username for TabNext JWT Bearer Flow
         token.salesforceUsername = user.salesforceUsername;
@@ -354,6 +430,77 @@ export const authOptions: AuthOptions = {
                 }
               } catch (error) {
                 console.error(`[NextAuth JWT Callback] ${new Date().toISOString()} - Error refreshing EACanada token:`, error);
+              }
+            }
+          }
+
+          // Also refresh UBL token if it exists
+          const ublToken = token.tableau_ubl as any;
+          const shouldRefreshUBL = ublToken?.expires && (ublToken.expires - now) < 240;
+          if (shouldRefreshUBL) {
+            console.log(`[NextAuth JWT Callback] ${new Date().toISOString()} - Refreshing UBL token for ${token.email}`);
+
+            const ubl_jwt_client_id = process.env.UBL_JWT_CLIENT_ID;
+            const ubl_embed_secret = process.env.UBL_EMBED_JWT_SECRET;
+            const ubl_embed_secret_id = process.env.UBL_EMBED_JWT_SECRET_ID;
+            const ubl_rest_secret = process.env.UBL_REST_JWT_SECRET;
+            const ubl_rest_secret_id = process.env.UBL_REST_JWT_SECRET_ID;
+
+            if (ubl_jwt_client_id && ubl_embed_secret && ubl_rest_secret) {
+              const ubl_embed_options = {
+                jwt_secret: ubl_embed_secret,
+                jwt_secret_id: ubl_embed_secret_id,
+                jwt_client_id: ubl_jwt_client_id
+              };
+              const ubl_rest_options = {
+                jwt_secret: ubl_rest_secret,
+                jwt_secret_id: ubl_rest_secret_id,
+                jwt_client_id: ubl_jwt_client_id
+              };
+
+              // TEMP DISABLED for UAF debugging.
+              const ubl_extra_claims_refresh: Record<string, unknown> = {
+                // 'https://tableau.com/oda':"true",
+                // 'https://tableau.com/groups': (token.groups as string[] | undefined) ?? [],
+              };
+
+              // Match the narrower scope set used at sign-in.
+              const ubl_embed_scopes_refresh = [
+                "tableau:views:embed",
+                "tableau:views:embed_authoring",
+              ];
+
+              try {
+                const ubl_session = new SessionModel(token.name as string);
+                await ubl_session.jwtUBL(token.email as string, ubl_embed_options, ubl_embed_scopes_refresh, ubl_rest_options, rest_scopes, token.uaf as any, ubl_extra_claims_refresh);
+
+                if (ubl_session.authorized) {
+                  const {
+                    user_id: ubl_user_id,
+                    embed_token: ubl_embed_token,
+                    rest_token: ubl_rest_token,
+                    rest_key: ubl_rest_key,
+                    site_id: ubl_site_id,
+                    site: ubl_site,
+                    created: ubl_created,
+                    expires: ubl_expires
+                  } = ubl_session;
+
+                  token.tableau_ubl = {
+                    username: (token.tableau as any)?.username || token.name,
+                    user_id: ubl_user_id,
+                    embed_token: ubl_embed_token,
+                    rest_token: ubl_rest_token,
+                    rest_key: ubl_rest_key,
+                    site_id: ubl_site_id,
+                    site: ubl_site,
+                    created: ubl_created,
+                    expires: ubl_expires
+                  };
+                  console.log(`[NextAuth JWT Callback] ${new Date().toISOString()} - Successfully refreshed UBL token, new expiry: ${ubl_expires}`);
+                }
+              } catch (error) {
+                console.error(`[NextAuth JWT Callback] ${new Date().toISOString()} - Error refreshing UBL token:`, error);
               }
             }
           }

@@ -2,8 +2,8 @@
 // See: https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js
 
 export {
-  tabAuthJWT, tabAuthPAT, tabAuthJWTEACanada, tabSignOut, getSubscriptions, getSpecifications,
-  getDefinitions, getMetrics, getUser, getUserEACanada, getInsights, getMetadata
+  tabAuthJWT, tabAuthPAT, tabAuthJWTEACanada, tabAuthJWTUBL, tabSignOut, getSubscriptions, getSpecifications,
+  getDefinitions, getMetrics, getUser, getUserEACanada, getUserUBL, getInsights, getMetadata
 } from './requests';
 
 export { serverJWT, serverPAT } from './responses.js';

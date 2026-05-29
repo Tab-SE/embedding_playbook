@@ -12,6 +12,9 @@ export interface User {
   vector_store: string;
   uaf: Record<string, string[] | undefined>;
   salesforceUsername?: string;
+  // Tableau ODA (On-Demand Access) groups — used only by demos whose connected app
+  // requires `https://tableau.com/oda` + `https://tableau.com/groups` JWT claims.
+  groups?: string[];
 }
 
 export interface Demo {
@@ -82,6 +85,49 @@ export const Users = [
         uaf: {"Region": ["South"]},
         salesforceUsername: "jmorris@superstore.com"
 
+      },
+    ]
+  },
+  {
+    demo: 'ubl-superstore',
+    roles: {
+      0: { title: 'Hobby', description: 'Basic data & analytics'},
+      1: { title: 'Professional', description: 'More analytics & exports'},
+      2: { title: 'Premium', description: 'Full self-service analytics'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Sofia Lopez",
+        email: "slopez@superstore.com",
+        picture: "/img/users/sofia_lopez.png",
+        role: 0,
+        vector_store: 'superstore_slopez',
+        uaf: {"State/Province": ["Texas","Louisiana","Arkansas","Arizona"]},
+        salesforceUsername: "slopez@superstore.com",
+        groups: ["Group2"]
+      },
+      {
+        id: 'b',
+        name: "Justin Chen",
+        email: "jchen@superstore.com",
+        picture: "/img/users/justin_chen.png",
+        role: 1,
+        vector_store: 'superstore_jchen',
+        uaf: {"Region": ["Central","East"]},
+        salesforceUsername: "jchen+123@salesforce.com",
+        groups: ["Group1"]
+      },
+      {
+        id: 'c',
+        name: "Julie Morris",
+        email: "jmorris@superstore.com",
+        picture: "/img/users/mackenzie_day.png",
+        role: 2,
+        vector_store: 'superstore_jmorris',
+        uaf: {"Region": ["South"]},
+        salesforceUsername: "jmorris@superstore.com",
+        groups: ["Group1"]
       },
     ]
   },

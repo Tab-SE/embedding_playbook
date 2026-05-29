@@ -18,6 +18,15 @@ export const galleryItems = [
     icon: <ShoppingCart size={12} strokeWidth={2} />
   },
   {
+    id: 'ubl-superstore',
+    link: "/demo/ubl-superstore",
+    src: "/img/demos/superstore.png",
+    alt: "UBL Superstore Analytics",
+    vertical: "Consumer Goods",
+    description: "Superstore demo configured against the UBL Tableau site and connected app",
+    icon: <ShoppingCart size={12} strokeWidth={2} />
+  },
+  {
     id: 'makana',
     link: "/demo/makana",
     src: "/img/demos/makana_payer.png",
