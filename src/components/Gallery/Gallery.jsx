@@ -59,6 +59,14 @@ export const Gallery = (props) => {
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     className="object-cover"
                   />
+                  {item.badge ? (
+                    <span className="absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-md bg-[hsl(199,99%,39%)] text-white shadow-lg">
+                      {item.badge}
+                    </span>
+                  ) : null}
+                  <span className="absolute bottom-0 left-0 right-0 px-3 py-2 text-sm font-medium text-white bg-gradient-to-t from-black/70 to-transparent">
+                    {item.alt}
+                  </span>
                 </CardContent>
               </Card>
             </HoverCardTrigger>
