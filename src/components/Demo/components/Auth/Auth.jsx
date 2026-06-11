@@ -36,6 +36,21 @@ export const Auth = (props) => {
         />
       </div>
 
+      {/* Floating "back to /demos" badge — mirrors the logo widget that lives in
+          the main demo nav (NavigationMd.jsx) so users can escape from the auth
+          page back to the demo gallery. */}
+      <Link
+        href="/demos"
+        title={`${app_name} — back to all demos`}
+        className="absolute top-4 left-4 z-20 group flex h-10 w-10 items-center justify-center rounded-full bg-logoBackground shadow-lg backdrop-blur-sm hover:scale-110 transition-transform"
+      >
+        <Avatar className="h-9 w-9 p-1 bg-logoBackground">
+          <AvatarImage src={logoToUse} alt={`${app_name} logo`} className="object-cover" />
+          <AvatarFallback>APP</AvatarFallback>
+        </Avatar>
+        <span className="sr-only">Back to all demos</span>
+      </Link>
+
       <div className="relative z-10 flex items-center justify-center w-full min-h-screen p-4">
         <Card className="mx-auto w-[480px] max-w-full shadow-lg backdrop-blur-sm loginBackground/95">
           <CardHeader className="text-center">

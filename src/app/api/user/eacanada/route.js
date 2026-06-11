@@ -47,7 +47,9 @@ export async function POST(req) {
           jwt_secret_id: eacanada_embed_secret_id,
           jwt_client_id: eacanada_jwt_client_id
         };
+        // Demo-grade superset of REST scopes so MCP tools never 401 on a missing scope.
         const rest_scopes = [
+          "tableau:*:*",
           "tableau:content:read",
           "tableau:datasources:read",
           "tableau:workbooks:read",
@@ -57,6 +59,9 @@ export async function POST(req) {
           "tableau:insight_definitions_metrics:read",
           "tableau:insight_metrics:read",
           "tableau:metrics:download",
+          "tableau:viz_data_service:read",
+          "tableau:mcp_site_settings:read",
+          "tableau:insight_brief:create",
         ];
         const eacanada_rest_options = {
           jwt_secret: eacanada_rest_secret,

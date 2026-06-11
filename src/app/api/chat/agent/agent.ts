@@ -1,36 +1,29 @@
 import { SystemMessage } from "@langchain/core/messages";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import type { JWT } from "next-auth/jwt";
 
 import { selectModel, ModelProvider } from "./models";
 import { AGENT_SYSTEM_TEMPLATE } from "./prompt";
-import { analyticsAgent } from "./tools";
+import { getTableauMcpTools } from "./mcp";
 
-
-export const bootstrapAgent = async (demo: string = 'documentation') => {
-  // default model is arbitrarily openai but more models can be supported in the models.ts file
+// Build a ReAct agent in-process with MCP tools backed by the Tableau MCP server.
+// Auth uses passthrough: the user's REST credentials token (from NextAuth) is
+// forwarded as `X-Tableau-Auth` on every MCP HTTP request, so each user's
+// Tableau identity / RLS / UAF is preserved end-to-end.
+export const bootstrapAgent = async (demo: string, token: JWT) => {
   const chatModel = selectModel(
     process.env.MODEL_PROVIDER as ModelProvider,
     process.env.AGENT_MODEL!,
-    0.2
+    0.2,
   );
 
-  /**
-   * Use a prebuilt LangGraph agent with MCP-based tools.
-   * The agent ID is configured to use Tableau MCP server which dynamically
-   * delivers all data sources from the Tableau Cloud site.
-   */
-  const agent = await createReactAgent({
-    name: 'Customer Service Agent',
+  const { tools } = await getTableauMcpTools(demo, token);
+
+  const agent = createReactAgent({
     llm: chatModel,
-    tools: [ analyticsAgent(demo) ],
-    /**
-     * Modify the stock prompt in the prebuilt agent. See docs
-     * for how to customize your agent:
-     *
-     * https://langchain-ai.github.io/langgraphjs/tutorials/quickstart/
-     */
+    tools,
     messageModifier: new SystemMessage(AGENT_SYSTEM_TEMPLATE),
   });
 
   return agent;
-}
+};

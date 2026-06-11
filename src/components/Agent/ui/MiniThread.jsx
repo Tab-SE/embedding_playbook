@@ -50,6 +50,7 @@ export const MiniThread = (props) => {
 
         <div
           className="sticky bottom-0 mt-3 flex w-full max-w-2xl flex-col items-center justify-end rounded-t-lg bg-inherit pb-4">
+          <ErrorBanner />
           <QuestionLimitBanner />
           <QuestionCounter />
           <MyComposer inputRef={inputRef} />
@@ -147,6 +148,52 @@ const QuestionCounter = () => {
           New Chat
         </Button>
       </div>
+    </div>
+  );
+};
+
+// Surfaces /api/chat errors inside the chat window so users see *something* when
+// the agent fails (instead of the spinner just stopping). Maps a few common
+// shapes to friendly messages; falls back to error.message for anything else.
+const friendlyError = (err) => {
+  const raw = err?.message ?? "Something went wrong.";
+  // Order matters — check MCP-specific patterns before the generic 401 case,
+  // since an MCP 401 isn't the user's NextAuth session expiring.
+  if (/tableau-mcp|MCPClientError|streamable HTTP server/i.test(raw)) {
+    return "Couldn't authenticate to the Tableau analytics service. Try signing out and back in to refresh your data session.";
+  }
+  if (/Recursion limit|GRAPH_RECURSION_LIMIT/i.test(raw)) {
+    return "I got stuck working on that question. Try rephrasing it or asking something more specific.";
+  }
+  if (/Failed to fetch|NetworkError|ECONNREFUSED/i.test(raw)) {
+    return "Couldn't reach the chat service. Check your connection and try again.";
+  }
+  if (/401|Unauthorized/i.test(raw)) {
+    return "Your session expired. Please refresh the page or sign in again.";
+  }
+  return raw;
+};
+
+const ErrorBanner = () => {
+  const { error, dismissError } = useChatActions();
+  if (!error) return null;
+  return (
+    <div className="w-full mb-3 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-3">
+      <div className="flex-1">
+        <p className="text-sm font-medium text-red-900 dark:text-red-100">
+          Something went wrong
+        </p>
+        <p className="text-sm text-red-800 dark:text-red-200 mt-1">
+          {friendlyError(error)}
+        </p>
+      </div>
+      <button
+        type="button"
+        onClick={dismissError}
+        className="text-xs text-red-700 dark:text-red-300 hover:underline shrink-0"
+      >
+        Dismiss
+      </button>
     </div>
   );
 };

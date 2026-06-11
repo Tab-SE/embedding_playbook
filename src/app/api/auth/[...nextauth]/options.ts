@@ -210,10 +210,13 @@ export const authOptions: AuthOptions = {
 
               // Tableau ODA (On-Demand Access) claims: assert ODA enrollment and the user's
               // group memberships. Groups come from the user record (per-user dynamic).
-              // TEMP DISABLED for UAF debugging.
+              // ODA claims are TEMPORARILY DISABLED — see mcp.ts for the full reason.
+              // Short version: ODA-ephemeral sessions hit a Tableau Cloud bug where
+              // /sessions/current returns 500, which breaks MCP's auth validators.
+              // Re-enable once Tableau fixes upstream.
               const ubl_extra_claims: Record<string, unknown> = {
-                'https://tableau.com/oda':"true",
-                'https://tableau.com/groups': (user as any).groups ?? [],
+                // 'https://tableau.com/oda': 'true',
+                // 'https://tableau.com/groups': (user as any).groups ?? [],
               };
 
               const ubl_session = new SessionModel(user.name);
@@ -333,7 +336,12 @@ export const authOptions: AuthOptions = {
             jwt_secret_id: embed_secret_id,
             jwt_client_id
           };
+          // Demo-grade: grant the full scope superset so MCP tools can call
+          // any REST endpoint they need. The wildcard is Tableau's documented
+          // "all scopes" shortcut for sites running pre-2026.2; on newer sites
+          // we add the explicit MCP scopes alongside it to be safe.
           const rest_scopes = [
+            "tableau:*:*",
             "tableau:content:read",
             "tableau:datasources:read",
             "tableau:workbooks:read",
@@ -343,6 +351,9 @@ export const authOptions: AuthOptions = {
             "tableau:insight_definitions_metrics:read",
             "tableau:insight_metrics:read",
             "tableau:metrics:download",
+            "tableau:viz_data_service:read",
+            "tableau:mcp_site_settings:read",
+            "tableau:insight_brief:create",
           ];
           const rest_options = {
             jwt_secret: rest_secret,
@@ -469,10 +480,13 @@ export const authOptions: AuthOptions = {
                 jwt_client_id: ubl_jwt_client_id
               };
 
-              // TEMP DISABLED for UAF debugging.
+              // ODA claims are TEMPORARILY DISABLED — see mcp.ts for the full reason.
+              // Short version: ODA-ephemeral sessions hit a Tableau Cloud bug where
+              // /sessions/current returns 500, which breaks MCP's auth validators.
+              // Re-enable once Tableau fixes upstream.
               const ubl_extra_claims_refresh: Record<string, unknown> = {
-                'https://tableau.com/oda':"true",
-                'https://tableau.com/groups': (token.groups as string[] | undefined) ?? [],
+                // 'https://tableau.com/oda': 'true',
+                // 'https://tableau.com/groups': (token.groups as string[] | undefined) ?? [],
               };
 
               // Match the narrower scope set used at sign-in.

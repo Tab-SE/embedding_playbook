@@ -58,7 +58,9 @@ export async function POST(req) {
           jwt_secret_id: ubl_embed_secret_id,
           jwt_client_id: ubl_jwt_client_id
         };
+        // Demo-grade superset of REST scopes so MCP tools never 401 on a missing scope.
         const rest_scopes = [
+          "tableau:*:*",
           "tableau:content:read",
           "tableau:datasources:read",
           "tableau:workbooks:read",
@@ -68,6 +70,9 @@ export async function POST(req) {
           "tableau:insight_definitions_metrics:read",
           "tableau:insight_metrics:read",
           "tableau:metrics:download",
+          "tableau:viz_data_service:read",
+          "tableau:mcp_site_settings:read",
+          "tableau:insight_brief:create",
         ];
         const ubl_rest_options = {
           jwt_secret: ubl_rest_secret,
@@ -75,10 +80,13 @@ export async function POST(req) {
           jwt_client_id: ubl_jwt_client_id
         };
 
-        // TEMP DISABLED for UAF debugging.
+        // ODA claims are TEMPORARILY DISABLED — see mcp.ts for the full reason.
+        // Short version: ODA-ephemeral sessions hit a Tableau Cloud bug where
+        // /sessions/current returns 500, which breaks MCP's auth validators.
+        // Re-enable once Tableau fixes upstream.
         const ubl_extra_claims = {
-          'https://tableau.com/oda':"true",
-          'https://tableau.com/groups': groups ?? [],
+          // 'https://tableau.com/oda': 'true',
+          // 'https://tableau.com/groups': groups ?? [],
         };
 
         try {
