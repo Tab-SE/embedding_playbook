@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useRef, forwardRef, useId } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { TableauToolbar, XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from 'components';
 import { getLayoutProps, parseClassNameForLayouts } from './vizUtils';
@@ -29,6 +30,8 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   const [interactive, setInteractive] = useState(false);
   // the target of most viz interactions
   const [activeSheet, setActiveSheet] = useState(null);
+  // used to force a fresh embed JWT when the iframe reports an auth failure
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (innerRef.current) {
@@ -57,13 +60,13 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       viz.addEventListener('firstinteractive', logDimensions);
 
       // handles all viz event listeners and clears them
-      const eventListeners = handleVizEventListeners(viz, setInteractive);
+      const eventListeners = handleVizEventListeners(viz, setInteractive, queryClient);
       return () => {
         eventListeners();
         viz.removeEventListener('firstinteractive', logDimensions);
       };
     }
-  },[innerRef, setInteractive])
+  },[innerRef, setInteractive, queryClient])
 
   useEffect(() => {
     if (interactive) {
@@ -186,14 +189,41 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   )
 })
 
-const handleVizEventListeners = (viz, setInteractive) => {
+// Tableau Embedding API error codes that indicate the embed JWT / Tableau session
+// is no longer valid and the parent app needs to mint a fresh token.
+// Docs: https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_auth.html
+const AUTH_ERROR_CODES = new Set([
+  'unknown-auth-error',
+  'token-expired',
+  'invalid-jwt',
+  'not-permitted-to-view',
+]);
+
+const handleVizEventListeners = (viz, setInteractive, queryClient) => {
   // define named handlers to simplify handling after effects
   const handleInteractive = async (event) => {
     // tabScale.initialize(); // initializing tabScale
     setInteractive(true); // update state to indicate that the Tableau viz is interactive
   }
   const handleVizLoadError = async (event) => {
-    console.error('Viz Load Error:', event);
+    // Tableau dispatches a CustomEvent. The error payload lives on `event.detail.message`
+    // (a JSON-stringified object); the documented auth error code is `unknown-auth-error`.
+    let errorCode;
+    try {
+      const parsed = event?.detail?.message ? JSON.parse(event.detail.message) : null;
+      errorCode = parsed?.errorCode || event?.detail?.errorCode;
+    } catch {
+      errorCode = event?.detail?.errorCode;
+    }
+    console.error('Viz Load Error:', errorCode || 'unknown', event);
+
+    if (errorCode && AUTH_ERROR_CODES.has(errorCode)) {
+      // Invalidate every cached Tableau session (main / EACanada / UBL share the
+      // 'tableau' query-key prefix). The hook will refetch /api/user/*, the refresh
+      // path mints a new embed JWT, and the new `jwt` prop re-mounts <tableau-viz>
+      // via its `key={jwt}` (force-recreate on token change).
+      queryClient?.invalidateQueries({ queryKey: ['tableau'] });
+    }
   }
 
    // event listeners can only be added after component mounts

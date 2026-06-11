@@ -212,8 +212,8 @@ export const authOptions: AuthOptions = {
               // group memberships. Groups come from the user record (per-user dynamic).
               // TEMP DISABLED for UAF debugging.
               const ubl_extra_claims: Record<string, unknown> = {
-                // 'https://tableau.com/oda':"true",
-                // 'https://tableau.com/groups': (user as any).groups ?? [],
+                'https://tableau.com/oda':"true",
+                'https://tableau.com/groups': (user as any).groups ?? [],
               };
 
               const ubl_session = new SessionModel(user.name);
@@ -300,10 +300,19 @@ export const authOptions: AuthOptions = {
         token.salesforceUsername = user.salesforceUsername;
       } else {
         // Check if we need to refresh the Tableau JWT tokens
-        // Refresh if token expires in less than 4 minutes (to be safe)
+        // Refresh if token expires in less than 4 minutes (to be safe).
+        // NOTE: `expires` is set as a Date in SessionModel, but NextAuth serializes
+        // the JWT cookie via JSON.stringify so it round-trips back as an ISO string.
+        // Coerce via `new Date(...)` so the comparison is always seconds-vs-seconds.
         const now = Math.floor(Date.now() / 1000);
+        const toEpochSeconds = (v: unknown): number => {
+          if (!v) return 0;
+          const ms = new Date(v as any).getTime();
+          return Number.isFinite(ms) ? Math.floor(ms / 1000) : 0;
+        };
         const tableauToken = token.tableau as any;
-        const shouldRefresh = tableauToken?.expires && (tableauToken.expires - now) < 240;
+        const tableauExpiresSec = toEpochSeconds(tableauToken?.expires);
+        const shouldRefresh = tableauExpiresSec > 0 && (tableauExpiresSec - now) < 240;
 
         if (shouldRefresh && token.name && token.email) {
           console.log(`[NextAuth JWT Callback] ${new Date().toISOString()} - Refreshing Tableau token for ${token.email}`);
@@ -377,7 +386,8 @@ export const authOptions: AuthOptions = {
 
           // Also refresh EACanada token if it exists
           const eacanadaToken = token.tableau_eacanada as any;
-          const shouldRefreshEACanada = eacanadaToken?.expires && (eacanadaToken.expires - now) < 240;
+          const eacanadaExpiresSec = toEpochSeconds(eacanadaToken?.expires);
+          const shouldRefreshEACanada = eacanadaExpiresSec > 0 && (eacanadaExpiresSec - now) < 240;
           if (shouldRefreshEACanada) {
             console.log(`[NextAuth JWT Callback] ${new Date().toISOString()} - Refreshing EACanada token for ${token.email}`);
 
@@ -436,7 +446,8 @@ export const authOptions: AuthOptions = {
 
           // Also refresh UBL token if it exists
           const ublToken = token.tableau_ubl as any;
-          const shouldRefreshUBL = ublToken?.expires && (ublToken.expires - now) < 240;
+          const ublExpiresSec = toEpochSeconds(ublToken?.expires);
+          const shouldRefreshUBL = ublExpiresSec > 0 && (ublExpiresSec - now) < 240;
           if (shouldRefreshUBL) {
             console.log(`[NextAuth JWT Callback] ${new Date().toISOString()} - Refreshing UBL token for ${token.email}`);
 
@@ -460,8 +471,8 @@ export const authOptions: AuthOptions = {
 
               // TEMP DISABLED for UAF debugging.
               const ubl_extra_claims_refresh: Record<string, unknown> = {
-                // 'https://tableau.com/oda':"true",
-                // 'https://tableau.com/groups': (token.groups as string[] | undefined) ?? [],
+                'https://tableau.com/oda':"true",
+                'https://tableau.com/groups': (token.groups as string[] | undefined) ?? [],
               };
 
               // Match the narrower scope set used at sign-in.

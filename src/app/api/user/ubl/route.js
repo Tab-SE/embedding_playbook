@@ -26,9 +26,13 @@ export async function POST(req) {
       console.log(`[/api/user/ubl] cached rest  jwt: https://jwt.io/?token=${tableau_ubl.rest_token}`);
     }
 
-    // Check if token needs refresh (expires in less than 4 minutes)
+    // Check if token needs refresh (expires in less than 4 minutes).
+    // `expires` round-trips through the NextAuth cookie as an ISO string
+    // (Date.toJSON), so coerce via `new Date(...)` before comparing.
     const now = Math.floor(Date.now() / 1000);
-    const shouldRefresh = tableau_ubl.expires && (tableau_ubl.expires - now) < 240;
+    const expiresMs = tableau_ubl.expires ? new Date(tableau_ubl.expires).getTime() : 0;
+    const expiresSec = Number.isFinite(expiresMs) ? Math.floor(expiresMs / 1000) : 0;
+    const shouldRefresh = expiresSec > 0 && (expiresSec - now) < 240;
 
     let refreshedTableau = tableau_ubl;
 
@@ -73,8 +77,8 @@ export async function POST(req) {
 
         // TEMP DISABLED for UAF debugging.
         const ubl_extra_claims = {
-          // 'https://tableau.com/oda':"true",
-          // 'https://tableau.com/groups': groups ?? [],
+          'https://tableau.com/oda':"true",
+          'https://tableau.com/groups': groups ?? [],
         };
 
         try {
@@ -114,7 +118,7 @@ export async function POST(req) {
         }
       }
     } else {
-      console.log(`[/api/user/ubl] ${new Date().toISOString()} - Token still valid (expires: ${tableau_ubl.expires}, current: ${now}, diff: ${tableau_ubl.expires - now}s)`);
+      console.log(`[/api/user/ubl] ${new Date().toISOString()} - Token still valid (expires: ${tableau_ubl.expires}, current: ${now}, diff: ${expiresSec - now}s)`);
     }
 
     // form a payload to safely represent the user on the client

@@ -17,9 +17,13 @@ export async function POST(req) {
   if (token?.tableau) {
     const { name, demo, email, picture, role, vectors, uaf, tableau } = token;
 
-    // Check if token needs refresh (expires in less than 4 minutes)
+    // Check if token needs refresh (expires in less than 4 minutes).
+    // `expires` round-trips through the NextAuth cookie as an ISO string
+    // (Date.toJSON), so coerce via `new Date(...)` before comparing.
     const now = Math.floor(Date.now() / 1000);
-    const shouldRefresh = tableau.expires && (tableau.expires - now) < 240;
+    const expiresMs = tableau.expires ? new Date(tableau.expires).getTime() : 0;
+    const expiresSec = Number.isFinite(expiresMs) ? Math.floor(expiresMs / 1000) : 0;
+    const shouldRefresh = expiresSec > 0 && (expiresSec - now) < 240;
 
     let refreshedTableau = tableau;
 
@@ -96,7 +100,7 @@ export async function POST(req) {
         // Fall back to existing token if refresh fails
       }
     } else {
-      console.log(`[/api/user] ${new Date().toISOString()} - Token still valid (expires: ${tableau.expires}, current: ${now}, diff: ${tableau.expires - now}s)`);
+      console.log(`[/api/user] ${new Date().toISOString()} - Token still valid (expires: ${tableau.expires}, current: ${now}, diff: ${expiresSec - now}s)`);
     }
 
     // form a payload to safely represent the user on the client

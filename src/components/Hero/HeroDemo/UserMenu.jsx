@@ -54,7 +54,7 @@ const Logout = (props) => {
     return (
       <DropdownMenuItem
         className='hover:cursor-pointer'
-        onClick={async () => await signOut('credentials', { redirect: false })}
+        onClick={async () => await signOut({ redirect: false })}
       >
         <Button
           variant="ghost"
