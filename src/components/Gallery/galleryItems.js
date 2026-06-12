@@ -21,9 +21,9 @@ export const galleryItems = [
     id: 'ubl-superstore',
     link: "/demo/ubl-superstore",
     src: "/img/demos/superstore.png",
-    alt: "Superstore — UBL Site (On-Demand Access)",
+    alt: "Superstore — UBL Site",
     vertical: "Consumer Goods · UBL",
-    description: "Same Superstore experience, served from the UBL Tableau site via a separate Connected App. Demonstrates On-Demand Access (ODA) auth and per-user UAF row-level security on a different site than the default Superstore demo.",
+    description: "Same Superstore experience, served from the UBL Tableau site via a separate Connected App. Demonstrates per-user UAF row-level security on a different site than the default Superstore demo.",
     icon: <ShoppingCart size={12} strokeWidth={2} />,
     badge: "UBL"
   },

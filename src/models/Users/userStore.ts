@@ -103,7 +103,7 @@ export const Users = [
         picture: "/img/users/sofia_lopez.png",
         role: 0,
         vector_store: 'superstore_slopez',
-        uaf: {"State/Province": ["Texas","Louisiana","Arkansas","Arizona"]},
+        uaf: {"Region": ["South","Central"]},
         salesforceUsername: "slopez@superstore.com",
         groups: ["Group2"]
       },

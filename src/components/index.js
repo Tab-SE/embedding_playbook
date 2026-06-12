@@ -52,7 +52,7 @@ export { XSLayout, SMLayout, MDLayout, LGLayout, XLLayout, XL2Layout } from './R
 
 export { SessionProvider, VercelAgentRuntimeProvider, LanggraphAgentRuntimeProvider } from './Providers';
 
-export { FloatingAssistant, Thread, Agent } from './Agent';
+export { FloatingAssistant, Thread, Agent, FloatingPanelProvider, useFloatingPanel } from './Agent';
 
 export { FloatingAnalyticsAgent } from './AnalyticsAgent';
 

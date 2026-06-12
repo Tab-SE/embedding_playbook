@@ -1,17 +1,22 @@
 "use client";
-import { useState, forwardRef } from "react";
+import { forwardRef } from "react";
 import Image from "next/image";
 import { ChevronDownIcon } from "lucide-react";
 import { AssistantModalPrimitive } from "@assistant-ui/react";
 
 import { useTableauSession } from '@/hooks';
 import { MiniThread, TooltipIconButton } from "./ui";
+import { useFloatingPanel } from "./FloatingPanelContext";
 
 export const FloatingAssistant = (props) => {
   const { settings } = props;
-  const [isOpen, setIsOpen] = useState(false);
+  // Shared with the Salesforce Analytics Agent so only one panel is open at a
+  // time; falls back to local state when no FloatingPanelProvider is present.
+  const { isOpen, setOpen: setIsOpen } = useFloatingPanel("mcp-assistant");
 
-  // tanstack query hook to safely represent users on the client
+  // tanstack query hook to safely represent users on the client.
+  // NOTE: all hooks must run before any early return (rules-of-hooks), so the
+  // `ai_chat === false` opt-out below sits *after* the hook calls.
   const {
     status: sessionStatus,
     data: user,
@@ -20,6 +25,13 @@ export const FloatingAssistant = (props) => {
     isError: isSessionError,
     isLoading: isSessionLoading
   } = useTableauSession();
+
+  // Demos with `ai_chat: false` opt out of the chat assistant entirely. Used
+  // for demos like servicedesk that embed Tableau Public dashboards (which MCP
+  // can't query) — no point showing a chat button that can't return data.
+  if (settings?.ai_chat === false) {
+    return null;
+  }
 
   return (
     (<AssistantModalPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>

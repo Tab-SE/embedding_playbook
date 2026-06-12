@@ -18,7 +18,6 @@ export const settings = {
   sample_questions: [
     "What are the top three reasons for claim denials, and how do they vary by provider?",
     "How does the average processing time for claims correlate with the type of plan and denial rates?",
-    "How do sales trends for specific products vary over time, and what factors contribute to these trends?",
   ],
   sections: [
     {

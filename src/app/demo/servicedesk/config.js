@@ -19,7 +19,10 @@ export const settings = {
   auth_logo: '/img/themes/servicedesk/dataicon.png',
   base_path: '/demo/servicedesk',
   auth_hero: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2832&auto=format&fit=crop',
-  ai_chat: true,
+  // Disabled: servicedesk uses public Tableau Public dashboards, not the
+  // embeddingplaybook Tableau Cloud site. MCP can't query Tableau Public
+  // datasources, so the chat agent has nothing useful to do here.
+  ai_chat: false,
   ai_avatar: '/img/themes/servicedesk/dataicon.png',
   sample_questions: [
     "What's our average response time this month?",

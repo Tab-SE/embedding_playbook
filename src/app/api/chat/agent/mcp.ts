@@ -18,6 +18,38 @@ const DEMO_SITE: Record<string, SiteKey> = {
   "ubl-superstore": "ubl",
 };
 
+// Per-demo datasource pinning — mirrors the env-var pattern from the old
+// tableau_langchain Python deployment (DATASOURCE_LUID, MAKANA_DATASOURCE_LUID,
+// CUMULUS_DATASOURCE_LUID, etc.). Each demo points at the exact Tableau
+// datasource it should query.
+//
+// Set EITHER name OR luid (or both). When set, the agent's system prompt
+// instructs it to filter `list-datasources` by that name (or call
+// `query-datasource` with that LUID directly), so the LLM doesn't roam the
+// whole site looking for a name match.
+//
+// Names are easier to read in env values; LUIDs are stable across renames.
+// Configure via env vars on the deploy platform (Vercel/Railway):
+//   DATASOURCE_NAME_SUPERSTORE      / DATASOURCE_LUID_SUPERSTORE
+//   DATASOURCE_NAME_MAKANA          / DATASOURCE_LUID_MAKANA
+//   DATASOURCE_NAME_CUMULUS         / DATASOURCE_LUID_CUMULUS
+//   DATASOURCE_NAME_SERVICEDESK     / DATASOURCE_LUID_SERVICEDESK
+//   DATASOURCE_NAME_DOCUMENTATION   / DATASOURCE_LUID_DOCUMENTATION
+//   DATASOURCE_NAME_UBL_SUPERSTORE  / DATASOURCE_LUID_UBL_SUPERSTORE
+interface DemoDatasource {
+  name?: string;
+  luid?: string;
+}
+
+const demoDatasource = (demo: string): DemoDatasource => {
+  // Convert the demo key to env var suffix (e.g. "ubl-superstore" → "UBL_SUPERSTORE").
+  const suffix = demo.toUpperCase().replace(/-/g, "_");
+  return {
+    name: process.env[`DATASOURCE_NAME_${suffix}`],
+    luid: process.env[`DATASOURCE_LUID_${suffix}`],
+  };
+};
+
 // Two MCP auth modes are supported here, picked per-site:
 //
 // - "passthrough" — sends the user's existing Tableau REST credentials token
@@ -202,5 +234,7 @@ export const getTableauMcpTools = async (demo: string, token: JWT) => {
   });
 
   const tools = await client.getTools();
-  return { tools, client };
+  const datasource = demoDatasource(demo);
+
+  return { tools, client, datasource };
 };

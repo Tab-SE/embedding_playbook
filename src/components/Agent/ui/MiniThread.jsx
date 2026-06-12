@@ -18,6 +18,33 @@ import { useChatActions } from "@/components/Providers/LanggraphAgentRuntimeProv
 
 const MAX_QUESTIONS = 3;
 
+// Drop a suggested question into the composer input. Uses the native value
+// setter so React's controlled <textarea> registers the change, then focuses so
+// the user can just hit Enter. Shared by the welcome panel and the persistent
+// "Try next" chips.
+const fillComposer = (inputRef, question) => {
+  const inputElement =
+    inputRef?.current || document.querySelector('textarea[placeholder="Write a message..."]');
+  if (!inputElement) return;
+
+  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+    window.HTMLTextAreaElement.prototype,
+    'value'
+  ).set;
+  nativeInputValueSetter.call(inputElement, question);
+  inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+  inputElement.focus();
+};
+
+// Plain text of a thread message (assistant-ui stores content as typed parts).
+const messageText = (m) =>
+  (m?.content ?? [])
+    .filter((p) => p.type === 'text')
+    .map((p) => p.text)
+    .join(' ')
+    .trim()
+    .toLowerCase();
+
 export const MiniThread = (props) => {
   const { ai_avatar, user_avatar, sample_questions = [] } = props;
   const inputRef = useRef(null);
@@ -53,6 +80,7 @@ export const MiniThread = (props) => {
           <ErrorBanner />
           <QuestionLimitBanner />
           <QuestionCounter />
+          <NextQuestions sample_questions={sample_questions} inputRef={inputRef} />
           <MyComposer inputRef={inputRef} />
         </div>
       </ThreadPrimitive.Viewport>
@@ -63,27 +91,7 @@ export const MiniThread = (props) => {
 const WelcomeMessage = (props) => {
   const { ai_avatar, sample_questions = [], inputRef } = props;
 
-  const handleQuestionClick = (question) => {
-    const inputElement = inputRef.current || document.querySelector('textarea[placeholder="Write a message..."]');
-
-    if (inputElement) {
-      // Use the native setter to ensure React detects the change
-      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-        window.HTMLTextAreaElement.prototype,
-        'value'
-      ).set;
-      nativeInputValueSetter.call(inputElement, question);
-
-      // Dispatch an input event to trigger React's onChange
-      const inputEvent = new Event('input', { bubbles: true });
-      inputElement.dispatchEvent(inputEvent);
-
-      // Focus the input
-      inputElement.focus();
-
-      // Now the input should recognize the text and allow Enter to send
-    }
-  };
+  const handleQuestionClick = (question) => fillComposer(inputRef, question);
 
   return (
     (<ThreadPrimitive.Empty>
@@ -216,6 +224,45 @@ const QuestionLimitBanner = () => {
       <p className="text-sm text-amber-800 dark:text-amber-200 text-center">
         You've reached the maximum of {MAX_QUESTIONS} questions per conversation. Start a new chat to continue.
       </p>
+    </div>
+  );
+};
+
+// Keeps the suggested questions reachable after the first one is asked. The
+// welcome panel (with all suggestions) only renders on an empty thread, so once
+// a conversation starts these chips surface the remaining not-yet-asked prompts
+// just above the composer — naturally pointing to the next one in the scripted
+// order. Hidden on an empty thread (welcome panel covers that) and at the limit.
+const NextQuestions = (props) => {
+  const { sample_questions = [], inputRef } = props;
+  const messages = useThreadMessages();
+
+  const questionCount = messages.filter((m) => m.role === 'user').length;
+  if (questionCount === 0 || questionCount >= MAX_QUESTIONS) return null;
+
+  // Drop questions already asked (match on the user message text).
+  const askedText = messages.filter((m) => m.role === 'user').map(messageText);
+  const remaining = sample_questions
+    .slice(0, MAX_QUESTIONS)
+    .filter((q) => !askedText.includes(q.trim().toLowerCase()));
+
+  if (remaining.length === 0) return null;
+
+  return (
+    <div className="w-full mb-2">
+      <p className="text-xs text-stone-500 dark:text-stone-400 mb-1.5 px-1">Try next:</p>
+      <div className="flex flex-wrap gap-2">
+        {remaining.map((question, index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() => fillComposer(inputRef, question)}
+            className="text-left px-3 py-1.5 text-xs bg-gray-50 hover:bg-gray-100 dark:bg-stone-900 dark:hover:bg-stone-800 rounded-full border border-gray-200 dark:border-stone-700 transition-colors"
+          >
+            {question}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

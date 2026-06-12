@@ -4,7 +4,10 @@
   "description": "Tableau Embedded Playbook",
   "scripts": {
     "dev": "next dev",
+    "dev:turbo": "next dev --turbo",
+    "dev:fresh": "rm -rf .next && next dev",
     "dev:lint": "next lint && next dev",
+    "typecheck": "tsc --noEmit",
     "build": "next build",
     "export": "next export",
     "start": "next start",

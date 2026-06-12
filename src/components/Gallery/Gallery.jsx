@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from 'next/link'
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from 'next/navigation';
 import { signOut } from "next-auth/react";
+import { Sparkles, MousePointerClick } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui";
 import {
@@ -15,11 +17,23 @@ import {
 import { Badge } from "@/components/ui";
 
 import { galleryItems } from './galleryItems';
+import { demoGuides } from './demoGuides';
+import { DemoGuideModal } from './DemoGuideModal';
 
 
 export const Gallery = (props) => {
   const queryClient = useQueryClient();
   const router = useRouter();
+
+  // Which demo guide modal is open, and which tab it should open to.
+  // `null` = closed.
+  const [activeGuide, setActiveGuide] = useState(null);
+
+  const openGuide = (e, id, tab) => {
+    // Don't trigger the card's navigate-to-demo click.
+    e.stopPropagation();
+    setActiveGuide({ id, tab });
+  };
 
   const handleCardClick = async (item) => {
     await queryClient.invalidateQueries(
@@ -46,51 +60,81 @@ export const Gallery = (props) => {
       </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
         {galleryItems.map((item) => (
-          <HoverCard
-            key={item.id}
-          >
-            <HoverCardTrigger>
-              <Card className="overflow-hidden shadow-2xl h-60 transform transition-transform duration-300 hover:scale-110 cursor-pointer" onClick={() => handleCardClick(item)}>
-                <CardContent className="p-0 relative h-full w-full">
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover"
-                  />
-                  {item.badge ? (
-                    <span className="absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-md bg-[hsl(199,99%,39%)] text-white shadow-lg">
-                      {item.badge}
-                    </span>
-                  ) : null}
-                  <span className="absolute bottom-0 left-0 right-0 px-3 py-2 text-sm font-medium text-white bg-gradient-to-t from-black/70 to-transparent">
-                    {item.alt}
-                  </span>
-                </CardContent>
-              </Card>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-96 shadow-2xl" sideOffset={15}>
-              <div className="flex justify-between space-x-3">
-                <div className="space-y-1">
-                  <h4 className="text-sm font-semibold">{item.alt}</h4>
-                  <p className="text-sm">
-                    {item.description}
-                  </p>
-                  <div className="flex items-center pt-2">
-                    <Badge>
-                      {item.icon}
-                      <span className="text-xs text-white ml-1">
-                        {item.vertical}
+          <div key={item.id} className="flex flex-col">
+            <HoverCard>
+              <HoverCardTrigger>
+                <Card className="overflow-hidden shadow-2xl h-60 transform transition-transform duration-300 hover:scale-110 cursor-pointer" onClick={() => handleCardClick(item)}>
+                  <CardContent className="p-0 relative h-full w-full">
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover"
+                    />
+                    {item.badge ? (
+                      <span className="absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-md bg-[hsl(199,99%,39%)] text-white shadow-lg">
+                        {item.badge}
                       </span>
-                    </Badge>
+                    ) : null}
+                    <span className="absolute bottom-0 left-0 right-0 px-3 py-2 text-sm font-medium text-white bg-gradient-to-t from-black/70 to-transparent">
+                      {item.alt}
+                    </span>
+                  </CardContent>
+                </Card>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-96 shadow-2xl" sideOffset={15}>
+                <div className="flex justify-between space-x-3">
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-semibold">{item.alt}</h4>
+                    <p className="text-sm">
+                      {item.description}
+                    </p>
+                    <div className="flex items-center pt-2">
+                      <Badge>
+                        {item.icon}
+                        <span className="text-xs text-white ml-1">
+                          {item.vertical}
+                        </span>
+                      </Badge>
+                    </div>
                   </div>
                 </div>
+              </HoverCardContent>
+            </HoverCard>
+
+            {demoGuides[item.id] ? (
+              <div className="mt-3 flex items-center gap-2">
+                <span className="text-xs font-medium text-stone-400">Demo guide:</span>
+                <button
+                  type="button"
+                  onClick={(e) => openGuide(e, item.id, 'highlights')}
+                  className="inline-flex items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-[hsl(199,99%,39%)] hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Highlights
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => openGuide(e, item.id, 'clickPath')}
+                  className="inline-flex items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-[hsl(199,99%,39%)] hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
+                >
+                  <MousePointerClick className="h-3.5 w-3.5" />
+                  Demo Script
+                </button>
               </div>
-            </HoverCardContent>
-          </HoverCard>
+            ) : null}
+          </div>
         ))}
       </div>
+
+      <DemoGuideModal
+        id={activeGuide?.id}
+        guide={activeGuide ? demoGuides[activeGuide.id] : null}
+        defaultTab={activeGuide?.tab ?? 'highlights'}
+        open={!!activeGuide}
+        onOpenChange={(open) => { if (!open) setActiveGuide(null); }}
+      />
     </div>
   )
 }
