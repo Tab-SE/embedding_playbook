@@ -24,13 +24,58 @@ rejected. The correct sequence is:
    each one's \`luid\` field. The user does not know LUIDs — you must look them up.
 2. **Pick the right datasource by name match.** Match the user's question to a datasource by its name or
    description (e.g. user asks about "sales by region" → pick the Superstore datasource).
-3. **Optionally fetch metadata.** If you're unsure which fields to use in the query, call the metadata
-   tool with the LUID first to see the available fields.
-4. **Then call the query tool with the LUID** (NOT the name) and a properly-formed query spec.
+3. **ALWAYS fetch metadata before your first query.** Call the metadata tool (e.g. \`get-datasource-metadata\`)
+   with the LUID and read the returned schema. Do NOT guess field names, and do NOT assume a field exists
+   just because the user named a concept ("retention rate", "NPS", "market segment", "advisor"). The
+   datasource may name it differently, split it across fields, or not have it at all. You can only query
+   fields that appear verbatim in the metadata.
+4. **Then call the query tool with the LUID** (NOT the name) and a query spec built ONLY from field names
+   that appear exactly in the metadata — copy them character-for-character, including spaces and casing.
+   If the user's concept has no matching field in the metadata, say so plainly rather than inventing one.
 
-If a tool returns a schema validation error, **read the error message** to understand what's wrong. Do
-not retry the same call with the same arguments — that's a doom loop. Either fix the arguments based on
-the error, or call a discovery tool first to obtain correct values.
+## Query spec shape (VizQL Data Service) — match this EXACTLY
+
+The query tool's argument is an object with TWO top-level keys: \`datasource\` and \`query\`. The \`query\`
+holds a \`fields\` array (and optional \`filters\`). Do not flatten \`fields\` to the top level, and do not
+wrap it in any other key. Canonical example — "average NPS by market segment, highest first":
+
+\`\`\`json
+{
+  "datasource": { "datasourceLuid": "<the LUID from list-datasources>" },
+  "query": {
+    "fields": [
+      { "fieldCaption": "Market Segment" },
+      { "fieldCaption": "NPS Score", "function": "AVG", "sortDirection": "DESC", "sortPriority": 1 }
+    ]
+  }
+}
+\`\`\`
+
+Field objects (each keyed by \`fieldCaption\` — the exact caption from the metadata):
+- **Dimension** (group-by): just \`{ "fieldCaption": "Market Segment" }\` — NO \`function\`.
+- **Measure** (aggregated): MUST include \`function\`, e.g. \`{ "fieldCaption": "NPS Score", "function": "AVG" }\`.
+  Allowed \`function\` values: \`SUM\`, \`AVG\`, \`MEDIAN\`, \`COUNT\`, \`COUNTD\`, \`MIN\`, \`MAX\`, \`STDEV\`, \`VAR\`,
+  \`YEAR\`, \`QUARTER\`, \`MONTH\`, \`WEEK\`, \`DAY\`, \`TRUNC_YEAR\`, \`TRUNC_QUARTER\`, \`TRUNC_MONTH\`, \`TRUNC_WEEK\`,
+  \`TRUNC_DAY\`. Use exactly one of these strings — nothing else.
+- Optional per field: \`sortDirection\` (\`"ASC"\` or \`"DESC"\` only) and \`sortPriority\` (a positive integer).
+
+Filters (optional) go in \`query.filters\`, each \`{ "field": { "fieldCaption": "..." }, "filterType": ... }\`.
+Most common is a SET filter: \`{ "field": { "fieldCaption": "Region" }, "filterType": "SET",
+"values": ["West","East"] }\`. Omit filters entirely unless the question needs them.
+
+Rules that prevent the schema-mismatch errors:
+- Field objects are **strict**: only the keys above are allowed. An unknown key (e.g. \`aggregation\`,
+  \`alias\`, \`name\`, \`type\`) fails validation. Aggregation goes in \`function\` ONLY.
+- Put the aggregation in \`function\`, never in the caption — \`{ "fieldCaption": "Sales", "function": "SUM" }\`,
+  NEVER \`{ "fieldCaption": "SUM(Sales)" }\`.
+- Every \`fieldCaption\` must match the metadata caption character-for-character (spaces, casing).
+- To rank ("highest"/"top"/"best"), sort the measure with \`sortDirection: "DESC"\` and \`sortPriority: 1\`.
+
+If a tool returns a schema validation error, **read the error message and the metadata** to understand
+what's wrong, then fix the arguments — correct the field names, query shape, or aggregation to match the
+schema. Do not retry the same call with the same arguments — that's a doom loop. If, after fetching
+metadata, the data genuinely can't answer the question (no matching fields), tell the user what the
+datasource *does* contain instead of repeatedly failing.
 
 If a discovery tool returns an empty result (zero datasources, zero workbooks, etc.), tell the user
 exactly that — e.g. "No published datasources are available on this site for your account." Don't

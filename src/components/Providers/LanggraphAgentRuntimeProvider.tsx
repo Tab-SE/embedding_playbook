@@ -4,6 +4,7 @@ import { useEffect, createContext, useContext, useRef, useState } from "react";
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import { useVercelUseChatRuntime } from "@assistant-ui/react-ai-sdk";
 import { useChat } from "@ai-sdk/react";
+import { useSession } from "next-auth/react";
 
 import { useProgress } from "@/components/Agent/ProgressContext";
 
@@ -78,6 +79,27 @@ export function LanggraphAgentRuntimeProvider({ children }: Readonly<ProviderPro
   }, [chat.isLoading, addProgressStep, startStreaming, stopStreaming]);
 
   const runtime = useVercelUseChatRuntime(chat);
+
+  // Wipe chat history when the signed-in user changes. On a client-side
+  // logout → login this provider stays mounted and useChat's in-memory messages
+  // would otherwise carry over to the next user (leaking the prior person's
+  // conversation). Keyed on email; the ref tracks the last identity we saw.
+  const { data: authSession } = useSession();
+  const authEmail = authSession?.user?.email ?? null;
+  const lastEmailRef = useRef<string | null | undefined>(undefined);
+  useEffect(() => {
+    // First observation: record the identity without clearing (don't nuke a
+    // freshly-loaded session's messages on mount).
+    if (lastEmailRef.current === undefined) {
+      lastEmailRef.current = authEmail;
+      return;
+    }
+    if (authEmail !== lastEmailRef.current) {
+      lastEmailRef.current = authEmail;
+      chat.setMessages([]);
+      setErrorDismissed(true);
+    }
+  }, [authEmail, chat]);
 
   const clearMessages = () => {
     chat.setMessages([]);

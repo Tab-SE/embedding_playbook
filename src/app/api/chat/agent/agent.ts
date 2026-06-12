@@ -29,8 +29,10 @@ export const bootstrapAgent = async (demo: string, token: JWT) => {
         (datasource.luid ? `- luid: ${datasource.luid}\n` : "") +
         `\nFirst tool call should be \`list-datasources\` with ` +
         (datasource.name
-          ? `\`filter: "name:eq:${datasource.name}"\` so you get exactly this datasource's LUID, then use it for query-datasource.`
-          : `the LUID above passed directly to query-datasource (skip discovery — you already know the LUID).`)
+          ? `\`filter: "name:eq:${datasource.name}"\` so you get exactly this datasource's LUID.`
+          : `— or use the LUID above directly.`) +
+        ` Then ALWAYS call the metadata tool for that LUID and build your query only from the exact field ` +
+        `names it returns (see "how to query data correctly" above) before calling query-datasource.`
       : "";
 
   const agent = createReactAgent({
