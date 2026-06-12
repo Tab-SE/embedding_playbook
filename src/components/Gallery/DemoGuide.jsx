@@ -46,7 +46,7 @@ export const DemoGuide = ({ guide, defaultTab = 'highlights', value, onValueChan
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="highlights">
             <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-            Highlights
+            Feature Highlight
           </TabsTrigger>
           <TabsTrigger value="clickPath">
             <MousePointerClick className="mr-1.5 h-3.5 w-3.5" />

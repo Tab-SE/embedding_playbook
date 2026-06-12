@@ -112,7 +112,7 @@ export const Gallery = (props) => {
                   className="inline-flex items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-[hsl(199,99%,39%)] hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
                 >
                   <Sparkles className="h-3.5 w-3.5" />
-                  Highlights
+                  Feature Highlight
                 </button>
                 <button
                   type="button"
