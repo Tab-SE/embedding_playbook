@@ -87,6 +87,12 @@ export function LanggraphAgentRuntimeProvider({ children }: Readonly<ProviderPro
   const { data: authSession } = useSession();
   const authEmail = authSession?.user?.email ?? null;
   const lastEmailRef = useRef<string | null | undefined>(undefined);
+  // Keep a stable handle to setMessages. `chat` is a fresh object every render,
+  // so depending on it here would re-run this effect on every render (and, with
+  // the AuthGuard cycling the session, flip identity → setMessages → re-render →
+  // loop). We only ever need the latest setMessages, captured via ref.
+  const setMessagesRef = useRef(chat.setMessages);
+  setMessagesRef.current = chat.setMessages;
   useEffect(() => {
     // First observation: record the identity without clearing (don't nuke a
     // freshly-loaded session's messages on mount).
@@ -96,10 +102,10 @@ export function LanggraphAgentRuntimeProvider({ children }: Readonly<ProviderPro
     }
     if (authEmail !== lastEmailRef.current) {
       lastEmailRef.current = authEmail;
-      chat.setMessages([]);
+      setMessagesRef.current([]);
       setErrorDismissed(true);
     }
-  }, [authEmail, chat]);
+  }, [authEmail]);
 
   const clearMessages = () => {
     chat.setMessages([]);

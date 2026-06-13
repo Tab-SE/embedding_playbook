@@ -121,16 +121,32 @@ export const Home = () => {
     }
   };
 
-  // Listen for mark selection events
+  // Listen for mark selection events.
+  // Unlike the superstore demo (which has a hardcoded viz present at mount), the
+  // UBL viz mounts only after the views REST call resolves and a view is selected,
+  // and it re-loads whenever the user switches views. So we (1) key this effect to
+  // selectedView, (2) poll for the viz element instead of a single fixed timeout,
+  // and (3) clean up listeners on every view change to avoid stale/duplicate handlers.
   useEffect(() => {
+    if (!selectedView) return;
+
+    let cancelled = false;
+    let vizEl = null;
+
     const handleMarkSelectionChanged = (markSelectionChangedEvent) => {
       markSelectionChangedEvent.detail.getMarksAsync().then((marks) => {
+        const table = marks.data?.[0];
+        if (!table || !table.data?.length) {
+          // selection cleared
+          setSelectedMarks([]);
+          return;
+        }
+        const columns = table.columns;
         const marksData = [];
-        for (let markIndex = 0; markIndex < marks.data[0].data.length; markIndex++) {
-          const columns = marks.data[0].columns;
+        for (let markIndex = 0; markIndex < table.data.length; markIndex++) {
           const obj = {};
           for (let colIndex = 0; colIndex < columns.length; colIndex++) {
-            obj[columns[colIndex].fieldName] = marks.data[0].data[markIndex][colIndex].formattedValue;
+            obj[columns[colIndex].fieldName] = table.data[markIndex][colIndex].formattedValue;
           }
           marksData.push(obj);
         }
@@ -140,53 +156,52 @@ export const Home = () => {
       });
     };
 
-    const setupListeners = () => {
-      // Try multiple ways to find the viz element
-      let overviewViz = document.getElementById('overviewViz');
-
-      // If not found by ID, try shadow root
-      if (!overviewViz) {
-        const tableauVizElements = document.querySelectorAll('tableau-viz');
-        if (tableauVizElements.length > 0) {
-          overviewViz = tableauVizElements[0];
-        }
-      }
-
-      console.log('🔍 Setting up listeners...');
-      console.log('🔍 Overview Viz found:', !!overviewViz);
-
-      if (overviewViz) {
-        overviewViz.addEventListener('firstinteractive', async (event) => {
-          console.log('🎉 Overview is now interactive!');
-          overviewViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-
-          // Get available states once the viz is interactive
-          console.log('Calling getStatesFromViz...');
-          await getStatesFromViz(overviewViz);
-          console.log('getStatesFromViz completed');
-        });
-      } else {
-        console.log('❌ Overview Viz NOT FOUND!');
-      }
-      return { overviewViz };
+    const handleFirstInteractive = async () => {
+      if (cancelled) return;
+      console.log('🎉 Overview is now interactive!');
+      vizEl.addEventListener('markselectionchanged', handleMarkSelectionChanged);
+      await getStatesFromViz(vizEl);
     };
 
-    const timer = setTimeout(() => {
-      const { overviewViz } = setupListeners();
-      window._vizRefs = { overviewViz, handleMarkSelectionChanged };
-    }, 1000);
+    const findViz = () => {
+      let el = document.getElementById('overviewViz');
+      if (!el) {
+        const tableauVizElements = document.querySelectorAll('tableau-viz');
+        if (tableauVizElements.length > 0) el = tableauVizElements[0];
+      }
+      return el;
+    };
+
+    const attach = (attempt = 0) => {
+      if (cancelled) return;
+      const el = findViz();
+      if (!el) {
+        // viz not in the DOM yet (views still loading / view switching) — keep trying
+        if (attempt < 60) setTimeout(() => attach(attempt + 1), 250);
+        else console.log('❌ Overview Viz NOT FOUND after polling');
+        return;
+      }
+      vizEl = el;
+      el.addEventListener('firstinteractive', handleFirstInteractive);
+      // If the viz is already interactive by the time we found it, firstinteractive
+      // won't fire again — attach immediately.
+      try {
+        if (el.workbook) handleFirstInteractive();
+      } catch {
+        // workbook not ready yet; firstinteractive will handle it
+      }
+    };
+
+    attach();
 
     return () => {
-      clearTimeout(timer);
-      if (window._vizRefs) {
-        const { overviewViz, handleMarkSelectionChanged } = window._vizRefs;
-        if (overviewViz) {
-          overviewViz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
-        }
-        delete window._vizRefs;
+      cancelled = true;
+      if (vizEl) {
+        vizEl.removeEventListener('firstinteractive', handleFirstInteractive);
+        vizEl.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
       }
     };
-  }, []);
+  }, [selectedView]);
 
   // Apply filter when selectedStates changes
   useEffect(() => {
@@ -252,7 +267,16 @@ export const Home = () => {
     };
 
     applyFilter();
-  }, [selectedStates]);
+    // Re-run on selectedView so the active state filter is re-applied to a newly
+    // loaded view (the poll inside waits for the new workbook to be ready).
+  }, [selectedStates, selectedView]);
+
+  // When the user switches views, clear view-specific selection state so stale
+  // marks/states from the previous view don't linger in the UI.
+  useEffect(() => {
+    setSelectedMarks([]);
+    setAvailableStates([]);
+  }, [selectedView]);
 
   const generateSlackMessage = () => {
     if (selectedMarks.length === 0) return;
