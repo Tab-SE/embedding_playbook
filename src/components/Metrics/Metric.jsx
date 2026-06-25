@@ -33,10 +33,6 @@ export const Metric = (props) => {
     }
   }, [isSuccess, data]);
 
-  if (isError) {
-    console.debug('Metric Error:', error);
-  }
-
   if (isSuccess) {
     const insight_groups = data?.bundle_response?.result.insight_groups;
 
@@ -121,14 +117,11 @@ const Stats = (props) => {
 
   if (isSuccess) {
     // Debug: Log the original metric name
-    console.log('🔍 Original metric name:', metric.name);
-    console.log('🔍 Full metric object:', metric);
 
     // Translate the entire metric object
     const translatedMetric = translateMetric(metric);
 
     // Debug: Log the translated metric name
-    console.log('🌍 Translated metric name:', translatedMetric.name);
 
     return (
       <div>

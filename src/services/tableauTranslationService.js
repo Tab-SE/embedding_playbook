@@ -18,12 +18,9 @@ import { translateMetricName, translateMetricValue } from '../utils/metricTransl
  */
 export const translateTableauMetric = (metricData, translations) => {
   if (!metricData || !translations?.metrics) {
-    console.log('🚫 No metric data or translations available');
     return metricData;
   }
 
-  console.log('🔄 Translating metric:', metricData.name);
-  console.log('📚 Available translations:', Object.keys(translations.metrics));
 
   const translated = {
     ...metricData,
@@ -36,7 +33,6 @@ export const translateTableauMetric = (metricData, translations) => {
     ) : metricData.values
   };
 
-  console.log('✅ Translation result:', translated.name);
   return translated;
 };
 

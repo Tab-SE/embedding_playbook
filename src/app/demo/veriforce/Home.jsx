@@ -54,7 +54,6 @@ export const Home = () => {
           const userData = await response.json();
           setCurrentUser(userData);
           setUserLoaded(true);
-          console.log('Current user:', userData);
         } else {
           setUserLoaded(true); // Still mark as loaded even if failed
         }
@@ -81,7 +80,6 @@ export const Home = () => {
             if (response.ok) {
               const userData = await response.json();
               setCurrentUser(userData);
-              console.log('User updated on visibility change:', userData);
             }
           } catch (error) {
             console.error('Error fetching user on visibility change:', error);
@@ -108,7 +106,6 @@ export const Home = () => {
         if (response.ok) {
           const userData = await response.json();
           setCurrentUser(userData);
-          console.log('User updated:', userData);
         }
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -136,7 +133,6 @@ export const Home = () => {
   useEffect(() => {
     // Store initial scroll position
     const initialScrollY = window.scrollY;
-    console.log('Initial scroll position:', initialScrollY);
 
     // IMMEDIATELY lock the page to prevent ANY scrolling
     document.body.style.position = 'fixed';
@@ -184,7 +180,6 @@ export const Home = () => {
     // Monitor and force scroll position
     const forceScrollPosition = () => {
       if (window.scrollY !== initialScrollY) {
-        console.log('Forcing scroll back to initial position');
         window.scrollTo(0, initialScrollY);
       }
     };
@@ -207,7 +202,6 @@ export const Home = () => {
 
     // Release lock after 8 seconds - Tableau should be fully loaded by then
     const releaseTimer = setTimeout(() => {
-      console.log('Releasing scroll lock after 8 seconds');
       clearInterval(focusTimer);
       clearInterval(scrollTimer);
 
@@ -252,7 +246,6 @@ export const Home = () => {
   // Apply filter to Tableau dashboards when insurance status changes
   useEffect(() => {
     const applyFilter = async () => {
-      console.log('Insurance status changed to:', insuranceStatus);
       const fieldName = 'Insurance Status'; // Update this to match your actual field name in Tableau
       const filterValue = insuranceStatus === 'all' ? [] : [insuranceStatus];
 
@@ -261,13 +254,11 @@ export const Home = () => {
         const viz = document.getElementById(vizId);
 
         if (!viz) {
-          console.log(`Viz with id ${vizId} not found`);
           return;
         }
 
         // Wait for workbook to be available
         if (!viz.workbook) {
-          console.log(`Workbook not ready for ${vizId}, waiting...`);
           // Try again after a short delay
           setTimeout(() => applyFilterToViz(vizId), 500);
           return;
@@ -275,31 +266,25 @@ export const Home = () => {
 
         try {
           const activeSheet = viz.workbook.activeSheet;
-          console.log(`Applying filter to ${vizId} - Sheet:`, activeSheet.name, 'Type:', activeSheet.sheetType);
 
           // Check if the active sheet is a dashboard
           if (activeSheet.sheetType === 'dashboard') {
             // Apply filter to all worksheets in the dashboard
             const worksheets = activeSheet.worksheets;
-            console.log('Found worksheets in dashboard:', worksheets.length);
 
             for (const worksheet of worksheets) {
               if (insuranceStatus === 'all') {
                 await worksheet.clearFilterAsync(fieldName);
-                console.log(`Cleared filter on worksheet: ${worksheet.name}`);
               } else {
                 await worksheet.applyFilterAsync(fieldName, filterValue, 'replace');
-                console.log(`Applied filter ${filterValue} to worksheet: ${worksheet.name}`);
               }
             }
           } else {
             // If it's a single worksheet, apply directly
             if (insuranceStatus === 'all') {
               await activeSheet.clearFilterAsync(fieldName);
-              console.log('Cleared filter on worksheet');
             } else {
               await activeSheet.applyFilterAsync(fieldName, filterValue, 'replace');
-              console.log('Applied filter to worksheet:', filterValue);
             }
           }
         } catch (error) {
@@ -319,13 +304,9 @@ export const Home = () => {
   // Listen for mark selection events - attach INSIDE firstinteractive
   useEffect(() => {
     const handleMarkSelectionChanged = (markSelectionChangedEvent) => {
-      console.log('=== MARK SELECTION CHANGED ===');
-      console.log('Event detail:', markSelectionChangedEvent.detail);
 
       // Use the pattern from the working Angular example
       markSelectionChangedEvent.detail.getMarksAsync().then((marks) => {
-        console.log('Selected marks data:', marks);
-        console.log('Number of data tables:', marks.data.length);
 
         // Process marks data like the Angular example
         const marksData = [];
@@ -341,18 +322,15 @@ export const Home = () => {
           marksData.push(obj);
         }
 
-        console.log('Processed marks data:', marksData);
 
         // Store selected marks for email functionality
         setSelectedMarks(marksData);
 
         // Just store the marks data - no automatic popup
-        console.log('Selected marks stored for user:', currentUser?.name);
 
         // Log column names
         if (marks.data[0].columns) {
           const columnNames = marks.data[0].columns.map(col => col.fieldName);
-          console.log('Column names:', columnNames);
         }
 
       }).catch((error) => {
@@ -364,27 +342,18 @@ export const Home = () => {
       const executiveSummaryViz = document.getElementById('executiveSummaryViz');
       const complianceCenterViz = document.getElementById('complianceCenterViz');
 
-      console.log('Setting up listeners...');
-      console.log('Executive Summary Viz found:', !!executiveSummaryViz);
-      console.log('Compliance Center Viz found:', !!complianceCenterViz);
 
       if (executiveSummaryViz) {
-        console.log('Adding firstinteractive listener to Executive Summary');
         executiveSummaryViz.addEventListener('firstinteractive', (event) => {
-          console.log('Executive Summary is now interactive!');
           // Add mark selection listener INSIDE firstinteractive
           executiveSummaryViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('Mark selection listener attached to Executive Summary');
         });
       }
 
       if (complianceCenterViz) {
-        console.log('Adding firstinteractive listener to Compliance Center');
         complianceCenterViz.addEventListener('firstinteractive', (event) => {
-          console.log('Compliance Center is now interactive!');
           // Add mark selection listener INSIDE firstinteractive
           complianceCenterViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('Mark selection listener attached to Compliance Center');
         });
       }
 
