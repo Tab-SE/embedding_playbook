@@ -26,7 +26,21 @@ export const tabAuthJWT = async (jwt) => {
     },
   };
 
-  const response = await httpPost(endpoint, body, config);
+  let response;
+  try {
+    response = await httpPost(endpoint, body, config);
+  } catch (error) {
+    // Surface Tableau's actual rejection reason (e.g. user not found on site,
+    // bad UAF attribute) instead of silently failing sign-in.
+    console.error('❌ Tableau JWT sign-in FAILED for endpoint', endpoint);
+    console.error('❌ Tableau response:', error?.response?.data || error?.message || error);
+    throw error;
+  }
+
+  if (!response?.credentials?.site || !response?.credentials?.user) {
+    console.error('❌ Tableau JWT sign-in returned no credentials:', JSON.stringify(response));
+    throw new Error('Tableau JWT sign-in returned no credentials');
+  }
 
   const site_id = response.credentials.site.id;
   const site = response.credentials.site.contentUrl;

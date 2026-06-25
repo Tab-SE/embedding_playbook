@@ -40,6 +40,24 @@ export const Home = () => {
   // Get language context
   const { t } = useLanguage();
 
+  // DEBUG: mint + log the embed JWT immediately on load, no sign-in needed.
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await fetch('/api/debug-jwt?demo=veriforce&id=a');
+        const data = await r.json();
+        console.log('%c🔑 EMBED JWT (Sarah, id=a):', 'color:#0a0;font-weight:bold', data.embed_token);
+        console.log('🔑 Decoded payload:', data.payload);
+        const r2 = await fetch('/api/debug-jwt?demo=veriforce&id=b');
+        const data2 = await r2.json();
+        console.log('%c🔑 EMBED JWT (Mike, id=b):', 'color:#0a0;font-weight:bold', data2.embed_token);
+        console.log('🔑 Decoded payload:', data2.payload);
+      } catch (e) {
+        console.error('🔑 debug-jwt fetch failed:', e);
+      }
+    })();
+  }, []);
+
   // Get current user - re-fetch when component mounts or when session might change
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,11 +68,31 @@ export const Home = () => {
             'Content-Type': 'application/json',
           },
         });
+        // DEBUG: always log so we can see the JWT (or why there isn't one)
+        console.log('🔑 /api/user status:', response.status);
         if (response.ok) {
           const userData = await response.json();
+          const embedToken = userData?.embed_token;
+          console.log('🔑 Embed JWT for', userData?.name, ':', embedToken);
+          if (embedToken) {
+            try {
+              const [, payloadB64] = embedToken.split('.');
+              const payload = JSON.parse(
+                atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/'))
+              );
+              console.log('🔑 Decoded JWT payload:', payload);
+            } catch (e) {
+              console.error('🔑 Failed to decode embed JWT:', e);
+            }
+          } else {
+            console.warn('🔑 No embed_token in /api/user response:', userData);
+          }
           setCurrentUser(userData);
           setUserLoaded(true);
         } else {
+          // 401 = not signed in → no session → no JWT exists yet
+          const body = await response.text();
+          console.warn('🔑 /api/user NOT OK — no JWT. Body:', body);
           setUserLoaded(true); // Still mark as loaded even if failed
         }
       } catch (error) {
@@ -115,17 +153,15 @@ export const Home = () => {
     const handleFocus = () => fetchUser();
     const handleStorageChange = () => fetchUser();
 
-    // Listen for focus and storage changes
+    // Re-fetch only when the user actually returns to the tab or switches
+    // users (storage event). No fixed-interval polling — that hammered
+    // /api/user every 2s and spammed 401s when not signed in.
     window.addEventListener('focus', handleFocus);
     window.addEventListener('storage', handleStorageChange);
-    
-    // Also check periodically every 2 seconds
-    const interval = setInterval(fetchUser, 2000);
 
     return () => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('storage', handleStorageChange);
-      clearInterval(interval);
     };
   }, []);
 
