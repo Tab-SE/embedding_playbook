@@ -61,13 +61,11 @@ export const TabNext = () => {
         throw new Error('Container element not found!');
       }
 
-      const parentWidth = container.parentElement?.clientWidth || window.innerWidth;
-
       container.style.height = '800px';
-      container.style.width = `${Math.max(parentWidth, 600)}px`;
+      container.style.width = '100%';
       container.style.minHeight = '800px';
       container.style.minWidth = '600px';
-      container.style.display = 'block'; // Ensure it's a block element
+      container.style.display = 'block';
 
       await new Promise(resolve => setTimeout(resolve, 0));
 
@@ -211,5 +209,3 @@ export const TabNext = () => {
     </div>
   );
 };
-
-
