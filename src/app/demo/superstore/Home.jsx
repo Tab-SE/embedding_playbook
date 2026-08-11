@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { MessageSquare, X, Filter } from 'lucide-react';
+import { MessageSquare, X, Filter, BotMessageSquare } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -12,7 +12,6 @@ import {
 
 import { Metrics, TableauEmbed, Transactions, RecentSales } from '@/components';
 
-export const description = "An application shell with a header and main content area. The header has a navbar, a search input and and a user nav dropdown. The user nav is toggled by a button with an avatar image. The main content area is divided into two rows. The first row has a grid of cards with statistics. The second row has a grid of cards with a table of recent transactions and a list of recent sales.";
 
 export const Home = () => {
   const [selectedMarks, setSelectedMarks] = useState([]);
@@ -245,8 +244,8 @@ export const Home = () => {
           </div>
         )}
 
-        {/* State Filter */}
-        <div className="flex justify-center">
+        {/* State Filter + Data Q&A */}
+        <div className="flex justify-center gap-3">
           <button
             onClick={() => setShowStateFilter(true)}
             className="flex items-center gap-2 px-6 py-3 bg-[hsl(199,99%,39%)] hover:opacity-90 text-white rounded-lg transition-colors shadow-lg"
@@ -257,6 +256,18 @@ export const Home = () => {
                 ? 'Select States'
                 : `${selectedStates.length} State${selectedStates.length > 1 ? 's' : ''} Selected`}
             </span>
+          </button>
+          <button
+            onClick={async () => {
+              const viz = window._vizRefs?.overviewViz || document.querySelector('tableau-viz');
+              if (viz?.launchAnalyticsAssistantAsync) {
+                await viz.launchAnalyticsAssistantAsync();
+              }
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-[hsl(199,99%,39%)] hover:opacity-90 text-white rounded-lg transition-colors shadow-lg"
+          >
+            <BotMessageSquare className="h-5 w-5" />
+            <span className="font-medium">Data Q&amp;A</span>
           </button>
         </div>
 
@@ -272,7 +283,7 @@ export const Home = () => {
                   id="overviewViz"
                   src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
                   hideTabs={true}
-                  toolbar='top'
+                  toolbar='hidden'
                   className='
                   min-w-[300px] min-h-[1430px]
                   sm:min-w-[510px] sm:min-h-[1430px]

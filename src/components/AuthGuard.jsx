@@ -30,7 +30,8 @@ const killSession = async (queryClient, router, demo, base_path) => {
 }
 
 export const AuthGuard = (props) => {
-  const { demo, base_path } = props;
+  const { demo } = props;
+  const base_path = (props.base_path || '').replace(/\/$/, '');
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();

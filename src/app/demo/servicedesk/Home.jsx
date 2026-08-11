@@ -21,7 +21,6 @@ import {
   MessageSquare
 } from 'lucide-react';
 
-export const description = "Service Excellence Platform - Customer service analytics with real-time metrics, case management, and training insights to drive customer satisfaction and renewals";
 
 export const Home = () => {
   const [showFilterPopup, setShowFilterPopup] = useState(false);

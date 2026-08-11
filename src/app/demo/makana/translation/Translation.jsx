@@ -12,7 +12,6 @@ import {
 
 import { TableauEmbed } from '@/components';
 
-export const description = "A translated dashboard with language selector to toggle between different languages using Tableau parameters.";
 
 export const Translation = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
