@@ -65,7 +65,7 @@ import {
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
-  const { src } = props;
+  const { src, jwt } = props;
   const [viz, setViz] = useState(null);
   // writing target src values
   const newVizId = uuidv4();
@@ -102,6 +102,7 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
               <Explore
                 title='Edit Viz'
                 src={src}
+                jwt={jwt}
               />
             </MenubarItem>
           </Dialog>

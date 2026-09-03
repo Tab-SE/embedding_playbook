@@ -79,7 +79,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
   return (
     <div>
       <XSLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? <TableauToolbar src={src} jwt={jwt} ref={innerRef} /> : null}
         <tableau-viz
           key={jwt}
           ref={innerRef}
@@ -97,7 +97,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </XSLayout>
 
       <SMLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? <TableauToolbar src={src} jwt={jwt} ref={innerRef} /> : null}
         <tableau-viz
           key={jwt}
           ref={innerRef}
@@ -115,7 +115,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </SMLayout>
 
       <MDLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? <TableauToolbar src={src} jwt={jwt} ref={innerRef} /> : null}
         <tableau-viz
           key={jwt}
           ref={innerRef}
@@ -133,7 +133,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </MDLayout>
 
       <LGLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? <TableauToolbar src={src} jwt={jwt} ref={innerRef} /> : null}
         <tableau-viz
           key={jwt}
           ref={innerRef}
@@ -151,7 +151,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </LGLayout>
 
       <XLLayout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? <TableauToolbar src={src} jwt={jwt} ref={innerRef} /> : null}
         <tableau-viz
           key={jwt}
           ref={innerRef}
@@ -169,7 +169,7 @@ export const TableauViz = forwardRef(function Viz(props, ref) {
       </XLLayout>
 
       <XL2Layout>
-        {customToolbar ? <TableauToolbar src={src} ref={innerRef} /> : null}
+        {customToolbar ? <TableauToolbar src={src} jwt={jwt} ref={innerRef} /> : null}
         <tableau-viz
             key={jwt}
             ref={innerRef}
