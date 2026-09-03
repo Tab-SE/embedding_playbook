@@ -5,6 +5,16 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 import { SessionModel, UserModel } from "@/models";
 
+// Decode JWT payload (no verify) to read the exp claim.
+const getJwtExp = (token: string): number => {
+  try {
+    const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString());
+    return typeof payload.exp === 'number' ? payload.exp : 0;
+  } catch {
+    return 0;
+  }
+};
+
 interface DemoUser extends User {
   picture?: string;
   demo?: string;
@@ -315,7 +325,8 @@ export const authOptions: AuthOptions = {
         };
         const tableauToken = token.tableau as any;
         const tableauExpiresSec = toEpochSeconds(tableauToken?.expires);
-        const shouldRefresh = tableauExpiresSec > 0 && (tableauExpiresSec - now) < 240;
+        const tableauEmbedExp = getJwtExp(tableauToken?.embed_token ?? '');
+        const shouldRefresh = (tableauEmbedExp > 0 && (tableauEmbedExp - now) < 120) || (tableauExpiresSec > 0 && (tableauExpiresSec - now) < 240);
 
         if (shouldRefresh && token.name && token.email) {
           console.log(`[NextAuth JWT Callback] ${new Date().toISOString()} - Refreshing Tableau token for ${token.email}`);
@@ -398,7 +409,8 @@ export const authOptions: AuthOptions = {
           // Also refresh EACanada token if it exists
           const eacanadaToken = token.tableau_eacanada as any;
           const eacanadaExpiresSec = toEpochSeconds(eacanadaToken?.expires);
-          const shouldRefreshEACanada = eacanadaExpiresSec > 0 && (eacanadaExpiresSec - now) < 240;
+          const eacanadaEmbedExp = getJwtExp(eacanadaToken?.embed_token ?? '');
+          const shouldRefreshEACanada = (eacanadaEmbedExp > 0 && (eacanadaEmbedExp - now) < 120) || (eacanadaExpiresSec > 0 && (eacanadaExpiresSec - now) < 240);
           if (shouldRefreshEACanada) {
             console.log(`[NextAuth JWT Callback] ${new Date().toISOString()} - Refreshing EACanada token for ${token.email}`);
 
@@ -458,7 +470,8 @@ export const authOptions: AuthOptions = {
           // Also refresh UBL token if it exists
           const ublToken = token.tableau_ubl as any;
           const ublExpiresSec = toEpochSeconds(ublToken?.expires);
-          const shouldRefreshUBL = ublExpiresSec > 0 && (ublExpiresSec - now) < 240;
+          const ublEmbedExp = getJwtExp(ublToken?.embed_token ?? '');
+          const shouldRefreshUBL = (ublEmbedExp > 0 && (ublEmbedExp - now) < 120) || (ublExpiresSec > 0 && (ublExpiresSec - now) < 240);
           if (shouldRefreshUBL) {
             console.log(`[NextAuth JWT Callback] ${new Date().toISOString()} - Refreshing UBL token for ${token.email}`);
 

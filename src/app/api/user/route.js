@@ -4,6 +4,16 @@ import { SessionModel } from "@/models";
 
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 
+// Decode the JWT payload and return the exp claim (seconds). No verify — we only
+// need the expiry to decide whether to mint a fresh token.
+const getJwtExp = (token) => {
+  try {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString()).exp ?? 0;
+  } catch {
+    return 0;
+  }
+};
+
 // local connected app
 export async function POST(req) {
   // Check if req is defined
@@ -23,7 +33,11 @@ export async function POST(req) {
     const now = Math.floor(Date.now() / 1000);
     const expiresMs = tableau.expires ? new Date(tableau.expires).getTime() : 0;
     const expiresSec = Number.isFinite(expiresMs) ? Math.floor(expiresMs / 1000) : 0;
-    const shouldRefresh = expiresSec > 0 && (expiresSec - now) < 240;
+    // Also refresh when the embed JWT itself is expired or within 2 minutes of expiring.
+    // The embed JWT has a 9-minute exp (one-time redemption window). If it has lapsed,
+    // tableau-viz cannot re-authenticate after a remount — so we must mint a fresh one.
+    const embedJwtExp = getJwtExp(tableau.embed_token ?? '');
+    const shouldRefresh = (embedJwtExp > 0 && (embedJwtExp - now) < 120) || (expiresSec > 0 && (expiresSec - now) < 240);
 
     let refreshedTableau = tableau;
 

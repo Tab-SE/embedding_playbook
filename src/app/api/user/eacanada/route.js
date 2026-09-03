@@ -4,6 +4,14 @@ import { SessionModel } from "@/models";
 
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 
+const getJwtExp = (token) => {
+  try {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString()).exp ?? 0;
+  } catch {
+    return 0;
+  }
+};
+
 // eacanada connected app
 export async function POST(req) {
   // Check if req is defined
@@ -23,7 +31,8 @@ export async function POST(req) {
     const now = Math.floor(Date.now() / 1000);
     const expiresMs = tableau_eacanada.expires ? new Date(tableau_eacanada.expires).getTime() : 0;
     const expiresSec = Number.isFinite(expiresMs) ? Math.floor(expiresMs / 1000) : 0;
-    const shouldRefresh = expiresSec > 0 && (expiresSec - now) < 240;
+    const embedJwtExp = getJwtExp(tableau_eacanada.embed_token ?? '');
+    const shouldRefresh = (embedJwtExp > 0 && (embedJwtExp - now) < 120) || (expiresSec > 0 && (expiresSec - now) < 240);
 
     let refreshedTableau = tableau_eacanada;
 
