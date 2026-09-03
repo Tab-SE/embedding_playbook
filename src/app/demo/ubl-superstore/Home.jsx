@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
-import { MessageSquare, X, Filter, LayoutDashboard, ChevronRight, Loader2, Search } from 'lucide-react';
+import { MessageSquare, X, Filter, LayoutDashboard, ChevronRight, Loader2, Search, BotMessageSquare } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -306,8 +306,8 @@ export const Home = () => {
           </div>
         )}
 
-        {/* State Filter */}
-        <div className="flex justify-center">
+        {/* State Filter + Data Q&A */}
+        <div className="flex justify-center gap-3">
           <button
             onClick={() => setShowStateFilter(true)}
             className="flex items-center gap-2 px-6 py-3 bg-[hsl(199,99%,39%)] hover:opacity-90 text-white rounded-lg transition-colors shadow-lg"
@@ -318,6 +318,18 @@ export const Home = () => {
                 ? 'Select States'
                 : `${selectedStates.length} State${selectedStates.length > 1 ? 's' : ''} Selected`}
             </span>
+          </button>
+          <button
+            onClick={async () => {
+              const viz = document.getElementById('overviewViz') || document.querySelector('tableau-viz');
+              if (viz?.launchAnalyticsAssistantAsync) {
+                await viz.launchAnalyticsAssistantAsync();
+              }
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-[hsl(199,99%,39%)] hover:opacity-90 text-white rounded-lg transition-colors shadow-lg"
+          >
+            <BotMessageSquare className="h-5 w-5" />
+            <span className="font-medium">Data Q&A</span>
           </button>
         </div>
 
