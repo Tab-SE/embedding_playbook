@@ -67,6 +67,10 @@ import {
 export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   const { src, jwt } = props;
   const [viz, setViz] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+  // Captured at open time so the dialog always shows the current viz, not a stale prop.
+  const [editSrc, setEditSrc] = useState(null);
+  const [editJwt, setEditJwt] = useState(null);
   // writing target src values
   const newVizId = uuidv4();
   const domain = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN;
@@ -82,6 +86,14 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
     }
   }, [ref]);
 
+  const handleEditOpenChange = (open) => {
+    if (open) {
+      setEditSrc(src);
+      setEditJwt(jwt);
+    }
+    setEditOpen(open);
+  };
+
   return (
     <Menubar className='mt-1 mb-3 inline-flex' >
       <MenubarMenu >
@@ -94,15 +106,15 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
             <IconFileDescription stroke={1} size={18} className='mr-1'/> Open <MenubarShortcut>⌘O</MenubarShortcut>
           </MenubarItem>
 
-          <Dialog >
+          <Dialog open={editOpen} onOpenChange={handleEditOpenChange}>
             <MenubarItem className='cursor-pointer' onSelect={handleSelect} >
               <DialogTrigger className='flex flex-row grow'>
                 <IconFilePencil stroke={1} size={18} className='mr-1'/> Edit <MenubarShortcut>⌘E</MenubarShortcut>
               </DialogTrigger>
               <Explore
                 title='Edit Viz'
-                src={src}
-                jwt={jwt}
+                src={editSrc}
+                jwt={editJwt}
               />
             </MenubarItem>
           </Dialog>
