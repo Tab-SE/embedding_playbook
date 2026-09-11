@@ -14,7 +14,14 @@ export const description = "A login page with a full-screen background image and
 export const Auth = (props) => {
   const { settings } = props;
 
-  const { app_id, base_path, app_name, app_logo, auth_logo, auth_hero } = settings;
+  const { app_id, base_path, app_name, app_logo, auth_logo, auth_hero, hide_email, brand_region_map, brand_logos } = settings;
+
+  const getBrandsForUser = (user) => {
+    if (!brand_region_map) return null;
+    const regions = user.uaf?.Region ?? [];
+    const brands = [...new Set(regions.map(r => brand_region_map[r]).filter(Boolean))];
+    return brands.length > 0 ? brands : null;
+  };
   const logoToUse = auth_logo || app_logo;
 
   const demoManager = new UserModel();
@@ -70,7 +77,7 @@ export const Auth = (props) => {
                   {users.map((user, index) => (
                     <Fragment key={user.id}>
                       {index > 0 && <Separator className="my-3 bg-gray-300" orientation="horizontal" />}
-                      <DemoUser user={user} demo={app_id} roles={roles} base_path={base_path} />
+                      <DemoUser user={user} demo={app_id} roles={roles} base_path={base_path} hideEmail={hide_email} brands={getBrandsForUser(user)} brandLogos={brand_logos} />
                     </Fragment>
                   ))}
                 </div>
