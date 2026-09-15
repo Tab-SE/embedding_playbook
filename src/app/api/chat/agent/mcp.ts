@@ -16,6 +16,7 @@ const DEMO_SITE: Record<string, SiteKey> = {
   cumulus: "main",
   servicedesk: "main",
   "ubl-superstore": "ubl",
+  pinnacle: "main",
 };
 
 // Per-demo datasource pinning — mirrors the env-var pattern from the old

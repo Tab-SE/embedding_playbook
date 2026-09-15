@@ -3,7 +3,8 @@ import {
   ShoppingCart,
   HandCoins,
   HeartPulse,
-  Headphones
+  Headphones,
+  Users2,
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -62,5 +63,14 @@ export const galleryItems = [
     vertical: "Service & Support",
     description: "A customer service portal that helps teams manage tickets, track response times, monitor KPIs, and deliver exceptional customer support",
     icon: <Headphones size={12} strokeWidth={2} />
+  },
+  {
+    id: 'pinnacle',
+    link: "/demo/pinnacle",
+    src: "/img/themes/pinnacle/banner.jpeg",
+    alt: "Pinnacle Group | Workforce Intelligence Portal",
+    vertical: "Staffing & Workforce Management",
+    description: "A contingent workforce management portal for customer executives, program managers, and staffing suppliers — featuring supplier scorecards, requisition tracking, and compliance monitoring",
+    icon: <Users2 size={12} strokeWidth={2} />
   }
 ]

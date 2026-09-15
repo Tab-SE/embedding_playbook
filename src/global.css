@@ -233,6 +233,39 @@
   [data-theme="servicedesk"] .dark {
     color-scheme: dark;
   }
+
+  /* Pinnacle Group — Azure Radiance #00A7FF (primary), Prussian Blue #002858 (nav), Malibu #8ED1FC (accent) */
+  [data-theme="pinnacle"] {
+    --background: 0 0% 97%;
+    --foreground: 213 60% 10%;
+    --demo-background: 0 0% 94%;
+    --nav-background: 213 100% 17%; /* Prussian Blue #002858 */
+    --logo-background: 213 100% 17%;
+    --icon-background: 213 100% 17%;
+    --login-card-background: 0 0% 100%;
+    --nav-icons: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 213 60% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 213 60% 10%;
+    --primary: 201 100% 50%; /* Azure Radiance #00A7FF */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 203 95% 92%; /* Malibu tint */
+    --secondary-foreground: 213 100% 17%;
+    --muted: 203 40% 95%;
+    --muted-foreground: 213 20% 45%;
+    --accent: 203 95% 77%; /* Malibu #8ED1FC */
+    --accent-foreground: 213 100% 17%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 203 30% 88%;
+    --input: 203 30% 92%;
+    --ring: 201 100% 50%;
+
+    --metrics-positive: 201 100% 50%; /* Azure Radiance */
+    --metrics-neutral: 203 95% 77%;   /* Malibu */
+    --metrics-negative: 0 84% 60%;
+  }
 } /* End of @layer base containing themes */
 
 @layer base {

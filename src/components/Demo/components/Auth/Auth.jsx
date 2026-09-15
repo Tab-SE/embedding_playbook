@@ -14,7 +14,7 @@ export const description = "A login page with a full-screen background image and
 export const Auth = (props) => {
   const { settings } = props;
 
-  const { app_id, base_path, app_name, app_logo, auth_logo, auth_hero } = settings;
+  const { app_id, base_path, app_name, app_logo, auth_logo, auth_hero, hide_email } = settings;
   const logoToUse = auth_logo || app_logo;
 
   const demoManager = new UserModel();
@@ -34,6 +34,7 @@ export const Auth = (props) => {
           sizes="100vw"
           className="object-cover dark:brightness-[0.2] dark:grayscale background"
         />
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
       {/* Floating "back to /demos" badge — mirrors the logo widget that lives in
@@ -52,7 +53,7 @@ export const Auth = (props) => {
       </Link>
 
       <div className="relative z-10 flex items-center justify-center w-full min-h-screen p-4">
-        <Card className="mx-auto w-[480px] max-w-full shadow-lg backdrop-blur-sm loginBackground/95">
+        <Card className="mx-auto w-[480px] max-w-full shadow-lg loginBackground/95">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <Avatar className="flex items-center justify-center h-16 w-16 bg-logoBackground">
@@ -70,7 +71,7 @@ export const Auth = (props) => {
                   {users.map((user, index) => (
                     <Fragment key={user.id}>
                       {index > 0 && <Separator className="my-3 bg-gray-300" orientation="horizontal" />}
-                      <DemoUser user={user} demo={app_id} roles={roles} base_path={base_path} />
+                      <DemoUser user={user} demo={app_id} roles={roles} base_path={base_path} hide_email={hide_email} />
                     </Fragment>
                   ))}
                 </div>

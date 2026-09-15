@@ -91,7 +91,10 @@ export const MiniThread = (props) => {
 const WelcomeMessage = (props) => {
   const { ai_avatar, sample_questions = [], inputRef } = props;
 
-  const handleQuestionClick = (question) => fillComposer(inputRef, question);
+  const handleQuestionClick = (question) => {
+    const query = typeof question === 'object' ? (question.query ?? question.label) : question;
+    fillComposer(inputRef, query);
+  };
 
   return (
     (<ThreadPrimitive.Empty>
@@ -113,7 +116,7 @@ const WelcomeMessage = (props) => {
                   className="w-full text-left p-3 text-sm bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors"
                   onClick={() => handleQuestionClick(question)}
                 >
-                  {question}
+                  {typeof question === 'object' ? question.label : question}
                 </button>
               ))}
             </div>
@@ -244,7 +247,10 @@ const NextQuestions = (props) => {
   const askedText = messages.filter((m) => m.role === 'user').map(messageText);
   const remaining = sample_questions
     .slice(0, MAX_QUESTIONS)
-    .filter((q) => !askedText.includes(q.trim().toLowerCase()));
+    .filter((q) => {
+      const label = typeof q === 'object' ? q.label : q;
+      return !askedText.includes(label.trim().toLowerCase());
+    });
 
   if (remaining.length === 0) return null;
 
@@ -256,10 +262,13 @@ const NextQuestions = (props) => {
           <button
             key={index}
             type="button"
-            onClick={() => fillComposer(inputRef, question)}
+            onClick={() => {
+              const query = typeof question === 'object' ? (question.query ?? question.label) : question;
+              fillComposer(inputRef, query);
+            }}
             className="text-left px-3 py-1.5 text-xs bg-gray-50 hover:bg-gray-100 dark:bg-stone-900 dark:hover:bg-stone-800 rounded-full border border-gray-200 dark:border-stone-700 transition-colors"
           >
-            {question}
+            {typeof question === 'object' ? question.label : question}
           </button>
         ))}
       </div>
