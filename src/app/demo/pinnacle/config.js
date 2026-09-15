@@ -12,7 +12,6 @@ export const settings = {
   app_logo: '/img/themes/pinnacle/icon.jpeg',
   auth_logo: '/img/themes/pinnacle/icon.jpeg',
   base_path: '/demo/pinnacle',
-  auth_hero: '/img/themes/pinnacle/banner.jpeg',
   hide_email: true,
   ai_chat: true,
   // No ai_avatar set — falls back to chatbot MessageSquare icon
@@ -94,10 +93,10 @@ export const settings = {
     'Inventory':     'Open Requisitions',
   },
   sample_questions: [
-    { label: "Which suppliers are underperforming?",           query: "Which suppliers are in Q4 this quarter?" },
-    { label: "What is Atlas Workforce Solutions' status?",     query: "What is Atlas Workforce Solutions' current scorecard status?" },
-    { label: "How many requisitions are past SLA?",            query: "How many open requisitions are past their SLA deadline?" },
-    { label: "What data sources power this portal?",           query: "List the Datasources" },
+    { label: "Which suppliers are underperforming?",       query: "What are the total sales and profit by category, sorted by profit ascending?" },
+    { label: "How is spend trending by customer program?", query: "What are the total sales by segment over time?" },
+    { label: "What are fill rates by region?",             query: "What is the average shipping time and total orders by region?" },
+    { label: "What data sources power this portal?",       query: "List the Datasources" },
   ],
   sections: [
     {

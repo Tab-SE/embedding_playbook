@@ -234,6 +234,35 @@
     color-scheme: dark;
   }
 
+  /* Pinnacle auth background — mimics their homepage: deep navy + glowing orb + light rays */
+  [data-theme="pinnacle"] .pinnacle-auth-bg {
+    background-color: #000e24;
+    background-image:
+      /* bright cyan orb core */
+      radial-gradient(ellipse 38% 45% at 22% 50%, rgba(130, 230, 255, 0.55) 0%, rgba(0, 167, 255, 0.45) 20%, rgba(0, 100, 210, 0.25) 50%, transparent 70%),
+      /* orb outer halo */
+      radial-gradient(ellipse 65% 65% at 22% 50%, rgba(0, 130, 220, 0.30) 0%, transparent 60%),
+      /* light ray fan — right sweep */
+      conic-gradient(from 165deg at 22% 50%,
+        transparent 0deg,
+        rgba(0, 167, 255, 0.06) 8deg,
+        transparent 16deg,
+        rgba(0, 167, 255, 0.04) 26deg,
+        transparent 34deg,
+        rgba(0, 167, 255, 0.05) 44deg,
+        transparent 52deg,
+        rgba(0, 167, 255, 0.03) 64deg,
+        transparent 72deg,
+        rgba(0, 167, 255, 0.04) 82deg,
+        transparent 90deg,
+        transparent 360deg
+      ),
+      /* right-side depth */
+      radial-gradient(ellipse 55% 70% at 80% 40%, rgba(0, 30, 90, 0.70) 0%, transparent 60%),
+      /* base depth gradient */
+      linear-gradient(165deg, #001040 0%, #001d50 40%, #001535 70%, #000e24 100%);
+  }
+
   /* Pinnacle Group — Azure Radiance #00A7FF (primary), Prussian Blue #002858 (nav), Malibu #8ED1FC (accent) */
   [data-theme="pinnacle"] {
     --background: 0 0% 97%;

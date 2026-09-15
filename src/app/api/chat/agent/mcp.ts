@@ -42,7 +42,15 @@ interface DemoDatasource {
   luid?: string;
 }
 
+// Demos that share the Superstore datasource but have no env var of their own
+// get pinned here so the agent doesn't roam to an unrelated datasource.
+const DATASOURCE_OVERRIDES: Record<string, DemoDatasource> = {
+  pinnacle: { name: process.env["DATASOURCE_NAME_SUPERSTORE"] ?? "Superstore" },
+  "driven-brands": { name: process.env["DATASOURCE_NAME_SUPERSTORE"] ?? "Superstore" },
+};
+
 const demoDatasource = (demo: string): DemoDatasource => {
+  if (DATASOURCE_OVERRIDES[demo]) return DATASOURCE_OVERRIDES[demo];
   // Convert the demo key to env var suffix (e.g. "ubl-superstore" → "UBL_SUPERSTORE").
   const suffix = demo.toUpperCase().replace(/-/g, "_");
   return {
