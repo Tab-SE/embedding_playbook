@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { MessageSquare, X, Filter, BotMessageSquare } from 'lucide-react';
 import {
   Card,
@@ -21,8 +21,11 @@ export const Home = () => {
   const { data: session } = useTableauSession();
   const role = session?.role ?? -1;
   const supplierName = session?.company ?? null;
-  const supplierTerritories = settings.supplier_territory_map?.[supplierName] ?? {};
-  const TERRITORIES = Object.keys(supplierTerritories);
+  const supplierTerritories = useMemo(
+    () => settings.supplier_territory_map?.[supplierName] ?? {},
+    [supplierName]
+  );
+  const TERRITORIES = useMemo(() => Object.keys(supplierTerritories), [supplierTerritories]);
 
   const [selectedMarks, setSelectedMarks] = useState([]);
   const [showShareModal, setShowShareModal] = useState(false);
