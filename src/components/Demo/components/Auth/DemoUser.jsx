@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 
 export const DemoUser = (props) => {
   const { user, roles, demo, base_path, hide_email } = props;
-  const { id, name, email, role, picture } = user;
+  const { id, name, email, role, picture, company } = user;
   const router = useRouter();
 
   const getRoleProperties = (roleId) => {
@@ -37,14 +37,13 @@ export const DemoUser = (props) => {
         <AvatarFallback>USER</AvatarFallback>
       </Avatar>
 
-      <div className="min-w-0 max-w-[150px]">
-        <p className="text-sm font-medium leading-none truncate">{name}</p>
-        {!hide_email && <p className="text-xs font-light italic text-muted-foreground truncate">{email}</p>}
+      <div className="min-w-0">
+        <p className="text-sm font-medium leading-none">{name}</p>
+        {!hide_email && <p className="text-xs font-light italic text-muted-foreground">{email}</p>}
       </div>
 
-      <div className="min-w-0 max-w-[150px] sm:col-start-3 col-start-2 row-start-2 sm:row-start-1">
-        <p className="text-sm font-medium leading-none truncate">{title}</p>
-        <p className="text-xs font-light italic text-muted-foreground truncate">{description}</p>
+      <div className="min-w-0 sm:col-start-3 col-start-2 row-start-2 sm:row-start-1">
+        <p className="text-sm font-medium leading-none">{company ?? title}</p>
       </div>
     </div>
   )

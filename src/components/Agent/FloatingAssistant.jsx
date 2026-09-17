@@ -50,7 +50,7 @@ export const FloatingAssistant = (props) => {
           <MiniThread
             ai_avatar={settings.ai_avatar}
             user_avatar={user.picture}
-            sample_questions={settings.sample_questions}
+            sample_questions={Array.isArray(settings.sample_questions) ? settings.sample_questions : (settings.sample_questions?.[Number(user.role)] ?? settings.sample_questions?.[1] ?? [])}
           /> : null
         }
       </AssistantModalPrimitive.Content>

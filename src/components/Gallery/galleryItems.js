@@ -81,7 +81,7 @@ export const galleryItems = [
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center', gap: '12px',
       }}>
-        <img src="/img/themes/pinnacle/icon.jpeg" alt="Pinnacle Group" style={{ width: 56, height: 56, borderRadius: '50%' }} />
+        <img src="/img/themes/pinnacle/icon.png" alt="Pinnacle Group" style={{ width: 56, height: 56, borderRadius: '50%' }} />
         <div style={{ textAlign: 'center' }}>
           <div style={{ color: '#fff', fontSize: 13, fontWeight: 700, letterSpacing: '0.02em' }}>Pinnacle Group</div>
           <div style={{ color: 'rgba(142,209,252,0.85)', fontSize: 11, marginTop: 2 }}>Workforce Intelligence Portal</div>

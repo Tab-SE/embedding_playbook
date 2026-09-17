@@ -13,7 +13,7 @@ import { useTableauSession } from '@/hooks';
 export const Scorecard = () => {
   const { data: session } = useTableauSession();
   const role = session?.role ?? -1;
-  const supplier = session?.uaf?.Supplier?.[0] ?? null;
+  const supplier = session?.company ?? null;
 
   return (
     <div className="flex min-h-screen w-full flex-col">

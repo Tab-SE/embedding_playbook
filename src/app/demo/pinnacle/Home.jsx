@@ -16,12 +16,13 @@ import { settings } from './config';
 
 const CUSTOMERS = Object.keys(settings.program_state_map);
 const SUPPLIERS = Object.keys(settings.supplier_state_map);
-const TERRITORIES = Object.keys(settings.atlas_territory_map);
 
 export const Home = () => {
   const { data: session } = useTableauSession();
   const role = session?.role ?? -1;
-  const supplierName = session?.uaf?.Supplier?.[0] ?? null;
+  const supplierName = session?.company ?? null;
+  const supplierTerritories = settings.supplier_territory_map?.[supplierName] ?? {};
+  const TERRITORIES = Object.keys(supplierTerritories);
 
   const [selectedMarks, setSelectedMarks] = useState([]);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -102,21 +103,24 @@ export const Home = () => {
     applyStateFilter(isAll ? allStates : appliedCustomers.flatMap(c => settings.program_state_map[c] ?? []));
   }, [appliedCustomers, role]);
 
-  // role 1 — fires only when appliedSuppliers changes
+  // role 1 — resolves supplier → regions → states via region_state_map
   useEffect(() => {
     if (role !== 1) return;
-    const allStates = Object.values(settings.supplier_state_map).flat();
+    const allStates = Object.values(settings.region_state_map).flat();
     const isAll = appliedSuppliers.length === 0 || appliedSuppliers.length === SUPPLIERS.length;
-    applyStateFilter(isAll ? allStates : appliedSuppliers.flatMap(s => settings.supplier_state_map[s] ?? []));
+    applyStateFilter(isAll ? allStates : appliedSuppliers.flatMap(s =>
+      (settings.supplier_region_map[s] ?? []).flatMap(r => settings.region_state_map[r] ?? [])
+    ));
   }, [appliedSuppliers, role]);
 
-  // role 0 — auto-scope on mount, then re-fires only when appliedTerritories changes
+  // role 0 — auto-scope to user's UAF regions; territory sub-filter narrows by State/Province
   useEffect(() => {
     if (role !== 0) return;
-    const allAtlasStates = settings.supplier_state_map[supplierName] ?? Object.values(settings.atlas_territory_map).flat();
+    const userRegions = session?.uaf?.Region ?? [];
+    const allSupplierStates = userRegions.flatMap(r => settings.region_state_map[r] ?? []);
     const isAll = appliedTerritories.length === 0 || appliedTerritories.length === TERRITORIES.length;
-    applyStateFilter(isAll ? allAtlasStates : appliedTerritories.flatMap(t => settings.atlas_territory_map[t] ?? []));
-  }, [appliedTerritories, role, supplierName]);
+    applyStateFilter(isAll ? allSupplierStates : appliedTerritories.flatMap(t => supplierTerritories[t] ?? []));
+  }, [appliedTerritories, role, session]);
 
   const generateShareMessage = () => {
     if (selectedMarks.length === 0) return;
@@ -128,8 +132,8 @@ export const Home = () => {
   };
 
   const cardDescription = {
-    2: 'Spend, savings, and supplier performance across all customer programs in the Meridian portfolio',
-    1: 'Operational view — supplier fill rates, SLA status, and assignment activity across all customers',
+    2: 'Spend, savings, and supplier performance across all Pinnacle client programs',
+    1: 'Operational view — supplier fill rates, SLA status, and assignment activity across all client programs',
     0: `Scorecard and assignment summary for ${supplierName ?? 'your organization'}`,
   }[role] ?? '';
 
@@ -177,7 +181,7 @@ export const Home = () => {
               className="flex items-center gap-2 px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors shadow-lg">
               <Filter className="h-5 w-5" />
               <span className="font-medium">
-                {appliedTerritories.length === 0 ? 'Filter by Territory' : `${appliedTerritories.length} Territor${appliedTerritories.length > 1 ? 'ies' : 'y'} Selected`}
+                {appliedTerritories.length === 0 ? 'Filter by Event' : `${appliedTerritories.length} Event${appliedTerritories.length > 1 ? 's' : ''} Selected`}
               </span>
             </button>
           )}
@@ -312,13 +316,13 @@ export const Home = () => {
           <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-white dark:bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4 max-h-[70vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                <Filter className="h-5 w-5 text-primary" />Filter by Territory
+                <Filter className="h-5 w-5 text-primary" />Filter by Event
               </h3>
               <button onClick={() => setShowTerritoryFilter(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><X className="h-5 w-5" /></button>
             </div>
             <div className="space-y-2 mb-4">
-              {['All Territories', ...TERRITORIES].map((name) => {
-                const isAll = name === 'All Territories';
+              {['All Events', ...TERRITORIES].map((name) => {
+                const isAll = name === 'All Events';
                 const isSelected = isAll ? pendingTerritories.length === 0 : pendingTerritories.includes(name);
                 return (
                   <button key={name}
