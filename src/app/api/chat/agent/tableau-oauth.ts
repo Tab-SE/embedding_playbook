@@ -16,21 +16,28 @@ interface TokenCache {
 
 let _tokenCache: TokenCache | null = null;
 
+// Full scope list from mcp.tableau.com WWW-Authenticate challenge
 export const MCP_OAUTH_SCOPES = [
   'tableau:mcp:datasource:read',
   'tableau:mcp:workbook:read',
   'tableau:mcp:view:read',
+  'tableau:mcp:view:download',
   'tableau:mcp:pulse:read',
   'tableau:mcp:insight:create',
   'tableau:mcp:content:read',
   'tableau:content:read',
   'tableau:mcp_site_settings:read',
   'tableau:viz_data_service:read',
-  'tableau:insights:read',
+  'tableau:views:download',
+  'tableau:insight_definitions_metrics:read',
   'tableau:insight_metrics:read',
   'tableau:metric_subscriptions:read',
-  'tableau:insight_definitions_metrics:read',
+  'tableau:insights:read',
   'tableau:insight_brief:create',
+  'tableau:mcp:workbook:create',
+  'tableau:workbooks:download',
+  'tableau:workbooks:create',
+  'tableau:file_uploads:create',
 ].join(' ');
 
 export const seedFromEnv = () => {
