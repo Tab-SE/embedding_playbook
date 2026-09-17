@@ -18,45 +18,30 @@ export const settings = {
 
   // Customer exec filter: program names shown in UI → State/Province values in the Superstore workbook.
   // Every state AND Canadian province is assigned to exactly one program so that
-  // selecting all three equals the full dataset — no clear needed.
+  // selecting all three equals the full dataset.
   program_state_map: {
     'Meridian Financial': [
-      // US East
       'Florida', 'Georgia', 'South Carolina', 'North Carolina', 'Virginia',
       'West Virginia', 'Maryland', 'Delaware', 'New Jersey', 'Connecticut',
       'Rhode Island', 'Massachusetts', 'Vermont', 'New Hampshire', 'Maine', 'New York',
-      // Canada East
       'Ontario', 'Quebec', 'New Brunswick', 'Nova Scotia', 'Prince Edward Island', 'Newfoundland',
     ],
     'Nexus Retail Group': [
-      // US Midwest + South
       'Pennsylvania', 'Ohio', 'Michigan', 'Indiana', 'Illinois', 'Wisconsin',
       'Minnesota', 'Iowa', 'Missouri', 'Kentucky', 'Tennessee', 'Alabama',
       'Mississippi', 'Louisiana', 'Arkansas', 'Kansas',
-      // Canada Central
       'Manitoba', 'Saskatchewan',
     ],
     'Summit Healthcare': [
-      // US West + Plains
       'Texas', 'Oklahoma', 'Nebraska', 'South Dakota', 'North Dakota',
       'Colorado', 'Wyoming', 'Montana', 'Idaho', 'Utah', 'New Mexico',
       'Arizona', 'Nevada', 'California', 'Oregon', 'Washington', 'Alaska', 'Hawaii',
-      // Canada West
       'Alberta', 'British Columbia', 'Northwest Territories',
     ],
   },
 
-  // Supplier filter: territory labels shown in UI → State/Province values scoped to Atlas's footprint.
-  // Priya sees "Filter by Territory" with sub-regions — under the hood still State/Province.
-  atlas_territory_map: {
-    'Gulf Coast':    ['Florida', 'Georgia'],
-    'Carolinas':     ['South Carolina', 'North Carolina'],
-    'Mid-Atlantic':  ['Virginia', 'West Virginia', 'Maryland', 'Delaware'],
-  },
-
-  // Program manager filter: supplier names shown in UI → State/Province values in the Superstore workbook.
-  // Every state + Canadian province is assigned to exactly one supplier so selecting all = full dataset.
-  // Atlas is intentionally small (SE focus) — that's the story supplier in the walkthrough.
+  // Program manager filter: supplier names shown in UI → State/Province values.
+  // Every state + Canadian province is assigned to exactly one supplier.
   supplier_state_map: {
     'Atlas Workforce Solutions': [
       'Florida', 'Georgia', 'South Carolina', 'North Carolina', 'Virginia',
@@ -84,6 +69,13 @@ export const settings = {
     ],
   },
 
+  // Supplier filter: territory labels shown in UI → State/Province values scoped to Atlas's footprint.
+  atlas_territory_map: {
+    'Gulf Coast':    ['Florida', 'Georgia'],
+    'Carolinas':     ['South Carolina', 'North Carolina'],
+    'Mid-Atlantic':  ['Virginia', 'West Virginia', 'Maryland', 'Delaware'],
+  },
+
   metric_name_overrides: {
     'Sales':         'Total Spend',
     'Profit':        'Program Savings',
@@ -92,12 +84,14 @@ export const settings = {
     'Customers':     'Active Suppliers',
     'Inventory':     'Open Requisitions',
   },
+
   sample_questions: [
     { label: "Which suppliers are underperforming?",       query: "What are the total sales and profit by category, sorted by profit ascending?" },
     { label: "How is spend trending by customer program?", query: "What are the total sales by segment over time?" },
     { label: "What are fill rates by region?",             query: "What is the average shipping time and total orders by region?" },
     { label: "What data sources power this portal?",       query: "List the Datasources" },
   ],
+
   sections: [
     {
       name: 'Home',

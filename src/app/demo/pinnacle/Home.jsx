@@ -27,17 +27,17 @@ export const Home = () => {
   const [showShareModal, setShowShareModal] = useState(false);
   const [editableMessage, setEditableMessage] = useState('');
 
-  // role 2 — exec
-  const [pendingCustomers, setPendingCustomers] = useState([]);   // what's checked in the modal
-  const [appliedCustomers, setAppliedCustomers] = useState([]);   // what actually fires the filter
+  // role 2 — exec: filter by customer account → State/Province
+  const [pendingCustomers, setPendingCustomers] = useState([]);
+  const [appliedCustomers, setAppliedCustomers] = useState([]);
   const [showCustomerFilter, setShowCustomerFilter] = useState(false);
 
-  // role 1 — program manager
+  // role 1 — program manager: filter by supplier → State/Province
   const [pendingSuppliers, setPendingSuppliers] = useState([]);
   const [appliedSuppliers, setAppliedSuppliers] = useState([]);
   const [showSupplierFilter, setShowSupplierFilter] = useState(false);
 
-  // role 0 — supplier
+  // role 0 — supplier: filter by territory within their own footprint → State/Province
   const [pendingTerritories, setPendingTerritories] = useState([]);
   const [appliedTerritories, setAppliedTerritories] = useState([]);
   const [showTerritoryFilter, setShowTerritoryFilter] = useState(false);
@@ -94,7 +94,7 @@ export const Home = () => {
     run();
   };
 
-  // role 2 — fires only when appliedCustomers changes (i.e. Apply Filter clicked)
+  // role 2 — fires only when appliedCustomers changes (Apply Filter clicked)
   useEffect(() => {
     if (role !== 2) return;
     const allStates = Object.values(settings.program_state_map).flat();
@@ -143,10 +143,8 @@ export const Home = () => {
 
         {selectedMarks.length > 0 && (
           <div className="flex justify-center">
-            <button
-              onClick={generateShareMessage}
-              className="flex items-center gap-2 px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors shadow-lg animate-pulse"
-            >
+            <button onClick={generateShareMessage}
+              className="flex items-center gap-2 px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors shadow-lg animate-pulse">
               <MessageSquare className="h-5 w-5" />
               <span className="font-medium">Share Selection ({selectedMarks.length})</span>
             </button>
@@ -186,8 +184,7 @@ export const Home = () => {
               const viz = window._pinnacleVizRef?.viz || document.querySelector('tableau-viz');
               if (viz?.launchAnalyticsAssistantAsync) await viz.launchAnalyticsAssistantAsync();
             }}
-            className="flex items-center gap-2 px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors shadow-lg"
-          >
+            className="flex items-center gap-2 px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors shadow-lg">
             <BotMessageSquare className="h-5 w-5" />
             <span className="font-medium">Data Q&amp;A</span>
           </button>
@@ -287,9 +284,7 @@ export const Home = () => {
                       else if (isSelected) setPendingCustomers(pendingCustomers.filter(c => c !== name));
                       else setPendingCustomers([...pendingCustomers, name]);
                     }}
-                    className={`w-full text-left p-3 rounded-lg transition-colors border ${isSelected
-                      ? 'bg-primary border-primary text-primary-foreground'
-                      : 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'}`}>
+                    className={`w-full text-left p-3 rounded-lg transition-colors border ${isSelected ? 'bg-primary border-primary text-primary-foreground' : 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'}`}>
                     <div className="flex items-center justify-between">
                       <span className="font-medium">{name}</span>
                       {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
@@ -301,46 +296,6 @@ export const Home = () => {
             <div className="flex gap-3 pt-4 border-t border-slate-300 dark:border-slate-600">
               <button onClick={() => setPendingCustomers([])} className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors">Clear All</button>
               <button onClick={() => { setAppliedCustomers(pendingCustomers); setShowCustomerFilter(false); }} className="px-4 py-2 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors font-semibold">Apply Filter</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Territory Filter Modal — supplier only */}
-      {showTerritoryFilter && (
-        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowTerritoryFilter(false)}>
-          <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-white dark:bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4 max-h-[70vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                <Filter className="h-5 w-5 text-primary" />Filter by Territory
-              </h3>
-              <button onClick={() => setShowTerritoryFilter(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><X className="h-5 w-5" /></button>
-            </div>
-            <div className="space-y-2 mb-4">
-              {['All Territories', ...TERRITORIES].map((name) => {
-                const isAll = name === 'All Territories';
-                const isSelected = isAll ? pendingTerritories.length === 0 : pendingTerritories.includes(name);
-                return (
-                  <button key={name}
-                    onClick={() => {
-                      if (isAll) setPendingTerritories([]);
-                      else if (isSelected) setPendingTerritories(pendingTerritories.filter(t => t !== name));
-                      else setPendingTerritories([...pendingTerritories, name]);
-                    }}
-                    className={`w-full text-left p-3 rounded-lg transition-colors border ${isSelected
-                      ? 'bg-primary border-primary text-primary-foreground'
-                      : 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'}`}>
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{name}</span>
-                      {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="flex gap-3 pt-4 border-t border-slate-300 dark:border-slate-600">
-              <button onClick={() => setPendingTerritories([])} className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors">Clear All</button>
-              <button onClick={() => { setAppliedTerritories(pendingTerritories); setShowTerritoryFilter(false); }} className="px-4 py-2 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors font-semibold">Apply Filter</button>
             </div>
           </div>
         </div>
@@ -367,9 +322,7 @@ export const Home = () => {
                       else if (isSelected) setPendingSuppliers(pendingSuppliers.filter(s => s !== name));
                       else setPendingSuppliers([...pendingSuppliers, name]);
                     }}
-                    className={`w-full text-left p-3 rounded-lg transition-colors border ${isSelected
-                      ? 'bg-primary border-primary text-primary-foreground'
-                      : 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'}`}>
+                    className={`w-full text-left p-3 rounded-lg transition-colors border ${isSelected ? 'bg-primary border-primary text-primary-foreground' : 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'}`}>
                     <div className="flex items-center justify-between">
                       <span className="font-medium">{name}</span>
                       {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
@@ -381,6 +334,44 @@ export const Home = () => {
             <div className="flex gap-3 pt-4 border-t border-slate-300 dark:border-slate-600">
               <button onClick={() => setPendingSuppliers([])} className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors">Clear All</button>
               <button onClick={() => { setAppliedSuppliers(pendingSuppliers); setShowSupplierFilter(false); }} className="px-4 py-2 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors font-semibold">Apply Filter</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Territory Filter Modal — supplier only */}
+      {showTerritoryFilter && (
+        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowTerritoryFilter(false)}>
+          <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-white dark:bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4 max-h-[70vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                <Filter className="h-5 w-5 text-primary" />Filter by Territory
+              </h3>
+              <button onClick={() => setShowTerritoryFilter(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><X className="h-5 w-5" /></button>
+            </div>
+            <div className="space-y-2 mb-4">
+              {['All Territories', ...TERRITORIES].map((name) => {
+                const isAll = name === 'All Territories';
+                const isSelected = isAll ? pendingTerritories.length === 0 : pendingTerritories.includes(name);
+                return (
+                  <button key={name}
+                    onClick={() => {
+                      if (isAll) setPendingTerritories([]);
+                      else if (isSelected) setPendingTerritories(pendingTerritories.filter(t => t !== name));
+                      else setPendingTerritories([...pendingTerritories, name]);
+                    }}
+                    className={`w-full text-left p-3 rounded-lg transition-colors border ${isSelected ? 'bg-primary border-primary text-primary-foreground' : 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'}`}>
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{name}</span>
+                      {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="flex gap-3 pt-4 border-t border-slate-300 dark:border-slate-600">
+              <button onClick={() => setPendingTerritories([])} className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors">Clear All</button>
+              <button onClick={() => { setAppliedTerritories(pendingTerritories); setShowTerritoryFilter(false); }} className="px-4 py-2 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors font-semibold">Apply Filter</button>
             </div>
           </div>
         </div>

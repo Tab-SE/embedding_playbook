@@ -7,7 +7,7 @@ import {
   useThreadMessages,
 } from "@assistant-ui/react";
 import { SendHorizontalIcon } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { Button } from "@/components/ui";
@@ -75,11 +75,33 @@ const messageText = (m) =>
 export const MiniThread = (props) => {
   const { ai_avatar, user_avatar, sample_questions = [] } = props;
   const inputRef = useRef(null);
+  const [oauthToken, setOauthToken] = useState(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('tableau_oauth_setup') === 'done') {
+      const token = params.get('refresh_token_hint');
+      if (token) setOauthToken(token);
+      const clean = new URL(window.location.href);
+      clean.searchParams.delete('tableau_oauth_setup');
+      clean.searchParams.delete('refresh_token_hint');
+      window.history.replaceState({}, '', clean.toString());
+    }
+  }, []);
 
   return (
     (<ThreadPrimitive.Root className="bg-white h-full dark:bg-stone-950">
       <ThreadPrimitive.Viewport
         className="flex h-full flex-col items-center overflow-y-scroll scroll-smooth bg-inherit px-4 pt-8">
+        {oauthToken && (
+          <div className="w-full mb-3 p-3 bg-green-50 border border-green-200 rounded-lg text-xs">
+            <p className="font-semibold text-green-900 mb-1">✅ Tableau OAuth connected</p>
+            <p className="text-green-800 mb-1">Save as <code>TABLEAU_MCP_OAUTH_REFRESH_TOKEN</code> for persistence across restarts:</p>
+            <textarea rows={2} readOnly value={oauthToken} className="w-full font-mono text-xs p-1 border border-green-300 rounded bg-white" />
+            <button onClick={() => setOauthToken(null)} className="mt-1 text-green-700 hover:underline">Dismiss</button>
+          </div>
+        )}
         <WelcomeMessage
           ai_avatar={ai_avatar}
           sample_questions={sample_questions}

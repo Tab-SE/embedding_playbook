@@ -62,6 +62,9 @@ export async function POST(req: NextRequest) {
       console.error('🔴 [CHAT ROUTE] MCP auth error:', e.message);
       return NextResponse.json({ error: e.message }, { status: e.status });
     }
+    if (e?.message?.includes('No Tableau MCP OAuth refresh token')) {
+      return NextResponse.json({ error: 'oauth_required', oauth_url: '/api/tableau/oauth' }, { status: 401 });
+    }
     console.error('🔴 [CHAT ROUTE ERROR]', e);
     console.error('🔴 [CHAT ROUTE ERROR] Stack:', e.stack);
     return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });

@@ -50,7 +50,14 @@ export function LanggraphAgentRuntimeProvider({ children }: Readonly<ProviderPro
     onError: (err) => {
       console.error("[chat] error:", err);
       stopStreaming();
-      setErrorDismissed(false); // a new error always re-shows the banner
+      setErrorDismissed(false);
+      try {
+        const body = JSON.parse(err.message);
+        if (body?.error === 'oauth_required' && body?.oauth_url) {
+          window.location.href = `${body.oauth_url}?return_to=${encodeURIComponent(window.location.pathname)}`;
+          return;
+        }
+      } catch {}
     },
   });
 
