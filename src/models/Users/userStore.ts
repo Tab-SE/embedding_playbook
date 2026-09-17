@@ -241,5 +241,42 @@ export const Users = [
         uaf: {"Region": ["Central","East"]}
       },
     ]
+  },
+  {
+    demo: 'pinnacle',
+    roles: {
+      0: { title: 'Supplier', description: 'View your organization\'s scorecard, assignments, and compliance status'},
+      1: { title: 'Program Manager', description: 'Operational oversight — requisitions, SLA tracking, compliance expiries, and supplier funnel'},
+      2: { title: 'Customer Executive', description: 'Program-wide view of spend, savings, supplier performance, and workforce metrics'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Christine Nakamura",
+        email: "jmorris@superstore.com",
+        picture: "/img/users/vivian_yang.png",
+        role: 2,
+        vector_store: 'superstore_jmorris',
+        uaf: {"Region": ["Central","East","West","South"]}
+      },
+      {
+        id: 'b',
+        name: "Marcus Webb",
+        email: "slopez@superstore.com",
+        picture: "/img/users/matthew_wells.png",
+        role: 1,
+        vector_store: 'superstore_slopez',
+        uaf: {"Region": ["Central","East"]}
+      },
+      {
+        id: 'c',
+        name: "Priya Okonkwo",
+        email: "rmorris@makana.com",
+        picture: "/img/users/debi_patel.png",
+        role: 0,
+        vector_store: 'superstore_rmorris',
+        uaf: {"Region": ["west","south"]}
+      },
+    ]
   }
 ]

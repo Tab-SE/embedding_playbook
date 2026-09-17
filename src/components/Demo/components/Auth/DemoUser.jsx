@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 
 export const DemoUser = (props) => {
-  const { user, roles, demo, base_path } = props;
+  const { user, roles, demo, base_path, hide_email } = props;
   const { id, name, email, role, picture } = user;
   const router = useRouter();
 
@@ -39,7 +39,7 @@ export const DemoUser = (props) => {
 
       <div className="min-w-0 max-w-[150px]">
         <p className="text-sm font-medium leading-none truncate">{name}</p>
-        <p className="text-xs font-light italic text-muted-foreground truncate">{email}</p>
+        {!hide_email && <p className="text-xs font-light italic text-muted-foreground truncate">{email}</p>}
       </div>
 
       <div className="min-w-0 max-w-[150px] sm:col-start-3 col-start-2 row-start-2 sm:row-start-1">
