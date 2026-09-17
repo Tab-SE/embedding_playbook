@@ -5,8 +5,15 @@ import { MCP_OAUTH_SCOPES } from '../../chat/agent/tableau-oauth';
 
 const AUTH_ENDPOINT = 'https://sso.online.tableau.com/oauth2/authorize';
 
+function getPublicOrigin(req: NextRequest): string {
+  const forwardedHost = req.headers.get('x-forwarded-host');
+  const forwardedProto = req.headers.get('x-forwarded-proto') ?? 'https';
+  if (forwardedHost) return `${forwardedProto}://${forwardedHost}`;
+  return new URL(req.url).origin;
+}
+
 export async function GET(req: NextRequest) {
-  const origin = new URL(req.url).origin;
+  const origin = getPublicOrigin(req);
   const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1');
   const cimdBase = process.env.TABLEAU_MCP_CIMD_BASE_URL ?? origin;
   const clientId = (isLocalhost && process.env.TABLEAU_MCP_OAUTH_CLIENT_ID)

@@ -11,7 +11,9 @@ export async function GET(req: NextRequest) {
   if (error) return NextResponse.json({ error, description: searchParams.get('error_description') }, { status: 400 });
   if (!code) return NextResponse.json({ error: 'Missing authorization code' }, { status: 400 });
 
-  const origin = new URL(req.url).origin;
+  const forwardedHost = req.headers.get('x-forwarded-host');
+  const forwardedProto = req.headers.get('x-forwarded-proto') ?? 'https';
+  const origin = forwardedHost ? `${forwardedProto}://${forwardedHost}` : new URL(req.url).origin;
   const cookieStore = await cookies();
   const savedState = cookieStore.get('tableau_oauth_state')?.value;
   const codeVerifier = cookieStore.get('tableau_oauth_verifier')?.value;
