@@ -20,9 +20,7 @@ export interface User {
 
 export interface Demo {
   demo: string;
-  roles?: {
-    [key: number]: Role;
-  };
+  roles?: Partial<Record<number, Role>>;
   users: User[];
 }
 

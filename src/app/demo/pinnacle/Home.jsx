@@ -120,7 +120,7 @@ export const Home = () => {
     const allSupplierStates = userRegions.flatMap(r => settings.region_state_map[r] ?? []);
     const isAll = appliedTerritories.length === 0 || appliedTerritories.length === TERRITORIES.length;
     applyStateFilter(isAll ? allSupplierStates : appliedTerritories.flatMap(t => supplierTerritories[t] ?? []));
-  }, [appliedTerritories, role, session]);
+  }, [appliedTerritories, role, session, supplierTerritories, TERRITORIES.length]);
 
   const generateShareMessage = () => {
     if (selectedMarks.length === 0) return;
