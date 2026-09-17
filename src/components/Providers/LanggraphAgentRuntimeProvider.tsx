@@ -39,6 +39,7 @@ export function LanggraphAgentRuntimeProvider({ children }: Readonly<ProviderPro
   const { addProgressStep, startStreaming, stopStreaming } = useProgress();
   const wasLoadingRef = useRef(false);
 
+
   // useChat's `error` is internal state and never clears on its own. We layer
   // our own dismissed flag so the user can hide the banner via "Dismiss" or
   // "New Chat", and we reset the flag whenever a new request starts so a fresh
@@ -51,13 +52,6 @@ export function LanggraphAgentRuntimeProvider({ children }: Readonly<ProviderPro
       console.error("[chat] error:", err);
       stopStreaming();
       setErrorDismissed(false);
-      try {
-        const body = JSON.parse(err.message);
-        if (body?.error === 'oauth_required' && body?.oauth_url) {
-          window.location.href = `${body.oauth_url}?return_to=${encodeURIComponent(window.location.pathname)}`;
-          return;
-        }
-      } catch {}
     },
   });
 

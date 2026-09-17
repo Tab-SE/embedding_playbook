@@ -75,33 +75,11 @@ const messageText = (m) =>
 export const MiniThread = (props) => {
   const { ai_avatar, user_avatar, sample_questions = [] } = props;
   const inputRef = useRef(null);
-  const [oauthToken, setOauthToken] = useState(null);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('tableau_oauth_setup') === 'done') {
-      const token = params.get('refresh_token_hint');
-      if (token) setOauthToken(token);
-      const clean = new URL(window.location.href);
-      clean.searchParams.delete('tableau_oauth_setup');
-      clean.searchParams.delete('refresh_token_hint');
-      window.history.replaceState({}, '', clean.toString());
-    }
-  }, []);
 
   return (
     (<ThreadPrimitive.Root className="bg-white h-full dark:bg-stone-950">
       <ThreadPrimitive.Viewport
         className="flex h-full flex-col items-center overflow-y-scroll scroll-smooth bg-inherit px-4 pt-8">
-        {oauthToken && (
-          <div className="w-full mb-3 p-3 bg-green-50 border border-green-200 rounded-lg text-xs">
-            <p className="font-semibold text-green-900 mb-1">✅ Tableau OAuth connected</p>
-            <p className="text-green-800 mb-1">Save as <code>TABLEAU_MCP_OAUTH_REFRESH_TOKEN</code> for persistence across restarts:</p>
-            <textarea rows={2} readOnly value={oauthToken} className="w-full font-mono text-xs p-1 border border-green-300 rounded bg-white" />
-            <button onClick={() => setOauthToken(null)} className="mt-1 text-green-700 hover:underline">Dismiss</button>
-          </div>
-        )}
         <WelcomeMessage
           ai_avatar={ai_avatar}
           sample_questions={sample_questions}
@@ -139,8 +117,17 @@ export const MiniThread = (props) => {
 
 const WelcomeMessage = (props) => {
   const { ai_avatar, sample_questions = [], inputRef } = props;
+  const [oauthStatus, setOauthStatus] = useState(null); // null=loading, {ready,required}
+
+  useEffect(() => {
+    fetch('/api/tableau/oauth/status')
+      .then(r => r.json())
+      .then(setOauthStatus)
+      .catch(() => setOauthStatus({ ready: true, required: false }));
+  }, []);
 
   const handleQuestionClick = (question) => submitMasked(inputRef, question);
+  const needsConnect = oauthStatus?.required && !oauthStatus?.ready;
 
   return (
     (<ThreadPrimitive.Empty>
@@ -151,8 +138,18 @@ const WelcomeMessage = (props) => {
           fallback='AI'
         />
         <p className="mt-4 font-medium">How can I help you with your analytics?</p>
+        {needsConnect && (
+          <button
+            onClick={() => {
+              window.location.href = `/api/tableau/oauth?return_to=${encodeURIComponent(window.location.pathname)}`;
+            }}
+            className="mt-4 flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity shadow"
+          >
+            Connect to Tableau
+          </button>
+        )}
 
-        {sample_questions.length > 0 && (
+        {!needsConnect && sample_questions.length > 0 && (
           <div className="mt-6 w-full max-w-md">
             <p className="text-sm text-gray-600 mb-3 text-center">Try asking:</p>
             <div className="space-y-2">

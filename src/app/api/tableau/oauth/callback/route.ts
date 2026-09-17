@@ -33,9 +33,9 @@ export async function GET(req: NextRequest) {
   try {
     await exchangeCode(code, codeVerifier, clientId, redirectUri);
     const refreshToken = getCurrentRefreshToken();
-    const destination = new URL(returnTo, req.url);
-    destination.searchParams.set('tableau_oauth_setup', 'done');
-    destination.searchParams.set('refresh_token_hint', refreshToken ?? '');
+    const publicBase = `${forwardedProto}://${forwardedHost || new URL(req.url).host}`;
+    const destination = new URL(returnTo, publicBase);
+    // Token is stored in server memory — no hint in URL, transparent to users.
     return NextResponse.redirect(destination);
   } catch (err: any) {
     return NextResponse.json({ error: 'Token exchange failed', detail: err.message }, { status: 500 });

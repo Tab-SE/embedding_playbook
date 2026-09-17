@@ -19,7 +19,11 @@ export async function GET(req: NextRequest) {
   const clientId = (isLocalhost && process.env.TABLEAU_MCP_OAUTH_CLIENT_ID)
     ? process.env.TABLEAU_MCP_OAUTH_CLIENT_ID
     : `${cimdBase}/api/tableau/oauth/client-metadata.json`;
-  const redirectUri = `${origin}/api/tableau/oauth/callback`;
+  // redirect_uri must match what's in the CIMD document exactly.
+  // When CIMD_BASE_URL is set, the doc lists that base's callback, so use it here too.
+  const redirectUri = process.env.TABLEAU_MCP_OAUTH_CLIENT_ID
+    ? `${origin}/api/tableau/oauth/callback`   // pre-registered client: use local callback
+    : `${cimdBase}/api/tableau/oauth/callback`; // CIMD: must match the doc
 
   if (isLocalhost && !process.env.TABLEAU_MCP_OAUTH_CLIENT_ID && !process.env.TABLEAU_MCP_CIMD_BASE_URL) {
     return new NextResponse(
