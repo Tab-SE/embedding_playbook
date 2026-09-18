@@ -46,18 +46,14 @@ export const settings = {
     ],
   },
 
-  // Supplier event sub-filter: each supplier's recruiting events → State/Province values.
-  // Suppliers see "Filter by Event" to drill within their own footprint.
-  supplier_territory_map: {
-    'Atlas Workforce Solutions': {
-      'Gulf Coast Career Fair':     ['Florida', 'Georgia'],
-      'Carolinas Talent Summit':    ['South Carolina', 'North Carolina'],
-      'Mid-Atlantic Hiring Expo':   ['Virginia', 'West Virginia', 'Maryland', 'Delaware'],
-    },
-    'Apex Talent Partners': {
-      'Great Lakes Staffing Summit': ['Michigan', 'Indiana', 'Illinois', 'Wisconsin'],
-      'Midwest Placement Drive':     ['Minnesota', 'Iowa', 'Missouri', 'Kentucky'],
-    },
+  // Supplier → client programs they serve. Used to populate "Filter by Client" for role 0.
+  // States come from program_state_map, intersected with the supplier's authorized regions via RLS.
+  supplier_client_map: {
+    'Atlas Workforce Solutions': ['Meridian Financial', 'Nexus Retail Group'],
+    'Apex Talent Partners':      ['Nexus Retail Group', 'Summit Healthcare'],
+    'Meridian Staffing Group':   ['Meridian Financial'],
+    'Vertex Workforce':          ['Nexus Retail Group'],
+    'Summit Staffing':           ['Summit Healthcare'],
   },
 
   // Region → State/Province lookup (Superstore standard regions + Canadian provinces).
@@ -105,25 +101,35 @@ export const settings = {
   },
 
   metric_name_overrides: {
-    'Sales':         'Total Spend',
-    'Profit':        'Program Savings',
-    'Orders':        'Active Assignments',
-    'Shipping Time': 'Avg Fill Time (days)',
-    'Customers':     'Active Suppliers',
-    'Inventory':     'Open Requisitions',
+    1: {
+      'Sales':         'Total Spend',
+      'Profit':        'Program Savings',
+      'Orders':        'Active Assignments',
+      'Shipping Time': 'Avg Fill Time (days)',
+      'Customers':     'Active Suppliers',
+      'Inventory':     'Open Requisitions',
+    },
+    0: {
+      'Sales':         'Total Program Spend',
+      'Profit':        'Cost Savings',
+      'Orders':        'Active Work Orders',
+      'Shipping Time': 'Avg Fill Time (days)',
+      'Customers':     'Active Placements',
+      'Inventory':     'Open Requisitions',
+    },
   },
   sample_questions: {
     1: [
-      { label: "Which suppliers are underperforming?",        query: "What are the total sales and profit by category, sorted by profit ascending?" },
-      { label: "How is spend trending by supplier?",          query: "What are the total sales by segment over time?" },
-      { label: "Which requisitions are aging past SLA?",      query: "What is the average shipping time and total orders by region?" },
-      { label: "What data sources power this portal?",        query: "List the Datasources" },
+      { label: "What is driving the decline in Atlas's score?", query: "What are the total sales and profit by category, sorted by profit ascending?" },
+      { label: "How is spend trending by supplier?",            query: "What are the total sales by segment over time?" },
+      { label: "Which requisitions are aging past SLA?",        query: "What is the average shipping time and total orders by region?" },
+      { label: "What data sources power this portal?",          query: "List the Datasources" },
     ],
     0: [
-      { label: "How does my fill rate compare to others?",    query: "What is the average shipping time and total orders by region?" },
-      { label: "Which of my roles have the lowest fill rate?",query: "What are the total sales and profit by category, sorted by profit ascending?" },
-      { label: "What is my compliance rate this quarter?",    query: "What are the total sales by segment over time?" },
-      { label: "Which events have the highest placements?",   query: "What are the total orders and profit by region?" },
+      { label: "Why did my score drop this quarter?",           query: "What are the total sales and profit by category, sorted by profit ascending?" },
+      { label: "Which client program is driving the decline?",  query: "What are the total sales by segment over time?" },
+      { label: "How does my offer acceptance rate compare?",    query: "What is the average shipping time and total orders by region?" },
+      { label: "What is my ready-to-start rate by program?",   query: "What are the total orders and profit by region?" },
     ],
   },
   sections: [

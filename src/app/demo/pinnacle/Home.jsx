@@ -21,19 +21,20 @@ export const Home = () => {
   const { data: session } = useTableauSession();
   const role = session?.role ?? -1;
   const supplierName = session?.company ?? null;
-  const supplierTerritories = useMemo(
-    () => settings.supplier_territory_map?.[supplierName] ?? {},
+  const firstName = session?.name?.split(' ')[0] ?? null;
+
+  const supplierClients = useMemo(
+    () => settings.supplier_client_map?.[supplierName] ?? [],
     [supplierName]
   );
-  const TERRITORIES = useMemo(() => Object.keys(supplierTerritories), [supplierTerritories]);
 
   const [selectedMarks, setSelectedMarks] = useState([]);
   const [showShareModal, setShowShareModal] = useState(false);
   const [editableMessage, setEditableMessage] = useState('');
 
   // role 2 — exec
-  const [pendingCustomers, setPendingCustomers] = useState([]);   // what's checked in the modal
-  const [appliedCustomers, setAppliedCustomers] = useState([]);   // what actually fires the filter
+  const [pendingCustomers, setPendingCustomers] = useState([]);
+  const [appliedCustomers, setAppliedCustomers] = useState([]);
   const [showCustomerFilter, setShowCustomerFilter] = useState(false);
 
   // role 1 — program manager
@@ -41,10 +42,10 @@ export const Home = () => {
   const [appliedSuppliers, setAppliedSuppliers] = useState([]);
   const [showSupplierFilter, setShowSupplierFilter] = useState(false);
 
-  // role 0 — supplier
-  const [pendingTerritories, setPendingTerritories] = useState([]);
-  const [appliedTerritories, setAppliedTerritories] = useState([]);
-  const [showTerritoryFilter, setShowTerritoryFilter] = useState(false);
+  // role 0 — supplier (filter by client program)
+  const [pendingClients, setPendingClients] = useState([]);
+  const [appliedClients, setAppliedClients] = useState([]);
+  const [showClientFilter, setShowClientFilter] = useState(false);
 
   // Mark selection listener
   useEffect(() => {
@@ -116,14 +117,14 @@ export const Home = () => {
     ));
   }, [appliedSuppliers, role]);
 
-  // role 0 — auto-scope to user's UAF regions; territory sub-filter narrows by State/Province
+  // role 0 — auto-scope to user's UAF regions; client sub-filter narrows by program states
   useEffect(() => {
     if (role !== 0) return;
     const userRegions = session?.uaf?.Region ?? [];
     const allSupplierStates = userRegions.flatMap(r => settings.region_state_map[r] ?? []);
-    const isAll = appliedTerritories.length === 0 || appliedTerritories.length === TERRITORIES.length;
-    applyStateFilter(isAll ? allSupplierStates : appliedTerritories.flatMap(t => supplierTerritories[t] ?? []));
-  }, [appliedTerritories, role, session, supplierTerritories, TERRITORIES.length]);
+    const isAll = appliedClients.length === 0 || appliedClients.length === supplierClients.length;
+    applyStateFilter(isAll ? allSupplierStates : appliedClients.flatMap(c => settings.program_state_map[c] ?? []));
+  }, [appliedClients, role, session, supplierClients]);
 
   const generateShareMessage = () => {
     if (selectedMarks.length === 0) return;
@@ -143,9 +144,17 @@ export const Home = () => {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        {role === 0 && firstName && (
+          <div className="px-1">
+            <h2 className="text-xl font-semibold">Welcome, {firstName}</h2>
+            <p className="text-sm text-muted-foreground">
+              {supplierName} · Q3 2026 · Data refreshed {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </p>
+          </div>
+        )}
         <Metrics
           basis='sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5'
-          nameOverrides={settings.metric_name_overrides}
+          nameOverrides={settings.metric_name_overrides?.[role] ?? settings.metric_name_overrides?.[1]}
         />
 
         {selectedMarks.length > 0 && (
@@ -180,11 +189,11 @@ export const Home = () => {
             </button>
           )}
           {role === 0 && (
-            <button onClick={() => { setPendingTerritories(appliedTerritories); setShowTerritoryFilter(true); }}
+            <button onClick={() => { setPendingClients(appliedClients); setShowClientFilter(true); }}
               className="flex items-center gap-2 px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors shadow-lg">
               <Filter className="h-5 w-5" />
               <span className="font-medium">
-                {appliedTerritories.length === 0 ? 'Filter by Event' : `${appliedTerritories.length} Event${appliedTerritories.length > 1 ? 's' : ''} Selected`}
+                {appliedClients.length === 0 ? 'Filter by Client Program' : `${appliedClients.length} Client${appliedClients.length > 1 ? 's' : ''} Selected`}
               </span>
             </button>
           )}
@@ -196,7 +205,7 @@ export const Home = () => {
             className="flex items-center gap-2 px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors shadow-lg"
           >
             <BotMessageSquare className="h-5 w-5" />
-            <span className="font-medium">Data Q&amp;A</span>
+            <span className="font-medium">{role === 0 ? 'Ask your performance data' : 'Data Q&A'}</span>
           </button>
         </div>
 
@@ -313,26 +322,26 @@ export const Home = () => {
         </div>
       )}
 
-      {/* Territory Filter Modal — supplier only */}
-      {showTerritoryFilter && (
-        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowTerritoryFilter(false)}>
+      {/* Client Filter Modal — supplier only */}
+      {showClientFilter && (
+        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowClientFilter(false)}>
           <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-white dark:bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4 max-h-[70vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                <Filter className="h-5 w-5 text-primary" />Filter by Event
+                <Filter className="h-5 w-5 text-primary" />Filter by Client
               </h3>
-              <button onClick={() => setShowTerritoryFilter(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><X className="h-5 w-5" /></button>
+              <button onClick={() => setShowClientFilter(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><X className="h-5 w-5" /></button>
             </div>
             <div className="space-y-2 mb-4">
-              {['All Events', ...TERRITORIES].map((name) => {
-                const isAll = name === 'All Events';
-                const isSelected = isAll ? pendingTerritories.length === 0 : pendingTerritories.includes(name);
+              {['All Clients', ...supplierClients].map((name) => {
+                const isAll = name === 'All Clients';
+                const isSelected = isAll ? pendingClients.length === 0 : pendingClients.includes(name);
                 return (
                   <button key={name}
                     onClick={() => {
-                      if (isAll) setPendingTerritories([]);
-                      else if (isSelected) setPendingTerritories(pendingTerritories.filter(t => t !== name));
-                      else setPendingTerritories([...pendingTerritories, name]);
+                      if (isAll) setPendingClients([]);
+                      else if (isSelected) setPendingClients(pendingClients.filter(c => c !== name));
+                      else setPendingClients([...pendingClients, name]);
                     }}
                     className={`w-full text-left p-3 rounded-lg transition-colors border ${isSelected
                       ? 'bg-primary border-primary text-primary-foreground'
@@ -346,8 +355,8 @@ export const Home = () => {
               })}
             </div>
             <div className="flex gap-3 pt-4 border-t border-slate-300 dark:border-slate-600">
-              <button onClick={() => setPendingTerritories([])} className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors">Clear All</button>
-              <button onClick={() => { setAppliedTerritories(pendingTerritories); setShowTerritoryFilter(false); }} className="px-4 py-2 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors font-semibold">Apply Filter</button>
+              <button onClick={() => setPendingClients([])} className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors">Clear All</button>
+              <button onClick={() => { setAppliedClients(pendingClients); setShowClientFilter(false); }} className="px-4 py-2 bg-primary hover:opacity-90 text-primary-foreground rounded-lg transition-colors font-semibold">Apply Filter</button>
             </div>
           </div>
         </div>
