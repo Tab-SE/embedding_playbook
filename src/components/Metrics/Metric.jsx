@@ -13,7 +13,7 @@ import { InsightsModal } from "components";
 
 
 export const Metric = (props) => {
-  const { metric } = props;
+  const { metric, nameOverride } = props;
   // distinct count of insights
   const [bundleCount, setBundleCount] = useState(null);
   let result; // contains question, markup and facts
@@ -103,7 +103,7 @@ export const Metric = (props) => {
           isSuccess={isSuccess}
           stats={stats}
           bundleCount={bundleCount}
-          metric={metric}
+          metric={nameOverride ? { ...metric, name: nameOverride } : metric}
         />
       </CardContent>
 
