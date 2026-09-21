@@ -1,4 +1,5 @@
 import { NavigationMd, Navigation } from 'components';
+import { DemoErrorBoundary } from './DemoErrorBoundary';
 
 export const Demo = (props) => {
   const { children, settings, pageName } = props;
@@ -26,6 +27,7 @@ export const Demo = (props) => {
   }
 
   return (
+    <DemoErrorBoundary authPath={`${base_path}/auth`}>
     <div className="flex h-full w-full flex-col bg-muted/40 overflow-auto">
       <NavigationMd
         base_path={base_path}
@@ -50,5 +52,6 @@ export const Demo = (props) => {
         {children}
       </main>
     </div>
+    </DemoErrorBoundary>
   );
 }

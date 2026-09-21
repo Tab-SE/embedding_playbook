@@ -3,7 +3,8 @@ import {
   ShoppingCart,
   HandCoins,
   HeartPulse,
-  Headphones
+  Headphones,
+  Users2,
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -62,5 +63,34 @@ export const galleryItems = [
     vertical: "Service & Support",
     description: "A customer service portal that helps teams manage tickets, track response times, monitor KPIs, and deliver exceptional customer support",
     icon: <Headphones size={12} strokeWidth={2} />
+  },
+  {
+    id: 'pinnacle',
+    link: "/demo/pinnacle",
+    src: null,
+    customThumbnail: (
+      <div style={{
+        width: '100%', height: '100%',
+        backgroundColor: '#000e24',
+        backgroundImage: [
+          'radial-gradient(ellipse 38% 45% at 22% 50%, rgba(130,230,255,0.55) 0%, rgba(0,167,255,0.45) 20%, rgba(0,100,210,0.25) 50%, transparent 70%)',
+          'radial-gradient(ellipse 65% 65% at 22% 50%, rgba(0,130,220,0.30) 0%, transparent 60%)',
+          'conic-gradient(from 165deg at 22% 50%, transparent 0deg, rgba(0,167,255,0.06) 8deg, transparent 16deg, rgba(0,167,255,0.04) 26deg, transparent 34deg, rgba(0,167,255,0.05) 44deg, transparent 52deg, transparent 360deg)',
+          'linear-gradient(165deg, #001040 0%, #001d50 40%, #001535 70%, #000e24 100%)',
+        ].join(', '),
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', gap: '12px',
+      }}>
+        <img src="/img/themes/pinnacle/icon.png" alt="Pinnacle Group" style={{ width: 56, height: 56, borderRadius: '50%' }} />
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ color: '#fff', fontSize: 13, fontWeight: 700, letterSpacing: '0.02em' }}>Pinnacle Group</div>
+          <div style={{ color: 'rgba(142,209,252,0.85)', fontSize: 11, marginTop: 2 }}>Workforce Intelligence Portal</div>
+        </div>
+      </div>
+    ),
+    alt: "Pinnacle Group | Workforce Intelligence Portal",
+    vertical: "Staffing & Workforce Management",
+    description: "A contingent workforce management portal for customer executives, program managers, and staffing suppliers — featuring supplier scorecards, requisition tracking, and compliance monitoring",
+    icon: <Users2 size={12} strokeWidth={2} />
   }
 ]

@@ -12,6 +12,7 @@ export interface User {
   vector_store: string;
   uaf: Record<string, string[] | undefined>;
   salesforceUsername?: string;
+  company?: string;
   // Tableau ODA (On-Demand Access) groups — used only by demos whose connected app
   // requires `https://tableau.com/oda` + `https://tableau.com/groups` JWT claims.
   groups?: string[];
@@ -19,9 +20,7 @@ export interface User {
 
 export interface Demo {
   demo: string;
-  roles?: {
-    [key: number]: Role;
-  };
+  roles?: Partial<Record<number, Role>>;
   users: User[];
 }
 
@@ -239,6 +238,44 @@ export const Users = [
         role: 2,
         vector_store: 'superstore_lmartinez',
         uaf: {"Region": ["Central","East"]}
+      },
+    ]
+  },
+  {
+    demo: 'pinnacle',
+    roles: {
+      0: { title: 'Supplier', description: 'View your scorecard, open assignments, and compliance status'},
+      1: { title: 'Pinnacle Partner Manager', description: 'Operational oversight — requisitions, SLA tracking, compliance expiries, and supplier funnel'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Marcus Webb",
+        email: "slopez@superstore.com",
+        picture: "/img/users/matthew_wells.png",
+        role: 1,
+        vector_store: 'superstore_slopez',
+        uaf: {"Region": ["West","Central","East","South"]},
+      },
+      {
+        id: 'b',
+        name: "Priya Okonkwo",
+        email: "jchen@superstore.com",
+        picture: "/img/users/debi_patel.png",
+        role: 0,
+        vector_store: 'superstore_rmorris',
+        uaf: {"Region": ["East","South"]},
+        company: "Atlas Workforce Solutions"
+      },
+      {
+        id: 'c',
+        name: "Christine Nakamura",
+        email: "jmorris@superstore.com",
+        picture: "/img/users/vivian_yang.png",
+        role: 0,
+        vector_store: 'superstore_jmorris',
+        uaf: {"Region": ["West","Central"]},
+        company: "Apex Talent Partners"
       },
     ]
   }

@@ -304,6 +304,7 @@ export const authOptions: AuthOptions = {
         };
         token.vectors = vectors;
         token.uaf = user.uaf || {};
+        token.company = (user as any).company ?? null;
         token.groups = user.groups || [];
         token.tableau = user.tableau;
         token.tableau_eacanada = user.tableau_eacanada;
