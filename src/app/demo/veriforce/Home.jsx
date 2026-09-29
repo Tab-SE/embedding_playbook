@@ -52,9 +52,8 @@ export const Home = () => {
         });
         if (response.ok) {
           const userData = await response.json();
-          setCurrentUser(userData);
+          setCurrentUser(prev => JSON.stringify(prev) === JSON.stringify(userData) ? prev : userData);
           setUserLoaded(true);
-          console.log('Current user:', userData);
         } else {
           setUserLoaded(true); // Still mark as loaded even if failed
         }
@@ -80,8 +79,7 @@ export const Home = () => {
             });
             if (response.ok) {
               const userData = await response.json();
-              setCurrentUser(userData);
-              console.log('User updated on visibility change:', userData);
+              setCurrentUser(prev => JSON.stringify(prev) === JSON.stringify(userData) ? prev : userData);
             }
           } catch (error) {
             console.error('Error fetching user on visibility change:', error);
@@ -107,8 +105,10 @@ export const Home = () => {
         });
         if (response.ok) {
           const userData = await response.json();
-          setCurrentUser(userData);
-          console.log('User updated:', userData);
+          setCurrentUser(prev => {
+            if (JSON.stringify(prev) === JSON.stringify(userData)) return prev;
+            return userData;
+          });
         }
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -224,9 +224,26 @@ export const Home = () => {
       document.body.style.width = '';
       document.body.style.height = '';
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
 
-      // Ensure we're at the top
       window.scrollTo(0, 0);
+
+      // Tableau defers scroll calls past the 8-second mark — snap back to 0
+      // on any programmatic scroll until the user intentionally wheels/touches.
+      let userIntentDetected = false;
+      const snapToTop = () => { if (!userIntentDetected) window.scrollTo(0, 0); };
+      const onUserIntent = () => { userIntentDetected = true; };
+
+      window.addEventListener('scroll', snapToTop, { capture: true, passive: true });
+      window.addEventListener('wheel', onUserIntent, { capture: true, passive: true, once: true });
+      window.addEventListener('touchstart', onUserIntent, { capture: true, passive: true, once: true });
+
+      // Remove the snap listener after 10 seconds regardless
+      setTimeout(() => {
+        window.removeEventListener('scroll', snapToTop, { capture: true });
+        window.removeEventListener('wheel', onUserIntent, { capture: true });
+        window.removeEventListener('touchstart', onUserIntent, { capture: true });
+      }, 10000);
     }, 8000);
 
     return () => {
@@ -371,20 +388,16 @@ export const Home = () => {
       if (executiveSummaryViz) {
         console.log('Adding firstinteractive listener to Executive Summary');
         executiveSummaryViz.addEventListener('firstinteractive', (event) => {
-          console.log('Executive Summary is now interactive!');
-          // Add mark selection listener INSIDE firstinteractive
+          window.scrollTo(0, 0);
           executiveSummaryViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('Mark selection listener attached to Executive Summary');
         });
       }
 
       if (complianceCenterViz) {
         console.log('Adding firstinteractive listener to Compliance Center');
         complianceCenterViz.addEventListener('firstinteractive', (event) => {
-          console.log('Compliance Center is now interactive!');
-          // Add mark selection listener INSIDE firstinteractive
+          window.scrollTo(0, 0);
           complianceCenterViz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          console.log('Mark selection listener attached to Compliance Center');
         });
       }
 
