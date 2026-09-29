@@ -43,6 +43,10 @@ export const handleJWT = async (
   const valid_embed = jwtVerify(embed_token, sub, embed_options.jwt_secret, embed_options.jwt_client_id);
   const valid_rest = jwtVerify(rest_token, sub, rest_options.jwt_secret, rest_options.jwt_client_id);
 
+  console.log(`[handleJWT] sub=${sub}`);
+  console.log(`[handleJWT] embed jwt:  https://jwt.io/?token=${embed_token}`);
+  console.log(`[handleJWT] rest  jwt:  https://jwt.io/?token=${rest_token}`);
+
   if (valid_embed && valid_rest) {
     // only return credentials if JWT meets requirements
     const credentials = await tabAuthJWT(rest_token);
@@ -77,6 +81,10 @@ export const handleJWTEACanada = async (
   // verify the JWT against the same parameters
   const valid_embed = jwtVerify(embed_token, sub, embed_options.jwt_secret, embed_options.jwt_client_id);
   const valid_rest = jwtVerify(rest_token, sub, rest_options.jwt_secret, rest_options.jwt_client_id);
+
+  console.log(`[handleJWTEACanada] sub=${sub}`);
+  console.log(`[handleJWTEACanada] embed jwt:  https://jwt.io/?token=${embed_token}`);
+  console.log(`[handleJWTEACanada] rest  jwt:  https://jwt.io/?token=${rest_token}`);
 
   if (valid_embed && valid_rest) {
     // only return credentials if JWT meets requirements
