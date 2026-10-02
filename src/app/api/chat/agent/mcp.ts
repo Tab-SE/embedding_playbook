@@ -44,7 +44,13 @@ interface DemoDatasource {
   luid?: string;
 }
 
+const DATASOURCE_OVERRIDES: Record<string, DemoDatasource> = {
+  pinnacle: { name: process.env["DATASOURCE_NAME_SUPERSTORE"] ?? "Superstore" },
+  trinity: { name: "Avanex Therapeutics - Field Rep Performance" },
+};
+
 const demoDatasource = (demo: string): DemoDatasource => {
+  if (DATASOURCE_OVERRIDES[demo]) return DATASOURCE_OVERRIDES[demo];
   // Convert the demo key to env var suffix (e.g. "ubl-superstore" → "UBL_SUPERSTORE").
   const suffix = demo.toUpperCase().replace(/-/g, "_");
   return {

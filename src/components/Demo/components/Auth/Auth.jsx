@@ -45,7 +45,7 @@ export const Auth = (props) => {
         className="absolute top-4 left-4 z-20 group flex h-10 w-10 items-center justify-center rounded-full bg-logoBackground shadow-lg backdrop-blur-sm hover:scale-110 transition-transform"
       >
         <Avatar className="h-9 w-9 p-1 bg-logoBackground">
-          <AvatarImage src={logoToUse} alt={`${app_name} logo`} className="object-cover" />
+          <AvatarImage src={logoToUse} alt={`${app_name} logo`} className="object-contain" />
           <AvatarFallback>APP</AvatarFallback>
         </Avatar>
         <span className="sr-only">Back to all demos</span>
@@ -56,7 +56,7 @@ export const Auth = (props) => {
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <Avatar className="flex items-center justify-center h-16 w-16 bg-logoBackground">
-                <AvatarImage src={logoToUse} className="object-cover rounded-full" />
+                <AvatarImage src={logoToUse} className="object-contain" />
                 <AvatarFallback>APP</AvatarFallback>
               </Avatar>
             </div>

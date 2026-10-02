@@ -15,9 +15,9 @@ export const settings = {
   ai_chat: true,
   ai_avatar: '/img/themes/trinity/chat_icon.svg',
   sample_questions: [
-    "Which territories are showing the highest growth in new prescribers this quarter?",
-    "What is the market penetration rate for our GLP-1 portfolio by region?",
-    "Identify the top prescribers by script volume and their preferred engagement channels",
+    "What is the current quota attainment and how does it compare to the prior 8 weeks?",
+    "Which rep tenure band has the highest incentive comp payout?",
+    "How do calls completed and Rx per call trend over the past several months?",
   ],
   sections: [
     {
