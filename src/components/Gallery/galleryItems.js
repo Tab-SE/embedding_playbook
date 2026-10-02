@@ -3,7 +3,8 @@ import {
   ShoppingCart,
   HandCoins,
   HeartPulse,
-  Headphones
+  Headphones,
+  Pill
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
@@ -53,6 +54,15 @@ export const galleryItems = [
     vertical: "Financial Services",
     description: "A wealth management app that empowers users to make informed financial decisions, allowing them to track net worth and analyze portfolio performance",
     icon: <HandCoins size={12} strokeWidth={2} />
+  },
+  {
+    id: 'trinity',
+    link: "/demo/trinity",
+    src: "/img/demos/trinity.jpg",
+    alt: "Trinity Partners Analytics",
+    vertical: "Pharma & Life Sciences",
+    description: "A commercial analytics platform for pharma teams to track prescriber insights, market access, field activity, and GLP-1 portfolio performance",
+    icon: <Pill size={12} strokeWidth={2} />
   },
   {
     id: 'servicedesk',

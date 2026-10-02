@@ -233,6 +233,40 @@
   [data-theme="servicedesk"] .dark {
     color-scheme: dark;
   }
+
+  /* Define variables for the 'trinity' theme (Trinity Partners - Prussian Blue & Monte Carlo Teal) */
+  [data-theme="trinity"] {
+    --background: 0 0% 100%;               /* White */
+    --foreground: 217 100% 17%;            /* Prussian Blue */
+    --demo-background: 210 30% 96%;        /* Very light blue-gray */
+    --nav-background: 217 100% 17%;        /* Prussian Blue nav */
+    --logo-background: 217 100% 17%;       /* Prussian Blue behind white logo */
+    --icon-background: 217 100% 17%;       /* Prussian Blue icon bg */
+    --login-card-background: 0 0% 100%;    /* White login card */
+    --nav-icons: 0 0% 100%;               /* White nav icons */
+    --card: 0 0% 100%;                     /* White cards */
+    --card-foreground: 217 100% 17%;       /* Prussian Blue card text */
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 100% 17%;
+    --primary: 217 100% 17%;               /* Prussian Blue */
+    --primary-foreground: 0 0% 100%;       /* White */
+    --secondary: 177 44% 85%;             /* Light Monte Carlo teal */
+    --secondary-foreground: 217 100% 17%; /* Prussian Blue on light teal */
+    --muted: 210 30% 95%;
+    --muted-foreground: 217 30% 40%;
+    --accent: 177 44% 68%;                /* Monte Carlo teal */
+    --accent-foreground: 217 100% 17%;    /* Prussian Blue on teal */
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 177 20% 88%;
+    --input: 177 20% 92%;
+    --ring: 177 44% 68%;                  /* Monte Carlo teal ring */
+
+    --metrics-positive: 177 44% 68%;      /* Monte Carlo teal */
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 0 70% 60%;
+  }
+
 } /* End of @layer base containing themes */
 
 @layer base {
