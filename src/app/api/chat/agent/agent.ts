@@ -24,15 +24,17 @@ export const bootstrapAgent = async (demo: string, token: JWT) => {
   const datasourcePinning =
     datasource.name || datasource.luid
       ? `\n\n# This demo's datasource\n` +
-        `For the "${demo}" demo you must use this Tableau datasource — do not query others:\n` +
+        `You MUST use ONLY this datasource — never query any other datasource regardless of what \`list-datasources\` returns:\n` +
         (datasource.name ? `- name: "${datasource.name}"\n` : "") +
         (datasource.luid ? `- luid: ${datasource.luid}\n` : "") +
-        `\nFirst tool call should be \`list-datasources\` with ` +
+        `\nCall \`list-datasources\` first to get this datasource's LUID. ` +
         (datasource.name
-          ? `\`filter: "name:eq:${datasource.name}"\` so you get exactly this datasource's LUID.`
-          : `— or use the LUID above directly.`) +
+          ? `Find the entry whose name is exactly "${datasource.name}" and use its LUID. ` +
+            `If no datasource with that exact name appears, tell the user it is not available — do NOT fall back to any other datasource.`
+          : `Use the LUID above directly.`) +
         ` Then ALWAYS call the metadata tool for that LUID and build your query only from the exact field ` +
-        `names it returns (see "how to query data correctly" above) before calling query-datasource.`
+        `names it returns before calling query-datasource. ` +
+        `Never query "Sales Commission" or any other datasource — only "${datasource.name || datasource.luid}".`
       : "";
 
   const agent = createReactAgent({
