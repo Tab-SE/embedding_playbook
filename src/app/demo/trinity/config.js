@@ -1,9 +1,8 @@
 import {
   Home,
   BrainCircuit,
-  Activity,
-  TrendingUp,
-  UserCheck,
+  AppWindow,
+  ShoppingCart,
 } from "lucide-react";
 
 export const settings = {
@@ -35,25 +34,18 @@ export const settings = {
       description: 'AI-powered market intelligence assistant'
     },
     {
-      name: 'Field Reports',
-      icon: <Activity className="h-5 w-5"/>,
-      path: '/orders',
+      name: 'Superstore Analytics',
+      icon: <ShoppingCart className="h-5 w-5"/>,
+      path: '/superstore',
       min_role: 0,
-      description: 'Field force activity, call reporting, and territory execution'
+      description: 'Superstore Analytics embedded dashboard with concierge agent'
     },
     {
-      name: 'Market Access',
-      icon: <TrendingUp className="h-5 w-5"/>,
-      path: '/products',
-      min_role: 1,
-      description: 'Payer coverage, formulary status, and access analytics by market'
-    },
-    {
-      name: 'Prescriber Insights',
-      icon: <UserCheck className="h-5 w-5"/>,
-      path: '/customers',
-      min_role: 2,
-      description: 'HCP targeting, prescriber behavior, and patient journey analytics'
+      name: 'tabNext Embed',
+      icon: <AppWindow className="h-5 w-5"/>,
+      path: '/tabnext',
+      min_role: 0,
+      description: 'Tableau Next embedded analytics experience'
     },
   ],
 }

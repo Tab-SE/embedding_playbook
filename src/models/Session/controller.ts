@@ -1,4 +1,4 @@
-import { tabAuthPAT, tabAuthJWT, tabAuthJWTEACanada, tabAuthJWTUBL, jwtSign, jwtVerify } from "libs";
+import { tabAuthPAT, tabAuthJWT, tabAuthJWTEACanada, tabAuthJWTUBL, tabAuthJWTEP, jwtSign, jwtVerify } from "libs";
 
 export interface UAF {
   [key: string]: string[];
@@ -88,6 +88,30 @@ export const handleJWTEACanada = async (
     return { credentials, rest_token,  embed_token };
   } else {
     throw new Error('One or more JWTs are not valid!');
+  }
+};
+
+// EP (embeddingplaybook) Tableau Embed and REST API authentication via JWT
+export const handleJWTEP = async (
+  sub: string,
+  embed_options: JWTOptions,
+  embed_scopes: string[],
+  rest_options: JWTOptions,
+  rest_scopes: string[],
+  uaf: UAF
+) => {
+  const embed_token = jwtSign(sub, embed_options, embed_scopes, uaf);
+  const rest_token = jwtSign(sub, rest_options, rest_scopes, uaf);
+  const valid_embed = jwtVerify(embed_token, sub, embed_options.jwt_secret, embed_options.jwt_client_id);
+  const valid_rest = jwtVerify(rest_token, sub, rest_options.jwt_secret, rest_options.jwt_client_id);
+
+  if (valid_embed && valid_rest) {
+    const credentials = await tabAuthJWTEP(rest_token);
+    credentials.created = valid_rest.iat;
+    credentials.expiration = valid_rest.iat + REST_SESSION_LIFETIME_SECONDS;
+    return { credentials, rest_token, embed_token };
+  } else {
+    throw new Error('One or more EP JWTs are not valid!');
   }
 };
 

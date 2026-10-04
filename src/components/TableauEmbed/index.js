@@ -1,6 +1,8 @@
 export { TableauEmbed } from './TableauEmbed';
 export { TableauEmbedEACanada } from './TableauEmbedEACanada';
 export { TableauEmbedUBL } from './TableauEmbedUBL';
+export { TableauEmbedEP } from './TableauEmbedEP';
+export { TableauAuthEP } from './TableauAuthEP';
 export { TableauViz } from './TableauViz';
 export { TableauWebAuthor } from './TableauWebAuthor';
 export { TableauAuth } from './TableauAuth';

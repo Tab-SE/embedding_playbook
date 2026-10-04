@@ -14,6 +14,7 @@ export {
   TableauEmbed,
   TableauEmbedEACanada,
   TableauEmbedUBL,
+  TableauEmbedEP,
   TableauViz,
   TableauWebAuthor,
   TableauAuth,

@@ -253,7 +253,7 @@
     --secondary: 177 44% 85%;             /* Light Monte Carlo teal */
     --secondary-foreground: 217 100% 17%; /* Prussian Blue on light teal */
     --muted: 210 30% 95%;
-    --muted-foreground: 217 30% 40%;
+    --muted-foreground: 217 10% 50%;
     --accent: 177 44% 68%;                /* Monte Carlo teal */
     --accent-foreground: 217 100% 17%;    /* Prussian Blue on teal */
     --destructive: 0 70% 60%;
@@ -265,6 +265,13 @@
     --metrics-positive: 177 44% 68%;      /* Monte Carlo teal */
     --metrics-neutral: 39 7% 54%;
     --metrics-negative: 0 70% 60%;
+  }
+
+  /* Trinity: nav sits on Prussian Blue — hover:text-foreground would make icons
+     invisible (same color as bg). Override to show Monte Carlo teal on hover. */
+  [data-theme="trinity"] aside nav a:hover,
+  [data-theme="trinity"] aside nav a:hover svg {
+    color: hsl(var(--accent)) !important;
   }
 
 } /* End of @layer base containing themes */

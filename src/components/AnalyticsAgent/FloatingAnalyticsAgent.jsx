@@ -172,7 +172,7 @@ export const FloatingAnalyticsAgent = (props) => {
             <div className="border-b border-stone-200 dark:border-stone-800">
               <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-2">
-                  <Bot className="h-5 w-5 text-blue-500" />
+                  <Bot className="h-5 w-5 text-primary" />
                   <h3 className="font-semibold text-stone-900 dark:text-stone-50">Analytics Agent</h3>
                 </div>
                 <Button
@@ -193,7 +193,7 @@ export const FloatingAnalyticsAgent = (props) => {
                   <button
                     type="button"
                     onClick={handleCopyQuestion}
-                    className="inline-flex shrink-0 items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-blue-600 hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
+                    className="inline-flex shrink-0 items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-primary hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
                     title="Copy question, then paste it into the agent"
                   >
                     {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
@@ -228,7 +228,7 @@ const FloatingAgentButton = forwardRef(({ isOpen, onClick, ...rest }, ref) => {
       onClick={onClick}
       ref={ref}
       title={tooltip}
-      className="w-11 h-11 rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center cursor-pointer"
+      className="w-11 h-11 rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90 bg-primary hover:opacity-90 text-primary-foreground flex items-center justify-center cursor-pointer"
       style={{ width: '44px', height: '44px' }}
       {...rest}
     >

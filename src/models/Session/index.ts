@@ -1,4 +1,4 @@
-import { lifespan, handlePAT, handleJWT, handleJWTEACanada, handleJWTUBL, JWTOptions, UAF } from "./controller";
+import { lifespan, handlePAT, handleJWT, handleJWTEACanada, handleJWTUBL, handleJWTEP, JWTOptions, UAF } from "./controller";
 import { tabSignOut } from "libs";
 
 interface Credentials {
@@ -115,6 +115,12 @@ export class SessionModel {
   // EACanada JSON Web Token authentication
   jwtEACanada = async (sub: string, embed_options: JWTOptions, embed_scopes: string[], rest_options: JWTOptions, rest_scopes: string[], uaf: UAF) => {
     const { credentials, rest_token, embed_token } = await handleJWTEACanada(sub, embed_options, embed_scopes, rest_options, rest_scopes, uaf);
+    this._authorize(credentials, rest_token, embed_token);
+  }
+
+  // EP (embeddingplaybook) JSON Web Token authentication
+  jwtEP = async (sub: string, embed_options: JWTOptions, embed_scopes: string[], rest_options: JWTOptions, rest_scopes: string[], uaf: UAF) => {
+    const { credentials, rest_token, embed_token } = await handleJWTEP(sub, embed_options, embed_scopes, rest_options, rest_scopes, uaf);
     this._authorize(credentials, rest_token, embed_token);
   }
 

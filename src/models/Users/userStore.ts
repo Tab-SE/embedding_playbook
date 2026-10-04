@@ -257,8 +257,9 @@ export const Users = [
         picture: "/img/users/sofia_lopez.png",
         role: 0,
         vector_store: 'superstore_schen',
-        uaf: {"Region": ["West", "Central"]},
-        groups: ["Group2"]
+        uaf: {"Region": ["West"]},
+        groups: ["Group2"],
+        salesforceUsername: "slopez@superstore.com"
       },
       {
         id: 'b',
@@ -267,8 +268,9 @@ export const Users = [
         picture: "/img/users/justin_chen.png",
         role: 1,
         vector_store: 'superstore_mjohnson',
-        uaf: {"Region": ["South", "East"]},
-        groups: ["Group1"]
+        uaf: {"Region": ["Central","East"]},
+        groups: ["Group1"],
+        salesforceUsername: "jchen+123@salesforce.com"
       },
       {
         id: 'c',
@@ -277,8 +279,9 @@ export const Users = [
         picture: "/img/users/rachel_morris.png",
         role: 2,
         vector_store: 'superstore_erodriguez',
-        uaf: {"Region": ["West", "East", "Central", "South"]},
-        groups: ["Group1"]
+        uaf: {"Region": ["South"]},
+        groups: ["Group1"],
+        salesforceUsername: "jmorris@superstore.com"
       },
     ]
   }

@@ -33,7 +33,7 @@ export const Transactions = () => {
             Recent transactions from your store.
           </CardDescription>
         </div>
-        <Button asChild size="sm" className="ml-auto gap-1">
+        <Button asChild size="sm" variant="outline" className="ml-auto gap-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
           <Link href="/clientportfolio">
             View All
             <ArrowUpRight className="h-4 w-4" />
