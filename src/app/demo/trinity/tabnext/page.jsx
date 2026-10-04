@@ -12,7 +12,7 @@ const TabNext = dynamic(
 );
 
 const Page = () => {
-  const pageName = 'tabNext Embed';
+  const pageName = 'tabnext';
 
   return (
     <Demo
