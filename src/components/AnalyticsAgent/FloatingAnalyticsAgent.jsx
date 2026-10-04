@@ -125,6 +125,20 @@ export const FloatingAnalyticsAgent = (props) => {
   }, [salesforceUsername, initializeAgent]);
 
   const hasAutoAuthAttempted = useRef(false);
+  const lastSalesforceUsername = useRef('');
+
+  // Reset auth state when the user changes so the new user gets their own
+  // SDK session. Status must also go back to idle so the useEffect below
+  // can fire; the container div is re-keyed so the shadow root is destroyed.
+  useEffect(() => {
+    if (salesforceUsername && salesforceUsername !== lastSalesforceUsername.current) {
+      hasAutoAuthAttempted.current = false;
+      lastSalesforceUsername.current = salesforceUsername;
+      setStatus('idle');
+      setError('');
+    }
+  }, [salesforceUsername]);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (!isOpen) return;
@@ -208,6 +222,7 @@ export const FloatingAnalyticsAgent = (props) => {
                 <div className="p-4 text-sm text-red-500">{error}</div>
               )}
               <div
+                key={salesforceUsername}
                 id="floating-agent-container"
                 className="w-full h-full"
                 style={{ height: '100%', width: '100%' }}
