@@ -60,6 +60,7 @@ export const FloatingAnalyticsAgent = (props) => {
       });
 
       await initializeAnalyticsSdk(config);
+      sdkInitializedRef.current = true;
 
       const agentContainer = document.getElementById('floating-agent-container');
       if (!agentContainer) {
@@ -126,18 +127,41 @@ export const FloatingAnalyticsAgent = (props) => {
 
   const hasAutoAuthAttempted = useRef(false);
   const lastSalesforceUsername = useRef('');
+  const sdkInitializedRef = useRef(false);
 
-  // Reset auth state when the user changes so the new user gets their own
-  // SDK session. Status must also go back to idle so the useEffect below
-  // can fire; the container div is re-keyed so the shadow root is destroyed.
+  const sdkLogout = useCallback(async () => {
+    if (!sdkInitializedRef.current) return;
+    try {
+      const { logout } = await import('@salesforce/analytics-embedding-sdk');
+      await logout();
+    } catch {}
+    sdkInitializedRef.current = false;
+  }, []);
+
+  // When the user switches, logout the previous SDK session first so the stale
+  // sid cookie is cleared, then let the next useEffect re-authenticate as the new user.
   useEffect(() => {
     if (salesforceUsername && salesforceUsername !== lastSalesforceUsername.current) {
+      sdkLogout();
       hasAutoAuthAttempted.current = false;
       lastSalesforceUsername.current = salesforceUsername;
       setStatus('idle');
       setError('');
     }
-  }, [salesforceUsername]);
+  }, [salesforceUsername, sdkLogout]);
+
+  // Clear the SDK session when the NextAuth session is destroyed (user logs out).
+  const prevSessionStatusRef = useRef(sessionStatus);
+  useEffect(() => {
+    const prev = prevSessionStatusRef.current;
+    prevSessionStatusRef.current = sessionStatus;
+    if (prev === 'authenticated' && sessionStatus !== 'authenticated') {
+      sdkLogout();
+      hasAutoAuthAttempted.current = false;
+      setStatus('idle');
+      setError('');
+    }
+  }, [sessionStatus, sdkLogout]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

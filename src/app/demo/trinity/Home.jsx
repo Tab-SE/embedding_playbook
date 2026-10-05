@@ -12,8 +12,8 @@ import {
 
 import { Metrics, TableauEmbed } from '@/components';
 
-const TRINITY_BLUE = '#002257';
-const TRINITY_TEAL = '#8BD2CE';
+const TRINITY_BLUE = '#050742';
+const TRINITY_TEAL = '#FF6150';
 
 export const Home = () => {
   const [selectedMarks, setSelectedMarks] = useState([]);
@@ -52,21 +52,27 @@ export const Home = () => {
     };
 
     const attach = (attempt = 0) => {
-      const viz = document.getElementById('overviewViz') || document.querySelector('tableau-viz');
-      if (!viz) {
+      // TableauViz renders one <tableau-viz> per responsive breakpoint; only some
+      // get the passed id — the rest are hardcoded. Attach to all of them so the
+      // visible one at the current breakpoint always fires markselectionchanged.
+      const vizzes = Array.from(document.querySelectorAll('tableau-viz'));
+      if (vizzes.length === 0) {
         if (attempt < 60) setTimeout(() => attach(attempt + 1), 250);
         return;
       }
-      viz.addEventListener('firstinteractive', () => {
-        viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
+      vizzes.forEach(viz => {
+        viz.addEventListener('firstinteractive', () => {
+          viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
+        });
+        try { if (viz.workbook) viz.addEventListener('markselectionchanged', handleMarkSelectionChanged); } catch {}
       });
-      try { if (viz.workbook) viz.addEventListener('markselectionchanged', handleMarkSelectionChanged); } catch {}
     };
 
     attach();
     return () => {
-      const viz = document.getElementById('overviewViz') || document.querySelector('tableau-viz');
-      if (viz) viz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
+      document.querySelectorAll('tableau-viz').forEach(viz => {
+        viz.removeEventListener('markselectionchanged', handleMarkSelectionChanged);
+      });
     };
   }, []);
 

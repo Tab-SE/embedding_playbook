@@ -26,14 +26,18 @@ export const Auth = (props) => {
     <div className="relative w-full min-h-screen">
 
       <div className="absolute inset-0 w-full h-full">
-        <Image
-          src={auth_hero || "/placeholder.svg"}
-          alt="Background"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover dark:brightness-[0.2] dark:grayscale background"
-        />
+        {auth_hero ? (
+          <Image
+            src={auth_hero}
+            alt="Background"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover dark:brightness-[0.2] dark:grayscale background"
+          />
+        ) : (
+          <div className="w-full h-full bg-navBackground" />
+        )}
       </div>
 
       {/* Floating "back to /demos" badge — mirrors the logo widget that lives in

@@ -234,41 +234,40 @@
     color-scheme: dark;
   }
 
-  /* Define variables for the 'trinity' theme (Trinity Partners - Prussian Blue & Monte Carlo Teal) */
+  /* Define variables for the 'trinity' theme (Trinity Life Sciences - Deep Cove & Persimmon) */
   [data-theme="trinity"] {
     --background: 0 0% 100%;               /* White */
-    --foreground: 217 100% 17%;            /* Prussian Blue */
-    --demo-background: 210 30% 96%;        /* Very light blue-gray */
-    --nav-background: 217 100% 17%;        /* Prussian Blue nav */
-    --logo-background: 217 100% 17%;       /* Prussian Blue behind white logo */
-    --icon-background: 217 100% 17%;       /* Prussian Blue icon bg */
+    --foreground: 238 86% 14%;             /* Deep Cove */
+    --demo-background: 238 30% 97%;        /* Very light navy-tinted bg */
+    --nav-background: 238 86% 14%;         /* Deep Cove nav */
+    --logo-background: 238 86% 14%;        /* Deep Cove behind white logo */
+    --icon-background: 238 86% 14%;        /* Deep Cove icon bg */
     --login-card-background: 0 0% 100%;    /* White login card */
     --nav-icons: 0 0% 100%;               /* White nav icons */
     --card: 0 0% 100%;                     /* White cards */
-    --card-foreground: 217 100% 17%;       /* Prussian Blue card text */
+    --card-foreground: 238 86% 14%;        /* Deep Cove card text */
     --popover: 0 0% 100%;
-    --popover-foreground: 217 100% 17%;
-    --primary: 217 100% 17%;               /* Prussian Blue */
+    --popover-foreground: 238 86% 14%;
+    --primary: 6 100% 66%;                 /* Persimmon */
     --primary-foreground: 0 0% 100%;       /* White */
-    --secondary: 177 44% 85%;             /* Light Monte Carlo teal */
-    --secondary-foreground: 217 100% 17%; /* Prussian Blue on light teal */
-    --muted: 210 30% 95%;
-    --muted-foreground: 217 10% 50%;
-    --accent: 177 44% 68%;                /* Monte Carlo teal */
-    --accent-foreground: 217 100% 17%;    /* Prussian Blue on teal */
+    --secondary: 6 100% 95%;              /* Very light Persimmon */
+    --secondary-foreground: 238 86% 14%;  /* Deep Cove on light persimmon */
+    --muted: 238 20% 95%;
+    --muted-foreground: 238 10% 50%;
+    --accent: 6 100% 66%;                 /* Persimmon */
+    --accent-foreground: 0 0% 100%;       /* White on Persimmon */
     --destructive: 0 70% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 177 20% 88%;
-    --input: 177 20% 92%;
-    --ring: 177 44% 68%;                  /* Monte Carlo teal ring */
+    --border: 238 20% 88%;
+    --input: 238 20% 92%;
+    --ring: 6 100% 66%;                   /* Persimmon ring */
 
-    --metrics-positive: 177 44% 68%;      /* Monte Carlo teal */
+    --metrics-positive: 6 100% 66%;       /* Persimmon */
     --metrics-neutral: 39 7% 54%;
-    --metrics-negative: 0 70% 60%;
+    --metrics-negative: 238 86% 14%;      /* Deep Cove */
   }
 
-  /* Trinity: nav sits on Prussian Blue — hover:text-foreground would make icons
-     invisible (same color as bg). Override to show Monte Carlo teal on hover. */
+  /* Trinity: nav sits on Deep Cove — override to show Persimmon on hover. */
   [data-theme="trinity"] aside nav a:hover,
   [data-theme="trinity"] aside nav a:hover svg {
     color: hsl(var(--accent)) !important;

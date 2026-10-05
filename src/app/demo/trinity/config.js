@@ -7,10 +7,10 @@ import {
 
 export const settings = {
   app_id: 'trinity',
-  app_name: 'Trinity Partners Analytics',
-  app_logo: '/img/themes/trinity/trinity_logo.svg',
+  app_name: 'Trinity Life Sciences',
+  app_logo: '/img/themes/trinity/trinity_ls_hero.jpeg',
   base_path: '/demo/trinity',
-  auth_hero: 'https://images.unsplash.com/photo-1666886573301-b5d526cfd518?q=80&w=3072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  auth_hero: null,
   ai_chat: true,
   ai_avatar: '/img/themes/trinity/chat_icon.svg',
   sample_questions: [

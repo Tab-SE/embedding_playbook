@@ -59,7 +59,7 @@ export const galleryItems = [
     id: 'trinity',
     link: "/demo/trinity",
     src: "/img/demos/trinity.jpg",
-    alt: "Trinity Partners Analytics",
+    alt: "Trinity Life Sciences",
     vertical: "Pharma & Life Sciences",
     description: "A commercial analytics platform for pharma teams to track prescriber insights, market access, field activity, and GLP-1 portfolio performance",
     icon: <Pill size={12} strokeWidth={2} />
