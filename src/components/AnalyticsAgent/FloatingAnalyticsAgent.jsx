@@ -41,7 +41,13 @@ export const FloatingAnalyticsAgent = (props) => {
       setStatus("initializing");
 
       // Dynamically import the SDK
-      const { initializeAnalyticsSdk, AnalyticsAgent } = await import('@salesforce/analytics-embedding-sdk');
+      const { initializeAnalyticsSdk, AnalyticsAgent, logout } = await import('@salesforce/analytics-embedding-sdk');
+
+      // Always clear any existing Salesforce session before initializing a new one.
+      // This ensures a stale sid cookie from a previous user (persisted across page
+      // refreshes) doesn't bleed into the new user's session.
+      try { await logout(); } catch {}
+      sdkInitializedRef.current = false;
 
       const orgUrl = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
 
@@ -139,14 +145,15 @@ export const FloatingAnalyticsAgent = (props) => {
   }, []);
 
   // When the user switches, logout the previous SDK session first so the stale
-  // sid cookie is cleared, then let the next useEffect re-authenticate as the new user.
+  // sid cookie is cleared, THEN set status to idle so the auto-auth effect below
+  // only fires after the old session is fully gone.
   useEffect(() => {
     if (salesforceUsername && salesforceUsername !== lastSalesforceUsername.current) {
-      sdkLogout();
       hasAutoAuthAttempted.current = false;
       lastSalesforceUsername.current = salesforceUsername;
-      setStatus('idle');
       setError('');
+      // Keep status as-is until logout resolves — prevents re-auth racing the logout.
+      sdkLogout().then(() => setStatus('idle'));
     }
   }, [salesforceUsername, sdkLogout]);
 
@@ -156,10 +163,9 @@ export const FloatingAnalyticsAgent = (props) => {
     const prev = prevSessionStatusRef.current;
     prevSessionStatusRef.current = sessionStatus;
     if (prev === 'authenticated' && sessionStatus !== 'authenticated') {
-      sdkLogout();
       hasAutoAuthAttempted.current = false;
-      setStatus('idle');
       setError('');
+      sdkLogout().then(() => setStatus('idle'));
     }
   }, [sessionStatus, sdkLogout]);
 
