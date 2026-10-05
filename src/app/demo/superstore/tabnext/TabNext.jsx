@@ -4,12 +4,13 @@ import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { AppWindow } from "lucide-react";
-import { initializeAnalyticsSdk, AnalyticsDashboard } from '@salesforce/analytics-embedding-sdk';
+import { initializeAnalyticsSdk, AnalyticsDashboard, logout } from '@salesforce/analytics-embedding-sdk';
 
 export const TabNext = () => {
   const { status: sessionStatus, data: session } = useSession();
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+  const sdkInitializedRef = useRef(false);
 
   const orgUrl = useMemo(() => {
     const url = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL || "";
@@ -55,6 +56,7 @@ export const TabNext = () => {
         authCredentialPreview: config.authCredential?.substring(0, 100) + '...'
       });
       await initializeAnalyticsSdk(config);
+      sdkInitializedRef.current = true;
 
       const container = document.getElementById('analytics-container');
       if (!container) {
@@ -185,6 +187,24 @@ export const TabNext = () => {
       handleJWTBearerAuth();
     }
   }, [sessionStatus, salesforceUsername, handleJWTBearerAuth, status]);
+
+  // Call SDK logout when the user signs out — clears the Salesforce sid cookie
+  // and resets the auth guard so the next login re-authenticates.
+  const prevSessionStatusRef = useRef(sessionStatus);
+  useEffect(() => {
+    const prev = prevSessionStatusRef.current;
+    prevSessionStatusRef.current = sessionStatus;
+
+    if (prev === 'authenticated' && sessionStatus !== 'authenticated') {
+      if (sdkInitializedRef.current) {
+        logout().catch(() => {});
+        sdkInitializedRef.current = false;
+      }
+      hasAutoAuthAttempted.current = false;
+      setStatus('idle');
+      setError('');
+    }
+  }, [sessionStatus]);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
