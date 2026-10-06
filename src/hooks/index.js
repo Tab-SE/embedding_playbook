@@ -1,7 +1,9 @@
 export { useTableauSession } from './useTableauSession';
 export { useTableauSessionEACanada } from './useTableauSessionEACanada';
 export { useTableauSessionUBL } from './useTableauSessionUBL';
+export { useTableauSessionEP } from './useTableauSessionEP';
 export { useViewsUBL } from './useViewsUBL';
+export { useViews } from './useViews';
 export { useMetrics } from './useMetrics';
 export { useInsights } from './useInsights';
 export { useTimeout } from './useTimeout';

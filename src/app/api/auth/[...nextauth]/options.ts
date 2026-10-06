@@ -25,6 +25,7 @@ interface DemoUser extends User {
   tableau?: any;
   tableau_eacanada?: any;
   tableau_ubl?: any;
+  tableau_ep?: any;
   rest_token?: string;
   salesforceUsername?: string;
 }
@@ -190,6 +191,63 @@ export const authOptions: AuthOptions = {
               }
             }
 
+            // Also authenticate to EP (embeddingplaybook) server if credentials are available
+            const ep_jwt_client_id = process.env.EP_JWT_CLIENT_ID;
+            const ep_embed_secret = process.env.EP_EMBED_JWT_SECRET;
+            const ep_embed_secret_id = process.env.EP_EMBED_JWT_SECRET_ID;
+            const ep_rest_secret = process.env.EP_REST_JWT_SECRET;
+            const ep_rest_secret_id = process.env.EP_REST_JWT_SECRET_ID;
+
+            if (ep_jwt_client_id && ep_embed_secret && ep_rest_secret) {
+              const ep_embed_options = {
+                jwt_secret: ep_embed_secret,
+                jwt_secret_id: ep_embed_secret_id,
+                jwt_client_id: ep_jwt_client_id
+              };
+              const ep_rest_options = {
+                jwt_secret: ep_rest_secret,
+                jwt_secret_id: ep_rest_secret_id,
+                jwt_client_id: ep_jwt_client_id
+              };
+
+              console.log('[EP Auth] attempting jwtEP for', user.email, 'client_id:', ep_jwt_client_id?.slice(0, 8));
+              const ep_session = new SessionModel(user.name);
+              try {
+                await ep_session.jwtEP(user.email, ep_embed_options, embed_scopes, ep_rest_options, rest_scopes, user.uaf);
+
+                if (ep_session.authorized) {
+                  const {
+                    user_id: ep_user_id,
+                    embed_token: ep_embed_token,
+                    rest_token: ep_rest_token,
+                    rest_key: ep_rest_key,
+                    site_id: ep_site_id,
+                    site: ep_site,
+                    created: ep_created,
+                    expires: ep_expires
+                  } = ep_session;
+
+                  const username = user.tableau?.username || user.name;
+
+                  user.tableau_ep = {
+                    username: username,
+                    user_id: ep_user_id,
+                    embed_token: ep_embed_token,
+                    rest_token: ep_rest_token,
+                    rest_key: ep_rest_key,
+                    site_id: ep_site_id,
+                    site: ep_site,
+                    created: ep_created,
+                    expires: ep_expires
+                  };
+                }
+              } catch (error: any) {
+                console.error('[EP Auth] jwtEP failed:', error?.message || error);
+              }
+            } else {
+              console.log('[EP Auth] skipped — EP_JWT_CLIENT_ID:', !!ep_jwt_client_id, 'EP_EMBED_JWT_SECRET:', !!ep_embed_secret);
+            }
+
             // Also authenticate to UBL server if credentials are available
             const ubl_jwt_client_id = process.env.UBL_JWT_CLIENT_ID;
             const ubl_embed_secret = process.env.UBL_EMBED_JWT_SECRET;
@@ -266,7 +324,7 @@ export const authOptions: AuthOptions = {
             }
 
             // Return user if any of the tableau authentications succeeded
-            return (user.tableau || user.tableau_eacanada || user.tableau_ubl) ? user : null;
+            return (user.tableau || user.tableau_eacanada || user.tableau_ubl || user.tableau_ep) ? user : null;
           } else {
             return null;
           }
@@ -308,6 +366,7 @@ export const authOptions: AuthOptions = {
         token.tableau = user.tableau;
         token.tableau_eacanada = user.tableau_eacanada;
         token.tableau_ubl = user.tableau_ubl;
+        token.tableau_ep = user.tableau_ep;
         token.rest_token =  user.rest_token;
         // Add Salesforce username for TabNext JWT Bearer Flow
         token.salesforceUsername = user.salesforceUsername;

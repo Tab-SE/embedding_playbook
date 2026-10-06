@@ -41,7 +41,13 @@ export const FloatingAnalyticsAgent = (props) => {
       setStatus("initializing");
 
       // Dynamically import the SDK
-      const { initializeAnalyticsSdk, AnalyticsAgent } = await import('@salesforce/analytics-embedding-sdk');
+      const { initializeAnalyticsSdk, AnalyticsAgent, logout } = await import('@salesforce/analytics-embedding-sdk');
+
+      // Always clear any existing Salesforce session before initializing a new one.
+      // This ensures a stale sid cookie from a previous user (persisted across page
+      // refreshes) doesn't bleed into the new user's session.
+      try { await logout(); } catch {}
+      sdkInitializedRef.current = false;
 
       const orgUrl = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
 
@@ -60,6 +66,7 @@ export const FloatingAnalyticsAgent = (props) => {
       });
 
       await initializeAnalyticsSdk(config);
+      sdkInitializedRef.current = true;
 
       const agentContainer = document.getElementById('floating-agent-container');
       if (!agentContainer) {
@@ -125,6 +132,43 @@ export const FloatingAnalyticsAgent = (props) => {
   }, [salesforceUsername, initializeAgent]);
 
   const hasAutoAuthAttempted = useRef(false);
+  const lastSalesforceUsername = useRef('');
+  const sdkInitializedRef = useRef(false);
+
+  const sdkLogout = useCallback(async () => {
+    if (!sdkInitializedRef.current) return;
+    try {
+      const { logout } = await import('@salesforce/analytics-embedding-sdk');
+      await logout();
+    } catch {}
+    sdkInitializedRef.current = false;
+  }, []);
+
+  // When the user switches, logout the previous SDK session first so the stale
+  // sid cookie is cleared, THEN set status to idle so the auto-auth effect below
+  // only fires after the old session is fully gone.
+  useEffect(() => {
+    if (salesforceUsername && salesforceUsername !== lastSalesforceUsername.current) {
+      hasAutoAuthAttempted.current = false;
+      lastSalesforceUsername.current = salesforceUsername;
+      setError('');
+      // Keep status as-is until logout resolves — prevents re-auth racing the logout.
+      sdkLogout().then(() => setStatus('idle'));
+    }
+  }, [salesforceUsername, sdkLogout]);
+
+  // Clear the SDK session when the NextAuth session is destroyed (user logs out).
+  const prevSessionStatusRef = useRef(sessionStatus);
+  useEffect(() => {
+    const prev = prevSessionStatusRef.current;
+    prevSessionStatusRef.current = sessionStatus;
+    if (prev === 'authenticated' && sessionStatus !== 'authenticated') {
+      hasAutoAuthAttempted.current = false;
+      setError('');
+      sdkLogout().then(() => setStatus('idle'));
+    }
+  }, [sessionStatus, sdkLogout]);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (!isOpen) return;
@@ -172,7 +216,7 @@ export const FloatingAnalyticsAgent = (props) => {
             <div className="border-b border-stone-200 dark:border-stone-800">
               <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-2">
-                  <Bot className="h-5 w-5 text-blue-500" />
+                  <Bot className="h-5 w-5 text-primary" />
                   <h3 className="font-semibold text-stone-900 dark:text-stone-50">Analytics Agent</h3>
                 </div>
                 <Button
@@ -193,7 +237,7 @@ export const FloatingAnalyticsAgent = (props) => {
                   <button
                     type="button"
                     onClick={handleCopyQuestion}
-                    className="inline-flex shrink-0 items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-blue-600 hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
+                    className="inline-flex shrink-0 items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-primary hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
                     title="Copy question, then paste it into the agent"
                   >
                     {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
@@ -208,6 +252,7 @@ export const FloatingAnalyticsAgent = (props) => {
                 <div className="p-4 text-sm text-red-500">{error}</div>
               )}
               <div
+                key={salesforceUsername}
                 id="floating-agent-container"
                 className="w-full h-full"
                 style={{ height: '100%', width: '100%' }}
@@ -228,7 +273,7 @@ const FloatingAgentButton = forwardRef(({ isOpen, onClick, ...rest }, ref) => {
       onClick={onClick}
       ref={ref}
       title={tooltip}
-      className="w-11 h-11 rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center cursor-pointer"
+      className="w-11 h-11 rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90 bg-primary hover:opacity-90 text-primary-foreground flex items-center justify-center cursor-pointer"
       style={{ width: '44px', height: '44px' }}
       {...rest}
     >

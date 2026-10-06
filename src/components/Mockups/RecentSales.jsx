@@ -25,7 +25,7 @@ export const RecentSales = (props) => {
         <div className="flex items-center gap-4">
           <Avatar className="hidden h-9 w-9 sm:flex">
             <AvatarImage src="/avatars/01.png" alt="Avatar" />
-            <AvatarFallback>OM</AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground">OM</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
             <p className="text-sm font-medium leading-none">
@@ -40,7 +40,7 @@ export const RecentSales = (props) => {
         <div className="flex items-center gap-4">
           <Avatar className="hidden h-9 w-9 sm:flex">
             <AvatarImage src="/avatars/02.png" alt="Avatar" />
-            <AvatarFallback>JL</AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground">JL</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
             <p className="text-sm font-medium leading-none">
@@ -55,7 +55,7 @@ export const RecentSales = (props) => {
         <div className="flex items-center gap-4">
           <Avatar className="hidden h-9 w-9 sm:flex">
             <AvatarImage src="/avatars/03.png" alt="Avatar" />
-            <AvatarFallback>IN</AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground">IN</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
             <p className="text-sm font-medium leading-none">
@@ -70,7 +70,7 @@ export const RecentSales = (props) => {
         <div className="flex items-center gap-4">
           <Avatar className="hidden h-9 w-9 sm:flex">
             <AvatarImage src="/avatars/04.png" alt="Avatar" />
-            <AvatarFallback>WK</AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground">WK</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
             <p className="text-sm font-medium leading-none">
@@ -85,7 +85,7 @@ export const RecentSales = (props) => {
         <div className="flex items-center gap-4">
           <Avatar className="hidden h-9 w-9 sm:flex">
             <AvatarImage src="/avatars/05.png" alt="Avatar" />
-            <AvatarFallback>SD</AvatarFallback>
+            <AvatarFallback className="bg-primary text-primary-foreground">SD</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
             <p className="text-sm font-medium leading-none">

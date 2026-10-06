@@ -242,4 +242,47 @@ export const Users = [
       },
     ]
   }
+  ,{
+    demo: 'trinity',
+    roles: {
+      0: { title: 'Field Sales Representative', description: 'Territory-level analytics & call reporting'},
+      1: { title: 'Regional Business Manager', description: 'Regional performance & prescriber analytics'},
+      2: { title: 'VP Commercial Strategy', description: 'Full portfolio analytics & market access'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Sarah Chen",
+        email: "schen@trinitypartners.com",
+        picture: "/img/users/sofia_lopez.png",
+        role: 0,
+        vector_store: 'superstore_schen',
+        uaf: {"Region": ["West"]},
+        groups: ["Group2"],
+        salesforceUsername: "slopez@superstore.com"
+      },
+      {
+        id: 'b',
+        name: "Marcus Johnson",
+        email: "mjohnson@trinitypartners.com",
+        picture: "/img/users/justin_chen.png",
+        role: 1,
+        vector_store: 'superstore_mjohnson',
+        uaf: {"Region": ["Central","East"]},
+        groups: ["Group1"],
+        salesforceUsername: "jchen+123@salesforce.com"
+      },
+      {
+        id: 'c',
+        name: "Dr. Emily Rodriguez",
+        email: "erodriguez@trinitypartners.com",
+        picture: "/img/users/rachel_morris.png",
+        role: 2,
+        vector_store: 'superstore_erodriguez',
+        uaf: {"Region": ["South"]},
+        groups: ["Group1"],
+        salesforceUsername: "jmorris@superstore.com"
+      },
+    ]
+  }
 ]

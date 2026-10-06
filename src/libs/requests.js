@@ -305,6 +305,84 @@ export const getUserEACanada = async (userId) => {
   }
 }
 
+// EP (embeddingplaybook) server configuration
+const tableau_domain_ep = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN_EP || 'https://prod-useast-b.online.tableau.com';
+const contentUrl_ep = process.env.NEXT_PUBLIC_ANALYTICS_SITE_EP || 'embeddingplaybook';
+
+// authenticate to EP (embeddingplaybook) Tableau with JSON Web Tokens
+export const tabAuthJWTEP = async (jwt) => {
+  const endpoint = `${tableau_domain_ep}/api/${api}/auth/signin`;
+
+  const body = {
+    credentials: {
+      jwt: jwt,
+      site: {
+        contentUrl: contentUrl_ep,
+      }
+    }
+  };
+
+  const config = {
+    tableau_domain: tableau_domain_ep,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const response = await httpPost(endpoint, body, config);
+
+    if (!response || !response.credentials) {
+      const detail = response instanceof Error ? response.message : JSON.stringify(response);
+      console.error('[EP tabAuthJWTEP] signin failed:', detail, '| endpoint:', endpoint, '| contentUrl:', contentUrl_ep);
+      throw new Error(`[EP] Authentication failed: ${detail}`);
+    }
+
+    const site_id = response.credentials.site.id;
+    const site = response.credentials.site.contentUrl;
+    const user_id = response.credentials.user.id;
+    const rest_key = response.credentials.token;
+    return { site_id, site, user_id, rest_key };
+  } catch (error) {
+    throw error;
+  }
+}
+
+// obtains a public token for the frontend from EP (embeddingplaybook) server
+export const getUserEP = async (userId) => {
+  if (typeof window !== 'undefined') {
+    const endpoint = '/api/user/ep';
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ userId }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ep session: ${response.statusText}`);
+    }
+
+    return response.json();
+  } else {
+    const endpoint = '/api/user/ep';
+    const body = { userId };
+    const config = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+    const res = await httpPost(endpoint, body, config);
+    const timeout = isServerlessTimeout(res);
+    return timeout ? null : res;
+  }
+}
+
 // obtains a public token for the frontend from UBL server
 // Uses fetch for client-side calls to ensure cookies are sent
 export const getUserUBL = async (userId) => {

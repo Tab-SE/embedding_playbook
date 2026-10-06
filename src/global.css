@@ -233,6 +233,46 @@
   [data-theme="servicedesk"] .dark {
     color-scheme: dark;
   }
+
+  /* Define variables for the 'trinity' theme (Trinity Life Sciences - Deep Cove & Persimmon) */
+  [data-theme="trinity"] {
+    --background: 0 0% 100%;               /* White */
+    --foreground: 238 86% 14%;             /* Deep Cove */
+    --demo-background: 238 30% 97%;        /* Very light navy-tinted bg */
+    --nav-background: 238 86% 14%;         /* Deep Cove nav */
+    --logo-background: 238 86% 14%;        /* Deep Cove behind white logo */
+    --icon-background: 238 86% 14%;        /* Deep Cove icon bg */
+    --login-card-background: 0 0% 100%;    /* White login card */
+    --nav-icons: 0 0% 100%;               /* White nav icons */
+    --card: 0 0% 100%;                     /* White cards */
+    --card-foreground: 238 86% 14%;        /* Deep Cove card text */
+    --popover: 0 0% 100%;
+    --popover-foreground: 238 86% 14%;
+    --primary: 6 100% 66%;                 /* Persimmon */
+    --primary-foreground: 0 0% 100%;       /* White */
+    --secondary: 6 100% 95%;              /* Very light Persimmon */
+    --secondary-foreground: 238 86% 14%;  /* Deep Cove on light persimmon */
+    --muted: 238 20% 95%;
+    --muted-foreground: 238 10% 50%;
+    --accent: 6 100% 66%;                 /* Persimmon */
+    --accent-foreground: 0 0% 100%;       /* White on Persimmon */
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 238 20% 88%;
+    --input: 238 20% 92%;
+    --ring: 6 100% 66%;                   /* Persimmon ring */
+
+    --metrics-positive: 6 100% 66%;       /* Persimmon */
+    --metrics-neutral: 39 7% 54%;
+    --metrics-negative: 238 86% 14%;      /* Deep Cove */
+  }
+
+  /* Trinity: nav sits on Deep Cove — override to show Persimmon on hover. */
+  [data-theme="trinity"] aside nav a:hover,
+  [data-theme="trinity"] aside nav a:hover svg {
+    color: hsl(var(--accent)) !important;
+  }
+
 } /* End of @layer base containing themes */
 
 @layer base {

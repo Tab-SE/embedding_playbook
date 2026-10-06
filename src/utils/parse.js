@@ -106,45 +106,50 @@ export const matchSubscription = (subscriptionsObj, specification_id) => {
 
 // return an minimal representation of Detail insight bundles
 export const parseDetail = (bundle) => {
-  const details = [];
+  const insightGroups = JSONPath({ path: '$.bundle_response.result.insight_groups[*]', json: bundle });
 
-  // Retrieve properties using JSONPath
-  const ids = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.id', json: bundle }); // indexing array
-  const types = JSONPath({ path: '$.bundle_response.result.insight_groups[*].type', json: bundle });
-  const markups = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.markup', json: bundle });
-  const vizzes = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.viz', json: bundle });
-  const facts = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.facts', json: bundle });
-  const characterizations = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.characterization', json: bundle });
-  const questions = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.question', json: bundle });
-  const scores = JSONPath({ path: '$.bundle_response.result.insight_groups[*].insights[*].result.score', json: bundle });
-
-
-  if (Array.isArray(ids)) {
-    // Iterate through indexing array and create leaves in the return object
-    ids.forEach((id, index) => {
-      // Using splice to insert the element at the specified index
-      details.splice(index, 0, {
-        id: id,
-        type: types[index], // Add the corresponding properties by index
-        markup: markups[index],
-        viz: vizzes[index],
-        fact: facts[index],
-        characterization: characterizations[index],
-        question: questions[index],
-        score: scores[index],
-      });
-    });
-
-    // sorts the array based on the "score" property
-    const sortedDetails = details.sort((a, b) => b.score - a.score);
-
-    // remove elements with type === 'ban'
-    const filteredDetails = sortedDetails.filter(item => item.type !== 'ban');
-
-    return filteredDetails;
-  } else {
+  if (!Array.isArray(insightGroups)) {
     throw new Error(`Error parsing detail bundle, could not form an array: ${bundle}`);
   }
+
+  const details = [];
+
+  // Walk groups then insights within each group so group.type is correctly
+  // associated with every insight in that group (fixes a prior index-mismatch
+  // bug where types was extracted at group level but all other fields at
+  // insight level, causing wrong type assignments for multi-insight groups).
+  insightGroups.forEach(group => {
+    const type = group.type;
+    if (type === 'ban') return; // skip BAN — shown on the metric card
+    if (!Array.isArray(group.insights)) return;
+
+    group.insights.forEach(insight => {
+      const r = insight?.result;
+      if (!r) return;
+      details.push({
+        id: r.id,
+        type,
+        markup: r.markup,
+        viz: r.viz,
+        fact: r.facts,
+        characterization: r.characterization,
+        question: r.question,
+        score: r.score,
+      });
+    });
+  });
+
+  // Show breakdown first (all dimension members, current-period values) so it
+  // matches the Tableau Cloud metric detail view, then sort the rest by score.
+  const TYPE_ORDER = { breakdown: 0, anchor: 1, followup: 2 };
+  details.sort((a, b) => {
+    const ta = TYPE_ORDER[a.type] ?? 3;
+    const tb = TYPE_ORDER[b.type] ?? 3;
+    if (ta !== tb) return ta - tb;
+    return (b.score ?? 0) - (a.score ?? 0);
+  });
+
+  return details;
 }
 
 // return an minimal representation for insights
