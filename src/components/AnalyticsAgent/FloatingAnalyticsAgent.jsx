@@ -40,33 +40,19 @@ export const FloatingAnalyticsAgent = (props) => {
     try {
       setStatus("initializing");
 
-      // Dynamically import the SDK
-      const { initializeAnalyticsSdk, AnalyticsAgent, logout } = await import('@salesforce/analytics-embedding-sdk');
+      const { initializeAnalyticsSdk, AnalyticsAgent } = await import('@salesforce/analytics-embedding-sdk');
 
-      // Always clear any existing Salesforce session before initializing a new one.
-      // This ensures a stale sid cookie from a previous user (persisted across page
-      // refreshes) doesn't bleed into the new user's session.
-      try { await logout(); } catch {}
-      sdkInitializedRef.current = false;
-
-      const orgUrl = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
-
-      if (!orgUrl) {
-        throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL environment variable');
+      if (!sdkInitializedRef.current) {
+        const orgUrl = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
+        if (!orgUrl) {
+          throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL environment variable');
+        }
+        console.log('[FloatingAnalyticsAgent] Initializing SDK with config:', { orgUrl, agentId });
+        await initializeAnalyticsSdk({ authCredential, orgUrl });
+        sdkInitializedRef.current = true;
+      } else {
+        console.log('[FloatingAnalyticsAgent] SDK already initialized, skipping reinit');
       }
-
-      const config = {
-        authCredential: authCredential,
-        orgUrl: orgUrl
-      };
-
-      console.log('[FloatingAnalyticsAgent] Initializing SDK with config:', {
-        orgUrl: config.orgUrl,
-        agentId: agentId
-      });
-
-      await initializeAnalyticsSdk(config);
-      sdkInitializedRef.current = true;
 
       const agentContainer = document.getElementById('floating-agent-container');
       if (!agentContainer) {
@@ -210,57 +196,59 @@ export const FloatingAnalyticsAgent = (props) => {
         />
       </div>
 
-      {isOpen && (
-        <div ref={panelRef} className="fixed bottom-20 right-4 z-[100] w-[min(92vw,520px)] xl:w-[560px] 2xl:w-[600px] h-[min(85vh,720px)] bg-white dark:bg-stone-950 rounded-xl border border-stone-200 dark:border-stone-800 shadow-xl overflow-hidden flex flex-col" style={{ position: 'fixed', bottom: '5rem', right: '1rem', zIndex: 100 }}>
-          <div className="flex flex-col h-full">
-            <div className="border-b border-stone-200 dark:border-stone-800">
-              <div className="flex items-center justify-between p-4">
-                <div className="flex items-center gap-2">
-                  <Bot className="h-5 w-5 text-primary" />
-                  <h3 className="font-semibold text-stone-900 dark:text-stone-50">Analytics Agent</h3>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsOpen(false)}
-                  className="h-8 w-8 p-0"
-                >
-                  ✕
-                </Button>
+      <div
+        ref={panelRef}
+        className="fixed bottom-20 right-4 z-[100] w-[min(92vw,520px)] xl:w-[560px] 2xl:w-[600px] h-[min(85vh,720px)] bg-white dark:bg-stone-950 rounded-xl border border-stone-200 dark:border-stone-800 shadow-xl overflow-hidden flex flex-col"
+        style={{ position: 'fixed', bottom: '5rem', right: '1rem', zIndex: 100, display: isOpen ? 'flex' : 'none' }}
+      >
+        <div className="flex flex-col h-full">
+          <div className="border-b border-stone-200 dark:border-stone-800">
+            <div className="flex items-center justify-between p-4">
+              <div className="flex items-center gap-2">
+                <Bot className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold text-stone-900 dark:text-stone-50">Analytics Agent</h3>
               </div>
-              {suggestedQuestion && (
-                <div className="flex items-center justify-between gap-2 px-4 pb-2 -mt-1">
-                  <p className="text-xs text-stone-600 dark:text-stone-300 min-w-0">
-                    <span className="font-medium">Try asking:</span>{" "}
-                    <span className="italic">“{suggestedQuestion}”</span>
-                  </p>
-                  <button
-                    type="button"
-                    onClick={handleCopyQuestion}
-                    className="inline-flex shrink-0 items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-primary hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
-                    title="Copy question, then paste it into the agent"
-                  >
-                    {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                    {copied ? "Copied" : "Copy"}
-                  </button>
-                </div>
-              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsOpen(false)}
+                className="h-8 w-8 p-0"
+              >
+                ✕
+              </Button>
             </div>
+            {suggestedQuestion && (
+              <div className="flex items-center justify-between gap-2 px-4 pb-2 -mt-1">
+                <p className="text-xs text-stone-600 dark:text-stone-300 min-w-0">
+                  <span className="font-medium">Try asking:</span>{" "}
+                  <span className="italic">"{suggestedQuestion}"</span>
+                </p>
+                <button
+                  type="button"
+                  onClick={handleCopyQuestion}
+                  className="inline-flex shrink-0 items-center gap-1 rounded-md border border-stone-200 px-2 py-1 text-xs font-medium text-primary hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
+                  title="Copy question, then paste it into the agent"
+                >
+                  {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
+            )}
+          </div>
 
-            <div className="flex-1 min-h-0 overflow-auto">
-              {error && (
-                <div className="p-4 text-sm text-red-500">{error}</div>
-              )}
-              <div
-                key={salesforceUsername}
-                id="floating-agent-container"
-                className="w-full h-full"
-                style={{ height: '100%', width: '100%' }}
-              />
-            </div>
+          <div className="flex-1 min-h-0 overflow-auto">
+            {error && (
+              <div className="p-4 text-sm text-red-500">{error}</div>
+            )}
+            <div
+              key={salesforceUsername}
+              id="floating-agent-container"
+              className="w-full h-full"
+              style={{ height: '100%', width: '100%' }}
+            />
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };
