@@ -5,6 +5,13 @@ import { Bot, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui";
 import { useFloatingPanel } from "@/components/Agent/FloatingPanelContext";
 
+// Module-level: survives component remounts in the same page session.
+// Tracks whether initializeAnalyticsSdk() has ever been called so we know
+// whether subsequent user-switches should use initializeAnalyticsSdk (first
+// time) or logout + retryOrAddOrgs (already initialized — calling initSdk
+// again may be a no-op in v2 of the SDK).
+let _sdkModuleInitialized = false;
+
 export const FloatingAnalyticsAgent = (props) => {
   const { agentId: agentIdProp, suggestedQuestion = "What are the total sales by region?" } = props;
   // Env is source of truth so NEXT_PUBLIC_ANALYTICS_AGENT_ID always works when set
@@ -40,19 +47,29 @@ export const FloatingAnalyticsAgent = (props) => {
     try {
       setStatus("initializing");
 
-      const { initializeAnalyticsSdk, AnalyticsAgent, logout } = await import('@salesforce/analytics-embedding-sdk');
-
-      // Always clear any existing Salesforce session before initializing a new one.
-      // The SDK module is a global singleton that outlives React component mounts —
-      // skipping logout leaves the stale sid cookie from the previous user in place.
-      try { await logout(); } catch {}
+      const { initializeAnalyticsSdk, AnalyticsAgent, logout, retryOrAddOrgs } = await import('@salesforce/analytics-embedding-sdk');
 
       const orgUrl = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
       if (!orgUrl) {
         throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL environment variable');
       }
-      console.log('[FloatingAnalyticsAgent] Initializing SDK with config:', { orgUrl, agentId });
-      await initializeAnalyticsSdk({ authCredential, orgUrl });
+
+      if (!_sdkModuleInitialized) {
+        // First initialization in this page session.
+        console.log('[FloatingAnalyticsAgent] First init — calling initializeAnalyticsSdk', { orgUrl, agentId });
+        const initResult = await initializeAnalyticsSdk({ authCredential, orgUrl });
+        console.log('[FloatingAnalyticsAgent] initializeAnalyticsSdk result:', initResult?.status, initResult?.message);
+        _sdkModuleInitialized = true;
+      } else {
+        // SDK already initialized: logout the stale session, then re-authenticate
+        // using retryOrAddOrgs (the SDK's API for re-auth after logout).
+        // Calling initializeAnalyticsSdk() a second time may be a no-op in v2.
+        console.log('[FloatingAnalyticsAgent] Re-auth — calling logout then retryOrAddOrgs', { orgUrl });
+        const logoutResult = await logout().catch((e) => ({ error: String(e) }));
+        console.log('[FloatingAnalyticsAgent] logout result:', logoutResult?.status, logoutResult?.message);
+        const retryResult = await retryOrAddOrgs([{ orgUrl, authCredential }]);
+        console.log('[FloatingAnalyticsAgent] retryOrAddOrgs result:', retryResult?.status, retryResult?.message);
+      }
 
       const agentContainer = document.getElementById('floating-agent-container');
       if (!agentContainer) {
