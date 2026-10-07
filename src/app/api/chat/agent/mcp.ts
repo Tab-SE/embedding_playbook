@@ -17,7 +17,6 @@ const DEMO_SITE: Record<string, SiteKey> = {
   cumulus: "main",
   servicedesk: "main",
   "ubl-superstore": "ubl",
-  pinnacle: "main",
 };
 
 // Per-demo datasource pinning — mirrors the env-var pattern from the old
@@ -46,7 +45,6 @@ interface DemoDatasource {
 // Demos that share the Superstore datasource but have no env var of their own
 // get pinned here so the agent doesn't roam to an unrelated datasource.
 const DATASOURCE_OVERRIDES: Record<string, DemoDatasource> = {
-  pinnacle: { name: process.env["DATASOURCE_NAME_SUPERSTORE"] ?? "Superstore" },
   "driven-brands": { name: process.env["DATASOURCE_NAME_SUPERSTORE"] ?? "Superstore" },
 };
 

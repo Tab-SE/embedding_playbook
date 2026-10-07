@@ -39,7 +39,7 @@ export const Auth = (props) => {
             <div className="absolute inset-0 bg-black/40" />
           </>
         ) : (
-          <div className="absolute inset-0 bg-navBackground pinnacle-auth-bg" />
+          <div className="absolute inset-0 bg-navBackground" />
         )}
       </div>
 
