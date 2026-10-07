@@ -40,19 +40,19 @@ export const FloatingAnalyticsAgent = (props) => {
     try {
       setStatus("initializing");
 
-      const { initializeAnalyticsSdk, AnalyticsAgent } = await import('@salesforce/analytics-embedding-sdk');
+      const { initializeAnalyticsSdk, AnalyticsAgent, logout } = await import('@salesforce/analytics-embedding-sdk');
 
-      if (!sdkInitializedRef.current) {
-        const orgUrl = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
-        if (!orgUrl) {
-          throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL environment variable');
-        }
-        console.log('[FloatingAnalyticsAgent] Initializing SDK with config:', { orgUrl, agentId });
-        await initializeAnalyticsSdk({ authCredential, orgUrl });
-        sdkInitializedRef.current = true;
-      } else {
-        console.log('[FloatingAnalyticsAgent] SDK already initialized, skipping reinit');
+      // Always clear any existing Salesforce session before initializing a new one.
+      // The SDK module is a global singleton that outlives React component mounts —
+      // skipping logout leaves the stale sid cookie from the previous user in place.
+      try { await logout(); } catch {}
+
+      const orgUrl = process.env.NEXT_PUBLIC_SALESFORCE_ORG_URL;
+      if (!orgUrl) {
+        throw new Error('Missing NEXT_PUBLIC_SALESFORCE_ORG_URL environment variable');
       }
+      console.log('[FloatingAnalyticsAgent] Initializing SDK with config:', { orgUrl, agentId });
+      await initializeAnalyticsSdk({ authCredential, orgUrl });
 
       const agentContainer = document.getElementById('floating-agent-container');
       if (!agentContainer) {
@@ -119,31 +119,20 @@ export const FloatingAnalyticsAgent = (props) => {
 
   const hasAutoAuthAttempted = useRef(false);
   const lastSalesforceUsername = useRef('');
-  const sdkInitializedRef = useRef(false);
 
-  const sdkLogout = useCallback(async () => {
-    if (!sdkInitializedRef.current) return;
-    try {
-      const { logout } = await import('@salesforce/analytics-embedding-sdk');
-      await logout();
-    } catch {}
-    sdkInitializedRef.current = false;
-  }, []);
-
-  // When the user switches, logout the previous SDK session first so the stale
-  // sid cookie is cleared, THEN set status to idle so the auto-auth effect below
-  // only fires after the old session is fully gone.
+  // When the user or session changes, reset so the auto-auth effect re-fires.
+  // logout() + initializeAnalyticsSdk() always run inside initializeAgent, so
+  // no pre-logout is needed here.
   useEffect(() => {
     if (salesforceUsername && salesforceUsername !== lastSalesforceUsername.current) {
       hasAutoAuthAttempted.current = false;
       lastSalesforceUsername.current = salesforceUsername;
       setError('');
-      // Keep status as-is until logout resolves — prevents re-auth racing the logout.
-      sdkLogout().then(() => setStatus('idle'));
+      setStatus('idle');
     }
-  }, [salesforceUsername, sdkLogout]);
+  }, [salesforceUsername]);
 
-  // Clear the SDK session when the NextAuth session is destroyed (user logs out).
+  // Reset when NextAuth session is destroyed (user logs out).
   const prevSessionStatusRef = useRef(sessionStatus);
   useEffect(() => {
     const prev = prevSessionStatusRef.current;
@@ -151,9 +140,9 @@ export const FloatingAnalyticsAgent = (props) => {
     if (prev === 'authenticated' && sessionStatus !== 'authenticated') {
       hasAutoAuthAttempted.current = false;
       setError('');
-      sdkLogout().then(() => setStatus('idle'));
+      setStatus('idle');
     }
-  }, [sessionStatus, sdkLogout]);
+  }, [sessionStatus]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
