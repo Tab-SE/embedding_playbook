@@ -2,6 +2,7 @@ import { MultiServerMCPClient } from "@langchain/mcp-adapters";
 import type { JWT } from "next-auth/jwt";
 
 import { jwtSign } from "@/libs/crypto";
+import { getAccessToken } from "./tableau-oauth";
 
 // Maps each demo to the Tableau site whose MCP server it routes to.
 // All demos except ubl-superstore live on the embeddingplaybook (main) site.
@@ -41,7 +42,14 @@ interface DemoDatasource {
   luid?: string;
 }
 
+// Demos that share the Superstore datasource but have no env var of their own
+// get pinned here so the agent doesn't roam to an unrelated datasource.
+const DATASOURCE_OVERRIDES: Record<string, DemoDatasource> = {
+  "driven-brands": { name: process.env["DATASOURCE_NAME_SUPERSTORE"] ?? "Superstore" },
+};
+
 const demoDatasource = (demo: string): DemoDatasource => {
+  if (DATASOURCE_OVERRIDES[demo]) return DATASOURCE_OVERRIDES[demo];
   // Convert the demo key to env var suffix (e.g. "ubl-superstore" → "UBL_SUPERSTORE").
   const suffix = demo.toUpperCase().replace(/-/g, "_");
   return {
@@ -63,7 +71,7 @@ const demoDatasource = (demo: string): DemoDatasource => {
 //   MCP server, which holds the same Connected App secret, redeems that JWT
 //   via Tableau's `/auth/signin` per request — bypassing the broken
 //   `/sessions/current` validation entirely. Works for any user role.
-type AuthMode = "passthrough" | "direct-trust";
+type AuthMode = "passthrough" | "direct-trust" | "oauth";
 
 interface SiteWiring {
   url: string | undefined;
@@ -85,7 +93,7 @@ const siteWiring = (site: SiteKey): SiteWiring => {
     case "main":
       return {
         url: process.env.TABLEAU_MCP_URL,
-        authMode: "passthrough",
+        authMode: (process.env.TABLEAU_MCP_URL ?? '').includes('mcp.tableau.com') ? "oauth" : "passthrough",
         tokenKey: "tableau",
       };
     case "eacanada":
@@ -161,7 +169,11 @@ export const getTableauMcpTools = async (demo: string, token: JWT) => {
   const headers: Record<string, string> = {};
   let logTokenSummary: string;
 
-  if (authMode === "passthrough") {
+  if (authMode === "oauth") {
+    const accessToken = await getAccessToken();
+    headers["Authorization"] = `Bearer ${accessToken}`;
+    logTokenSummary = `mode=oauth token=${accessToken.slice(0, 8)}…`;
+  } else if (authMode === "passthrough") {
     const restKey = siteSession?.rest_key;
     if (!restKey) {
       throw new McpAuthError(

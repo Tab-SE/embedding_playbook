@@ -3,7 +3,8 @@ import {
   ShoppingCart,
   HandCoins,
   HeartPulse,
-  Headphones
+  Headphones,
+  Users2,
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file

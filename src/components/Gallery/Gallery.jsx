@@ -65,13 +65,17 @@ export const Gallery = (props) => {
               <HoverCardTrigger>
                 <Card className="overflow-hidden shadow-2xl h-60 transform transition-transform duration-300 hover:scale-110 cursor-pointer" onClick={() => handleCardClick(item)}>
                   <CardContent className="p-0 relative h-full w-full">
-                    <Image
-                      src={item.src}
-                      alt={item.alt}
-                      fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover"
-                    />
+                    {item.customThumbnail ? (
+                      <div className="absolute inset-0 w-full h-full">{item.customThumbnail}</div>
+                    ) : (
+                      <Image
+                        src={item.src}
+                        alt={item.alt}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        className="object-cover"
+                      />
+                    )}
                     {item.badge ? (
                       <span className="absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-md bg-[hsl(199,99%,39%)] text-white shadow-lg">
                         {item.badge}

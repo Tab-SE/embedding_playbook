@@ -43,8 +43,8 @@ export const NavigationSm = (props) => {
             {header_logo ? (
               <img src={header_logo} alt={app_name} className="h-6 object-contain" />
             ) : (
-              <Avatar className="h-6 w-6 transition-all group-hover:scale-110 bg-logoBackground">
-                <AvatarImage src={app_logo} alt="demo brand logo" />
+              <Avatar className="h-6 w-6 transition-all group-hover:scale-110 bg-transparent">
+                <AvatarImage src={app_logo} alt="demo brand logo" className="rounded-full object-cover" />
                 <AvatarFallback>APP</AvatarFallback>
               </Avatar>
             )}

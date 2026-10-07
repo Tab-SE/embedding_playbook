@@ -56,7 +56,7 @@ export function UserMenu(props) {
         <DropdownMenu>
           <Trigger src={user.picture} />
           <DropdownMenuContent className="w-56 dark:bg-stone-700 shadow-xl" align="end" forceMount>
-            <Label app_name={app_name} email={user.email} />
+            <Label app_name={app_name} email={user.name} />
             <Group base_path={base_path} />
             <Logout status={sessionStatus} />
           </DropdownMenuContent>
