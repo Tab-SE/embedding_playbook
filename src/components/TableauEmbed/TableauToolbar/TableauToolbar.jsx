@@ -62,12 +62,14 @@ import {
   redo,
   shareViz
  } from "./actions";
+import { DataDetails } from "./DataDetails";
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   const { src, jwt } = props;
   const [viz, setViz] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [dataDetailsOpen, setDataDetailsOpen] = useState(false);
   // Captured at open time so the dialog always shows the current viz, not a stale prop.
   const [editSrc, setEditSrc] = useState(null);
   const [editJwt, setEditJwt] = useState(null);
@@ -95,6 +97,7 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
   };
 
   return (
+    <>
     <Menubar className='mt-1 mb-3 inline-flex' >
       <MenubarMenu >
         <MenubarTrigger className='cursor-pointer px-1'>
@@ -192,7 +195,15 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
 
         </MenubarContent>
       </MenubarMenu>
+
+      <MenubarMenu>
+        <MenubarTrigger className='cursor-pointer px-1' onClick={() => setDataDetailsOpen(true)}>
+          <IconDatabase stroke={1} size={18} className='mr-1'/> Data Details
+        </MenubarTrigger>
+      </MenubarMenu>
     </Menubar>
+    <DataDetails viz={viz} src={src} open={dataDetailsOpen} onOpenChange={setDataDetailsOpen} />
+    </>
   )
 })
 

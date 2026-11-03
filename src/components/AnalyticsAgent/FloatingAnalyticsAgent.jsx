@@ -12,6 +12,40 @@ import { useFloatingPanel } from "@/components/Agent/FloatingPanelContext";
 // again may be a no-op in v2 of the SDK).
 let _sdkModuleInitialized = false;
 
+// Navigate hidden iframes to Salesforce's session logout URL so the server
+// responds with Set-Cookie headers that expire the sid cookie.  This is the
+// programmatic equivalent of DevTools > Application > Clear cookies.
+// The SDK's logout() only revokes the OAuth token; it does NOT send the
+// cookie-clearing Set-Cookie response, so the sid persists until a server
+// response explicitly expires it.
+function _clearSalesforceSessionCookies(orgUrl) {
+  if (!orgUrl || typeof document === 'undefined') return Promise.resolve();
+
+  // orgUrl is the Lightning URL (https://org.lightning.force.com).
+  // The sid cookie lives on the my.salesforce.com domain, so derive it.
+  const classicUrl = orgUrl.replace('.lightning.force.com', '.my.salesforce.com');
+  const urls = [...new Set([
+    `${orgUrl}/secur/logout.jsp`,
+    `${classicUrl}/secur/logout.jsp`,
+  ])];
+
+  return Promise.all(urls.map(url => new Promise(resolve => {
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('aria-hidden', 'true');
+    iframe.style.cssText = 'position:fixed;width:0;height:0;top:-9999px;left:-9999px;border:0;';
+    document.body.appendChild(iframe);
+    const cleanup = () => {
+      try { document.body.removeChild(iframe); } catch {}
+      resolve();
+    };
+    iframe.addEventListener('load', cleanup, { once: true });
+    iframe.addEventListener('error', cleanup, { once: true });
+    // Fallback: don't block forever if Salesforce doesn't respond.
+    setTimeout(cleanup, 4000);
+    iframe.src = url;
+  })));
+}
+
 export const FloatingAnalyticsAgent = (props) => {
   const { agentId: agentIdProp, suggestedQuestion = "What are the total sales by region?" } = props;
   // Env is source of truth so NEXT_PUBLIC_ANALYTICS_AGENT_ID always works when set
@@ -55,16 +89,22 @@ export const FloatingAnalyticsAgent = (props) => {
       }
 
       if (!_sdkModuleInitialized) {
-        // First initialization in this page session.
-        console.log('[FloatingAnalyticsAgent] First init — calling initializeAnalyticsSdk', { orgUrl, agentId });
+        // First initialization in this page session — clear any leftover sid
+        // cookie from a previous page visit before establishing the new session.
+        console.log('[FloatingAnalyticsAgent] First init — clearing stale cookies then initializeAnalyticsSdk', { orgUrl, agentId });
+        await _clearSalesforceSessionCookies(orgUrl);
         const initResult = await initializeAnalyticsSdk({ authCredential, orgUrl });
         console.log('[FloatingAnalyticsAgent] initializeAnalyticsSdk result:', initResult?.status, initResult?.message);
         _sdkModuleInitialized = true;
       } else {
-        // SDK already initialized: logout the stale session, then re-authenticate
-        // using retryOrAddOrgs (the SDK's API for re-auth after logout).
-        // Calling initializeAnalyticsSdk() a second time may be a no-op in v2.
-        console.log('[FloatingAnalyticsAgent] Re-auth — calling logout then retryOrAddOrgs', { orgUrl });
+        // SDK already initialized in this page session.
+        // 1. Force-clear the stale sid cookie via iframe logout (SDK logout() alone
+        //    only revokes the token server-side; it doesn't send the cookie-clearing
+        //    Set-Cookie response that the browser needs to actually remove the cookie).
+        // 2. SDK logout() for good measure.
+        // 3. retryOrAddOrgs() to re-authenticate the same org with new credentials.
+        console.log('[FloatingAnalyticsAgent] Re-auth — clearing cookies, logout, retryOrAddOrgs', { orgUrl });
+        await _clearSalesforceSessionCookies(orgUrl);
         const logoutResult = await logout().catch((e) => ({ error: String(e) }));
         console.log('[FloatingAnalyticsAgent] logout result:', logoutResult?.status, logoutResult?.message);
         const retryResult = await retryOrAddOrgs([{ orgUrl, authCredential }]);
