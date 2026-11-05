@@ -233,6 +233,135 @@
   [data-theme="servicedesk"] .dark {
     color-scheme: dark;
   }
+
+  /* Define variables for the 'driven-brands' theme */
+  /* Brand colors: Crimson #E21836 (351°,81%,49%), Lightning Yellow #FFC324 (44°,100%,57%), Black #010101 */
+  [data-theme="driven-brands"] {
+    --background: 0 0% 97%; /* Near white */
+    --foreground: 0 0% 8%; /* Near black */
+    --demo-background: 0 0% 94%;
+    --nav-background: 0 0% 5%; /* Black nav */
+    --logo-background: 0 0% 5%;
+    --icon-background: 0 0% 5%;
+    --login-card-background: 0 0% 100%;
+    --nav-icons: 0 0% 100%; /* White icons on black */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+    --primary: 351 81% 49%; /* Crimson #E21836 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 44 100% 92%; /* Lightning Yellow tint */
+    --secondary-foreground: 0 0% 8%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 44 100% 57%; /* Lightning Yellow #FFC324 */
+    --accent-foreground: 0 0% 8%;
+    --destructive: 351 81% 49%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --input: 0 0% 92%;
+    --ring: 351 81% 49%;
+
+    --metrics-positive: 351 81% 49%; /* Crimson */
+    --metrics-neutral: 44 100% 57%;  /* Lightning Yellow */
+    --metrics-negative: 0 0% 40%;
+  }
+  /* Take 5 Oil Change — Red #CC1B22, Yellow #FFC324, Black nav */
+  [data-theme="take5"] {
+    --background: 0 0% 97%;
+    --foreground: 0 0% 8%;
+    --demo-background: 0 0% 94%;
+    --nav-background: 0 0% 5%;
+    --logo-background: 0 0% 5%;
+    --icon-background: 0 0% 5%;
+    --login-card-background: 0 0% 100%;
+    --nav-icons: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+    --primary: 358 76% 44%; /* Take 5 Red #CC1B22 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 44 100% 92%;
+    --secondary-foreground: 0 0% 8%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 44 100% 57%; /* Take 5 Yellow #FFC324 */
+    --accent-foreground: 0 0% 8%;
+    --destructive: 358 76% 44%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --input: 0 0% 92%;
+    --ring: 358 76% 44%;
+    --metrics-positive: 358 76% 44%;
+    --metrics-neutral: 44 100% 57%;
+    --metrics-negative: 0 0% 40%;
+  }
+
+  /* Meineke — Yellow #FFC324, Black nav */
+  [data-theme="meineke"] {
+    --background: 0 0% 97%;
+    --foreground: 0 0% 8%;
+    --demo-background: 0 0% 94%;
+    --nav-background: 0 0% 5%;
+    --logo-background: 0 0% 5%;
+    --icon-background: 0 0% 5%;
+    --login-card-background: 0 0% 100%;
+    --nav-icons: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+    --primary: 44 100% 50%; /* Meineke Yellow #FFC324 */
+    --primary-foreground: 0 0% 5%;
+    --secondary: 44 100% 92%;
+    --secondary-foreground: 0 0% 8%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 44 100% 57%;
+    --accent-foreground: 0 0% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --input: 0 0% 92%;
+    --ring: 44 100% 50%;
+    --metrics-positive: 44 100% 50%;
+    --metrics-neutral: 0 0% 55%;
+    --metrics-negative: 0 84% 60%;
+  }
+
+  /* Maaco — Blue #003594, Red accent */
+  [data-theme="maaco"] {
+    --background: 0 0% 97%;
+    --foreground: 0 0% 8%;
+    --demo-background: 0 0% 94%;
+    --nav-background: 218 100% 29%; /* Maaco Blue #003594 */
+    --logo-background: 218 100% 29%;
+    --icon-background: 218 100% 29%;
+    --login-card-background: 0 0% 100%;
+    --nav-icons: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+    --primary: 218 100% 29%; /* Maaco Blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 218 60% 92%;
+    --secondary-foreground: 218 100% 20%;
+    --muted: 218 20% 95%;
+    --muted-foreground: 218 10% 45%;
+    --accent: 358 76% 44%; /* Red accent */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 358 76% 44%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 218 20% 88%;
+    --input: 218 20% 92%;
+    --ring: 218 100% 29%;
+    --metrics-positive: 218 100% 29%;
+    --metrics-neutral: 218 20% 55%;
+    --metrics-negative: 358 76% 44%;
+  }
 } /* End of @layer base containing themes */
 
 @layer base {

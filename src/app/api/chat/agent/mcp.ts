@@ -12,6 +12,7 @@ type SiteKey = "main" | "eacanada" | "ubl";
 const DEMO_SITE: Record<string, SiteKey> = {
   documentation: "main",
   superstore: "main",
+  "driven-brands": "main",
   makana: "main",
   cumulus: "main",
   servicedesk: "main",

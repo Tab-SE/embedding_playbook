@@ -241,5 +241,51 @@ export const Users = [
         uaf: {"Region": ["Central","East"]}
       },
     ]
+  },
+  {
+    demo: 'driven-brands',
+    roles: {
+      0: { title: 'Franchise Owner', description: 'Individual location and franchise performance'},
+      1: { title: 'Brand Executive', description: 'Brand-wide performance across all franchise groups'},
+      2: { title: 'Enterprise Executive', description: 'Enterprise-wide portfolio across all brands'},
+    },
+    users: [
+      {
+        id: 'a',
+        name: "Elena Vasquez",
+        email: "jmorris@superstore.com",
+        picture: "/img/users/mackenzie_day.png",
+        role: 2,
+        vector_store: 'superstore_jmorris',
+        uaf: {"Region": ["West", "East", "Central", "South"]},
+      },
+      {
+        id: 'b',
+        name: "Alex Torres",
+        email: "slopez@superstore.com",
+        picture: "/img/users/justin_chen.png",
+        role: 0,
+        vector_store: 'superstore_slopez',
+        uaf: {"Region": ["East"]},
+      },
+      {
+        id: 'c',
+        name: "Maya Patel",
+        email: "rmorris@makana.com",
+        picture: "/img/users/sofia_lopez.png",
+        role: 0,
+        vector_store: 'makana_rmorris',
+        uaf: {"Region": ["South"]},
+      },
+      {
+        id: 'd',
+        name: "Jordan Reyes",
+        email: "jchen@superstore.com",
+        picture: "/img/users/rachel_morris.png",
+        role: 0,
+        vector_store: 'superstore_jchen',
+        uaf: {"Region": ["Central"]},
+      },
+    ]
   }
 ]

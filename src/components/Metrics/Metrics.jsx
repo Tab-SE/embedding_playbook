@@ -15,7 +15,7 @@ import { Metric } from "components";
 import { sortPayloadByIds } from './utils';
 
 export const Metrics = (props) => {
-  const { basis, sortOrder } = props;
+  const { basis, sortOrder, nameOverrides } = props;
   // syncs with user metrics, only fires query when user is defined -> controlled query
   const { status, data, error, isError, isSuccess } = useMetrics();
 
@@ -39,6 +39,7 @@ export const Metrics = (props) => {
                 <Metric
                   key={metric.id}
                   metric={metric}
+                  nameOverride={nameOverrides?.[metric.name]}
                 />
               </CarouselItem>
             )) : null}

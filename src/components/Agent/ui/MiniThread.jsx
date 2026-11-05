@@ -18,6 +18,11 @@ import { useChatActions } from "@/components/Providers/LanggraphAgentRuntimeProv
 
 const MAX_QUESTIONS = 3;
 
+// Module-level map: submitted query text (lowercase) → display label.
+// Populated when a sample question is clicked so DemoUserMessage can swap
+// the raw query for the friendly label in the chat bubble.
+const queryLabelMap = new Map();
+
 // Drop a suggested question into the composer input. Uses the native value
 // setter so React's controlled <textarea> registers the change, then focuses so
 // the user can just hit Enter. Shared by the welcome panel and the persistent
@@ -35,6 +40,31 @@ const fillComposer = (inputRef, question) => {
   inputElement.dispatchEvent(new Event('input', { bubbles: true }));
   inputElement.focus();
 };
+
+// If the question has a label/query pair, store the mapping then fill + auto-submit
+// so the raw query is never visible in the composer or the chat bubble.
+const submitMasked = (inputRef, question) => {
+  const query = typeof question === 'object' ? (question.query ?? question.label) : question;
+  const label = typeof question === 'object' ? question.label : question;
+
+  if (query !== label) {
+    queryLabelMap.set(query.trim().toLowerCase(), label);
+  }
+
+  fillComposer(inputRef, query);
+
+  // Auto-submit after React processes the fill
+  setTimeout(() => {
+    const textarea = inputRef?.current || document.querySelector('textarea[placeholder="Write a message..."]');
+    if (!textarea) return;
+    const form = textarea.closest('form');
+    if (form) { form.requestSubmit(); return; }
+    // Fallback: find and click the send button in the same container
+    const sendBtn = textarea.closest('[class]')?.querySelector('button:not([disabled])');
+    if (sendBtn) sendBtn.click();
+  }, 80);
+};
+
 
 // Plain text of a thread message (assistant-ui stores content as typed parts).
 const messageText = (m) =>
@@ -91,7 +121,7 @@ export const MiniThread = (props) => {
 const WelcomeMessage = (props) => {
   const { ai_avatar, sample_questions = [], inputRef } = props;
 
-  const handleQuestionClick = (question) => fillComposer(inputRef, question);
+  const handleQuestionClick = (question) => submitMasked(inputRef, question);
 
   return (
     (<ThreadPrimitive.Empty>
@@ -113,7 +143,7 @@ const WelcomeMessage = (props) => {
                   className="w-full text-left p-3 text-sm bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors"
                   onClick={() => handleQuestionClick(question)}
                 >
-                  {question}
+                  {typeof question === 'object' ? question.label : question}
                 </button>
               ))}
             </div>
@@ -244,7 +274,7 @@ const NextQuestions = (props) => {
   const askedText = messages.filter((m) => m.role === 'user').map(messageText);
   const remaining = sample_questions
     .slice(0, MAX_QUESTIONS)
-    .filter((q) => !askedText.includes(q.trim().toLowerCase()));
+    .filter((q) => !askedText.includes((typeof q === 'object' ? q.query : q).trim().toLowerCase()));
 
   if (remaining.length === 0) return null;
 
@@ -256,10 +286,10 @@ const NextQuestions = (props) => {
           <button
             key={index}
             type="button"
-            onClick={() => fillComposer(inputRef, question)}
+            onClick={() => submitMasked(inputRef, question)}
             className="text-left px-3 py-1.5 text-xs bg-gray-50 hover:bg-gray-100 dark:bg-stone-900 dark:hover:bg-stone-800 rounded-full border border-gray-200 dark:border-stone-700 transition-colors"
           >
-            {question}
+            {typeof question === 'object' ? question.label : question}
           </button>
         ))}
       </div>
@@ -307,6 +337,15 @@ const MyComposer = (props) => {
 
 const DemoUserMessage = (props) => {
   const { user_avatar } = props;
+  const { message } = useMessage();
+
+  const rawText = (message?.content ?? [])
+    .filter((p) => p.type === 'text')
+    .map((p) => p.text)
+    .join(' ')
+    .trim();
+
+  const displayText = queryLabelMap.get(rawText.toLowerCase());
 
   return (
     (<MessagePrimitive.Root
@@ -319,7 +358,10 @@ const DemoUserMessage = (props) => {
       />
       <div
         className="bg-stone-100 text-stone-950 col-start-2 row-start-1 max-w-xl break-words rounded-3xl px-5 py-2.5 dark:bg-stone-800 dark:text-stone-50">
-        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+        {displayText
+          ? <span className="text-sm">{displayText}</span>
+          : <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+        }
       </div>
     </MessagePrimitive.Root>)
   );

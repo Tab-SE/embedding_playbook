@@ -3,11 +3,21 @@ import {
   ShoppingCart,
   HandCoins,
   HeartPulse,
-  Headphones
+  Headphones,
+  Car
 } from 'lucide-react';
 
 // NOTE: the 'id' key is used to map to 'app_id' in each demo config.js file
 export const galleryItems = [
+  {
+    id: 'driven-brands',
+    link: "/demo/driven-brands",
+    src: "/img/demos/superstore.png",
+    alt: "Driven Brands | Franchise Performance Portal",
+    vertical: "Automotive Services",
+    description: "A franchise performance portal for Driven Brands showing how the same Tableau dashboard delivers role-based views for enterprise executives, brand managers, and individual franchise owners via row-level security",
+    icon: <Car size={12} strokeWidth={2} />
+  },
   {
     id: 'superstore',
     link: "/demo/superstore",
