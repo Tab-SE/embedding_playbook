@@ -146,7 +146,8 @@ export const PulseMetrics = () => {
 
       <Dialog open={!!selected} onOpenChange={(open) => { if (!open) setSelected(null); }}>
         <DialogContent className="max-w-6xl w-[95vw] max-h-[92vh] overflow-y-auto">
-          <DialogHeader>
+          {/* Tableau's Pulse metric renders its own title, so keep ours for screen readers only. */}
+          <DialogHeader className="sr-only">
             <DialogTitle>{selected?.name}</DialogTitle>
           </DialogHeader>
           {selected && token ? (
