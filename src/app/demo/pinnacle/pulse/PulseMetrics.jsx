@@ -49,7 +49,13 @@ const PulseEmbed = ({ src, token, layout, initialHeight }) => {
 
 // How many followed metrics show as headline BANs (big number only) before
 // the rest switch to cards with the trend line.
-const BAN_COUNT = 4;
+const BAN_COUNT = 2;
+// How many cards (KPI + trend) to show below the BANs.
+const CARD_COUNT = 2;
+
+// Followed metrics to leave out of this page.
+// 1878bde9…: "AHT Average Handle Time" — no data for the current period.
+const HIDDEN_METRIC_IDS = new Set(["1878bde9-bff5-43f7-99f7-8ba0a4d33902"]);
 
 const MetricTile = ({ metric, token, layout, initialHeight, onOpen }) => (
   <div className="flex flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 dark:bg-stone-900">
@@ -82,9 +88,10 @@ export const PulseMetrics = () => {
   });
 
   const token = session?.embed_token;
-  // First BAN_COUNT followed metrics render as BAN tiles; the rest as cards.
-  const bans = (data ?? []).slice(0, BAN_COUNT);
-  const cards = (data ?? []).slice(BAN_COUNT);
+  // First BAN_COUNT followed metrics render as BAN tiles; the next CARD_COUNT as cards.
+  const shown = (data ?? []).filter((m) => !HIDDEN_METRIC_IDS.has(m.id));
+  const bans = shown.slice(0, BAN_COUNT);
+  const cards = shown.slice(BAN_COUNT, BAN_COUNT + CARD_COUNT);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -98,21 +105,21 @@ export const PulseMetrics = () => {
 
         {isLoading || !sessionReady ? <p className="text-sm text-muted-foreground">Loading your metrics…</p> : null}
         {error ? <p className="text-sm text-red-600">Couldn&apos;t load your followed metrics: {error.message}</p> : null}
-        {data && data.length === 0 ? (
+        {data && shown.length === 0 ? (
           <p className="text-sm text-muted-foreground">You aren&apos;t following any Pulse metrics yet.</p>
         ) : null}
 
-        {data && data.length > 0 && token ? (
+        {shown.length > 0 && token ? (
           <>
             {/* Headline KPIs: big number only */}
             {bans.length > 0 ? (
-              <div className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid items-start gap-4 sm:grid-cols-2">
                 {bans.map((m) => <MetricTile key={m.id} metric={m} token={token} layout="ban" initialHeight={140} onOpen={setSelected} />)}
               </div>
             ) : null}
             {/* Remaining metrics: KPI + trend */}
             {cards.length > 0 ? (
-              <div className="grid items-start gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid items-start gap-6 sm:grid-cols-2">
                 {cards.map((m) => <MetricTile key={m.id} metric={m} token={token} layout="card" initialHeight={320} onOpen={setSelected} />)}
               </div>
             ) : null}
