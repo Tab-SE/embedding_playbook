@@ -42,10 +42,28 @@ const PulseEmbed = ({ src, token, layout, initialHeight }) => {
       layout={layout}
       width="100%"
       height={`${height}px`}
-      disable-explore-filter={layout === "card" ? "true" : undefined}
+      disable-explore-filter={layout !== "default" ? "true" : undefined}
     />
   );
 };
+
+// How many followed metrics show as headline BANs (big number only) before
+// the rest switch to cards with the trend line.
+const BAN_COUNT = 4;
+
+const MetricTile = ({ metric, token, layout, initialHeight, onOpen }) => (
+  <div className="flex flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 dark:bg-stone-900">
+    <PulseEmbed src={metric.src} token={token} layout={layout} initialHeight={initialHeight} />
+    <button
+      onClick={() => onOpen(metric)}
+      className="flex items-center justify-between border-t px-5 py-3 text-sm font-medium text-primary hover:bg-muted/50"
+      aria-label={`View details for ${metric.name}`}
+    >
+      View details
+      <ChevronRight className="h-4 w-4" />
+    </button>
+  </div>
+);
 
 export const PulseMetrics = () => {
   const { data: session, isSuccess: sessionReady } = useTableauSession();
@@ -64,6 +82,9 @@ export const PulseMetrics = () => {
   });
 
   const token = session?.embed_token;
+  // First BAN_COUNT followed metrics render as BAN tiles; the rest as cards.
+  const bans = (data ?? []).slice(0, BAN_COUNT);
+  const cards = (data ?? []).slice(BAN_COUNT);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -82,21 +103,20 @@ export const PulseMetrics = () => {
         ) : null}
 
         {data && data.length > 0 && token ? (
-          <div className="grid items-start gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {data.map((m) => (
-              <div key={m.id} className="flex flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 dark:bg-stone-900">
-                <PulseEmbed src={m.src} token={token} layout="card" initialHeight={320} />
-                <button
-                  onClick={() => setSelected(m)}
-                  className="flex items-center justify-between border-t px-5 py-3 text-sm font-medium text-primary hover:bg-muted/50"
-                  aria-label={`View details for ${m.name}`}
-                >
-                  View details
-                  <ChevronRight className="h-4 w-4" />
-                </button>
+          <>
+            {/* Headline KPIs: big number only */}
+            {bans.length > 0 ? (
+              <div className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {bans.map((m) => <MetricTile key={m.id} metric={m} token={token} layout="ban" initialHeight={140} onOpen={setSelected} />)}
               </div>
-            ))}
-          </div>
+            ) : null}
+            {/* Remaining metrics: KPI + trend */}
+            {cards.length > 0 ? (
+              <div className="grid items-start gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {cards.map((m) => <MetricTile key={m.id} metric={m} token={token} layout="card" initialHeight={320} onOpen={setSelected} />)}
+              </div>
+            ) : null}
+          </>
         ) : null}
       </main>
 
