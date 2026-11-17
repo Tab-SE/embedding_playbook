@@ -29,6 +29,10 @@ export const Home = () => {
   );
 
   const [selectedMarks, setSelectedMarks] = useState([]);
+  // Data Q&A launches Tableau's Analytics Assistant, so only show it when the
+  // embedded viz reports the assistant is available (Tableau AI on for the site
+  // and this user). Hidden until confirmed; any failure keeps it hidden.
+  const [aiAvailable, setAiAvailable] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [editableMessage, setEditableMessage] = useState('');
 
@@ -67,8 +71,18 @@ export const Home = () => {
     const timer = setTimeout(() => {
       let viz = document.getElementById('overviewViz') || document.querySelector('tableau-viz');
       if (viz) {
-        viz.addEventListener('firstinteractive', () => {
+        viz.addEventListener('firstinteractive', async () => {
           viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
+          try {
+            const available = viz.isAnalyticsAssistantAvailableAsync
+              ? await viz.isAnalyticsAssistantAvailableAsync()
+              : false;
+            console.log('[pinnacle] isAnalyticsAssistantAvailable:', available);
+            setAiAvailable(available === true);
+          } catch (err) {
+            console.warn('[pinnacle] isAnalyticsAssistantAvailableAsync failed; hiding Data Q&A', err);
+            setAiAvailable(false);
+          }
         });
         window._pinnacleVizRef = { viz, handleMarkSelectionChanged };
       }
@@ -197,6 +211,7 @@ export const Home = () => {
               </span>
             </button>
           )}
+          {aiAvailable && (
           <button
             onClick={async () => {
               const viz = window._pinnacleVizRef?.viz || document.querySelector('tableau-viz');
@@ -207,6 +222,7 @@ export const Home = () => {
             <BotMessageSquare className="h-5 w-5" />
             <span className="font-medium">{role === 0 ? 'Ask your performance data' : 'Data Q&A'}</span>
           </button>
+          )}
         </div>
 
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
