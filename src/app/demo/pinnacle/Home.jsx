@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { MessageSquare, X, Filter, BotMessageSquare } from 'lucide-react';
 import {
   Card,
@@ -29,10 +30,24 @@ export const Home = () => {
   );
 
   const [selectedMarks, setSelectedMarks] = useState([]);
-  // Data Q&A launches Tableau's Analytics Assistant, so only show it when the
-  // embedded viz reports the assistant is available (Tableau AI on for the site
-  // and this user). Hidden until confirmed; any failure keeps it hidden.
-  const [aiAvailable, setAiAvailable] = useState(false);
+  // Data Q&A launches Tableau's Analytics Assistant (generative AI in the embedded
+  // viz). Show it only when the site's "AI in Tableau" setting for it is on, read
+  // from the REST API site settings (generativeAiWebAuthoring) via /api/site-ai.
+  // Hidden while loading and on any error.
+  const { data: siteAi } = useQuery({
+    queryKey: ['tableau', 'site-ai'],
+    queryFn: async () => {
+      const res = await fetch('/api/site-ai');
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
+      console.log('[pinnacle] site AI settings:', body);
+      return body;
+    },
+    enabled: !!session,
+    staleTime: 60 * 1000,
+    retry: 1,
+  });
+  const aiAvailable = siteAi?.generativeAiWebAuthoring === true;
   const [showShareModal, setShowShareModal] = useState(false);
   const [editableMessage, setEditableMessage] = useState('');
 
@@ -71,18 +86,8 @@ export const Home = () => {
     const timer = setTimeout(() => {
       let viz = document.getElementById('overviewViz') || document.querySelector('tableau-viz');
       if (viz) {
-        viz.addEventListener('firstinteractive', async () => {
+        viz.addEventListener('firstinteractive', () => {
           viz.addEventListener('markselectionchanged', handleMarkSelectionChanged);
-          try {
-            const available = viz.isAnalyticsAssistantAvailableAsync
-              ? await viz.isAnalyticsAssistantAvailableAsync()
-              : false;
-            console.log('[pinnacle] isAnalyticsAssistantAvailable:', available);
-            setAiAvailable(available === true);
-          } catch (err) {
-            console.warn('[pinnacle] isAnalyticsAssistantAvailableAsync failed; hiding Data Q&A', err);
-            setAiAvailable(false);
-          }
         });
         window._pinnacleVizRef = { viz, handleMarkSelectionChanged };
       }
