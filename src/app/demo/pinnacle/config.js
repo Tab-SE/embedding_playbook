@@ -15,6 +15,8 @@ export const settings = {
   base_path: '/demo/pinnacle',
   hide_email: true,
   ai_chat: true,
+  // Hide the MCP chat assistant (and block /api/chat) when AI in Tableau is off for the site.
+  ai_chat_requires_site_ai: true,
   // No ai_avatar set — falls back to chatbot MessageSquare icon
 
   // VP Operations filter: Pinnacle's enterprise client programs shown in UI → State/Province values in the Superstore workbook.

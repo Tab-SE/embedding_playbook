@@ -4,6 +4,11 @@ import { getToken } from "next-auth/jwt";
 
 import { bootstrapAgent } from "./agent";
 import { McpAuthError } from "./agent/mcp";
+import { getSiteAiFlags, isSiteAiOn } from "@/libs/server/siteAi";
+
+// Demos whose chat assistant is only allowed while AI in Tableau is on for the site.
+// Mirrors `ai_chat_requires_site_ai` in the demo config (which hides the UI).
+const DEMOS_REQUIRING_SITE_AI = new Set(["pinnacle"]);
 import { convertVercelMessageToLangChainMessage, convertLangChainMessageToVercelMessage } from "./utils";
 
 // Use Node runtime — @langchain/mcp-adapters depends on Node-only modules.
@@ -140,6 +145,19 @@ export async function POST(req: NextRequest) {
     }
     const demo = (token?.demo as string) || 'documentation';
     console.log('🔵 [CHAT ROUTE] Demo:', demo);
+
+    if (DEMOS_REQUIRING_SITE_AI.has(demo)) {
+      let aiOn = false;
+      try {
+        aiOn = isSiteAiOn(await getSiteAiFlags(token.email as string));
+      } catch (err: any) {
+        console.error('🔴 [CHAT ROUTE] site AI check failed:', err?.message);
+      }
+      if (!aiOn) {
+        console.log(`🔵 [CHAT ROUTE] AI in Tableau is off for the site; chat disabled for demo=${demo}`);
+        return NextResponse.json({ error: 'AI is turned off for this Tableau site.' }, { status: 403 });
+      }
+    }
 
     const messages = (body.messages ?? [])
       .filter(

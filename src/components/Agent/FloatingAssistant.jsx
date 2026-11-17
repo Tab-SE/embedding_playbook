@@ -3,6 +3,7 @@ import { forwardRef } from "react";
 import Image from "next/image";
 import { ChevronDownIcon, MessageSquareIcon } from "lucide-react";
 import { AssistantModalPrimitive } from "@assistant-ui/react";
+import { useQuery } from "@tanstack/react-query";
 
 import { useTableauSession } from '@/hooks';
 import { MiniThread, TooltipIconButton } from "./ui";
@@ -25,6 +26,28 @@ export const FloatingAssistant = (props) => {
     isError: isSessionError,
     isLoading: isSessionLoading
   } = useTableauSession();
+
+  // Demos with `ai_chat_requires_site_ai: true` only show the assistant when
+  // AI in Tableau is on for the site (read server-side from the REST API site
+  // settings). Hidden while loading and on any error. /api/chat enforces the
+  // same rule, so this is UI only.
+  const requiresSiteAi = settings?.ai_chat_requires_site_ai === true;
+  const { data: siteAi } = useQuery({
+    queryKey: ["tableau", "site-ai"],
+    queryFn: async () => {
+      const res = await fetch("/api/site-ai");
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
+      return body;
+    },
+    enabled: requiresSiteAi && !!user,
+    staleTime: 60 * 1000,
+    retry: 1,
+  });
+
+  if (requiresSiteAi && siteAi?.anyOn !== true) {
+    return null;
+  }
 
   // Demos with `ai_chat: false` opt out of the chat assistant entirely. Used
   // for demos like servicedesk that embed Tableau Public dashboards (which MCP
