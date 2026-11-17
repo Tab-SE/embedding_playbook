@@ -1,14 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Maximize2 } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Dialog,
   DialogContent,
   DialogHeader,
@@ -17,16 +12,40 @@ import {
 import { useTableauSession } from "@/hooks";
 
 // <tableau-pulse> is registered by the Embedding API script loaded in app/layout.tsx.
-// token = the user's Connected App embed JWT (includes tableau:insights:embed).
-const PulseEmbed = ({ src, token, layout, height }) => (
-  <tableau-pulse
-    src={src}
-    token={token}
-    layout={layout}
-    width="100%"
-    height={height}
-  />
-);
+// The component reports its real rendered size via `firstpulsemetricsizeknown` and
+// `pulsemetricsizechanged` (event.detail.width/height), so we size the element from
+// those instead of guessing a fixed height that crops or pads the metric.
+const PulseEmbed = ({ src, token, layout, initialHeight }) => {
+  const ref = useRef(null);
+  const [height, setHeight] = useState(initialHeight);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onSize = (e) => {
+      const h = Math.ceil(e?.detail?.height ?? 0);
+      if (h > 0) setHeight(h);
+    };
+    el.addEventListener("firstpulsemetricsizeknown", onSize);
+    el.addEventListener("pulsemetricsizechanged", onSize);
+    return () => {
+      el.removeEventListener("firstpulsemetricsizeknown", onSize);
+      el.removeEventListener("pulsemetricsizechanged", onSize);
+    };
+  }, []);
+
+  return (
+    <tableau-pulse
+      ref={ref}
+      src={src}
+      token={token}
+      layout={layout}
+      width="100%"
+      height={`${height}px`}
+      disable-explore-filter={layout === "card" ? "true" : undefined}
+    />
+  );
+};
 
 export const PulseMetrics = () => {
   const { data: session, isSuccess: sessionReady } = useTableauSession();
@@ -48,38 +67,37 @@ export const PulseMetrics = () => {
 
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <Card className="shadow-xl">
-          <CardHeader>
-            <CardTitle>Pulse Metrics</CardTitle>
-            <CardDescription>
-              The Tableau Pulse metrics you follow. Open any card for the full metric with AI insights.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {isLoading || !sessionReady ? <p className="text-sm text-muted-foreground">Loading your metrics…</p> : null}
-            {error ? <p className="text-sm text-red-600">Couldn&apos;t load your followed metrics: {error.message}</p> : null}
-            {data && data.length === 0 ? (
-              <p className="text-sm text-muted-foreground">You aren&apos;t following any Pulse metrics yet.</p>
-            ) : null}
-            {data && data.length > 0 && token ? (
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {data.map((m) => (
-                  <div key={m.id} className="relative rounded-lg border bg-background">
-                    <PulseEmbed src={m.src} token={token} layout="card" height="260" />
-                    <button
-                      onClick={() => setSelected(m)}
-                      className="absolute right-2 top-2 flex items-center gap-1 rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground shadow hover:opacity-90"
-                      aria-label={`Open ${m.name} full view`}
-                    >
-                      <Maximize2 className="h-3.5 w-3.5" /> Details
-                    </button>
-                  </div>
-                ))}
+      <main className="flex flex-1 flex-col gap-6 p-4 md:p-8">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Pulse Metrics</h1>
+          <p className="text-sm text-muted-foreground">
+            The metrics you follow in Tableau Pulse. Open a metric for trends and AI insights.
+          </p>
+        </div>
+
+        {isLoading || !sessionReady ? <p className="text-sm text-muted-foreground">Loading your metrics…</p> : null}
+        {error ? <p className="text-sm text-red-600">Couldn&apos;t load your followed metrics: {error.message}</p> : null}
+        {data && data.length === 0 ? (
+          <p className="text-sm text-muted-foreground">You aren&apos;t following any Pulse metrics yet.</p>
+        ) : null}
+
+        {data && data.length > 0 && token ? (
+          <div className="grid items-start gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {data.map((m) => (
+              <div key={m.id} className="flex flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 dark:bg-stone-900">
+                <PulseEmbed src={m.src} token={token} layout="card" initialHeight={320} />
+                <button
+                  onClick={() => setSelected(m)}
+                  className="flex items-center justify-between border-t px-5 py-3 text-sm font-medium text-primary hover:bg-muted/50"
+                  aria-label={`View details for ${m.name}`}
+                >
+                  View details
+                  <ChevronRight className="h-4 w-4" />
+                </button>
               </div>
-            ) : null}
-          </CardContent>
-        </Card>
+            ))}
+          </div>
+        ) : null}
       </main>
 
       <Dialog open={!!selected} onOpenChange={(open) => { if (!open) setSelected(null); }}>
@@ -88,7 +106,7 @@ export const PulseMetrics = () => {
             <DialogTitle>{selected?.name}</DialogTitle>
           </DialogHeader>
           {selected && token ? (
-            <PulseEmbed key={selected.id} src={selected.src} token={token} layout="default" height="800" />
+            <PulseEmbed key={selected.id} src={selected.src} token={token} layout="default" initialHeight={800} />
           ) : null}
         </DialogContent>
       </Dialog>
