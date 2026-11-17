@@ -4,6 +4,7 @@ import {
   ClipboardList,
   ShieldCheck,
   Settings,
+  Activity,
 } from "lucide-react";
 
 export const settings = {
@@ -160,6 +161,13 @@ export const settings = {
       path: '/compliance',
       min_role: 1,
       description: 'Background checks, credentials, and expiry tracking'
+    },
+    {
+      name: 'Pulse Metrics',
+      icon: <Activity className="h-5 w-5"/>,
+      path: '/pulse',
+      min_role: 1,
+      description: 'Your followed Tableau Pulse metrics'
     },
     {
       name: 'Settings',
