@@ -10,6 +10,67 @@ import { convertVercelMessageToLangChainMessage, convertLangChainMessageToVercel
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Heroku's router returns H12 (503) if no response byte arrives within 30s,
+// then requires at least one byte every 55s. The agent emits no text while it
+// runs MCP tool calls, so long questions blew past 30s with zero bytes sent.
+//
+// This wraps the AI SDK data stream and:
+//   - sends a bare "\n" immediately and every 15s of silence. The AI SDK client
+//     drops empty lines before parsing (processDataStream filters line !== ""),
+//     so these never reach the UI.
+//   - converts a mid-stream failure into an AI SDK error part ("3:...") so the
+//     chat shows the real error instead of the connection being dropped.
+const KEEPALIVE_MS = 15_000;
+
+const keepAliveDataStreamResponse = (dataStream: ReadableStream<Uint8Array>) => {
+  const encoder = new TextEncoder();
+  const reader = dataStream.getReader();
+  let timer: ReturnType<typeof setInterval> | undefined;
+  let lastSent = Date.now();
+
+  const body = new ReadableStream<Uint8Array>({
+    start(controller) {
+      controller.enqueue(encoder.encode("\n"));
+      timer = setInterval(() => {
+        if (Date.now() - lastSent >= KEEPALIVE_MS) {
+          controller.enqueue(encoder.encode("\n"));
+          lastSent = Date.now();
+        }
+      }, 5_000);
+    },
+    async pull(controller) {
+      try {
+        const { done, value } = await reader.read();
+        if (done) {
+          clearInterval(timer);
+          controller.close();
+          return;
+        }
+        controller.enqueue(value);
+        lastSent = Date.now();
+      } catch (e: any) {
+        clearInterval(timer);
+        console.error('🔴 [CHAT ROUTE STREAM ERROR]', e);
+        const message = e?.message ?? 'The agent failed while answering.';
+        controller.enqueue(encoder.encode(`3:${JSON.stringify(message)}\n`));
+        controller.close();
+      }
+    },
+    cancel(reason) {
+      clearInterval(timer);
+      return reader.cancel(reason);
+    },
+  });
+
+  return new Response(body, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "X-Vercel-AI-Data-Stream": "v1",
+    },
+  });
+};
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,7 +108,7 @@ export async function POST(req: NextRequest) {
         { streamMode: ["updates", "custom"], version: "v2", recursionLimit: 75 },
       );
       console.log('🔵 [CHAT ROUTE] Event stream created, returning response');
-      return LangChainAdapter.toDataStreamResponse(eventStream);
+      return keepAliveDataStreamResponse(LangChainAdapter.toDataStream(eventStream));
     } else {
       console.log('🔵 [CHAT ROUTE] Invoking agent with intermediate steps...');
       const result = await agent.invoke({ messages }, { recursionLimit: 75 });
