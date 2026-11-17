@@ -233,6 +233,7 @@
   [data-theme="servicedesk"] .dark {
     color-scheme: dark;
   }
+
 } /* End of @layer base containing themes */
 
 @layer base {

@@ -7,7 +7,7 @@ import {
   useThreadMessages,
 } from "@assistant-ui/react";
 import { SendHorizontalIcon } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { Button } from "@/components/ui";
@@ -17,6 +17,11 @@ import { ProgressIndicator } from "./ProgressIndicator";
 import { useChatActions } from "@/components/Providers/LanggraphAgentRuntimeProvider";
 
 const MAX_QUESTIONS = 3;
+
+// Module-level map: submitted query text (lowercase) → display label.
+// Populated when a sample question is clicked so DemoUserMessage can swap
+// the raw query for the friendly label in the chat bubble.
+const queryLabelMap = new Map();
 
 // Drop a suggested question into the composer input. Uses the native value
 // setter so React's controlled <textarea> registers the change, then focuses so
@@ -34,6 +39,28 @@ const fillComposer = (inputRef, question) => {
   nativeInputValueSetter.call(inputElement, question);
   inputElement.dispatchEvent(new Event('input', { bubbles: true }));
   inputElement.focus();
+};
+
+// If the question has a label/query pair, store the mapping then fill + auto-submit
+// so the raw query is never visible in the composer or the chat bubble.
+const submitMasked = (inputRef, question) => {
+  const query = typeof question === 'object' ? (question.query ?? question.label) : question;
+  const label = typeof question === 'object' ? question.label : question;
+
+  if (query !== label) {
+    queryLabelMap.set(query.trim().toLowerCase(), label);
+  }
+
+  fillComposer(inputRef, query);
+
+  setTimeout(() => {
+    const textarea = inputRef?.current || document.querySelector('textarea[placeholder="Write a message..."]');
+    if (!textarea) return;
+    const form = textarea.closest('form');
+    if (form) { form.requestSubmit(); return; }
+    const sendBtn = textarea.closest('[class]')?.querySelector('button:not([disabled])');
+    if (sendBtn) sendBtn.click();
+  }, 80);
 };
 
 // Plain text of a thread message (assistant-ui stores content as typed parts).
@@ -90,8 +117,17 @@ export const MiniThread = (props) => {
 
 const WelcomeMessage = (props) => {
   const { ai_avatar, sample_questions = [], inputRef } = props;
+  const [oauthStatus, setOauthStatus] = useState(null); // null=loading, {ready,required}
 
-  const handleQuestionClick = (question) => fillComposer(inputRef, question);
+  useEffect(() => {
+    fetch('/api/tableau/oauth/status')
+      .then(r => r.json())
+      .then(setOauthStatus)
+      .catch(() => setOauthStatus({ ready: true, required: false }));
+  }, []);
+
+  const handleQuestionClick = (question) => submitMasked(inputRef, question);
+  const needsConnect = oauthStatus?.required && !oauthStatus?.ready;
 
   return (
     (<ThreadPrimitive.Empty>
@@ -102,8 +138,18 @@ const WelcomeMessage = (props) => {
           fallback='AI'
         />
         <p className="mt-4 font-medium">How can I help you with your analytics?</p>
+        {needsConnect && (
+          <button
+            onClick={() => {
+              window.location.href = `/api/tableau/oauth?return_to=${encodeURIComponent(window.location.pathname)}`;
+            }}
+            className="mt-4 flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity shadow"
+          >
+            Connect to Tableau
+          </button>
+        )}
 
-        {sample_questions.length > 0 && (
+        {!needsConnect && sample_questions.length > 0 && (
           <div className="mt-6 w-full max-w-md">
             <p className="text-sm text-gray-600 mb-3 text-center">Try asking:</p>
             <div className="space-y-2">
@@ -113,7 +159,7 @@ const WelcomeMessage = (props) => {
                   className="w-full text-left p-3 text-sm bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors"
                   onClick={() => handleQuestionClick(question)}
                 >
-                  {question}
+                  {typeof question === 'object' ? question.label : question}
                 </button>
               ))}
             </div>
@@ -244,7 +290,10 @@ const NextQuestions = (props) => {
   const askedText = messages.filter((m) => m.role === 'user').map(messageText);
   const remaining = sample_questions
     .slice(0, MAX_QUESTIONS)
-    .filter((q) => !askedText.includes(q.trim().toLowerCase()));
+    .filter((q) => {
+      const query = typeof q === 'object' ? (q.query ?? q.label) : q;
+      return !askedText.includes(query.trim().toLowerCase());
+    });
 
   if (remaining.length === 0) return null;
 
@@ -256,10 +305,10 @@ const NextQuestions = (props) => {
           <button
             key={index}
             type="button"
-            onClick={() => fillComposer(inputRef, question)}
+            onClick={() => submitMasked(inputRef, question)}
             className="text-left px-3 py-1.5 text-xs bg-gray-50 hover:bg-gray-100 dark:bg-stone-900 dark:hover:bg-stone-800 rounded-full border border-gray-200 dark:border-stone-700 transition-colors"
           >
-            {question}
+            {typeof question === 'object' ? question.label : question}
           </button>
         ))}
       </div>
@@ -307,6 +356,15 @@ const MyComposer = (props) => {
 
 const DemoUserMessage = (props) => {
   const { user_avatar } = props;
+  const { message } = useMessage();
+
+  const rawText = (message?.content ?? [])
+    .filter((p) => p.type === 'text')
+    .map((p) => p.text)
+    .join(' ')
+    .trim();
+
+  const displayText = queryLabelMap.get(rawText.toLowerCase());
 
   return (
     (<MessagePrimitive.Root
@@ -319,7 +377,10 @@ const DemoUserMessage = (props) => {
       />
       <div
         className="bg-stone-100 text-stone-950 col-start-2 row-start-1 max-w-xl break-words rounded-3xl px-5 py-2.5 dark:bg-stone-800 dark:text-stone-50">
-        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+        {displayText
+          ? <span className="text-sm">{displayText}</span>
+          : <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+        }
       </div>
     </MessagePrimitive.Root>)
   );
