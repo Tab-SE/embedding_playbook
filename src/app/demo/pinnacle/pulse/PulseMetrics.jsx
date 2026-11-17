@@ -13,18 +13,22 @@ import { useTableauSession } from "@/hooks";
 
 // <tableau-pulse> is registered by the Embedding API script loaded in app/layout.tsx.
 // The component reports its real rendered size via `firstpulsemetricsizeknown` and
-// `pulsemetricsizechanged` (event.detail.width/height), so we size the element from
-// those instead of guessing a fixed height that crops or pads the metric.
+// `pulsemetricsizechanged` (event.detail.width/height). We size the element from
+// those so the frame matches Tableau's card instead of padding or cropping it.
+// backgroundColor="transparent" (documented Pulse theme parameter) removes the
+// Pulse page background that showed as a gray band around the card.
 const PulseEmbed = ({ src, token, layout, initialHeight }) => {
   const ref = useRef(null);
-  const [height, setHeight] = useState(initialHeight);
+  const [size, setSize] = useState({ width: null, height: initialHeight });
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const onSize = (e) => {
+      const w = Math.ceil(e?.detail?.width ?? 0);
       const h = Math.ceil(e?.detail?.height ?? 0);
-      if (h > 0) setHeight(h);
+      console.log(`[pinnacle pulse] ${e.type} layout=${layout} width=${w} height=${h}`);
+      setSize((prev) => ({ width: w > 0 ? w : prev.width, height: h > 0 ? h : prev.height }));
     };
     el.addEventListener("firstpulsemetricsizeknown", onSize);
     el.addEventListener("pulsemetricsizechanged", onSize);
@@ -32,18 +36,25 @@ const PulseEmbed = ({ src, token, layout, initialHeight }) => {
       el.removeEventListener("firstpulsemetricsizeknown", onSize);
       el.removeEventListener("pulsemetricsizechanged", onSize);
     };
-  }, []);
+  }, [layout]);
 
+  // Shrink the frame to the width Tableau reports for the metric (never wider
+  // than the column), so there's no empty area beside the card.
   return (
-    <tableau-pulse
-      ref={ref}
-      src={src}
-      token={token}
-      layout={layout}
-      width="100%"
-      height={`${height}px`}
-      disable-explore-filter={layout !== "default" ? "true" : undefined}
-    />
+    <div style={{ width: size.width ? `min(${size.width}px, 100%)` : "100%" }}>
+      <tableau-pulse
+        ref={ref}
+        src={src}
+        token={token}
+        layout={layout}
+        width="100%"
+        height={`${size.height}px`}
+        disable-explore-filter={layout !== "default" ? "true" : undefined}
+      >
+        <theme-parameter name="backgroundColor" value="transparent"></theme-parameter>
+        <theme-parameter name="backgroundColorOpaque" value="#ffffff"></theme-parameter>
+      </tableau-pulse>
+    </div>
   );
 };
 
@@ -57,12 +68,14 @@ const CARD_COUNT = 2;
 // 1878bde9…: "AHT Average Handle Time" — no data for the current period.
 const HIDDEN_METRIC_IDS = new Set(["1878bde9-bff5-43f7-99f7-8ba0a4d33902"]);
 
+// No wrapper card: Tableau's metric already renders as a card, so we only add
+// the "View details" link beneath it.
 const MetricTile = ({ metric, token, layout, initialHeight, onOpen }) => (
-  <div className="flex flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 dark:bg-stone-900">
+  <div className="flex flex-col">
     <PulseEmbed src={metric.src} token={token} layout={layout} initialHeight={initialHeight} />
     <button
       onClick={() => onOpen(metric)}
-      className="flex items-center justify-between border-t px-5 py-3 text-sm font-medium text-primary hover:bg-muted/50"
+      className="mt-2 inline-flex items-center gap-1 self-start px-1 text-sm font-medium text-primary hover:underline"
       aria-label={`View details for ${metric.name}`}
     >
       View details
