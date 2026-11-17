@@ -91,6 +91,7 @@ export const authOptions: AuthOptions = {
             // Backend secured Connected App scopes
             const rest_scopes = [
               "tableau:content:read",
+              "tableau:mcp_site_settings:read",
               "tableau:datasources:read",
               "tableau:workbooks:read",
               "tableau:projects:read",
