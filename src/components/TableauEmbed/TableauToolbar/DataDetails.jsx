@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import {
-  IconDatabase, IconRefresh, IconSearch, IconAlertTriangle, IconRosetteDiscountCheck,
+  IconDatabase, IconRefresh, IconSearch, IconAlertTriangle, IconDiscountCheck,
   IconChevronDown, IconChevronRight, IconTable,
 } from '@tabler/icons-react';
 
@@ -273,7 +273,7 @@ const DataSourceSection = ({ ds, query }) => {
     <section className="rounded-md border p-3 dark:border-stone-800">
       <h3 className="font-semibold flex items-center gap-1.5">
         {ds.name}
-        {pub?.isCertified && <IconRosetteDiscountCheck size={16} className="text-sky-600" title="Certified" />}
+        {pub?.isCertified && <IconDiscountCheck size={16} className="text-sky-600" title="Certified" />}
       </h3>
       <div className="mt-1 flex flex-wrap gap-1">
         <Badge variant="secondary">{isExtract ? 'Extract' : 'Live'}</Badge>
