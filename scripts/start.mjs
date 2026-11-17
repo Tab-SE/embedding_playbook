@@ -50,7 +50,13 @@ const nextEnv = { ...process.env };
 const useLocalMcp = process.env.LOCAL_MCP === "true";
 if (!useLocalMcp) console.log("[start] LOCAL_MCP!=true: no MCP sidecars, using TABLEAU_MCP_URL* as configured");
 
-for (const s of useLocalMcp ? SITES : []) {
+// Optional allowlist, e.g. LOCAL_MCP_SITES=main or main,ubl. Unset = all sites.
+// Each sidecar costs ~125 MB, so only run the sites this app's demos use.
+const siteFilter = (process.env.LOCAL_MCP_SITES || "")
+  .split(",").map((s) => s.trim()).filter(Boolean);
+const wanted = (s) => siteFilter.length === 0 || siteFilter.includes(s.key);
+
+for (const s of useLocalMcp ? SITES.filter(wanted) : []) {
   if (!s.server || !s.site) {
     console.log(`[start] mcp-${s.key}: skipped (domain/site env not set)`);
     delete nextEnv[s.urlVar];
