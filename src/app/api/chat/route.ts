@@ -22,42 +22,98 @@ export const dynamic = "force-dynamic";
 //     chat shows the real error instead of the connection being dropped.
 const KEEPALIVE_MS = 15_000;
 
+// Logs every MCP tool call and every model call with its duration, so a stalled
+// chat shows in the Heroku logs exactly which step was slow or failed. Logging
+// only; it does not change what the agent does. Tool inputs are truncated.
+const agentTimingLogger = () => {
+  const t0 = Date.now();
+  const started = new Map<string, { label: string; at: number }>();
+  const sec = (ms: number) => (ms / 1000).toFixed(1) + "s";
+  const begin = (runId: string, label: string) => {
+    started.set(runId, { label, at: Date.now() });
+    console.log(`⏱️ [AGENT +${sec(Date.now() - t0)}] start ${label}`);
+  };
+  const end = (runId: string, outcome: string) => {
+    const s = started.get(runId);
+    if (!s) return;
+    started.delete(runId);
+    console.log(`⏱️ [AGENT +${sec(Date.now() - t0)}] ${outcome} ${s.label} took ${sec(Date.now() - s.at)}`);
+  };
+  return {
+    handleToolStart(tool: any, input: string, runId: string, _p?: string, _t?: string[], _m?: unknown, runName?: string) {
+      const name = runName ?? tool?.name ?? tool?.id?.at?.(-1) ?? "tool";
+      begin(runId, `tool=${name} input=${String(input).slice(0, 300)}`);
+    },
+    handleToolEnd(output: any, runId: string) {
+      const text = typeof output === "string" ? output : output?.content ?? JSON.stringify(output);
+      end(runId, `done (${String(text).length} chars)`);
+    },
+    handleToolError(err: Error, runId: string) {
+      end(runId, `ERROR ${err?.message?.slice(0, 300)} —`);
+    },
+    handleChatModelStart(_llm: any, _messages: unknown, runId: string) {
+      begin(runId, "model");
+    },
+    handleLLMEnd(_output: unknown, runId: string) {
+      end(runId, "done");
+    },
+    handleLLMError(err: Error, runId: string) {
+      end(runId, `ERROR ${err?.message?.slice(0, 300)} —`);
+    },
+  };
+};
+
 const keepAliveDataStreamResponse = (dataStream: ReadableStream<Uint8Array>) => {
   const encoder = new TextEncoder();
   const reader = dataStream.getReader();
   let timer: ReturnType<typeof setInterval> | undefined;
   let lastSent = Date.now();
+  // Set once the stream is closed by us or cancelled by the client (browser
+  // hung up). After that, enqueue()/close() throw ERR_INVALID_STATE, so every
+  // write goes through these guards.
+  let finished = false;
+
+  const finish = (controller: ReadableStreamDefaultController<Uint8Array>) => {
+    if (finished) return;
+    finished = true;
+    clearInterval(timer);
+    controller.close();
+  };
+  const send = (controller: ReadableStreamDefaultController<Uint8Array>, chunk: Uint8Array) => {
+    if (finished) return;
+    controller.enqueue(chunk);
+    lastSent = Date.now();
+  };
 
   const body = new ReadableStream<Uint8Array>({
     start(controller) {
-      controller.enqueue(encoder.encode("\n"));
+      send(controller, encoder.encode("\n"));
       timer = setInterval(() => {
-        if (Date.now() - lastSent >= KEEPALIVE_MS) {
-          controller.enqueue(encoder.encode("\n"));
-          lastSent = Date.now();
-        }
+        if (Date.now() - lastSent >= KEEPALIVE_MS) send(controller, encoder.encode("\n"));
       }, 5_000);
     },
     async pull(controller) {
+      let chunk: ReadableStreamReadResult<Uint8Array>;
       try {
-        const { done, value } = await reader.read();
-        if (done) {
-          clearInterval(timer);
-          controller.close();
-          return;
-        }
-        controller.enqueue(value);
-        lastSent = Date.now();
+        chunk = await reader.read();
       } catch (e: any) {
-        clearInterval(timer);
+        if (finished) return;
         console.error('🔴 [CHAT ROUTE STREAM ERROR]', e);
         const message = e?.message ?? 'The agent failed while answering.';
-        controller.enqueue(encoder.encode(`3:${JSON.stringify(message)}\n`));
-        controller.close();
+        send(controller, encoder.encode(`3:${JSON.stringify(message)}\n`));
+        finish(controller);
+        return;
       }
+      if (chunk.done) {
+        finish(controller);
+        return;
+      }
+      send(controller, chunk.value);
     },
     cancel(reason) {
+      finished = true;
       clearInterval(timer);
+      console.warn('🟠 [CHAT ROUTE] Client disconnected before the answer finished');
       return reader.cancel(reason);
     },
   });
@@ -105,7 +161,12 @@ export async function POST(req: NextRequest) {
       // a multi-step data Q&A often takes >25 model<->tool round trips.
       const eventStream = await agent.streamEvents(
         { messages },
-        { streamMode: ["updates", "custom"], version: "v2", recursionLimit: 75 },
+        {
+          streamMode: ["updates", "custom"],
+          version: "v2",
+          recursionLimit: 75,
+          callbacks: [agentTimingLogger()],
+        },
       );
       console.log('🔵 [CHAT ROUTE] Event stream created, returning response');
       return keepAliveDataStreamResponse(LangChainAdapter.toDataStream(eventStream));
