@@ -1,8 +1,9 @@
 "use client";
 import { forwardRef } from "react";
 import Image from "next/image";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, MessageSquareIcon } from "lucide-react";
 import { AssistantModalPrimitive } from "@assistant-ui/react";
+import { useQuery } from "@tanstack/react-query";
 
 import { useTableauSession } from '@/hooks';
 import { MiniThread, TooltipIconButton } from "./ui";
@@ -25,6 +26,28 @@ export const FloatingAssistant = (props) => {
     isError: isSessionError,
     isLoading: isSessionLoading
   } = useTableauSession();
+
+  // Demos with `ai_chat_requires_site_ai: true` only show the assistant when
+  // AI in Tableau is on for the site (read server-side from the REST API site
+  // settings). Hidden while loading and on any error. /api/chat enforces the
+  // same rule, so this is UI only.
+  const requiresSiteAi = settings?.ai_chat_requires_site_ai === true;
+  const { data: siteAi } = useQuery({
+    queryKey: ["tableau", "site-ai"],
+    queryFn: async () => {
+      const res = await fetch("/api/site-ai");
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
+      return body;
+    },
+    enabled: requiresSiteAi && !!user,
+    staleTime: 60 * 1000,
+    retry: 1,
+  });
+
+  if (requiresSiteAi && siteAi?.anyOn !== true) {
+    return null;
+  }
 
   // Demos with `ai_chat: false` opt out of the chat assistant entirely. Used
   // for demos like servicedesk that embed Tableau Public dashboards (which MCP
@@ -50,7 +73,7 @@ export const FloatingAssistant = (props) => {
           <MiniThread
             ai_avatar={settings.ai_avatar}
             user_avatar={user.picture}
-            sample_questions={settings.sample_questions}
+            sample_questions={Array.isArray(settings.sample_questions) ? settings.sample_questions : (settings.sample_questions?.[Number(user.role)] ?? settings.sample_questions?.[1] ?? [])}
           /> : null
         }
       </AssistantModalPrimitive.Content>
@@ -67,17 +90,24 @@ const FloatingAssistantButton = forwardRef(({ ai_avatar, "data-state": state, ..
       tooltip={tooltip}
       side="left"
       {...rest}
-      className="size-full rounded-full shadow transition-transform hover:scale-110 active:scale-90 bg-background text-aiIcons"
+      className="size-full rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90 bg-primary text-primary-foreground"
       ref={ref}
     >
-      <Image
-        src={ai_avatar}
-        alt="Assistant"
-        width={24}
-        height={24}
-        data-state={state}
-        className="absolute inset-0 m-auto transition-all data-[state=closed]:rotate-0 data-[state=open]:rotate-90 data-[state=closed]:scale-100 data-[state=open]:scale-0"
-      />
+      {ai_avatar ? (
+        <Image
+          src={ai_avatar}
+          alt="Assistant"
+          width={24}
+          height={24}
+          data-state={state}
+          className="absolute inset-0 m-auto transition-all data-[state=closed]:rotate-0 data-[state=open]:rotate-90 data-[state=closed]:scale-100 data-[state=open]:scale-0"
+        />
+      ) : (
+        <MessageSquareIcon
+          data-state={state}
+          className="absolute inset-0 m-auto size-5 transition-all data-[state=closed]:rotate-0 data-[state=open]:rotate-90 data-[state=closed]:scale-100 data-[state=open]:scale-0"
+        />
+      )}
       <div className="absolute size-6">
         <ChevronDownIcon
           data-state={state}

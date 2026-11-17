@@ -91,6 +91,7 @@ export const authOptions: AuthOptions = {
             // Backend secured Connected App scopes
             const rest_scopes = [
               "tableau:content:read",
+              "tableau:mcp_site_settings:read",
               "tableau:datasources:read",
               "tableau:workbooks:read",
               "tableau:projects:read",
@@ -304,6 +305,7 @@ export const authOptions: AuthOptions = {
         };
         token.vectors = vectors;
         token.uaf = user.uaf || {};
+        token.company = (user as any).company ?? null;
         token.groups = user.groups || [];
         token.tableau = user.tableau;
         token.tableau_eacanada = user.tableau_eacanada;

@@ -25,7 +25,7 @@ export async function POST(req) {
 
   // Check if token is defined
   if (token?.tableau) {
-    const { name, demo, email, picture, role, vectors, uaf, tableau } = token;
+    const { name, demo, email, picture, role, vectors, uaf, company, tableau } = token;
 
     // Check if token needs refresh (expires in less than 4 minutes).
     // `expires` round-trips through the NextAuth cookie as an ISO string
@@ -131,6 +131,7 @@ export async function POST(req) {
       role,
       vectors,
       uaf,
+      company,
       embed_token: refreshedTableau.embed_token,
       // rest_token: refreshedTableau.rest_token, // only for debugging the JWT on the client
       user_id: refreshedTableau.user_id,

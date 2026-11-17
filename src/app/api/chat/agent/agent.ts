@@ -35,10 +35,22 @@ export const bootstrapAgent = async (demo: string, token: JWT) => {
         `names it returns (see "how to query data correctly" above) before calling query-datasource.`
       : "";
 
+  const uaf = (token as any).uaf as Record<string, string[]> | undefined;
+  const authorizedRegions = uaf?.Region ?? [];
+  const allRegions = ['East', 'West', 'Central', 'South'];
+  const isFullAccess = allRegions.every(r => authorizedRegions.includes(r));
+
+  const dataScoping = authorizedRegions.length > 0 && !isFullAccess
+    ? `\n\n# Data access scope\n` +
+      `This user is authorized to see data only for these regions: ${authorizedRegions.map(r => `"${r}"`).join(', ')}.\n` +
+      `When querying any datasource, ALWAYS include a SET filter on the "Region" field restricting results to exactly these values: [${authorizedRegions.map(r => `"${r}"`).join(', ')}].\n` +
+      `Never return data for regions outside this list, even if the user asks for all data or does not mention regions.`
+    : "";
+
   const agent = createReactAgent({
     llm: chatModel,
     tools,
-    messageModifier: new SystemMessage(AGENT_SYSTEM_TEMPLATE + datasourcePinning),
+    messageModifier: new SystemMessage(AGENT_SYSTEM_TEMPLATE + datasourcePinning + dataScoping),
   });
 
   return agent;

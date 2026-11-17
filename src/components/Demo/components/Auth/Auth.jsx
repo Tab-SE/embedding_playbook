@@ -14,7 +14,7 @@ export const description = "A login page with a full-screen background image and
 export const Auth = (props) => {
   const { settings } = props;
 
-  const { app_id, base_path, app_name, app_logo, auth_logo, auth_hero } = settings;
+  const { app_id, base_path, app_name, app_logo, auth_logo, auth_hero, hide_email } = settings;
   const logoToUse = auth_logo || app_logo;
 
   const demoManager = new UserModel();
@@ -26,14 +26,21 @@ export const Auth = (props) => {
     <div className="relative w-full min-h-screen">
 
       <div className="absolute inset-0 w-full h-full">
-        <Image
-          src={auth_hero || "/placeholder.svg"}
-          alt="Background"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover dark:brightness-[0.2] dark:grayscale background"
-        />
+        {auth_hero ? (
+          <>
+            <Image
+              src={auth_hero}
+              alt="Background"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover dark:brightness-[0.2] dark:grayscale background"
+            />
+            <div className="absolute inset-0 bg-black/40" />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-navBackground pinnacle-auth-bg" />
+        )}
       </div>
 
       {/* Floating "back to /demos" badge — mirrors the logo widget that lives in
@@ -44,18 +51,18 @@ export const Auth = (props) => {
         title={`${app_name} — back to all demos`}
         className="absolute top-4 left-4 z-20 group flex h-10 w-10 items-center justify-center rounded-full bg-logoBackground shadow-lg backdrop-blur-sm hover:scale-110 transition-transform"
       >
-        <Avatar className="h-9 w-9 p-1 bg-logoBackground">
-          <AvatarImage src={logoToUse} alt={`${app_name} logo`} className="object-cover" />
+        <Avatar className="h-9 w-9 bg-transparent">
+          <AvatarImage src={logoToUse} alt={`${app_name} logo`} className="object-cover rounded-full" />
           <AvatarFallback>APP</AvatarFallback>
         </Avatar>
         <span className="sr-only">Back to all demos</span>
       </Link>
 
       <div className="relative z-10 flex items-center justify-center w-full min-h-screen p-4">
-        <Card className="mx-auto w-[480px] max-w-full shadow-lg backdrop-blur-sm loginBackground/95">
+        <Card className="mx-auto w-[480px] max-w-full shadow-lg loginBackground/95">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <Avatar className="flex items-center justify-center h-16 w-16 bg-logoBackground">
+              <Avatar className="flex items-center justify-center h-16 w-16 bg-transparent">
                 <AvatarImage src={logoToUse} className="object-cover rounded-full" />
                 <AvatarFallback>APP</AvatarFallback>
               </Avatar>
@@ -70,7 +77,7 @@ export const Auth = (props) => {
                   {users.map((user, index) => (
                     <Fragment key={user.id}>
                       {index > 0 && <Separator className="my-3 bg-gray-300" orientation="horizontal" />}
-                      <DemoUser user={user} demo={app_id} roles={roles} base_path={base_path} />
+                      <DemoUser user={user} demo={app_id} roles={roles} base_path={base_path} hide_email={hide_email} />
                     </Fragment>
                   ))}
                 </div>

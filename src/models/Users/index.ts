@@ -58,7 +58,7 @@ export class UserModel {
       return null;
     }
 
-    // Extract roles as an array
-    return Object.values(demo.roles);
+    // Extract roles as an array, filtering out any undefined slots
+    return Object.values(demo.roles).filter((r): r is Role => r !== undefined);
   }
 }
