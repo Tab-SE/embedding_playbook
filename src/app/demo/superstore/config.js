@@ -6,7 +6,7 @@ import {
   BrainCircuit,
   Languages,
   AppWindow,
-  Activity
+  HeartHandshake
 } from "lucide-react";
 
 export const settings = {
@@ -29,6 +29,13 @@ export const settings = {
       path: '',
       min_role: 1,
       description: 'your superstore homepage'
+    },
+    {
+      name: 'Customer Loyalty',
+      icon: <HeartHandshake className="h-5 w-5"/> ,
+      path: '/customer-loyalty',
+      min_role: 1,
+      description: 'Tableau data app: loyalty tiers, retention and at-risk customers'
     },
     {
       name: 'Agent',
@@ -71,13 +78,6 @@ export const settings = {
       path: '/tabnext',
       min_role: 1,
       description: 'experimental Tableau Next embedding'
-    },
-    {
-      name: 'Pulse Discover',
-      icon: <Activity className="h-5 w-5"/> ,
-      path: '/pulse-discover',
-      min_role: 1,
-      description: 'Pulse Discover dashboard from eacanada server'
     },
   ],
 }

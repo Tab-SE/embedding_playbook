@@ -66,7 +66,8 @@ import { DataDetails } from "./DataDetails";
 
 // forwardRef HOC receives ref from parent and sets placeholder
 export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
-  const { src, jwt } = props;
+  // `extras` is optional page-specific content shown in the same row as the menus.
+  const { src, jwt, extras } = props;
   const [viz, setViz] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [dataDetailsOpen, setDataDetailsOpen] = useState(false);
@@ -98,7 +99,8 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
 
   return (
     <>
-    <Menubar className='mt-1 mb-3 inline-flex' >
+    <div className={extras ? 'mt-1 mb-3 flex w-full flex-wrap items-center gap-x-4 gap-y-2' : 'contents'}>
+    <Menubar className={extras ? 'inline-flex' : 'mt-1 mb-3 inline-flex'} >
       <MenubarMenu >
         <MenubarTrigger className='cursor-pointer px-1'>
           <IconFile stroke={1} size={18} className='mr-1'/> File
@@ -202,6 +204,8 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
         </MenubarTrigger>
       </MenubarMenu>
     </Menubar>
+    {extras}
+    </div>
     <DataDetails viz={viz} src={src} open={dataDetailsOpen} onOpenChange={setDataDetailsOpen} />
     </>
   )

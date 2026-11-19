@@ -54,6 +54,7 @@ export async function POST(req) {
         "tableau:views:embed",
         "tableau:views:embed_authoring",
         "tableau:insights:embed",
+        "tableau:packages:read",
       ];
       const embed_options = {
         jwt_secret: embed_secret,

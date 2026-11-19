@@ -82,6 +82,7 @@ export const authOptions: AuthOptions = {
               "tableau:views:embed",
               "tableau:views:embed_authoring",
               "tableau:insights:embed",
+              "tableau:packages:read",
             ];
             const embed_options = {
               jwt_secret: embed_secret,
@@ -342,6 +343,7 @@ export const authOptions: AuthOptions = {
             "tableau:views:embed",
             "tableau:views:embed_authoring",
             "tableau:insights:embed",
+            "tableau:packages:read",
           ];
           const embed_options = {
             jwt_secret: embed_secret,

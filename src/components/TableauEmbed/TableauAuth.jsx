@@ -17,6 +17,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
     isPublic,
     WebEdit,
     customToolbar,
+    toolbarExtras,
     layouts,
     id
   } = props;
@@ -56,6 +57,7 @@ export const TableauAuth = forwardRef(function AuthLayer(props, ref) {
         toolbar={toolbar}
         isPublic={isPublic}
         customToolbar={customToolbar}
+        toolbarExtras={toolbarExtras}
         layouts={layouts}
         id={id}
       /> :

@@ -80,10 +80,16 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        // Soft, tight attention ring (a few px), e.g. the Customer Loyalty info icon.
+        "soft-halo": {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgb(96 165 250 / 0)" },
+          "50%": { boxShadow: "0 0 0 4px rgb(96 165 250 / 0.3)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "soft-halo": "soft-halo 2.4s ease-in-out infinite",
       },
     },
   },
