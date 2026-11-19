@@ -1,0 +1,8 @@
+{
+  "id": "com.tableau.mcp.superstore-customer-loyalty",
+  "version": "1.0.0",
+  "manifestVersion": "0.1",
+  "name": "Superstore Customer Loyalty",
+  "author": "Tableau MCP",
+  "requestedOrigins": ""
+}

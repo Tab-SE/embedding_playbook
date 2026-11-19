@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<workbook source-build='2026.3.4 (20263.26.1116.1613)' version='18.1' xml:base='https://localhost' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <Extensions />
+    <VizExtensions />
+    <_.fcp.Packages.true...Packages />
+    <_.fcp.VizExtensionsDupEncodingUUID.true...VizExtensionsDupEncodingUUID />
+    <AnimationOnByDefault />
+    <MarkAnimation />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+    <_.fcp.WorkbookFingerprinting.true...WorkbookFingerprinting />
+  </document-format-change-manifest>
+  <repository-location id='template' path='/workbooks' revision='1.0' />
+  <preferences />
+  <datasources>
+    <datasource caption='Superstore' inline='true' name='sqlproxy.6ytvf7uyxean6gv54coq6x' version='18.1'>
+      <repository-location id='Superstore_17474334665220' path='/t/embeddingplaybook/datasources' revision='1.0' site='embeddingplaybook' />
+      <connection channel='https' class='sqlproxy' dbname='Superstore_17474334665220' directory='dataserver' port='443' server='prod-useast-b.online.tableau.com' server-ds-friendly-name='Superstore' username=''>
+        <relation type='collection'>
+          <relation connection='sqlproxy.6ytvf7uyxean6gv54coq6x' name='sqlproxy' table='[sqlproxy]' type='table' />
+        </relation>
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>Customer Name</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Customer Name]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Customer Name</remote-alias>
+            <ordinal>0</ordinal>
+            <layered>true</layered>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>0</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Segment</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Segment]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Segment</remote-alias>
+            <ordinal>1</ordinal>
+            <layered>true</layered>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>0</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Region</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Region]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Region</remote-alias>
+            <ordinal>2</ordinal>
+            <layered>true</layered>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>0</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Category</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Category]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Category</remote-alias>
+            <ordinal>3</ordinal>
+            <layered>true</layered>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>0</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Ship Mode</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Ship Mode]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Ship Mode</remote-alias>
+            <ordinal>4</ordinal>
+            <layered>true</layered>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>0</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Order ID</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Order ID]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Order ID</remote-alias>
+            <ordinal>5</ordinal>
+            <layered>true</layered>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>0</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Order Date</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Order Date]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Order Date</remote-alias>
+            <ordinal>6</ordinal>
+            <layered>true</layered>
+            <local-type>date</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>0</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Sales</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[Sales]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Sales</remote-alias>
+            <ordinal>7</ordinal>
+            <layered>true</layered>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>1</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Profit</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[Profit]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Profit</remote-alias>
+            <ordinal>8</ordinal>
+            <layered>true</layered>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>1</attribute>
+            </attributes>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Superstore Customer Loyalty'>
+      <repository-location id='Sheet1' path='/workbooks/template' revision='' />
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Superstore' name='sqlproxy.6ytvf7uyxean6gv54coq6x' />
+          </datasources>
+          <datasource-dependencies datasource='sqlproxy.6ytvf7uyxean6gv54coq6x'>
+            <column aggregation='Count' datatype='string' name='[Customer Name]' role='dimension' type='nominal' />
+            <column aggregation='Count' datatype='string' name='[Segment]' role='dimension' type='nominal' />
+            <column aggregation='Count' datatype='string' name='[Region]' role='dimension' type='nominal' />
+            <column aggregation='Count' datatype='string' name='[Category]' role='dimension' type='nominal' />
+            <column aggregation='Count' datatype='string' name='[Ship Mode]' role='dimension' type='nominal' />
+            <column aggregation='Count' datatype='string' name='[Order ID]' role='dimension' type='nominal' />
+            <column aggregation='Count' datatype='date' name='[Order Date]' role='dimension' type='ordinal' />
+            <column aggregation='Sum' datatype='real' name='[Sales]' role='measure' type='quantitative' />
+            <column aggregation='Sum' datatype='real' name='[Profit]' role='measure' type='quantitative' />
+            <column-instance column='[Customer Name]' derivation='None' name='[none:Customer Name:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Segment]' derivation='None' name='[none:Segment:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Region]' derivation='None' name='[none:Region:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Category]' derivation='None' name='[none:Category:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Ship Mode]' derivation='None' name='[none:Ship Mode:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Order ID]' derivation='None' name='[none:Order ID:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Order Date]' derivation='None' name='[none:Order Date:nk]' pivot='key' type='ordinal' />
+            <column-instance column='[Sales]' derivation='Sum' name='[sum:Sales:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Profit]' derivation='Sum' name='[sum:Profit:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='VizExtension' />
+            <add-in add-in-id='com.tableau.mcp.superstore-customer-loyalty' extension-url='tableaulocalext:///com.tableau.mcp.superstore-customer-loyalty/content/index.html' extension-version='1.0.0' instance-id='A1B2C3D4E5F60718293A4B5C6D7E8F90'>
+              <instance-settings />
+              <type-settings>
+                <worksheet />
+              </type-settings>
+            </add-in>
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{D846E350-EFE9-46AE-88D6-906A4DB75930}' />
+    </worksheet>
+  </worksheets>
+  <windows>
+    <window class='worksheet' maximized='true' name='Superstore Customer Loyalty'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='31'>
+            <card type='columns' />
+          </strip>
+          <strip size='31'>
+            <card type='rows' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{5CCC5EFE-BD3C-4B06-B427-3A22F445F324}' />
+    </window>
+  </windows>
+  <referenced-extensions>
+    <referenced-extension>
+      <manifest manifest-version='0.1'>
+        <worksheet-extension extension-version='1.0.0' id='com.tableau.mcp.superstore-customer-loyalty'>
+          <default-locale>en_US</default-locale>
+          <name>Superstore Customer Loyalty</name>
+          <description>Embedded workbook extension.</description>
+          <author email='noreply@tableau.com' name='Claude' organization='Tableau' website='https://www.tableau.com' />
+          <min-api-version>1.11</min-api-version>
+          <source-location>
+            <url>tableaulocalext:///com.tableau.mcp.superstore-customer-loyalty/content/index.html</url>
+          </source-location>
+          <icon>iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=</icon>
+          <permissions>
+            <permission>full data</permission>
+          </permissions>
+          <encoding id='field'>
+            <display-name>Data</display-name>
+            <role-spec>
+              <role-type>discrete-dimension</role-type>
+              <role-type>discrete-measure</role-type>
+              <role-type>continuous-dimension</role-type>
+              <role-type>continuous-measure</role-type>
+            </role-spec>
+            <fields max-count='50' />
+            <encoding-icon token='level' />
+          </encoding>
+        </worksheet-extension>
+      </manifest>
+      <referenced-views>
+        <referenced-view instances='1' viewId='Superstore Customer Loyalty' />
+      </referenced-views>
+    </referenced-extension>
+  </referenced-extensions>
+</workbook>

@@ -141,3 +141,6 @@ salesforce_public_cert.pem
 salesforce_public_cert_x509.pem
 generate-salesforce-jwt-cert.sh
 *.pem
+
+# Packaged data apps (build output of data-apps/package.mjs)
+data-apps/dist/
