@@ -221,8 +221,28 @@
       <simple-id uuid='{D846E350-EFE9-46AE-88D6-906A4DB75930}' />
     </worksheet>
   </worksheets>
+  <dashboards>
+    <dashboard name='Customer Loyalty Dashboard'>
+      <style />
+      <size sizing-mode='automatic' />
+      <datasources />
+      <zones>
+        <zone h='100000' id='2' type-v2='layout-basic' w='100000' x='0' y='0'>
+          <zone h='100000' id='3' name='Superstore Customer Loyalty' show-title='false' type-v2='visual' w='100000' x='0' y='0' />
+        </zone>
+      </zones>
+      <simple-id uuid='{8A3F2C61-4D7E-4B90-9C15-2E6F7A1B3D40}' />
+    </dashboard>
+  </dashboards>
   <windows>
-    <window class='worksheet' maximized='true' name='Superstore Customer Loyalty'>
+    <window class='dashboard' maximized='true' name='Customer Loyalty Dashboard'>
+      <viewpoints>
+        <viewpoint name='Superstore Customer Loyalty' />
+      </viewpoints>
+      <active id='-1' />
+      <simple-id uuid='{3E9B7D24-61A8-4F53-B0C2-9D4E8F1A6B57}' />
+    </window>
+    <window class='worksheet' name='Superstore Customer Loyalty'>
       <cards>
         <edge name='left'>
           <strip size='160'>

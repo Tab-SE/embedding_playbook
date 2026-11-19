@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MessageSquare, X, Filter, BotMessageSquare } from 'lucide-react';
 import {
   Card,
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui";
 
 import { Metrics, TableauEmbed, Transactions, RecentSales } from '@/components';
+import { useViewportEmbedHeight, useEmbedWidth } from '@/hooks';
 
 
 export const Home = () => {
@@ -20,6 +21,11 @@ export const Home = () => {
   const [selectedStates, setSelectedStates] = useState([]); // Changed to array for multi-select
   const [showStateFilter, setShowStateFilter] = useState(false);
   const [availableStates, setAvailableStates] = useState([]);
+  // Size the Overview to the window so Tableau Agent's panel (which matches the frame) fits on screen.
+  const overviewBoxRef = useRef(null);
+  const overviewHeight = useViewportEmbedHeight(overviewBoxRef);
+  // The Overview's Desktop layout sizes automatically, so fill the card instead of a fixed width.
+  const overviewWidth = useEmbedWidth(overviewBoxRef);
 
   // Function to get available state values from the viz
   const getStatesFromViz = async (viz) => {
@@ -244,7 +250,7 @@ export const Home = () => {
           </div>
         )}
 
-        {/* State Filter + Data Q&A */}
+        {/* State Filter + Tableau Agent */}
         <div className="flex justify-center gap-3">
           <button
             onClick={() => setShowStateFilter(true)}
@@ -267,7 +273,7 @@ export const Home = () => {
             className="flex items-center gap-2 px-6 py-3 bg-[hsl(199,99%,39%)] hover:opacity-90 text-white rounded-lg transition-colors shadow-lg"
           >
             <BotMessageSquare className="h-5 w-5" />
-            <span className="font-medium">Data Q&amp;A</span>
+            <span className="font-medium">Tableau Agent</span>
           </button>
         </div>
 
@@ -278,29 +284,25 @@ export const Home = () => {
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>Your personal digest of Superstore sales in North America</CardDescription>
               </CardHeader>
-              <CardContent className="flex items-center justify-center p-0 xs:p-6 xs:pt-0">
-                <TableauEmbed
-                  id="overviewViz"
-                  src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
-                  hideTabs={true}
-                  toolbar='hidden'
-                  className='
-                  min-w-[300px] min-h-[1430px]
-                  sm:min-w-[510px] sm:min-h-[1430px]
-                  md:min-w-[600px] md:min-h-[1080px]
-                  lg:min-w-[400px] lg:min-h-[1440px]
-                  xl:min-w-[720px] xl:min-h-[1180px]
-                  2xl:min-w-[860px] 2xl:min-h-[1180px]
-                  '
-                  layouts = {{
-                    'xs': { 'device': 'phone' },
-                    'sm': { 'device': 'phone' },
-                    'md': { 'device': 'default' },
-                    'lg': { 'device': 'phone' },
-                    'xl': { 'device': 'tablet' },
-                    'xl2': { 'device': 'desktop' },
-                  }}
-                />
+              <CardContent ref={overviewBoxRef} className="px-3 pb-6 pt-0 sm:px-6">
+                {overviewHeight && overviewWidth ? (
+                  <TableauEmbed
+                    id="overviewViz"
+                    src='https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/superstore/overview_800x800'
+                    hideTabs={true}
+                    toolbar='hidden'
+                    className=''
+                    // Devices unchanged per breakpoint; width fills the card, height follows the window.
+                    layouts = {{
+                      'xs': { 'device': 'phone', 'width': overviewWidth, 'height': overviewHeight },
+                      'sm': { 'device': 'phone', 'width': overviewWidth, 'height': overviewHeight },
+                      'md': { 'device': 'default', 'width': overviewWidth, 'height': overviewHeight },
+                      'lg': { 'device': 'phone', 'width': overviewWidth, 'height': overviewHeight },
+                      'xl': { 'device': 'tablet', 'width': overviewWidth, 'height': overviewHeight },
+                      'xl2': { 'device': 'desktop', 'width': overviewWidth, 'height': overviewHeight },
+                    }}
+                  />
+                ) : null}
               </CardContent>
             </Card>
           </div>

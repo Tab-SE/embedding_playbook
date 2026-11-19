@@ -19,6 +19,8 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); }
+/* The demo sizes the frame to the window so Tableau Agent's panel fits; let the app scroll inside it. */
+html, body { height: 100%; overflow-y: auto; overscroll-behavior: contain; }
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color: var(--ink);

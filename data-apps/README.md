@@ -5,7 +5,7 @@ workspace that packages into a `.twbx` and is published to the `embeddingplayboo
 
 | App | Used by | Published to |
 |---|---|---|
-| `superstore-customer-loyalty` | `src/app/demo/superstore/customer-loyalty` | superstore › Superstore Data Apps › *Superstore Customer Loyalty* |
+| `superstore-customer-loyalty` | `src/app/demo/superstore/customer-loyalty` (embeds the *Customer Loyalty Dashboard* view) | superstore › Superstore Data Apps › *Superstore Customer Loyalty* |
 
 ## Layout
 

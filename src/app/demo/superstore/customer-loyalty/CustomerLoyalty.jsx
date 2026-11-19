@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { HeartHandshake, Filter, MessageSquare, Download, X, Info } from "lucide-react";
+import { HeartHandshake, Filter, MessageSquare, Download, X, Info, BotMessageSquare } from "lucide-react";
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle,
   Popover, PopoverTrigger, PopoverContent,
@@ -11,8 +11,10 @@ import { TableauEmbed } from "components";
 
 // Tableau data app (viz extension) published to embeddingplaybook > superstore > Superstore Data Apps.
 // It queries the published "Superstore" datasource live and computes loyalty tiers in the browser.
+// Dashboard wrapping the data app sheet full-canvas. Tableau Agent is only available on the dashboard,
+// not on the bare viz-extension sheet.
 const DATA_APP_URL =
-  'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/SuperstoreCustomerLoyalty/SuperstoreCustomerLoyalty';
+  'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/SuperstoreCustomerLoyalty/CustomerLoyaltyDashboard';
 
 // Must match BRIDGE_SOURCE / HOST_SOURCE in the data app's app.js.
 const BRIDGE_SOURCE = 'superstore-loyalty-data-app';
@@ -27,8 +29,11 @@ const FILTERS = [
 
 const ALL = '__all__';
 
-// Tall enough for the data app's KPI strip, tiers, retention and a 10-row list without inner scroll.
-const EMBED_HEIGHT = 1750;
+// The embed is sized to the visible window (not the app's full content height) so Tableau Agent's
+// side panel, which docks inside the viz frame and matches its height, fits on screen. The data app
+// scrolls inside the frame instead.
+const MIN_EMBED_HEIGHT = 640;
+const EMBED_BOTTOM_GAP = 24;
 
 // Only accept well-formed selection payloads; the data is displayed, never executed.
 const sanitizeCustomers = (list) => {
@@ -129,24 +134,37 @@ export const CustomerLoyalty = () => {
   );
   const [selected, setSelected] = useState([]);
   const [appReady, setAppReady] = useState(null);
+  // null = not checked yet, true/false = answer from isAnalyticsAssistantAvailableAsync.
+  const [agentAvailable, setAgentAvailable] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState('');
   const appWindowRef = useRef(null);
   const embedBoxRef = useRef(null);
   const [embedWidth, setEmbedWidth] = useState(null);
+  const [embedHeight, setEmbedHeight] = useState(null);
 
   useEffect(() => {
     const box = embedBoxRef.current;
     if (!box) return undefined;
+    // Ignore small jitters so the viz isn't resized on every pixel of a window drag.
+    const settle = (prev, next) => (prev && Math.abs(prev - next) < 40 ? prev : next);
     const measure = () => {
-      const w = Math.floor(box.getBoundingClientRect().width);
-      // Ignore small jitters so the viz isn't resized on every pixel of a window drag.
-      setEmbedWidth((prev) => (prev && Math.abs(prev - w) < 40 ? prev : w));
+      const rect = box.getBoundingClientRect();
+      setEmbedWidth((prev) => settle(prev, Math.floor(rect.width)));
+      // Height from the frame's position on the page (not scroll position) to the bottom of the
+      // window, leaving room for the toolbar row the embed renders above the viz.
+      const top = rect.top + window.scrollY;
+      const available = window.innerHeight - Math.min(top, 240) - EMBED_BOTTOM_GAP - 56;
+      setEmbedHeight((prev) => settle(prev, Math.max(MIN_EMBED_HEIGHT, Math.floor(available))));
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(box);
-    return () => ro.disconnect();
+    window.addEventListener('resize', measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+    };
   }, []);
   const actionsRef = useRef({});
 
@@ -245,6 +263,36 @@ export const CustomerLoyalty = () => {
     URL.revokeObjectURL(url);
   };
 
+  // Tableau Agent (Embedding API analytics assistant) runs in the Tableau host around the viz, not
+  // inside the data app's code. Ask the viz once it's interactive (the app's 'ready' message implies
+  // that) whether the agent is available for this view and user.
+  useEffect(() => {
+    if (appReady === null) return;
+    const viz = vizRef.current;
+    if (!viz?.isAnalyticsAssistantAvailableAsync) {
+      console.warn('[CustomerLoyalty] Embedding API has no isAnalyticsAssistantAvailableAsync');
+      setAgentAvailable(false);
+      return;
+    }
+    viz.isAnalyticsAssistantAvailableAsync()
+      .then((ok) => {
+        console.log('[CustomerLoyalty] Tableau Agent available:', ok);
+        setAgentAvailable(!!ok);
+      })
+      .catch((err) => {
+        console.error('[CustomerLoyalty] Tableau Agent availability check failed:', err);
+        setAgentAvailable(false);
+      });
+  }, [appReady]);
+
+  const launchAgent = async () => {
+    try {
+      await vizRef.current?.launchAnalyticsAssistantAsync?.();
+    } catch (err) {
+      console.error('[CustomerLoyalty] could not launch Tableau Agent:', err);
+    }
+  };
+
   const clearSelection = () => {
     setSelected([]);
     sendToApp('clear');
@@ -293,6 +341,19 @@ export const CustomerLoyalty = () => {
           Clear filters
         </button>
       )}
+      <button
+        onClick={launchAgent}
+        disabled={agentAvailable !== true}
+        title={
+          agentAvailable === false
+            ? 'Tableau Agent is not available for this view'
+            : 'Ask Tableau Agent about this data'
+        }
+        className="ml-auto flex h-9 items-center gap-2 rounded-lg bg-[hsl(199,99%,39%)] px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        <BotMessageSquare className="h-4 w-4" />
+        Tableau Agent
+      </button>
     </div>
   );
 
@@ -317,7 +378,7 @@ export const CustomerLoyalty = () => {
 
           <CardContent className="px-6 pb-6 pt-0">
             <div ref={embedBoxRef} className="w-full">
-              {embedWidth ? (
+              {embedWidth && embedHeight ? (
                 <TableauEmbed
                   ref={vizRef}
                   id="customerLoyaltyDataApp"
@@ -329,7 +390,7 @@ export const CustomerLoyalty = () => {
                   layouts={Object.fromEntries(
                     ['xs', 'sm', 'md', 'lg', 'xl', 'xl2'].map((bp) => [
                       bp,
-                      { device: 'default', width: embedWidth, height: EMBED_HEIGHT },
+                      { device: 'default', width: embedWidth, height: embedHeight },
                     ])
                   )}
                 />

@@ -54,3 +54,8 @@ Color: grey bars, one orange accent for At Risk / current year. No external orig
 - Removed the "Live from … as of" label, the viewer-facing filter chip row and the "Updating for new filters…" line.
 - While a filtered query runs the existing content fades to 55% opacity (#app.is-updating) instead of inserting/removing rows.
 - Ignored-filter warnings still show, but only inside the editor panel in web edit.
+
+## v8: dashboard wrapper (enables Tableau Agent)
+- Added dashboard "Customer Loyalty Dashboard" holding the data app sheet full-canvas (automatic size, title hidden). Tableau Agent (launchAnalyticsAssistantAsync) reports available on the dashboard but not on the bare viz-extension sheet.
+- The demo embeds the dashboard view and sizes the frame to the window so the agent side panel (which matches the frame height) fits; html/body scroll inside the frame.
+- The worksheet view stays published so older embeds of the sheet URL keep working.
