@@ -197,24 +197,12 @@
     cfg.quietDays = QUIET_OPTIONS.indexOf(Number(cfg.quietDays)) >= 0 ? Number(cfg.quietDays) : 0;
     return cfg;
   }
+  // Editor settings apply to the current editing session only and are NOT written to the workbook.
+  // Writing them (settings.set + saveAsync) made Tableau store a web-authoring draft for the user,
+  // which then showed "Draft Not Current" on every later edit and couldn't be deleted from the
+  // embedded editor. Saved settings already in a published workbook are still read on load.
   function saveConfig() {
-    var api = settingsApi();
-    if (!api || typeof api.set !== 'function') { state.saveStatus = 'Settings API unavailable'; return; }
-    try {
-      api.set(SETTINGS_KEY, JSON.stringify(state.config));
-    } catch (e) {
-      state.saveStatus = 'Could not store settings: ' + (e.message || e);
-      return;
-    }
-    if (typeof api.saveAsync !== 'function') { state.saveStatus = 'Stored (no saveAsync)'; return; }
-    state.saveStatus = 'Saving…';
-    api.saveAsync().then(function () {
-      state.saveStatus = 'Saved to workbook. Publish to keep it.';
-      render();
-    }).catch(function (err) {
-      state.saveStatus = 'Save failed: ' + ((err && (err.message || err.errorCode)) || String(err));
-      render();
-    });
+    state.saveStatus = 'Applied for this session. Not saved to the workbook.';
   }
 
   // ---------- Sheet filters -> VDS filters ----------
@@ -481,7 +469,7 @@
     var head = el('div', 'editor-head');
     head.appendChild(el('strong', null, 'Editor settings'));
     head.appendChild(el('span', 'editor-note',
-      'Only visible while editing. Saved with the workbook when you publish. Drag fields to the Filters shelf to filter this app.'));
+      'Only visible while editing. Changes apply to this session and are not saved. Drag fields to the Filters shelf to filter this app.'));
     p.appendChild(head);
     var row = el('div', 'editor-row');
     var bOpts = Object.keys(BREAKDOWNS).map(function (k) { return [k, BREAKDOWNS[k].label]; });

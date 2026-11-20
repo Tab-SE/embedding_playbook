@@ -59,3 +59,6 @@ Color: grey bars, one orange accent for At Risk / current year. No external orig
 - Added dashboard "Customer Loyalty Dashboard" holding the data app sheet full-canvas (automatic size, title hidden). Tableau Agent (launchAnalyticsAssistantAsync) reports available on the dashboard but not on the bare viz-extension sheet.
 - The demo embeds the dashboard view and sizes the frame to the window so the agent side panel (which matches the frame height) fits; html/body scroll inside the frame.
 - The worksheet view stays published so older embeds of the sheet URL keep working.
+
+## v9: editor settings are session-only
+- saveConfig no longer calls settings.set/saveAsync. Writing extension settings from web edit made Tableau keep a web-authoring draft for the user ("Draft Not Current" on every edit), and deleting that draft from the embedded editor failed with 401. Settings now apply for the editing session only; any settings already saved in the published workbook are still read on load.

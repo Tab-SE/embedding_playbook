@@ -120,6 +120,7 @@ export const TableauToolbar = forwardRef(function TableauToolbar(props, ref) {
                 title='Edit Viz'
                 src={editSrc}
                 jwt={editJwt}
+                onClose={() => setEditOpen(false)}
               />
             </MenubarItem>
           </Dialog>

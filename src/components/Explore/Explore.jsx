@@ -4,7 +4,7 @@ import { TableauEmbed } from 'components';
 import { TableauWebAuthor } from 'components';
 
 export const Explore = (props) => {
-  const { title, description, src, jwt } = props;
+  const { title, description, src, jwt, onClose } = props;
 
   return (
     <DialogContent className="max-w-[93vw] h-[93vh] dark:bg-stone-900" >
@@ -20,6 +20,7 @@ export const Explore = (props) => {
             jwt={jwt}
             height='82vh'
             width='100%'
+            onClose={onClose}
           />
         ) : (
           <TableauEmbed
