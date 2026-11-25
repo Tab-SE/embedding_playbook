@@ -2,7 +2,7 @@
   'use strict';
 
   var root = document.getElementById('app');
-  var DATASOURCE_CAPTION = 'Superstore';
+  var DATASOURCE_CAPTION = 'Sample - Superstore';
   var SETTINGS_KEY = 'loyaltyConfig';
   var DAY = 86400000;
 
@@ -434,7 +434,7 @@
   // ---------- State ----------
   var state = {
     ds: null, rows: null, model: null, config: DEFAULT_CONFIG, tierFilter: DEFAULT_CONFIG.focusTier,
-    selected: null, picked: {}, extra: 0, hostConnected: false, loadedAt: null, loading: false, filterKey: null, saveStatus: '',
+    selected: null, picked: {}, extra: 0, hostConnected: false, access: null, loadedAt: null, loading: false, filterKey: null, saveStatus: '',
     filters: { vds: [], applied: [], skipped: [], noMatch: false }
   };
 
@@ -531,6 +531,10 @@
 
     var m = state.model;
     if (!m) {
+      // RLS returned no rows at all (token has no Region access): draw nothing, the same blank
+      // canvas Tableau shows for a sheet with no data. No app-side placeholder.
+      var noAccess = state.access && state.access.returned && !state.access.returned.length;
+      if (noAccess && !state.loading) { return; }
       root.appendChild(el('p', 'empty', state.loading ? 'Loading live customer data…' : 'No customers match the current filters.'));
       return;
     }
@@ -573,6 +577,8 @@
       kpis.appendChild(card);
     });
     root.appendChild(kpis);
+
+    root.appendChild(renderAccessPanel());
 
     // ---- Tier composition: one stacked bar + clickable legend ----
     var comp = el('section', 'panel');
@@ -837,6 +843,177 @@
     return p;
   }
 
+  // ---------- Row-level security check (UAF from the sign-in token) ----------
+  // RLS is enforced by the workbook's data source filter ("UAF Region", same calc as the home
+  // dashboard), not by this app. This probe only reports what that filter let through.
+  var UAF_CALC = "IF USERATTRIBUTEINCLUDES('Region', [Region]) THEN TRUE ELSEIF ISMEMBEROF('admin') THEN TRUE ELSE FALSE END";
+  var REGION_COLORS = { West: '#2563eb', East: '#7c3aed', Central: '#0d9488', South: '#ea580c' };
+  var STATE_ABBR = {
+    'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA', 'Colorado': 'CO',
+    'Connecticut': 'CT', 'Delaware': 'DE', 'District of Columbia': 'DC', 'Florida': 'FL', 'Georgia': 'GA',
+    'Hawaii': 'HI', 'Idaho': 'ID', 'Illinois': 'IL', 'Indiana': 'IN', 'Iowa': 'IA', 'Kansas': 'KS',
+    'Kentucky': 'KY', 'Louisiana': 'LA', 'Maine': 'ME', 'Maryland': 'MD', 'Massachusetts': 'MA',
+    'Michigan': 'MI', 'Minnesota': 'MN', 'Mississippi': 'MS', 'Missouri': 'MO', 'Montana': 'MT',
+    'Nebraska': 'NE', 'Nevada': 'NV', 'New Hampshire': 'NH', 'New Jersey': 'NJ', 'New Mexico': 'NM',
+    'New York': 'NY', 'North Carolina': 'NC', 'North Dakota': 'ND', 'Ohio': 'OH', 'Oklahoma': 'OK',
+    'Oregon': 'OR', 'Pennsylvania': 'PA', 'Rhode Island': 'RI', 'South Carolina': 'SC', 'South Dakota': 'SD',
+    'Tennessee': 'TN', 'Texas': 'TX', 'Utah': 'UT', 'Vermont': 'VT', 'Virginia': 'VA', 'Washington': 'WA',
+    'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY'
+  };
+  function truthy(v) { return v === true || v === 1 || v === '1' || String(v).toLowerCase() === 'true'; }
+
+  // Unfiltered query: every region/state the data source returns, plus the server-side UAF result.
+  function runAccessProbe(ds) {
+    var query = {
+      fields: [
+        { fieldCaption: 'Region' },
+        { fieldCaption: 'State/Province' },
+        { fieldCaption: 'Sales', function: 'SUM', fieldAlias: 'Sales' },
+        { fieldCaption: 'UAF Allowed', calculation: UAF_CALC }
+      ]
+    };
+    return ds.queryAsync(query).then(function (result) {
+      var rows = extractData(result);
+      var regions = {};
+      var byAbbr = {};
+      rows.forEach(function (r) {
+        var region = pick(r, ['Region']);
+        var st = pick(r, ['State/Province', 'State']);
+        if (!region) { return; }
+        var sales = num(pick(r, ['Sales', 'SUM(Sales)']));
+        var ok = truthy(pick(r, ['UAF Allowed']));
+        var g = regions[region] || (regions[region] = { name: region, allowed: false, sales: 0, states: 0 });
+        g.allowed = g.allowed || ok;
+        g.sales += sales;
+        g.states += 1;
+        var ab = STATE_ABBR[st];
+        if (ab) { byAbbr[ab] = { state: st, region: region, sales: sales }; }
+      });
+      var returned = Object.keys(regions).sort();
+      var allowed = returned.filter(function (k) { return regions[k].allowed; });
+      state.access = { regions: regions, byAbbr: byAbbr, returned: returned, allowed: allowed };
+      postToHost('access', { allowed: allowed, returned: returned });
+    }).catch(function (err) {
+      state.access = { error: (err && (err.message || err.errorCode)) || String(err) };
+    });
+  }
+
+  function svgEl(tag, attrs) {
+    var n = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    return n;
+  }
+
+  // Choropleth of US states (Albers USA, bundled shapes in us-states.js; no network).
+  // Coloured = region returned and allowed; hatched = never returned (hidden by RLS);
+  // red = returned but not allowed by the token (RLS leak).
+  function renderStateMap(a) {
+    var geo = window.US_STATES;
+    var wrap = el('div', 'usmap');
+    if (!geo) { wrap.appendChild(el('p', 'error', 'Map shapes failed to load (us-states.js).')); return wrap; }
+    var svg = svgEl('svg', { viewBox: geo.viewBox, role: 'img', 'aria-label': 'US map of states by region access' });
+    var defs = svgEl('defs');
+    var pat = svgEl('pattern', { id: 'rls-hatch', width: '6', height: '6', patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
+    pat.appendChild(svgEl('rect', { width: '6', height: '6', fill: '#f1f5f9' }));
+    pat.appendChild(svgEl('line', { x1: '0', y1: '0', x2: '0', y2: '6', stroke: '#dbe3ec', 'stroke-width': '2.5' }));
+    defs.appendChild(pat);
+    svg.appendChild(defs);
+
+    var byName = {};
+    Object.keys(a.byAbbr).forEach(function (ab) { var d = a.byAbbr[ab]; byName[d.state] = d; });
+    var maxSales = 0;
+    Object.keys(byName).forEach(function (n) {
+      var d = byName[n];
+      if (a.regions[d.region] && a.regions[d.region].allowed && d.sales > maxSales) { maxSales = d.sales; }
+    });
+
+    var land = svgEl('g', { 'class': 'states' });
+    Object.keys(geo.states).forEach(function (name) {
+      var d = byName[name];
+      var allowed = !!(d && a.regions[d.region] && a.regions[d.region].allowed);
+      var attrs = { d: geo.states[name], 'class': 'state' + (d ? (allowed ? ' on' : ' leak') : ' off') };
+      if (d && allowed) {
+        var t = maxSales ? Math.sqrt(d.sales / maxSales) : 1;
+        attrs.fill = REGION_COLORS[d.region] || '#64748b';
+        attrs['fill-opacity'] = String(0.32 + 0.68 * t);
+      } else if (d) {
+        attrs.fill = '#fecaca';
+      } else {
+        attrs.fill = 'url(#rls-hatch)';
+      }
+      var path = svgEl('path', attrs);
+      var title = svgEl('title');
+      title.textContent = d
+        ? name + ' · ' + d.region + ' · ' + money(d.sales)
+        : name + ' · no access';
+      path.appendChild(title);
+      land.appendChild(path);
+    });
+    svg.appendChild(land);
+    svg.appendChild(svgEl('path', { d: geo.borders, 'class': 'borders' }));
+    svg.appendChild(svgEl('path', { d: geo.nation, 'class': 'nation' }));
+    wrap.appendChild(svg);
+
+    var legend = el('div', 'map-legend');
+    ['West', 'Central', 'East', 'South'].forEach(function (k) {
+      var on = a.regions[k] && a.regions[k].allowed;
+      var item = el('span', 'map-key' + (on ? '' : ' muted'));
+      var sw = el('span', 'swatch');
+      sw.style.background = on ? REGION_COLORS[k] : '#e2e8f0';
+      item.appendChild(sw);
+      item.appendChild(el('span', null, k));
+      legend.appendChild(item);
+    });
+    var hid = el('span', 'map-key');
+    hid.appendChild(el('span', 'swatch hatch'));
+    hid.appendChild(el('span', null, 'No access'));
+    legend.appendChild(hid);
+    wrap.appendChild(legend);
+    return wrap;
+  }
+
+  function renderAccessPanel() {
+    var a = state.access;
+    var p = el('section', 'panel access');
+    var head = el('div', 'panel-head');
+    head.appendChild(el('h2', null, 'Your regions'));
+    p.appendChild(head);
+    if (!a) { p.appendChild(el('p', 'hint', 'Checking access…')); return p; }
+    if (a.error) { p.appendChild(el('p', 'error', 'Access check failed: ' + a.error)); return p; }
+
+    var body = el('div', 'access-body');
+    body.appendChild(renderStateMap(a));
+    var side = el('div', 'access-side');
+
+    var blocked = a.returned.filter(function (k) { return a.allowed.indexOf(k) < 0; });
+    var verdict;
+    if (!a.returned.length) {
+      verdict = el('div', 'verdict warn', 'No region access');
+    } else if (!blocked.length) {
+      verdict = el('div', 'verdict ok', a.returned.length === 4 ? 'All regions' : a.returned.join(', '));
+    } else {
+      verdict = el('div', 'verdict warn', 'Unexpected regions returned: ' + blocked.join(', '));
+    }
+    side.appendChild(verdict);
+
+    var list = el('div', 'region-list');
+    a.returned.forEach(function (k) {
+      var g = a.regions[k];
+      var row = el('div', 'region-row' + (g.allowed ? '' : ' blocked'));
+      var sw = el('span', 'swatch');
+      sw.style.background = g.allowed ? (REGION_COLORS[k] || '#64748b') : '#cbd5e1';
+      row.appendChild(sw);
+      row.appendChild(el('span', 'region-name', k));
+      row.appendChild(el('span', 'region-meta', g.states + ' states · ' + money(g.sales)));
+      row.appendChild(el('span', 'region-status ' + (g.allowed ? 'yes' : 'no'), g.allowed ? 'Allowed' : 'Blocked'));
+      list.appendChild(row);
+    });
+    side.appendChild(list);
+    body.appendChild(side);
+    p.appendChild(body);
+    return p;
+  }
+
   // ---------- Load + events ----------
   function readSheetFilters() {
     var ws = hostWorksheet();
@@ -915,7 +1092,7 @@
       if (!ds) { renderError('no data source found in the workbook'); return null; }
       state.ds = ds;
       subscribe();
-      return load(true);
+      return runAccessProbe(ds).then(function () { return load(true); });
     }).catch(function (err) {
       renderError((err && (err.message || err.errorCode)) || String(err));
     });

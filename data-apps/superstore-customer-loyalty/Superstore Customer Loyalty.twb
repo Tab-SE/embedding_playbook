@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8' ?>
 
-<workbook source-build='2026.3.4 (20263.26.1116.1613)' version='18.1' xml:base='https://localhost' xmlns:user='http://www.tableausoftware.com/xml/user'>
+<workbook source-build='2026.3.4 (20263.26.1118.1554)' version='18.1' xml:base='https://localhost' xmlns:user='http://www.tableausoftware.com/xml/user'>
   <document-format-change-manifest>
     <Extensions />
     <VizExtensions />
@@ -15,11 +15,11 @@
   <repository-location id='template' path='/workbooks' revision='1.0' />
   <preferences />
   <datasources>
-    <datasource caption='Superstore' inline='true' name='sqlproxy.6ytvf7uyxean6gv54coq6x' version='18.1'>
-      <repository-location id='Superstore_17474334665220' path='/t/embeddingplaybook/datasources' revision='1.0' site='embeddingplaybook' />
-      <connection channel='https' class='sqlproxy' dbname='Superstore_17474334665220' directory='dataserver' port='443' server='prod-useast-b.online.tableau.com' server-ds-friendly-name='Superstore' username=''>
+    <datasource caption='Sample - Superstore' inline='true' name='sqlproxy.kj2m0eqti82868d22itmxa' version='18.1'>
+      <repository-location id='Sample-Superstore' path='/t/embeddingplaybook/datasources' revision='1.0' site='embeddingplaybook' />
+      <connection channel='https' class='sqlproxy' dbname='Sample-Superstore' directory='dataserver' port='443' server='prod-useast-b.online.tableau.com' server-ds-friendly-name='Sample - Superstore' username=''>
         <relation type='collection'>
-          <relation connection='sqlproxy.6ytvf7uyxean6gv54coq6x' name='sqlproxy' table='[sqlproxy]' type='table' />
+          <relation connection='sqlproxy.kj2m0eqti82868d22itmxa' name='sqlproxy' table='[sqlproxy]' type='table' />
         </relation>
         <metadata-records>
           <metadata-record class='column'>
@@ -71,12 +71,28 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
+            <remote-name>State/Province</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[State/Province]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>State/Province</remote-alias>
+            <ordinal>3</ordinal>
+            <layered>true</layered>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='field-type'>1</attribute>
+              <attribute datatype='integer' name='role'>0</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
             <remote-name>Category</remote-name>
             <remote-type>129</remote-type>
             <local-name>[Category]</local-name>
             <parent-name>[sqlproxy]</parent-name>
             <remote-alias>Category</remote-alias>
-            <ordinal>3</ordinal>
+            <ordinal>4</ordinal>
             <layered>true</layered>
             <local-type>string</local-type>
             <aggregation>Count</aggregation>
@@ -92,7 +108,7 @@
             <local-name>[Ship Mode]</local-name>
             <parent-name>[sqlproxy]</parent-name>
             <remote-alias>Ship Mode</remote-alias>
-            <ordinal>4</ordinal>
+            <ordinal>5</ordinal>
             <layered>true</layered>
             <local-type>string</local-type>
             <aggregation>Count</aggregation>
@@ -108,7 +124,7 @@
             <local-name>[Order ID]</local-name>
             <parent-name>[sqlproxy]</parent-name>
             <remote-alias>Order ID</remote-alias>
-            <ordinal>5</ordinal>
+            <ordinal>6</ordinal>
             <layered>true</layered>
             <local-type>string</local-type>
             <aggregation>Count</aggregation>
@@ -124,7 +140,7 @@
             <local-name>[Order Date]</local-name>
             <parent-name>[sqlproxy]</parent-name>
             <remote-alias>Order Date</remote-alias>
-            <ordinal>6</ordinal>
+            <ordinal>7</ordinal>
             <layered>true</layered>
             <local-type>date</local-type>
             <aggregation>Count</aggregation>
@@ -140,7 +156,7 @@
             <local-name>[Sales]</local-name>
             <parent-name>[sqlproxy]</parent-name>
             <remote-alias>Sales</remote-alias>
-            <ordinal>7</ordinal>
+            <ordinal>8</ordinal>
             <layered>true</layered>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
@@ -156,7 +172,7 @@
             <local-name>[Profit]</local-name>
             <parent-name>[sqlproxy]</parent-name>
             <remote-alias>Profit</remote-alias>
-            <ordinal>8</ordinal>
+            <ordinal>9</ordinal>
             <layered>true</layered>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
@@ -168,6 +184,15 @@
           </metadata-record>
         </metadata-records>
       </connection>
+      <column caption='UAF Region' datatype='boolean' name='[Calculation_1055572650717222]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF USERATTRIBUTEINCLUDES(&apos;Region&apos;, [Region]) THEN&#10;    TRUE&#10;ELSEIF ISMEMBEROF(&apos;admin&apos;) THEN&#10;    TRUE&#10;ELSE&#10;    FALSE&#10;END' />
+      </column>
+      <filter class='categorical' column='[Calculation_1055572650717222]' filter-group='2'>
+        <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='exclusive' user:ui-manual-selection='true' user:ui-manual-selection-all-when-empty='true' user:ui-marker='enumerate'>
+          <groupfilter function='level-members' level='[Calculation_1055572650717222]' />
+          <groupfilter function='member' level='[Calculation_1055572650717222]' member='false' />
+        </groupfilter>
+      </filter>
     </datasource>
   </datasources>
   <worksheets>
@@ -176,12 +201,13 @@
       <table>
         <view>
           <datasources>
-            <datasource caption='Superstore' name='sqlproxy.6ytvf7uyxean6gv54coq6x' />
+            <datasource caption='Sample - Superstore' name='sqlproxy.kj2m0eqti82868d22itmxa' />
           </datasources>
-          <datasource-dependencies datasource='sqlproxy.6ytvf7uyxean6gv54coq6x'>
+          <datasource-dependencies datasource='sqlproxy.kj2m0eqti82868d22itmxa'>
             <column aggregation='Count' datatype='string' name='[Customer Name]' role='dimension' type='nominal' />
             <column aggregation='Count' datatype='string' name='[Segment]' role='dimension' type='nominal' />
             <column aggregation='Count' datatype='string' name='[Region]' role='dimension' type='nominal' />
+            <column aggregation='Count' datatype='string' name='[State/Province]' role='dimension' type='nominal' />
             <column aggregation='Count' datatype='string' name='[Category]' role='dimension' type='nominal' />
             <column aggregation='Count' datatype='string' name='[Ship Mode]' role='dimension' type='nominal' />
             <column aggregation='Count' datatype='string' name='[Order ID]' role='dimension' type='nominal' />
@@ -191,6 +217,7 @@
             <column-instance column='[Customer Name]' derivation='None' name='[none:Customer Name:nk]' pivot='key' type='nominal' />
             <column-instance column='[Segment]' derivation='None' name='[none:Segment:nk]' pivot='key' type='nominal' />
             <column-instance column='[Region]' derivation='None' name='[none:Region:nk]' pivot='key' type='nominal' />
+            <column-instance column='[State/Province]' derivation='None' name='[none:State/Province:nk]' pivot='key' type='nominal' />
             <column-instance column='[Category]' derivation='None' name='[none:Category:nk]' pivot='key' type='nominal' />
             <column-instance column='[Ship Mode]' derivation='None' name='[none:Ship Mode:nk]' pivot='key' type='nominal' />
             <column-instance column='[Order ID]' derivation='None' name='[none:Order ID:nk]' pivot='key' type='nominal' />

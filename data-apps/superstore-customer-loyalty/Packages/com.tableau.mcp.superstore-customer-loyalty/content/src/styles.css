@@ -205,3 +205,44 @@ button { font: inherit; color: inherit; }
 #app > * { transition: opacity .18s ease; }
 #app.is-updating > :not(.editor) { opacity: .55; }
 .editor .chips { margin: 10px 0 0; }
+
+/* Region access (RLS check) */
+.access-body { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr); gap: 28px; align-items: start; }
+.tilemap svg { width: 100%; height: auto; display: block; max-height: 380px; }
+.tile rect { transition: fill-opacity .2s; }
+.tile-on:hover rect { fill-opacity: 1; }
+.tile-label { font: 600 12px ui-sans-serif, system-ui, sans-serif; fill: #334155; pointer-events: none; }
+.tile-label.on-dark { fill: #ffffff; }
+.tile-off .tile-label { fill: #94a3b8; }
+.tile-none .tile-label { fill: #cbd5e1; }
+.access-side { display: flex; flex-direction: column; gap: 14px; }
+.verdict { border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; border: 1px solid var(--line); }
+.verdict strong { font-size: 13px; }
+.verdict.ok { background: #f0fdf4; border-color: #bbf7d0; color: #14532d; }
+.verdict.info { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }
+.verdict.warn { background: var(--accent-soft); border-color: #fed7aa; color: #9a3412; }
+.region-list { display: flex; flex-direction: column; }
+.region-row { display: grid; grid-template-columns: 12px 1fr auto auto; align-items: center; gap: 10px; padding: 8px 2px; border-top: 1px solid var(--soft); }
+.region-row:first-child { border-top: 0; }
+.region-row .swatch { width: 10px; height: 10px; border-radius: 3px; }
+.region-name { font-weight: 600; }
+.region-row.blocked .region-name { color: var(--muted); }
+.region-meta { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.region-status { font-size: 11px; font-weight: 600; border-radius: 999px; padding: 2px 9px; }
+.region-status.yes { background: #dcfce7; color: #166534; }
+.region-status.no { background: var(--soft); color: var(--muted); }
+@media (max-width: 1000px) { .access-body { grid-template-columns: 1fr; } }
+.tile-leak .tile-label { fill: #b91c1c; }
+
+/* US state choropleth (replaces tile grid) */
+.usmap svg { width: 100%; height: auto; max-height: 360px; display: block; }
+.usmap .state { stroke: none; transition: fill-opacity .15s, filter .15s; }
+.usmap .state.on:hover { fill-opacity: 1; filter: brightness(1.08); }
+.usmap .state.leak { stroke: #dc2626; stroke-width: 1.2; }
+.usmap .borders { fill: none; stroke: #ffffff; stroke-width: .8; stroke-linejoin: round; pointer-events: none; }
+.usmap .nation { fill: none; stroke: #cbd5e1; stroke-width: 1; stroke-linejoin: round; pointer-events: none; }
+.map-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }
+.map-key { display: inline-flex; align-items: center; gap: 6px; }
+.map-key.muted { color: var(--muted); }
+.map-key .swatch { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+.map-key .swatch.hatch { background: repeating-linear-gradient(45deg, #f1f5f9 0 3px, #dbe3ec 3px 5px); border: 1px solid #e2e8f0; }

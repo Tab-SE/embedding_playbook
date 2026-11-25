@@ -13,8 +13,12 @@ import { TableauEmbed } from "components";
 // It queries the published "Superstore" datasource live and computes loyalty tiers in the browser.
 // Dashboard wrapping the data app sheet full-canvas. Tableau Agent is only available on the dashboard,
 // not on the bare viz-extension sheet.
+// Data app hosted inside a copy of the home Superstore workbook ("Superstore Data App Test"),
+// connected to the published Sample - Superstore data source with the home workbook's UAF Region
+// data source filter. The standalone workbook (.../SuperstoreCustomerLoyalty/...) returned no rows
+// for UAF-filtered users; see data-apps/superstore-customer-loyalty/Resources/.agents/design.md.
 const DATA_APP_URL =
-  'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/SuperstoreCustomerLoyalty/CustomerLoyaltyDashboard';
+  'https://prod-useast-b.online.tableau.com/t/embeddingplaybook/views/SuperstoreDataAppTest/CustomerLoyaltyDashboard';
 
 // Must match BRIDGE_SOURCE / HOST_SOURCE in the data app's app.js.
 const BRIDGE_SOURCE = 'superstore-loyalty-data-app';
